@@ -24,6 +24,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.magic.thai.db.domain.Merchant;
+import com.magic.thai.db.domain.User;
 import com.magic.thai.db.service.MerchantService;
 import com.magic.thai.security.UserProfile;
 
@@ -55,11 +56,14 @@ public class MerchantController {
 	}
 
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
-	public ModelAndView addUserProsses(@ModelAttribute("merchant") Merchant merchant, @RequestParam CommonsMultipartFile file,
-			SessionStatus status, HttpSession session) {
+	public ModelAndView addProsses(@ModelAttribute("merchant") Merchant merchant, @RequestParam String adminLoginName,
+			@RequestParam String adminPassword, @RequestParam CommonsMultipartFile file, SessionStatus status, HttpSession session) {
 		UserProfile userprofile = (UserProfile) session.getAttribute("userprofile");
 
-		merchantService.create(merchant, userprofile);
+		User user = new User();
+		user.setLoginName(adminLoginName);
+		user.setPassword(adminPassword);
+		merchantService.create(merchant, user, userprofile);
 		if (file != null) {
 			File imageFile = new File(session.getServletContext().getRealPath("/") + merchant.getDetails().getLogoPath());
 			try {
@@ -125,19 +129,22 @@ public class MerchantController {
 	}
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	public ModelAndView list() {
+	public ModelAndView list(HttpSession session) {
+		UserProfile userprofile = (UserProfile) session.getAttribute("userprofile");
+
 		ModelAndView modelandView = new ModelAndView("/admin/merchant/list");
-		modelandView.addObject("ps", merchantService.getMerchants(null, -1, 1));
+		modelandView.addObject("ps", merchantService.getMerchantsPage(null, -1, 1));
 		return modelandView;
 	}
 
 	@RequestMapping(value = "/list", method = RequestMethod.POST)
-	public ModelAndView searchMerchants(@RequestParam String name, @RequestParam int status, @RequestParam int currPage) {
-		logger.info("status : {}, currPage : {}", status, currPage);
+	public ModelAndView searchMerchants(@RequestParam String name, @RequestParam int status, @RequestParam int page, HttpSession session) {
+		UserProfile userprofile = (UserProfile) session.getAttribute("userprofile");
+		logger.info("status : {}, currPage : {}", status, page);
 		ModelAndView modelandView = new ModelAndView("/admin/merchant/list");
-		modelandView.addObject("ps", merchantService.getMerchants(name, status, currPage));
+		modelandView.addObject("ps", merchantService.getMerchantsPage(name, status, page));
 		modelandView.addObject("name", name);
-		modelandView.addObject("currPage", currPage);
+		modelandView.addObject("page", page);
 		modelandView.addObject("status", status);
 		return modelandView;
 	}

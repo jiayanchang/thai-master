@@ -74,7 +74,7 @@
 </td>
 </tr>
 </table>
-<input name="currPage" type="hidden" value="1"/>
+<input name="page" type="hidden" value="1"/>
 </form:form>
 </div>
 </body>

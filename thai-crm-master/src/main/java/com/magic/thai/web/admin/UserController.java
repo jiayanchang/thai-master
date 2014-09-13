@@ -22,7 +22,6 @@ import org.springframework.web.servlet.ModelAndView;
 import com.magic.thai.db.domain.User;
 import com.magic.thai.db.service.UserService;
 import com.magic.thai.security.UserProfile;
-import com.magic.thai.util.Md5CryptoUtils;
 
 @Controller
 @RequestMapping(value = "/a/user")
@@ -38,6 +37,12 @@ public class UserController {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		dateFormat.setLenient(false);
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
+	}
+
+	@RequestMapping(value = "/", method = RequestMethod.GET)
+	public ModelAndView tolist() {
+		ModelAndView modelAndView = new ModelAndView("redirect:/a/user/list");
+		return modelAndView;
 	}
 
 	@RequestMapping(value = "/add", method = RequestMethod.GET)
@@ -96,7 +101,7 @@ public class UserController {
 			user.setName(userbean.getName());
 			user.setLoginName(userbean.getLoginName());
 			user.setMobile(userbean.getMobile());
-			user.setPassword(Md5CryptoUtils.create(userbean.getPassword()));
+			user.setPassword(userbean.getPassword());
 			userService.update(user, userprofile);
 			message = "User successfull updated";
 			return modelAndView;
@@ -144,18 +149,25 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	public ModelAndView list() {
+	public ModelAndView list(HttpSession session) {
+		UserProfile userprofile = (UserProfile) session.getAttribute("userprofile");
 		ModelAndView modelandView = new ModelAndView("/admin/user/list");
-		modelandView.addObject("ps", userService.getUsersPage(null, null, -1, 1));
+		modelandView.addObject("ps", userService.getUsersPage(null, null, -1, 1, userprofile));
 		message = "";
 		return modelandView;
 	}
 
 	@RequestMapping(value = "/list", method = RequestMethod.POST)
 	public ModelAndView listUserPage(@RequestParam String name, @RequestParam String loginName, @RequestParam int status,
-			@RequestParam int page) {
+			@RequestParam int page, HttpSession session) {
+		UserProfile userprofile = (UserProfile) session.getAttribute("userprofile");
+
 		ModelAndView modelandView = new ModelAndView("/admin/user/list");
-		modelandView.addObject("ps", userService.getUsersPage(name, loginName, status, page));
+		modelandView.addObject("ps", userService.getUsersPage(name, loginName, status, page, userprofile));
+		modelandView.addObject("name", name);
+		modelandView.addObject("status", status);
+		modelandView.addObject("page", page);
+		modelandView.addObject("loginName", loginName);
 		message = "";
 		return modelandView;
 	}

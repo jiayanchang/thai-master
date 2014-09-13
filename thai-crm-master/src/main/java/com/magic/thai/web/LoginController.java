@@ -48,6 +48,7 @@ public class LoginController {
 		user.setCodeName("admin");
 		user.setName("admin");
 		user.setType(2);
+		user.setMerchantId(7);
 		UserProfile userprofile = new UserProfile(user);
 
 		session.setAttribute("userprofile", userprofile);

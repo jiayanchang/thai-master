@@ -12,8 +12,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.magic.thai.db.dao.MerchantDao;
 import com.magic.thai.db.dao.MerchantDetailsDao;
 import com.magic.thai.db.domain.Merchant;
+import com.magic.thai.db.domain.User;
 import com.magic.thai.db.service.MerchantService;
-import com.magic.thai.db.service.ServiceHelperImpl;
+import com.magic.thai.db.service.UserService;
 import com.magic.thai.security.UserProfile;
 import com.magic.thai.util.PaginationSupport;
 
@@ -25,6 +26,9 @@ public class MerchantServiceImpl extends ServiceHelperImpl<Merchant> implements 
 
 	@Autowired
 	private MerchantDao merchantDao;
+
+	@Autowired
+	private UserService userService;
 
 	@Autowired
 	private MerchantDetailsDao merchantDetailsDao;
@@ -56,7 +60,7 @@ public class MerchantServiceImpl extends ServiceHelperImpl<Merchant> implements 
 
 	@Override
 	@Transactional
-	public int create(Merchant merchant, UserProfile userprofile) {
+	public int create(Merchant merchant, User admin, UserProfile userprofile) {
 		merchant.setCreatorId(userprofile.getUser().getId());
 		merchant.setCreatorName(userprofile.getUser().getName());
 		merchant.setCreatedDate(new Date());
@@ -66,6 +70,10 @@ public class MerchantServiceImpl extends ServiceHelperImpl<Merchant> implements 
 		merchant.getDetails().setLogoPath("/upload/logo/_" + id + ".jpg");
 		merchantDetailsDao.create(merchant.getDetails());
 		logger.info("{} is create merchant :{}", userprofile.getUser().getCodeName(), merchant);
+
+		admin.setMerchantId(id);
+		userService.create(admin, userprofile);
+		logger.info("{} is create admin :{}", userprofile.getUser().getCodeName(), admin);
 		return id;
 	}
 
@@ -107,8 +115,8 @@ public class MerchantServiceImpl extends ServiceHelperImpl<Merchant> implements 
 
 	@Override
 	@Transactional(readOnly = true)
-	public PaginationSupport getMerchants(String name, int status, int currPage) {
-		return merchantDao.getMerchants(name, status, currPage);
+	public PaginationSupport getMerchantsPage(String name, int status, int currPage) {
+		return merchantDao.getMerchantsPage(name, status, currPage);
 	}
 
 }

@@ -1,4 +1,4 @@
-package com.magic.thai.db.service;
+package com.magic.thai.db.service.impl;
 
 import java.util.List;
 import java.util.Map;
@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.magic.thai.db.dao.GenericDao;
+import com.magic.thai.db.service.ServiceHelper;
 
 @Transactional(isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED, readOnly = false)
 @Service("serviceHelper")

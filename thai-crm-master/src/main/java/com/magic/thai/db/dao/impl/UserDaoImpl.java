@@ -64,7 +64,7 @@ public class UserDaoImpl extends HibernateCommonDAO<User> implements UserDao {
 	}
 
 	@Override
-	public PaginationSupport getUsersPage(String name, String loginName, int status, int currPage) {
+	public PaginationSupport getUsersPage(String name, String loginName, int status, int currPage, int merchantId) {
 		String hql = "from User where status != " + Merchant.Status.DELETED;
 		if (StringUtils.isNotBlank(name)) {
 			hql += " and name like '%" + name + "%'";
@@ -75,6 +75,7 @@ public class UserDaoImpl extends HibernateCommonDAO<User> implements UserDao {
 		if (status >= 0) {
 			hql += " and status = " + status;
 		}
+		hql += " and merchantId = " + merchantId;
 		return super.find(hql, currPage, 30);
 	}
 

@@ -3,6 +3,7 @@ package com.magic.thai.db.service;
 import java.util.List;
 
 import com.magic.thai.db.domain.Merchant;
+import com.magic.thai.db.domain.User;
 import com.magic.thai.security.UserProfile;
 import com.magic.thai.util.PaginationSupport;
 
@@ -52,7 +53,7 @@ public interface MerchantService {
 
 	public void update(Merchant merchant, UserProfile userprofile);
 
-	public int create(Merchant merchant, UserProfile userprofile);
+	public int create(Merchant merchant, User admin, UserProfile userprofile);
 
 	/**
 	 * 获取商家列表
@@ -63,6 +64,6 @@ public interface MerchantService {
 	 *            需要查询的页数，每页30条
 	 * @return
 	 */
-	public PaginationSupport getMerchants(String name, int status, int queryPage);
+	public PaginationSupport getMerchantsPage(String name, int status, int queryPage);
 
 }

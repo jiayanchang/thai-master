@@ -8,13 +8,13 @@ import com.magic.thai.util.PaginationSupport;
 public interface MerchantDao {
 
 	public List<Merchant> list();
-	
+
 	public Merchant loadById(int id);
-	
+
 	public Integer create(Merchant entity);
-	
+
 	public void update(Merchant entity);
-	
+
 	/**
 	 * 启用
 	 * 
@@ -50,7 +50,7 @@ public interface MerchantDao {
 	public void delete(Merchant merchant);
 
 	public void delete(int merchantId);
-	
-	public PaginationSupport getMerchants(String name, int status, int currPage);
+
+	public PaginationSupport getMerchantsPage(String name, int status, int currPage);
 
 }

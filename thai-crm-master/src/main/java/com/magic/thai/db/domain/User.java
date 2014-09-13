@@ -173,4 +173,9 @@ public class User {
 			return "已启用";
 		}
 	}
+
+	@Override
+	public String toString() {
+		return name + "(" + codeName + ")" + "[" + loginName + "]";
+	}
 }

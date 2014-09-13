@@ -28,5 +28,5 @@ public interface UserService {
 	 *            需要查询的页数，每页30条
 	 * @return
 	 */
-	public PaginationSupport getUsersPage(String name, String loginName, int status, int queryPage);
+	public PaginationSupport getUsersPage(String name, String loginName, int status, int queryPage, UserProfile userprofile);
 }

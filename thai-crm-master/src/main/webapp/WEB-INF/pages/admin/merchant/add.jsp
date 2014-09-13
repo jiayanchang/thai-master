@@ -35,6 +35,21 @@
 					<td><form:errors path="mobile" cssClass="error" /></td>
 				</tr>
 				<tr>
+					<td>管理员登陆名:</td>
+					<td><input name="adminLoginName" /></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>管理员密码:</td>
+					<td><input type="password" name="adminPassword" /></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>管理员密码确认:</td>
+					<td><input type="password" name="adminPasswordconfirm" /></td>
+					<td></td>
+				</tr>
+				<tr>
 					<td>LOGO:</td>
 					<td><input type="file" name="file"/></td>
 					<td></td>

@@ -66,7 +66,7 @@ public class MerchantDaoImpl extends HibernateCommonDAO<Merchant> implements Mer
 	}
 
 	@Override
-	public PaginationSupport getMerchants(String name, int status, int currPage) {
+	public PaginationSupport getMerchantsPage(String name, int status, int currPage) {
 		String hql = "from Merchant where status != " + Merchant.Status.DELETED;
 		if (StringUtils.isNotBlank(name)) {
 			hql += " and name like '%" + name + "%'";

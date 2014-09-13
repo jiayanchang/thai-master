@@ -9,7 +9,6 @@ import org.springframework.util.Assert;
 
 import com.magic.thai.db.dao.UserDao;
 import com.magic.thai.db.domain.User;
-import com.magic.thai.db.service.ServiceHelperImpl;
 import com.magic.thai.db.service.UserService;
 import com.magic.thai.exception.LoginException;
 import com.magic.thai.security.UserProfile;
@@ -37,14 +36,17 @@ public class UserServiceImpl extends ServiceHelperImpl<User> implements UserServ
 
 	@Override
 	public int create(User user, UserProfile userprofile) {
+		user.setMerchantId(userprofile.getUser().getMerchantId());
 		user.setCreatedDate(new Date());
 		user.setCreatorId(userprofile.getUser().getId());
 		user.setCreatorName(userprofile.getUser().getCodeName());
+		user.setPassword(Md5CryptoUtils.create(user.getPassword()));
 		return userDao.create(user);
 	}
 
 	@Override
 	public void update(User user, UserProfile userprofile) {
+		user.setPassword(Md5CryptoUtils.create(user.getPassword()));
 		userDao.update(user);
 	}
 
@@ -59,8 +61,8 @@ public class UserServiceImpl extends ServiceHelperImpl<User> implements UserServ
 	}
 
 	@Override
-	public PaginationSupport getUsersPage(String name, String loginName, int status, int queryPage) {
-		return userDao.getUsersPage(name, loginName, status, queryPage);
+	public PaginationSupport getUsersPage(String name, String loginName, int status, int queryPage, UserProfile userprofile) {
+		return userDao.getUsersPage(name, loginName, status, queryPage, userprofile.getUser().getMerchantId());
 	}
 
 }
