@@ -32,7 +32,7 @@ public class UserServiceImpl extends ServiceHelperImpl<User> implements UserServ
 	public UserProfile login(String username, String password) throws LoginException {
 		User user = userDao.getUserByLoginName(username);
 		Assert.notNull(user, "用户不存在");
-		Assert.isTrue(password.equals(Md5CryptoUtils.create(password)), "用户名或密码错误");
+		Assert.isTrue(user.getPassword().equals(Md5CryptoUtils.create(password)), "用户名或密码错误");
 		return new UserProfile(user);
 	}
 

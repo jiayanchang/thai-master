@@ -16,4 +16,13 @@
     <decorator name="goods" page="admin/goods.jsp">
         <pattern>/a/goods/*</pattern>
     </decorator>
+    <decorator name="fgoods" page="front/goods.jsp">
+        <pattern>/f/goods/*</pattern>
+    </decorator>
+    <decorator name="forder" page="front/order.jsp">
+        <pattern>/f/order/*</pattern>
+    </decorator>
+    <decorator name="fsystem" page="front/system.jsp">
+        <pattern>/f/user/*</pattern>
+    </decorator>
 </decorators>

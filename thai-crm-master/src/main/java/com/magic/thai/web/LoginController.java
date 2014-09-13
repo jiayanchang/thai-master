@@ -46,7 +46,7 @@ public class LoginController {
 		if (userprofile.isPlatformUser()) {
 			return new ModelAndView("redirect:/a/order/list");
 		} else {
-			return new ModelAndView("redirect:/f/order/list");
+			return new ModelAndView("redirect:/f/goods/list");
 		}
 	}
 
