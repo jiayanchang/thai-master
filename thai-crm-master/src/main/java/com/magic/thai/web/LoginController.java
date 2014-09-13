@@ -7,12 +7,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.magic.thai.db.domain.User;
 import com.magic.thai.db.service.UserService;
 import com.magic.thai.security.UserProfile;
 
@@ -38,18 +38,9 @@ public class LoginController {
 		// ObjectError error = new
 		// ObjectError("email","An account already exists for this email.");
 		// result.addError(error);
-
-		// logger.info("{} login! captcha is {}", loginName,
-		// session.getAttribute("captcha"));
-		// Assert.isTrue(captcha.equalsIgnoreCase(session.getAttribute("captcha").toString()),
-		// "验证码错误");
-		// UserProfile userprofile = userService.login(loginName, password);
-		User user = new User();
-		user.setCodeName("admin");
-		user.setName("admin");
-		user.setType(2);
-		user.setMerchantId(7);
-		UserProfile userprofile = new UserProfile(user);
+		logger.info("{} login! captcha is {}", loginName, session.getAttribute("captcha"));
+		Assert.isTrue(captcha.equalsIgnoreCase(session.getAttribute("captcha").toString()), "验证码错误");
+		UserProfile userprofile = userService.login(loginName, password);
 
 		session.setAttribute("userprofile", userprofile);
 		if (userprofile.isPlatformUser()) {

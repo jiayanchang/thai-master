@@ -30,11 +30,7 @@ public class OrderController {
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView listUserPage() {
-		// public ModelAndView listUserPage(@PathVariable String name,
-		// @PathVariable int status, int currPage) {
 		ModelAndView modelandView = new ModelAndView("/admin/order/list");
-		// modelandView.addObject("merchants",
-		// merchantService.getMerchants(name, status, currPage));
 		return modelandView;
 	}
 

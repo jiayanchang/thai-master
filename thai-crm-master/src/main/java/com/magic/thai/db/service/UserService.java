@@ -1,5 +1,6 @@
 package com.magic.thai.db.service;
 
+import com.magic.thai.db.domain.Merchant;
 import com.magic.thai.db.domain.User;
 import com.magic.thai.exception.LoginException;
 import com.magic.thai.security.UserProfile;
@@ -10,6 +11,8 @@ public interface UserService {
 	User findUserbyId(int id);
 
 	int create(User user, UserProfile userprofile);
+
+	int create(User user, Merchant merchant, UserProfile userprofile);
 
 	void update(User user, UserProfile userprofile);
 

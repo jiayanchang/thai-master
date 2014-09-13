@@ -2,12 +2,14 @@ package com.magic.thai.db.service.impl;
 
 import java.util.Date;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import com.magic.thai.db.dao.UserDao;
+import com.magic.thai.db.domain.Merchant;
 import com.magic.thai.db.domain.User;
 import com.magic.thai.db.service.UserService;
 import com.magic.thai.exception.LoginException;
@@ -37,6 +39,22 @@ public class UserServiceImpl extends ServiceHelperImpl<User> implements UserServ
 	@Override
 	public int create(User user, UserProfile userprofile) {
 		user.setMerchantId(userprofile.getUser().getMerchantId());
+		if (StringUtils.isBlank(user.getCodeName())) {
+			user.setCodeName(user.getLoginName());
+		}
+		user.setCreatedDate(new Date());
+		user.setCreatorId(userprofile.getUser().getId());
+		user.setCreatorName(userprofile.getUser().getCodeName());
+		user.setPassword(Md5CryptoUtils.create(user.getPassword()));
+		return userDao.create(user);
+	}
+
+	@Override
+	public int create(User user, Merchant merchant, UserProfile userprofile) {
+		user.setMerchantId(merchant.getId());
+		if (StringUtils.isBlank(user.getCodeName())) {
+			user.setCodeName(user.getLoginName());
+		}
 		user.setCreatedDate(new Date());
 		user.setCreatorId(userprofile.getUser().getId());
 		user.setCreatorName(userprofile.getUser().getCodeName());

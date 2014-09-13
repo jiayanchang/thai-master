@@ -71,8 +71,7 @@ public class MerchantServiceImpl extends ServiceHelperImpl<Merchant> implements 
 		merchantDetailsDao.create(merchant.getDetails());
 		logger.info("{} is create merchant :{}", userprofile.getUser().getCodeName(), merchant);
 
-		admin.setMerchantId(id);
-		userService.create(admin, userprofile);
+		userService.create(admin, merchantDao.loadById(id), userprofile);
 		logger.info("{} is create admin :{}", userprofile.getUser().getCodeName(), admin);
 		return id;
 	}

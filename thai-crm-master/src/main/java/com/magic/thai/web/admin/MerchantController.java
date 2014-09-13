@@ -63,6 +63,7 @@ public class MerchantController {
 		User user = new User();
 		user.setLoginName(adminLoginName);
 		user.setPassword(adminPassword);
+		user.setName(merchant.getName());
 		merchantService.create(merchant, user, userprofile);
 		if (file != null) {
 			File imageFile = new File(session.getServletContext().getRealPath("/") + merchant.getDetails().getLogoPath());
@@ -121,9 +122,10 @@ public class MerchantController {
 	}
 
 	@RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
-	public ModelAndView deleteUserPage(@PathVariable Long id) {
-		ModelAndView modelAndView = new ModelAndView("redirect:/user/list");
-		// userService.delete(userService.findUserbyId(id));
+	public ModelAndView delete(@PathVariable int id, HttpSession session) {
+		ModelAndView modelAndView = new ModelAndView("redirect:/a/merchant/list");
+		UserProfile userprofile = (UserProfile) session.getAttribute("userprofile");
+		merchantService.delete(id, userprofile);
 		message = "User successfull delete";
 		return modelAndView;
 	}
