@@ -1,0 +1,32 @@
+<%@ page language="java" pageEncoding="UTF-8"%>  
+<%@ taglib prefix="decorator" uri="http://www.opensymphony.com/sitemesh/decorator"%>  
+<table>
+<tr>
+<td>
+	<h1>LOGO</h1>
+</td>
+<td>
+	<ul>
+		<li><a href="${pageContext.request.contextPath}/a/goods/list">商品管理</a></li>
+		<li><a href="${pageContext.request.contextPath}/a/order/list">订单管理</a></li>
+		<li><a href="${pageContext.request.contextPath}/a/channel/list">渠道管理</a></li>
+		<li>系统管理</li>
+	</ul>
+</td>
+</tr>
+<tr>
+<td>
+	<ul>
+		<li><a href="${pageContext.request.contextPath}/a/merchant/list">商户查询</a></li>
+		<li><a href="${pageContext.request.contextPath}/a/merchant/add">新建商户</a></li>
+		<li><a href="${pageContext.request.contextPath}/a/user/list">用户查询</a></li>
+		<li><a href="${pageContext.request.contextPath}/a/user/add">新建用户</a></li>
+		<li><a href="${pageContext.request.contextPath}/a/channel/list">渠道查询</a></li>
+		<li><a href="${pageContext.request.contextPath}/a/channel/add">新增渠道</a></li>
+	</ul>
+</td>
+<td>
+<decorator:body/> 
+</td>
+</tr>
+</table>
