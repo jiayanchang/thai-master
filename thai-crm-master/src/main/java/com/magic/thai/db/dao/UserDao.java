@@ -53,6 +53,6 @@ public interface UserDao {
 
 	public void delete(int UserId);
 
-	public PaginationSupport getUsers(String name, int status, int currPage);
+	public PaginationSupport getUsersPage(String name, String loginName, int status, int currPage);
 
 }

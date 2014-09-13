@@ -1,6 +1,6 @@
 package com.magic.thai.db.service.impl;
 
-import java.util.List;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +14,7 @@ import com.magic.thai.db.service.UserService;
 import com.magic.thai.exception.LoginException;
 import com.magic.thai.security.UserProfile;
 import com.magic.thai.util.Md5CryptoUtils;
+import com.magic.thai.util.PaginationSupport;
 
 @Service("userService")
 @Transactional
@@ -35,21 +36,31 @@ public class UserServiceImpl extends ServiceHelperImpl<User> implements UserServ
 	}
 
 	@Override
-	public List<User> getAll() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public int create(User user, UserProfile userprofile) {
-		// TODO Auto-generated method stub
-		return 0;
+		user.setCreatedDate(new Date());
+		user.setCreatorId(userprofile.getUser().getId());
+		user.setCreatorName(userprofile.getUser().getCodeName());
+		return userDao.create(user);
 	}
 
 	@Override
 	public void update(User user, UserProfile userprofile) {
-		// TODO Auto-generated method stub
+		userDao.update(user);
+	}
 
+	@Override
+	public void delete(User user, UserProfile userprofile) {
+		userDao.delete(user.getId());
+	}
+
+	@Override
+	public void delete(int userId, UserProfile userprofile) {
+		userDao.delete(userId);
+	}
+
+	@Override
+	public PaginationSupport getUsersPage(String name, String loginName, int status, int queryPage) {
+		return userDao.getUsersPage(name, loginName, status, queryPage);
 	}
 
 }

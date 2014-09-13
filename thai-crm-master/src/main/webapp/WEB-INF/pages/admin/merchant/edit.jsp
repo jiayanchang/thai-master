@@ -1,17 +1,11 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%> 
-<html>
-<head>
-<link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet" type="text/css" />
-<title>添加商家</title>
-</head>
-
 
 <body>
 	<div class="content">
-		<h1>添加商家</h1>
-		<c:url var="addUrl" value="/a/merchant/edit"/>
+		<h1>编辑商家</h1>
+		<c:url var="addUrl" value="/a/merchant/edit/proccess"/>
 		<form:form action="${addUrl}" method="POST" commandName="merchant"  enctype="multipart/form-data">
 			<form:hidden path="id"/>
 			<table>
@@ -60,6 +54,3 @@
 			<a href="${pageContext.request.contextPath}/"><button class="button2">Back</button></a>
 		</p>
 	</div>
-</body>
-
-</html>

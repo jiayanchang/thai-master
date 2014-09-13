@@ -26,16 +26,12 @@ import org.springframework.web.servlet.ModelAndView;
 import com.magic.thai.db.domain.Merchant;
 import com.magic.thai.db.service.MerchantService;
 import com.magic.thai.security.UserProfile;
-import com.magic.thai.web.validator.UserValidator;
 
 @Controller
 @RequestMapping(value = "/a/merchant")
 public class MerchantController {
 
 	private static Logger logger = LoggerFactory.getLogger(MerchantController.class);
-
-	@Autowired
-	UserValidator userValidator;
 
 	@Autowired
 	MerchantService merchantService;
@@ -91,15 +87,21 @@ public class MerchantController {
 	 * BindingResult result
 	 */
 	@RequestMapping(value = "/edit/proccess", method = RequestMethod.POST)
-	public ModelAndView editUserprosses(@ModelAttribute("merchant") Merchant merchant, @RequestParam CommonsMultipartFile file,
+	public ModelAndView editUserprosses(@ModelAttribute("merchant") Merchant merchantbean, @RequestParam CommonsMultipartFile file,
 			SessionStatus status, HttpSession session) {
-		ModelAndView modelAndView = new ModelAndView("redirect:/user/list");
+		ModelAndView modelAndView = new ModelAndView("redirect:/admin/merchant/list");
 		UserProfile userprofile = (UserProfile) session.getAttribute("userprofile");
 
+		Merchant merchant = merchantService.fetch(merchantbean.getId());
+		merchant.setCodeName(merchantbean.getCodeName());
+		merchant.setName(merchantbean.getName());
+		merchant.setMobile(merchantbean.getMobile());
+		merchant.setTel(merchantbean.getTel());
+		merchant.getDetails().setNotes(merchantbean.getDetails().getNotes());
 		merchantService.update(merchant, userprofile);
 
 		if (file != null) {
-			File imageFile = new File(session.getServletContext().getRealPath("/") + merchant.getDetails().getLogoPath());
+			File imageFile = new File(session.getServletContext().getRealPath("/") + merchantbean.getDetails().getLogoPath());
 			try {
 				if (imageFile.exists()) {
 					imageFile.delete();

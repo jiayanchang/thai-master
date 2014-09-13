@@ -2,12 +2,14 @@ package com.magic.thai.db.dao.impl;
 
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.magic.thai.db.dao.HibernateCommonDAO;
 import com.magic.thai.db.dao.UserDao;
+import com.magic.thai.db.domain.Merchant;
 import com.magic.thai.db.domain.User;
 import com.magic.thai.util.PaginationSupport;
 
@@ -62,9 +64,18 @@ public class UserDaoImpl extends HibernateCommonDAO<User> implements UserDao {
 	}
 
 	@Override
-	public PaginationSupport getUsers(String name, int status, int currPage) {
-		return super.find("from User where name like '%" + name + "%' and status = " + status + " and status != " + User.Status.DELETED,
-				currPage, 30);
+	public PaginationSupport getUsersPage(String name, String loginName, int status, int currPage) {
+		String hql = "from User where status != " + Merchant.Status.DELETED;
+		if (StringUtils.isNotBlank(name)) {
+			hql += " and name like '%" + name + "%'";
+		}
+		if (StringUtils.isNotBlank(loginName)) {
+			hql += " and loginName like '%" + loginName + "%'";
+		}
+		if (status >= 0) {
+			hql += " and status = " + status;
+		}
+		return super.find(hql, currPage, 30);
 	}
 
 	@Override

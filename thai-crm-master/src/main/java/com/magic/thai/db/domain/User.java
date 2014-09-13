@@ -164,4 +164,13 @@ public class User {
 		this.creatorName = creatorName;
 	}
 
+	public String getStatusDesc() {
+		if (status == Status.DELETED) {
+			return "已删除";
+		} else if (status == Status.DISABLED) {
+			return "已停用";
+		} else {
+			return "已启用";
+		}
+	}
 }
