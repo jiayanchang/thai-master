@@ -1,5 +1,7 @@
 package com.magic.thai.db.service.impl;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,7 @@ import com.magic.thai.db.domain.GoodsPriceSegment;
 import com.magic.thai.db.domain.Merchant;
 import com.magic.thai.db.service.GoodsService;
 import com.magic.thai.db.service.UserService;
+import com.magic.thai.db.vo.GoodsVo;
 import com.magic.thai.exception.GoodsStatusException;
 import com.magic.thai.security.UserProfile;
 import com.magic.thai.util.PaginationSupport;
@@ -165,6 +168,11 @@ public class GoodsServiceImpl extends ServiceHelperImpl<Goods> implements GoodsS
 	@Override
 	public PaginationSupport getGoodsesPage(String title, String dept, String arr, int status, int queryPage) {
 		return goodsDao.getGoodsesPage(title, dept, arr, status, queryPage, null);
+	}
+
+	@Override
+	public List<Goods> list(GoodsVo vo) {
+		return goodsDao.list(vo);
 	}
 
 }

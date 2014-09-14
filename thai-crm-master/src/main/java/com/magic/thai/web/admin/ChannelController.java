@@ -14,13 +14,23 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.magic.thai.db.domain.Channel;
 import com.magic.thai.db.domain.Goods;
-import com.magic.thai.db.domain.GoodsPriceSegment;
+import com.magic.thai.db.service.ChannelService;
 import com.magic.thai.db.service.GoodsService;
+import com.magic.thai.db.service.MerchantService;
+import com.magic.thai.db.vo.GoodsVo;
+import com.magic.thai.db.vo.MerchantVo;
 
 @Controller
-@RequestMapping(value = "/a/goods")
-public class GoodsController {
+@RequestMapping(value = "/a/channel")
+public class ChannelController {
+
+	@Autowired
+	ChannelService channelService;
+
+	@Autowired
+	MerchantService merchantService;
 
 	@Autowired
 	GoodsService goodsService;
@@ -33,27 +43,34 @@ public class GoodsController {
 	}
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	public ModelAndView listPost(@RequestParam String title, @RequestParam String dept, @RequestParam String arr,
-			@RequestParam Integer status, @RequestParam Integer page) {
-		ModelAndView modelandView = new ModelAndView("/admin/goods/list");
-		modelandView.addObject("ps", goodsService.getGoodsesPage(title, dept, arr, status == null ? -1 : status, page == null ? 1 : page));
+	public ModelAndView list() {
+		return listPost(1);
+	}
+
+	@RequestMapping(value = "/list", method = RequestMethod.POST)
+	public ModelAndView listPost(@RequestParam Integer page) {
+		System.out.println(1);
+		ModelAndView modelandView = new ModelAndView("/admin/channel/list");
+		modelandView.addObject("ps", channelService.getChannelesPage(page == null ? 1 : page));
 		return modelandView;
 	}
 
 	@RequestMapping(value = "/add", method = RequestMethod.GET)
 	public ModelAndView add() {
-		ModelAndView modelAndView = new ModelAndView("/admin/goods/add");
-		Goods goods = new Goods();
-		goods.getSegments().add(new GoodsPriceSegment());
-		modelAndView.addObject("goods", goods);
+		ModelAndView modelAndView = new ModelAndView("/admin/channel/add");
+		Channel channel = new Channel();
+
+		modelAndView.addObject("channel", channel);
+		modelAndView.addObject("goodses", goodsService.list(new GoodsVo(new Integer[] { Goods.Status.DEPLOYED })));
+		modelAndView.addObject("merchants", merchantService.list(new MerchantVo()));
 		return modelAndView;
 	}
 
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
-	public ModelAndView addProcess(@ModelAttribute Goods goods) {
-		ModelAndView modelAndView = new ModelAndView("/admin/goods/list");
+	public ModelAndView addProcess(@ModelAttribute Channel channel) {
+		ModelAndView modelAndView = new ModelAndView("/admin/channel/list");
 
-		modelAndView.addObject("goods", goods);
+		modelAndView.addObject("channel", channel);
 		return modelAndView;
 	}
 }

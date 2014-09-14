@@ -4,12 +4,13 @@ import java.util.List;
 
 import com.magic.thai.db.domain.Merchant;
 import com.magic.thai.db.domain.User;
+import com.magic.thai.db.vo.MerchantVo;
 import com.magic.thai.security.UserProfile;
 import com.magic.thai.util.PaginationSupport;
 
 public interface MerchantService {
 
-	public List<Merchant> list();
+	public List<Merchant> list(MerchantVo vo);
 
 	public Merchant load(int id);
 

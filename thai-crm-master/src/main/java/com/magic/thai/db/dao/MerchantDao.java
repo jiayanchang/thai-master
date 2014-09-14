@@ -3,11 +3,12 @@ package com.magic.thai.db.dao;
 import java.util.List;
 
 import com.magic.thai.db.domain.Merchant;
+import com.magic.thai.db.vo.MerchantVo;
 import com.magic.thai.util.PaginationSupport;
 
 public interface MerchantDao {
 
-	public List<Merchant> list();
+	public List<Merchant> list(MerchantVo vo);
 
 	public Merchant loadById(int id);
 

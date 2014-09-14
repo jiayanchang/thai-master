@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.google.gson.annotations.Expose;
+
 @Entity
 @Table(name = "merchant")
 public class Merchant {
@@ -17,11 +19,15 @@ public class Merchant {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(unique = true, nullable = false)
+	@Expose
 	private int id;
 
 	@Column(nullable = false)
+	@Expose
 	private String name;
+
 	@Column(name = "code_name")
+	@Expose
 	private String codeName;
 	@Column
 	private String tel;

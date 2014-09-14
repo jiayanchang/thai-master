@@ -1,6 +1,15 @@
 <%@page import="com.magic.thai.security.UserProfile"%>
 <%@ page language="java" pageEncoding="UTF-8"%>  
 <%@ taglib prefix="decorator" uri="http://www.opensymphony.com/sitemesh/decorator"%>  
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery/jquery-1.10.2.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery/jquery-ui.min.js"></script>
+<html>
+<header>
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/js/jquery/jquery-ui.css">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Magic Thai</title>
+</header>
+<body>
 <table>
 <tr>
 <td>
@@ -18,8 +27,8 @@
 <tr>
 <td>
 	<ul>
-		<li>新建渠道</li>
-		<li>渠道查询</li>
+		<li><a href="${pageContext.request.contextPath}/a/channel/add">新建渠道</a></li>
+		<li><a href="${pageContext.request.contextPath}/a/channel/list">渠道查询</a></li>
 	</ul>
 </td>
 <td>
@@ -27,3 +36,5 @@
 </td>
 </tr>
 </table>
+</body>
+</html>

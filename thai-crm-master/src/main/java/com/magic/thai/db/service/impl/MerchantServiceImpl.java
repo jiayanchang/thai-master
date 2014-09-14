@@ -15,6 +15,7 @@ import com.magic.thai.db.domain.Merchant;
 import com.magic.thai.db.domain.User;
 import com.magic.thai.db.service.MerchantService;
 import com.magic.thai.db.service.UserService;
+import com.magic.thai.db.vo.MerchantVo;
 import com.magic.thai.security.UserProfile;
 import com.magic.thai.util.PaginationSupport;
 
@@ -34,8 +35,9 @@ public class MerchantServiceImpl extends ServiceHelperImpl<Merchant> implements 
 	private MerchantDetailsDao merchantDetailsDao;
 
 	@Override
-	public List<Merchant> list() {
-		return merchantDao.list();
+	@Transactional(readOnly = true)
+	public List<Merchant> list(MerchantVo vo) {
+		return merchantDao.list(vo);
 	}
 
 	@Override

@@ -12,5 +12,9 @@
 	    <mapping class="com.magic.thai.db.domain.GoodsLog" />
 	    <mapping class="com.magic.thai.db.domain.Merchant" />
 	    <mapping class="com.magic.thai.db.domain.MerchantDetails" />
+	    <mapping class="com.magic.thai.db.domain.Channel" />
+	    <mapping class="com.magic.thai.db.domain.ChannelMerchantInv" />
+	    <mapping class="com.magic.thai.db.domain.ChannelGoodsInv" />
+	    <mapping class="com.magic.thai.db.domain.ChannelLog" />
     </session-factory>
 </hibernate-configuration>

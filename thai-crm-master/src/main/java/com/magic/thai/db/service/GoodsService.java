@@ -1,7 +1,10 @@
 package com.magic.thai.db.service;
 
+import java.util.List;
+
 import com.magic.thai.db.domain.Goods;
 import com.magic.thai.db.domain.GoodsDetails;
+import com.magic.thai.db.vo.GoodsVo;
 import com.magic.thai.exception.GoodsStatusException;
 import com.magic.thai.security.UserProfile;
 import com.magic.thai.util.PaginationSupport;
@@ -11,6 +14,8 @@ public interface GoodsService {
 	public Goods load(int id);
 
 	public Goods fetch(int id);
+
+	public List<Goods> list(GoodsVo vo);
 
 	/**
 	 * 商家提交上架

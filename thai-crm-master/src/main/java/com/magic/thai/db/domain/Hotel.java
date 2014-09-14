@@ -7,6 +7,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.google.gson.annotations.Expose;
+
 @Entity
 @Table(name = "hotel")
 public class Hotel {
@@ -14,12 +16,18 @@ public class Hotel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(unique = true, nullable = false)
+	@Expose
 	private int id;
 
 	@Column
+	@Expose
 	private String name;
+
 	@Column(name = "translated_name")
+	@Expose
 	private String translatedName;
+
+	@Expose
 	@Column(name = "formerly_name")
 	private String formerlyName;
 	@Column

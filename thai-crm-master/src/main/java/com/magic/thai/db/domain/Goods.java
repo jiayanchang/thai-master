@@ -1,7 +1,6 @@
 package com.magic.thai.db.domain;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -12,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.google.gson.annotations.Expose;
+
 @Entity
 @Table(name = "goods")
 public class Goods {
@@ -19,11 +20,14 @@ public class Goods {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(unique = true, nullable = false)
+	@Expose
 	private int id;
 
 	@Column(name = "merchant_id")
 	private int merchantId;
+
 	@Column(name = "root_id")
+	@Expose
 	private int rootId;
 	@Column(name = "parent_id")
 	private int parentId;
@@ -31,10 +35,16 @@ public class Goods {
 	@Column(name = "merchant_name")
 	private String merchantName;
 
+	@Column
+	@Expose
 	private String title;
+	@Column
 	private String dept;
+	@Column
 	private String arrived;
+	@Column
 	private String summary;
+	@Column
 	private int status;
 
 	@Column(name = "hotel_id")
@@ -52,17 +62,14 @@ public class Goods {
 	private double adultTotalPrice;
 
 	@Column(name = "goods_count")
+	@Expose
 	private int goodsCount;// 库存
+	@Column(name = "overage_count")
+	@Expose
+	private int overageCount;// 库存剩余
 
 	@Column(name = "read_only")
 	private boolean readOnly;
-
-	@Column(name = "creator_id")
-	private int creatorId;
-	@Column(name = "created_date")
-	private Date createdDate;
-	@Column(name = "creator_name")
-	private String creatorName;
 
 	@Transient
 	private GoodsDetails details; // 非hibnate关联
@@ -203,30 +210,6 @@ public class Goods {
 		this.readOnly = readOnly;
 	}
 
-	public int getCreatorId() {
-		return creatorId;
-	}
-
-	public void setCreatorId(int creatorId) {
-		this.creatorId = creatorId;
-	}
-
-	public Date getCreatedDate() {
-		return createdDate;
-	}
-
-	public void setCreatedDate(Date createdDate) {
-		this.createdDate = createdDate;
-	}
-
-	public String getCreatorName() {
-		return creatorName;
-	}
-
-	public void setCreatorName(String creatorName) {
-		this.creatorName = creatorName;
-	}
-
 	public void setDetails(GoodsDetails details) {
 		this.details = details;
 	}
@@ -278,12 +261,19 @@ public class Goods {
 		this.parentId = parentId;
 	}
 
+	public int getOverageCount() {
+		return overageCount;
+	}
+
+	public void setOverageCount(int overageCount) {
+		this.overageCount = overageCount;
+	}
+
 	@Override
 	public String toString() {
 		return "Goods [merchantName=" + merchantName + ", title=" + title + ", dept=" + dept + ", arrived=" + arrived + ", status="
 				+ status + ", hotelName=" + hotelName + ", travelDays=" + travelDays + ", goodsCount=" + goodsCount + ", childTotalPrice="
-				+ childTotalPrice + ", adultTotalPrice=" + adultTotalPrice + ", createdDate=" + createdDate + ", creatorName="
-				+ creatorName + "]";
+				+ childTotalPrice + ", adultTotalPrice=" + adultTotalPrice + "]";
 	}
 
 	// @Override

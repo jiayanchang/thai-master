@@ -1,15 +1,20 @@
 package com.magic.thai.db.dao.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.magic.thai.db.dao.HibernateCommonDAO;
 import com.magic.thai.db.dao.MerchantDao;
 import com.magic.thai.db.domain.Merchant;
+import com.magic.thai.db.vo.MerchantVo;
 import com.magic.thai.util.PaginationSupport;
 
 @Repository(value = "merchantDao")
@@ -23,8 +28,19 @@ public class MerchantDaoImpl extends HibernateCommonDAO<Merchant> implements Mer
 	}
 
 	@Override
-	public List<Merchant> list() {
-		return super.find("from Merchant where type != ?", Merchant.Type.PLATFORM);
+	public List<Merchant> list(MerchantVo vo) {
+		ArrayList<Criterion> criterions = new ArrayList<Criterion>();
+		if (StringUtils.isNotBlank(vo.nameKeyword)) {
+			criterions.add(Restrictions.like("name", vo.nameKeyword, MatchMode.ANYWHERE));
+		}
+		if (!vo.containsPf4list) {
+			criterions.add(Restrictions.ne("type", Merchant.Type.PLATFORM));
+		}
+		if (vo.statuses != null && vo.statuses.length > 0) {
+			criterions.add(Restrictions.in("status", vo.statuses));
+		}
+		criterions.add(Restrictions.ne("status", Merchant.Status.DELETED));
+		return super.find(criterions, vo.limitF4list);
 	}
 
 	@Override
