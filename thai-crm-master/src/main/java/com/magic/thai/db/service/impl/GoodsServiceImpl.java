@@ -12,6 +12,7 @@ import com.magic.thai.db.dao.GoodsLogDao;
 import com.magic.thai.db.dao.GoodsPriceSegmentDao;
 import com.magic.thai.db.dao.MerchantDao;
 import com.magic.thai.db.domain.Goods;
+import com.magic.thai.db.domain.GoodsDetails;
 import com.magic.thai.db.domain.GoodsLog;
 import com.magic.thai.db.domain.GoodsPriceSegment;
 import com.magic.thai.db.domain.Merchant;
@@ -127,6 +128,11 @@ public class GoodsServiceImpl extends ServiceHelperImpl<Goods> implements GoodsS
 	}
 
 	@Override
+	public void update(GoodsDetails goodsDetails, UserProfile userprofile) {
+		goodsDetailsDao.update(goodsDetails);
+	}
+
+	@Override
 	@Transactional
 	public int create(Goods goods, UserProfile userprofile) {
 		Merchant merchant = merchantDao.loadById(userprofile.getUser().getMerchantId());
@@ -134,11 +140,7 @@ public class GoodsServiceImpl extends ServiceHelperImpl<Goods> implements GoodsS
 		goods.setMerchantName(merchant.getName());
 		int id = goodsDao.create(goods);
 		goods.getDetails().setId(id);
-		goods.getDetails().setPicPath(id + "/PicPath.jpg");
-		goods.getDetails().setLinePicPathA(id + "/a.jpg");
-		goods.getDetails().setLinePicPathB(id + "/b.jpg");
-		goods.getDetails().setLinePicPathC(id + "/c.jpg");
-		goods.getDetails().setLinePicPathD(id + "/d.jpg");
+
 		goodsDetailsDao.create(goods.getDetails());
 		int i = 0;
 		for (GoodsPriceSegment segment : goods.getSegments()) {

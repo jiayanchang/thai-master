@@ -18,8 +18,10 @@ public class Hotel {
 
 	@Column
 	private String name;
-	@Column(name = "name_en")
-	private String nameEn;
+	@Column(name = "translated_name")
+	private String translatedName;
+	@Column(name = "formerly_name")
+	private String formerlyName;
 	@Column
 	private String continent;
 	@Column
@@ -47,14 +49,6 @@ public class Hotel {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public String getNameEn() {
-		return nameEn;
-	}
-
-	public void setNameEn(String nameEn) {
-		this.nameEn = nameEn;
 	}
 
 	public String getContinent() {
@@ -105,10 +99,27 @@ public class Hotel {
 		this.chainName = chainName;
 	}
 
+	public String getTranslatedName() {
+		return translatedName;
+	}
+
+	public void setTranslatedName(String translatedName) {
+		this.translatedName = translatedName;
+	}
+
+	public String getFormerlyName() {
+		return formerlyName;
+	}
+
+	public void setFormerlyName(String formerlyName) {
+		this.formerlyName = formerlyName;
+	}
+
 	@Override
 	public String toString() {
-		return "Hotel [id=" + id + ", name=" + name + ", nameEn=" + nameEn + ", continent=" + continent + ", country=" + country
-				+ ", city=" + city + ", state=" + state + ", address=" + address + ", chainName=" + chainName + "]";
+		return "Hotel [id=" + id + ", name=" + name + ", translatedName=" + translatedName + ", formerlyName=" + formerlyName
+				+ ", continent=" + continent + ", country=" + country + ", city=" + city + ", state=" + state + ", address=" + address
+				+ ", chainName=" + chainName + "]";
 	}
 
 }

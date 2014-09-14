@@ -1,6 +1,7 @@
 package com.magic.thai.db.service;
 
 import com.magic.thai.db.domain.Goods;
+import com.magic.thai.db.domain.GoodsDetails;
 import com.magic.thai.exception.GoodsStatusException;
 import com.magic.thai.security.UserProfile;
 import com.magic.thai.util.PaginationSupport;
@@ -46,6 +47,8 @@ public interface GoodsService {
 	public void delete(int goodsId, UserProfile userprofile) throws GoodsStatusException;
 
 	public void update(Goods goodsbean, UserProfile userprofile) throws GoodsStatusException;
+
+	public void update(GoodsDetails goodsDetails, UserProfile userprofile);
 
 	public int create(Goods goods, UserProfile userprofile);
 

@@ -61,16 +61,16 @@
 				<td><font color="red">*</font>价格管理：</td>
 				<td>
 					<table id="price_tbl">
-						<tr>
-							<td><input name="startDate"/></td>
+						<tr index="0">
+							<td><input name="segments[0].startDate" tag="date"/></td>
 							<td></td>
-							<td><input name="endDate"/></td>
+							<td><input name="segments[0].endDate" tag="date"/></td>
 							<td><font color="red">*</font>价格：</td>
-							<td><input name="auditPrice"/></td>
+							<td><input name="segments[0].auditPrice"/></td>
 							<td>（成人）</td>
-							<td><input name="childPrice"/></td>
+							<td><input name="segments[0].childPrice"/></td>
 							<td>（儿童）</td>
-							<td><a href="" onclick="addPriceSegment();">【+】</a></td>
+							<td><a href="javascript:addPriceSegment();">【+】</a></td>
 						</tr>
 					</table>
 				</td>
@@ -114,3 +114,30 @@
 		<a href="${pageContext.request.contextPath}/"><button class="button2">Back</button></a>
 	</p>
 </div>
+<script>
+function addPriceSegment() {
+	var index = 1 + parseInt($("#price_tbl tr:last").attr("index"));
+	var html = '<tr index="' + index + '">'
+		+'<td><input name="segments[' + index + '].startDate" tag="date"/></td>'
+		+'<td></td>'
+		+'<td><input name="segments[' + index + '].endDate" tag="date"/></td>'
+		+'<td><font color="red">*</font>价格：</td>'
+		+'<td><input name="segments[' + index + '].auditPrice"/></td>'
+		+'<td>（成人）</td>'
+		+'<td><input name="segments[' + index + '].childPrice"/></td>'
+		+'<td>（儿童）</td>'
+		+'<td><a href="javascript:removePriceSegment(' + index + ');">【-】</a></td>'
+		+'</tr>';	
+	var newtr = $(html);
+	$("#price_tbl").append(newtr);
+	$("#price_tbl [tag=date]").datepicker({dateFormat:'yy/mm/dd'});
+}
+
+function removePriceSegment(index){
+	$("#price_tbl tr[index=" + index + "]").remove();
+}
+
+$(function() {
+	$("#price_tbl [tag=date]").datepicker({dateFormat:'yy/mm/dd'});
+});
+</script>

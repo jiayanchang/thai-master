@@ -5,6 +5,7 @@
 <hibernate-configuration>
     <session-factory>
 	    <mapping class="com.magic.thai.db.domain.User" />
+	    <mapping class="com.magic.thai.db.domain.Hotel" />
 	    <mapping class="com.magic.thai.db.domain.Goods" />
 	    <mapping class="com.magic.thai.db.domain.GoodsDetails" />
 	    <mapping class="com.magic.thai.db.domain.GoodsPriceSegment" />

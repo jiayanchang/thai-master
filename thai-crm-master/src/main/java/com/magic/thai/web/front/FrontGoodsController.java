@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,30 +77,55 @@ public class FrontGoodsController {
 		ModelAndView modelAndView = new ModelAndView("/front/goods/list");
 		UserProfile userprofile = (UserProfile) session.getAttribute("userprofile");
 
-		goodsService.create(goods, userprofile);
+		int id = goodsService.create(goods, userprofile);
+		goods.getDetails().setPicPath("/upload/goods/" + id + "/PicPath.jpg");
+		goods.getDetails().setLinePicPathA(id + "/a.jpg");
+		goods.getDetails().setLinePicPathB(id + "/b.jpg");
+		goods.getDetails().setLinePicPathC(id + "/c.jpg");
+		goods.getDetails().setLinePicPathD(id + "/d.jpg");
 
-		uploadFile(picPathFile, session.getServletContext().getRealPath("/") + goods.getDetails().getPicPath());
-		uploadFile(linePicPathAFile, session.getServletContext().getRealPath("/") + goods.getDetails().getLinePicPathA());
-		uploadFile(linePicPathBFile, session.getServletContext().getRealPath("/") + goods.getDetails().getLinePicPathB());
-		uploadFile(linePicPathCFile, session.getServletContext().getRealPath("/") + goods.getDetails().getLinePicPathC());
-		uploadFile(linePicPathDFile, session.getServletContext().getRealPath("/") + goods.getDetails().getLinePicPathD());
+		if (uploadFile(picPathFile, session.getServletContext(), goods, "picPath.jpg")) {
+			goods.getDetails().setPicPath(
+					session.getServletContext().getRealPath("/") + "/upload/goods/" + goods.getRootId() + "/picPath.jpg");
+		}
+		if (uploadFile(linePicPathAFile, session.getServletContext(), goods, "a.jpg")) {
+			goods.getDetails().setPicPath(session.getServletContext().getRealPath("/") + "/upload/goods/" + goods.getRootId() + "/a.jpg");
+		}
+		if (uploadFile(linePicPathBFile, session.getServletContext(), goods, "b.jpg")) {
+			goods.getDetails().setPicPath(session.getServletContext().getRealPath("/") + "/upload/goods/" + goods.getRootId() + "/b.jpg");
+		}
+		if (uploadFile(linePicPathCFile, session.getServletContext(), goods, "c.jpg")) {
+			goods.getDetails().setPicPath(session.getServletContext().getRealPath("/") + "/upload/goods/" + goods.getRootId() + "/c.jpg");
+		}
+		if (uploadFile(linePicPathDFile, session.getServletContext(), goods, "d.jpg")) {
+			goods.getDetails().setPicPath(session.getServletContext().getRealPath("/") + "/upload/goods/" + goods.getRootId() + "/d.jpg");
+		}
+		goodsService.update(goods.getDetails(), userprofile);
 		modelAndView.addObject("goods", goods);
 		return modelAndView;
 	}
 
-	private void uploadFile(CommonsMultipartFile file, String path) {
-		if (file != null) {
-			File imageFile = new File(path);
-			try {
-				if (imageFile.exists()) {
-					imageFile.delete();
-				}
-				file.transferTo(imageFile);
-			} catch (IllegalStateException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+	private boolean uploadFile(CommonsMultipartFile file, ServletContext context, Goods goods, String filename) {
+		if (file == null) {
+			return false;
 		}
+		String parentPath = context.getRealPath("/") + "/upload/goods/" + goods.getRootId();
+		File parentDir = new File(parentPath);
+		if (!parentDir.exists()) {
+			parentDir.mkdir();
+		}
+
+		File imageFile = new File(parentPath + "/" + filename);
+		try {
+			if (imageFile.exists()) {
+				imageFile.delete();
+			}
+			file.transferTo(imageFile);
+		} catch (IllegalStateException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return true;
 	}
 }

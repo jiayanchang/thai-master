@@ -16,16 +16,16 @@
 	<td>
 		<ul>
 			<li>商品管理</li>
-			<li>订单管理</li>
-			<li>系统管理</li>
+			<li><a href="${pageContext.request.contextPath}/f/order/list">订单管理</a></li>
+			<li><a href="${pageContext.request.contextPath}/f/user/list">系统管理</a></li>
 		</ul>
 	</td>
 	</tr>
 	<tr>
 	<td>
 		<ul>
-			<li>新建订单</li>
-			<li>订单查询</li>
+			<li><a href="${pageContext.request.contextPath}/f/goods/add">新建订单</a></li>
+			<li><a href="${pageContext.request.contextPath}/f/goods/list">订单查询</a></li>
 		</ul>
 	</td>
 	<td>

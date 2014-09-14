@@ -1,6 +1,7 @@
 <%@page import="com.magic.thai.db.domain.Goods"%>
 <%@page import="com.magic.thai.util.PaginationSupport"%>
 <%@ page language="java" pageEncoding="UTF-8"%>  
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <div class="content">
 <h1>商品列表</h1>
@@ -52,13 +53,6 @@
 	</tr>
 	</thead>
 	<tbody>
-	<%
-	PaginationSupport ps = (PaginationSupport)request.getAttribute("ps");
-	Goods goods = (Goods) ps.getItems().get(0);
-	out.print(goods.getTitle());
-	out.print(ps.getItems().size());
-	
-	%>
 	<c:forEach items="${ps.items}" var="goods" varStatus="index">
 		<tr>
 			<td>${goods.id}</td>
