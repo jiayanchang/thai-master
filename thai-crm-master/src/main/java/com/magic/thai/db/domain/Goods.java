@@ -61,12 +61,13 @@ public class Goods {
 	@Column(name = "adult_total_price")
 	private double adultTotalPrice;
 
+	@Expose
 	@Column(name = "goods_count")
-	@Expose
 	private int goodsCount;// 库存
-	@Column(name = "overage_count")
+
 	@Expose
-	private int overageCount;// 库存剩余
+	@Column(name = "sold_count")
+	private int soldCount;// 已售
 
 	@Column(name = "read_only")
 	private boolean readOnly;
@@ -261,12 +262,12 @@ public class Goods {
 		this.parentId = parentId;
 	}
 
-	public int getOverageCount() {
-		return overageCount;
+	public int getSoldCount() {
+		return soldCount;
 	}
 
-	public void setOverageCount(int overageCount) {
-		this.overageCount = overageCount;
+	public void setSoldCount(int soldCount) {
+		this.soldCount = soldCount;
 	}
 
 	@Override

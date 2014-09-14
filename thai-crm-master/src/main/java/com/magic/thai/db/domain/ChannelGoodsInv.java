@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "channel_goods_inv")
@@ -24,6 +25,9 @@ public class ChannelGoodsInv {
 
 	@Column(name = "allocated_amount")
 	private float allocatedAmount;
+
+	@Transient
+	private Goods goods;
 
 	public int getId() {
 		return id;
@@ -55,6 +59,14 @@ public class ChannelGoodsInv {
 
 	public void setAllocatedAmount(float allocatedAmount) {
 		this.allocatedAmount = allocatedAmount;
+	}
+
+	public Goods getGoods() {
+		return goods;
+	}
+
+	public void setGoods(Goods goods) {
+		this.goods = goods;
 	}
 
 	@Override

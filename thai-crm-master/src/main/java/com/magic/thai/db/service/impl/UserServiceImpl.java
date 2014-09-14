@@ -1,6 +1,7 @@
 package com.magic.thai.db.service.impl;
 
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import com.magic.thai.db.dao.UserDao;
 import com.magic.thai.db.domain.Merchant;
 import com.magic.thai.db.domain.User;
 import com.magic.thai.db.service.UserService;
+import com.magic.thai.db.vo.UserVo;
 import com.magic.thai.exception.LoginException;
 import com.magic.thai.security.UserProfile;
 import com.magic.thai.util.Md5CryptoUtils;
@@ -81,6 +83,11 @@ public class UserServiceImpl extends ServiceHelperImpl<User> implements UserServ
 	@Override
 	public PaginationSupport getUsersPage(String name, String loginName, int status, int queryPage, UserProfile userprofile) {
 		return userDao.getUsersPage(name, loginName, status, queryPage, userprofile.getUser().getMerchantId());
+	}
+
+	@Override
+	public List<User> list(UserVo vo) {
+		return userDao.list(vo);
 	}
 
 }

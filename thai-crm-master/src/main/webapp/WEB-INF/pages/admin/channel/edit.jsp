@@ -21,14 +21,14 @@
 	</style>
 
 	<div class="content">
-		<h1>添加渠2道</h1>
-		<c:url var="addUrl" value="/a/channel/add"/>
+		<h1>渠道库存管理</h1>
+		<c:url var="addUrl" value="/a/channel/edit/process"/>
 		<form:form action="${addUrl}" method="POST" commandName="channel">
+			<form:hidden path="id"/>
 			<table>
 				<tr>
 					<td>渠道名称 :</td>
-					<td><form:input path="name" /></td>
-					<td><form:errors path="name" cssClass="error" /></td>
+					<td>${channel.name}</td>
 					<td>运营人 :</td>
 					<td>
 						<form:select path="operatorId">
@@ -62,6 +62,20 @@
 				</tr>
 				</thead>
 				<tbody>
+					<c:forEach var="goodsInv" items="${channel.goodsInvs }" varStatus="status">
+						<tr idx="${goodsInv.id}">
+							<td>${goodsInv.goods.title}</td>
+							<td>${goodsInv.goods.goodsCount}</td>
+							<td>
+								<input type="hidden" tag="id" name="goodsInvs[${status.index }].id" value="${goodsInv.id}"/>
+								<input type="hidden" tag="gid" name="goodsInvs[${status.index }].goodsId" value="${goodsInv.goodsId}"/>
+								<input tag="allocatedAmount" name="goodsInvs[${status.index }].allocatedAmount" value="${goodsInv.allocatedAmount}"/>
+							</td>
+							<td>${goodsInv.goods.soldCount}</td>
+							<td>${goodsInv.goods.goodsCount - goodsInv.goods.soldCount}</td>
+							<td><a href="javascript:removeGoods(${goodsInv.id});">删除</a></td>
+						</tr>
+					</c:forEach>
 				</tbody>
 			</table>
 			按商家匹配：
@@ -86,6 +100,20 @@
 					</tr>
 				</thead>
 				<tbody>
+					<c:forEach var="merchantInv" items="${channel.merchantInvs }" varStatus="status">
+						<tr idx="${merchantInv.id }">
+							<td>${merchantInv.merchant.name }</td>
+							<td></td>
+							<td>
+							<input type="hidden" tag="id" name="merchantInvs[${status.index }].id" value="${merchantInv.id }"/>
+							<input type="hidden" tag="mid" name="merchantInvs[${status.index }].merchantId" value="${merchantInv.merchantId }"/>
+							<input type="type" tag="allocatedAmount" name="merchantInvs[${status.index }].allocatedAmount" value="${merchantInv.allocatedAmount }"/></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td><a href="javascript:removeMerchant(${merchantInv.id });">删除</a></td>
+						</tr>
+					</c:forEach>
 				</tbody>
 			</table>
 			
@@ -102,55 +130,74 @@
 <script type="text/javascript">
 
 function addGoods(){
-	var id = $("#goods").val();
-	if(id == 0){
+	var goodsId = $("#goods").val();
+	if(goodsId == 0){
 		alert("请选择商品");
 		return false;
 	}
-	$.getJSON("${pageContext.request.contextPath}/json/goods/" + id, function(result){
+	$.getJSON("${pageContext.request.contextPath}/json/goods/" + goodsId, function(result){
 		var last_tr = $("#goodsInvsTbl tbody tr:last");
-		var index = last_tr.length > 0 ? last_tr.attr("index") : 0;
-		var html = '<tr index="' + index + '">'
+		var index = $("#goodsInvsTbl tbody tr").length;
+		var html = '<tr idx="' + goodsId + '">'
 			+ '<td>' + result.title + '</td>'
 			+ '<td>' + result.goodsCount + '</td>'
-			+ '<td><input type="hidden" name="goodsInvs[' + index + '].goodsId" value="' + result.id + '"/>'
-			+ '<input name="goodsInvs[' + index + '].allocatedAmount"/></td>'
+			+ '<td><input type="hidden" tag="gid" name="goodsInvs[' + index + '].goodsId" value="' + goodsId + '"/>'
+			+ '<input tag="allocatedAmount" name="goodsInvs[' + index + '].allocatedAmount"/></td>'
 			+ '<td>' + result.soldCount + '</td>'
 			+ '<td>' + (result.goodsCount - result.soldCount) + '</td>'
-			+ '<td><a href="javascript:removeGoods(' + index + ');">删除</a></td>'
+			+ '<td><a href="javascript:removeGoods(' + goodsId + ');">删除</a></td>'
 			+ '</tr>';	
 			
 		$("#goodsInvsTbl tbody").append($(html));
 	});
 }
 function addMerchant(){
-	var id = $("#merchant").val();
-	if(id == 0){
+	var merchantId = $("#merchant").val();
+	if(merchantId == 0){
 		alert("请选择商品");
 		return false;
 	}
-	$.getJSON("${pageContext.request.contextPath}/json/merchant/" + id, function(result){
+	$.getJSON("${pageContext.request.contextPath}/json/merchant/" + merchantId, function(result){
 		var last_tr = $("#merchantInvsTbl tbody tr:last");
-		var index = last_tr.length > 0 ? last_tr.attr("index") : 0;
-		var html = '<tr index="' + index + '">'
+		var index = $("#merchantInvsTbl tbody tr").length;
+		var html = '<tr idx="' + merchantId + '">'
 				+ '<td>' + result.name + '</td>'
 				+ '<td></td>'
-				+ '<td><input type="hidden" name="merchantInvs[' + index + '].merchantId" value="' + result.id + '"/>'
-				+ '<input name="merchantInvs[' + index + '].allocatedAmount"/></td>'
+				+ '<td><input type="hidden" tag="mid" name="merchantInvs[' + index + '].merchantId" value="' + merchantId + '"/>'
+				+ '<input tag="allocatedAmount" name="merchantInvs[' + index + '].allocatedAmount"/></td>'
 				+ '<td></td>'
 				+ '<td></td>'
 				+ '<td></td>'
-				+ '<td><a href="javascript:removeGoods(' + index + ');">删除</a></td>'
+				+ '<td><a href="javascript:removeMerchant(' + merchantId + ');">删除</a></td>'
 				+ '</tr>';	
 			
 		$("#merchantInvsTbl tbody").append($(html));
 	});
 }
 
-function removeGoods(index) {
-	$("#goodsInvsTbl tbody tr[index=" + index + "]").remove();
+function removeGoods(goodsId) {
+	var tbl = "goodsInvsTbl";
+	$("#" + tbl + " tbody tr[idx=" + goodsId + "]").remove();
+	var i = 0;
+	$("#" + tbl + " tbody tr").each(function(){
+		$(this).find("input[tag=id]").attr("name", "goodsInvs[" + i + "].id");
+		$(this).find("input[tag=gid]").attr("name", "goodsInvs[" + i + "].goodsId");
+		$(this).find("input[tag=allocatedAmount]").attr("name", "goodsInvs[" + i + "].allocatedAmount");
+		++i;
+	});
 }
 
+function removeMerchant(merchantId) {
+	var tbl = "merchantInvsTbl";
+	$("#" + tbl + " tbody tr[idx=" + merchantId + "]").remove();
+	var i = 0;
+	$("#" + tbl + " tbody tr").each(function(){
+		$(this).find("input[tag=id]").attr("name", "merchantInvs[" + i + "].id");
+		$(this).find("input[tag=mid]").attr("name", "merchantInvs[" + i + "].merchantId");
+		$(this).find("input[tag=allocatedAmount]").attr("name", "merchantInvs[" + i + "].allocatedAmount");
+		++i;
+	});
+}
 
 (function( $ ) {
 	$.widget( "custom.combobox", {

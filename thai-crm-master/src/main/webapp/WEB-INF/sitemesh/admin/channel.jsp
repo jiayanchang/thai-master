@@ -13,15 +13,15 @@
 <table>
 <tr>
 <td>
+	<h1>LOGO</h1>
+</td>
+<td>
 	<ul>
 		<li><a href="${pageContext.request.contextPath}/a/goods/list">商品管理</a></li>
 		<li><a href="${pageContext.request.contextPath}/a/order/list">订单管理</a></li>
 		<li>渠道管理</li>
 		<li><a href="${pageContext.request.contextPath}/a/merchant/list">系统管理</a></li>
 	</ul>
-</td>
-<td>
-
 </td>
 </tr>
 <tr>

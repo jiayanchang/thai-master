@@ -14,4 +14,6 @@ public interface ChannelMerchantInvDao {
 
 	public List<ChannelMerchantInv> getInvs(int id);
 
+	public void delete(ChannelMerchantInv entity);
+
 }

@@ -1,7 +1,10 @@
 package com.magic.thai.db.service;
 
+import java.util.List;
+
 import com.magic.thai.db.domain.Merchant;
 import com.magic.thai.db.domain.User;
+import com.magic.thai.db.vo.UserVo;
 import com.magic.thai.exception.LoginException;
 import com.magic.thai.security.UserProfile;
 import com.magic.thai.util.PaginationSupport;
@@ -32,4 +35,6 @@ public interface UserService {
 	 * @return
 	 */
 	public PaginationSupport getUsersPage(String name, String loginName, int status, int queryPage, UserProfile userprofile);
+
+	public List<User> list(UserVo vo);
 }

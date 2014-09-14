@@ -13,4 +13,6 @@ public interface ChannelGoodsInvDao {
 	public void update(ChannelGoodsInv entity);
 
 	public List<ChannelGoodsInv> getInvs(int id);
+
+	public void delete(ChannelGoodsInv entity);
 }

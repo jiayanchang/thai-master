@@ -3,11 +3,12 @@ package com.magic.thai.db.dao;
 import java.util.List;
 
 import com.magic.thai.db.domain.User;
+import com.magic.thai.db.vo.UserVo;
 import com.magic.thai.util.PaginationSupport;
 
 public interface UserDao {
 
-	public List<User> list();
+	public List<User> list(UserVo vo);
 
 	public User loadById(int id);
 

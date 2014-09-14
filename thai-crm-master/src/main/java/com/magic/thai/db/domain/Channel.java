@@ -1,5 +1,6 @@
 package com.magic.thai.db.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -49,7 +50,7 @@ public class Channel {
 	private List<ChannelMerchantInv> merchantInvs;
 
 	/**
-	 * 0为启用，1为禁用，2为删除
+	 * 0为开启，1为关闭，2为删除
 	 * 
 	 * @author yanchang
 	 */
@@ -132,6 +133,9 @@ public class Channel {
 	}
 
 	public List<ChannelGoodsInv> getGoodsInvs() {
+		if (goodsInvs == null) {
+			goodsInvs = new ArrayList<ChannelGoodsInv>();
+		}
 		return goodsInvs;
 	}
 
@@ -140,6 +144,9 @@ public class Channel {
 	}
 
 	public List<ChannelMerchantInv> getMerchantInvs() {
+		if (merchantInvs == null) {
+			merchantInvs = new ArrayList<ChannelMerchantInv>();
+		}
 		return merchantInvs;
 	}
 
@@ -147,11 +154,21 @@ public class Channel {
 		this.merchantInvs = merchantInvs;
 	}
 
+	public String getStatusDesc() {
+		if (status == Status.DELETED) {
+			return "已删除";
+		} else if (status == Status.DISABLED) {
+			return "已关闭";
+		} else {
+			return "已启用";
+		}
+	}
+
 	@Override
 	public String toString() {
 		return "Channel [id=" + id + ", name=" + name + ", token=" + token + ", status=" + status + ", operatorId=" + operatorId
 				+ ", operatorName=" + operatorName + ", orderCount=" + orderCount + ", amount=" + amount + ", goodsCount=" + goodsCount
-				+ "]";
+				+ ", goodsInvs=" + goodsInvs + ", merchantInvs=" + merchantInvs + "]";
 	}
 
 }

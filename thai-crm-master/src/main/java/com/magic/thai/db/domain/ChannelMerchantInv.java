@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "channel_merchant_inv")
@@ -16,14 +17,17 @@ public class ChannelMerchantInv {
 	@Column(unique = true, nullable = false)
 	private int id;
 
-	@Column(name = "goods_id")
-	private int goodsId;
+	@Column(name = "channel_id")
+	private int channelId;
 
 	@Column(name = "merchant_id")
 	private int merchantId;
 
 	@Column(name = "allocated_amount")
 	private float allocatedAmount;
+
+	@Transient
+	private Merchant merchant;
 
 	public int getId() {
 		return id;
@@ -33,12 +37,12 @@ public class ChannelMerchantInv {
 		this.id = id;
 	}
 
-	public int getGoodsId() {
-		return goodsId;
+	public int getChannelId() {
+		return channelId;
 	}
 
-	public void setGoodsId(int goodsId) {
-		this.goodsId = goodsId;
+	public void setChannelId(int channelId) {
+		this.channelId = channelId;
 	}
 
 	public int getMerchantId() {
@@ -57,9 +61,17 @@ public class ChannelMerchantInv {
 		this.allocatedAmount = allocatedAmount;
 	}
 
+	public Merchant getMerchant() {
+		return merchant;
+	}
+
+	public void setMerchant(Merchant merchant) {
+		this.merchant = merchant;
+	}
+
 	@Override
 	public String toString() {
-		return "ChannelMerchantInv [id=" + id + ", goodsId=" + goodsId + ", merchantId=" + merchantId + ", allocatedAmount="
+		return "ChannelMerchantInv [id=" + id + ", channelId=" + channelId + ", merchantId=" + merchantId + ", allocatedAmount="
 				+ allocatedAmount + "]";
 	}
 

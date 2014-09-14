@@ -11,6 +11,7 @@ import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -52,7 +53,7 @@ public class JsonController {
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
 	}
 
-	@RequestMapping(value = "/getmerchants", method = RequestMethod.POST)
+	@RequestMapping(value = "/merchants", method = RequestMethod.POST)
 	@ResponseBody
 	public String getmerchants(@RequestParam String title, @RequestParam Integer limitF4list) {
 		System.out.println("getmerchants");
@@ -65,7 +66,7 @@ public class JsonController {
 		return gson.toJson(merchants);
 	}
 
-	@RequestMapping(value = "/getgoodses", method = RequestMethod.POST)
+	@RequestMapping(value = "/goodses", method = RequestMethod.POST)
 	@ResponseBody
 	public String getgoodses(@RequestParam String title, @RequestParam Integer limitF4list) {
 		// UserProfile userprofile = (UserProfile)
@@ -80,7 +81,7 @@ public class JsonController {
 
 	}
 
-	@RequestMapping(value = "/gethotels", method = RequestMethod.POST)
+	@RequestMapping(value = "/hotels", method = RequestMethod.POST)
 	@ResponseBody
 	public String gethotels(@RequestParam String name, @RequestParam Integer limitF4list) {
 		HotelVo vo = new HotelVo();
@@ -92,7 +93,20 @@ public class JsonController {
 		// Gson gson = new
 		// GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 		return gson.toJson(hotels);
+	}
 
+	@RequestMapping(value = "/merchant/{id}", method = RequestMethod.GET)
+	@ResponseBody
+	public String getmerchant(@PathVariable int id) {
+		Gson gson = new Gson();
+		return gson.toJson(merchantService.load(id));
+	}
+
+	@RequestMapping(value = "/goods/{id}", method = RequestMethod.GET)
+	@ResponseBody
+	public String getgoods(@PathVariable int id) {
+		Gson gson = new Gson();
+		return gson.toJson(goodsService.load(id));
 	}
 
 }
