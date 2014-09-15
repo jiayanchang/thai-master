@@ -95,9 +95,6 @@
 				</tr>
 			</table>
 		</form:form>
-		<p>
-			<a href="${pageContext.request.contextPath}/"><button class="button2">Back</button></a>
-		</p>
 	</div>
 <script type="text/javascript">
 
@@ -118,12 +115,12 @@ function addGoods(){
 			var last_tr = $("#goodsInvsTbl tbody tr:last");
 			var index = last_tr.length > 0 ? last_tr.attr("index") : 0;
 			var html = '<tr index="' + index + '">'
-				+ '<td>' + result.title + '</td>'
-				+ '<td>' + result.goodsCount + '</td>'
-				+ '<td><input type="hidden" name="goodsInvs[' + index + '].goodsId" value="' + result.id + '"/>'
+				+ '<td>' + result.goods.title + '</td>'
+				+ '<td>' + result.goods.goodsCount + '</td>'
+				+ '<td><input type="hidden" name="goodsInvs[' + index + '].goodsId" value="' + result.goods.id + '"/>'
 				+ '<input name="goodsInvs[' + index + '].allocatedAmount"/></td>'
-				+ '<td>' + result.soldCount + '</td>'
-				+ '<td>' + (result.goodsCount - result.soldCount) + '</td>'
+				+ '<td>' + result.goods.soldCount + '</td>'
+				+ '<td>' + (result.goods.goodsCount - result.goods.soldCount) + '</td>'
 				+ '<td><a href="javascript:removeGoods(' + index + ');">删除</a></td>'
 				+ '</tr>';	
 				
@@ -147,9 +144,9 @@ function addMerchant(){
 			var last_tr = $("#merchantInvsTbl tbody tr:last");
 			var index = last_tr.length > 0 ? last_tr.attr("index") : 0;
 			var html = '<tr index="' + index + '">'
-					+ '<td>' + result.name + '</td>'
+					+ '<td>' + result.merchant.name + '</td>'
 					+ '<td></td>'
-					+ '<td><input type="hidden" name="merchantInvs[' + index + '].merchantId" value="' + result.id + '"/>'
+					+ '<td><input type="hidden" name="merchantInvs[' + index + '].merchantId" value="' + result.merchant.id + '"/>'
 					+ '<input name="merchantInvs[' + index + '].allocatedAmount"/></td>'
 					+ '<td></td>'
 					+ '<td></td>'

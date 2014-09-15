@@ -24,8 +24,8 @@
 	<tr>
 	<td>
 		<ul>
-			<li><a href="${pageContext.request.contextPath}/f/goods/add">新建订单</a></li>
-			<li><a href="${pageContext.request.contextPath}/f/goods/list">订单查询</a></li>
+			<li><a href="${pageContext.request.contextPath}/f/goods/add">新建商品</a></li>
+			<li><a href="${pageContext.request.contextPath}/f/goods/list">商品查询</a></li>
 		</ul>
 	</td>
 	<td>

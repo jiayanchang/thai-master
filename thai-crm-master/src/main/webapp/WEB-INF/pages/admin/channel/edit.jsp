@@ -123,9 +123,6 @@
 				</tr>
 			</table>
 		</form:form>
-		<p>
-			<a href="${pageContext.request.contextPath}/"><button class="button2">Back</button></a>
-		</p>
 	</div>
 <script type="text/javascript">
 

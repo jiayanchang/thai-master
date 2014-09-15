@@ -58,24 +58,26 @@ public class GoodsDaoImpl extends HibernateCommonDAO<Goods> implements GoodsDao 
 	}
 
 	@Override
-	public PaginationSupport getGoodsesPage(String title, String dept, String arrived, int status, int currPage, Integer merchantId) {
-		String hql = "from Goods where status != " + Merchant.Status.DELETED + " and readOnly = false";
+	public PaginationSupport getGoodsesPage(String title, String dept, String arrived, Integer[] statuses, int currPage, Integer merchantId) {
+		ArrayList<Criterion> criterions = new ArrayList<Criterion>();
 		if (StringUtils.isNotBlank(title)) {
-			hql += " and title like '%" + title + "%'";
+			criterions.add(Restrictions.like("title", title, MatchMode.ANYWHERE));
 		}
 		if (StringUtils.isNotBlank(dept)) {
-			hql += " and dept like '%" + dept + "%'";
+			criterions.add(Restrictions.eq("dept", dept));
 		}
 		if (StringUtils.isNotBlank(arrived)) {
-			hql += " and arrived like '%" + arrived + "%'";
+			criterions.add(Restrictions.eq("arrived", dept));
 		}
-		if (status >= 0) {
-			hql += " and status = " + status;
+		if (statuses != null && statuses.length > 0) {
+			criterions.add(Restrictions.in("status", statuses));
 		}
 		if (merchantId != null) {
-			hql += " and merchantId = " + merchantId;
+			criterions.add(Restrictions.eq("merchantId", merchantId));
 		}
-		return super.find(hql, currPage, 30);
+		criterions.add(Restrictions.eq("readOnly", false));
+		criterions.add(Restrictions.ne("status", Merchant.Status.DELETED));
+		return super.find(criterions, currPage, 30);
 	}
 
 }

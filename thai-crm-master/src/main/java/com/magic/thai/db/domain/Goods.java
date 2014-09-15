@@ -270,6 +270,14 @@ public class Goods {
 		this.soldCount = soldCount;
 	}
 
+	public boolean isAuditing() {
+		return this.status == Status.AUDITING;
+	}
+
+	public boolean isDeployed() {
+		return this.status == Status.DEPLOYED;
+	}
+
 	@Override
 	public String toString() {
 		return "Goods [merchantName=" + merchantName + ", title=" + title + ", dept=" + dept + ", arrived=" + arrived + ", status="

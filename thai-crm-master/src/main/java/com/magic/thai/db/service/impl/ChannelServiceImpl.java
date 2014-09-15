@@ -134,6 +134,24 @@ public class ChannelServiceImpl extends ServiceHelperImpl<Channel> implements Ch
 	}
 
 	@Override
+	@Transactional
+	public void open(int channelId, UserProfile userprofile) {
+		Channel channel = channelDao.loadById(channelId);
+		channel.setStatus(Channel.Status.ENABLED);
+		channelDao.update(channel);
+		channelLogDao.create(new ChannelLog(channel, userprofile.getUser(), channel.getName() + "渠道启用"));
+	}
+
+	@Override
+	@Transactional
+	public void close(int channelId, UserProfile userprofile) {
+		Channel channel = channelDao.loadById(channelId);
+		channel.setStatus(Channel.Status.DISABLED);
+		channelDao.update(channel);
+		channelLogDao.create(new ChannelLog(channel, userprofile.getUser(), channel.getName() + "渠道停用"));
+	}
+
+	@Override
 	public PaginationSupport getChannelesPage(int queryPage) {
 		return channelDao.getChannelesPage(queryPage);
 	}

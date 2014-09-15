@@ -46,8 +46,12 @@
 	<td>${channel.statusDesc}</td>
 	<td>
 	<a href="${pageContext.request.contextPath}/a/channel/edit/${channel.id} ">库存管理</a><br/>
-	<a href="${pageContext.request.contextPath}/a/channel/close/${channel.id} ">关闭</a><br/>
-	<a href="${pageContext.request.contextPath}/a/channel/open/${channel.id} ">开启</a><br/>
+	<c:if test="${channel.enabled}">
+		<a href="${pageContext.request.contextPath}/a/channel/close/${channel.id} ">关闭</a><br/>
+	</c:if>
+	<c:if test="${channel.disabled}">
+		<a href="${pageContext.request.contextPath}/a/channel/open/${channel.id} ">开启</a><br/>
+	</c:if>
 	<a href="${pageContext.request.contextPath}/a/channel/delete/${channel.id} ">删除</a><br/>
 	</td>
 </tr>

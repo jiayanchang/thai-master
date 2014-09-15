@@ -16,13 +16,13 @@
 				</tr>
 				<tr>
 					<td>代码 :</td>
-					<td><form:input path="codeName" /></td>
-					<td><form:errors path="codeName" cssClass="error" /></td>
+					<td>${user.codeName }</td>
+					<td></td>
 				</tr>
 				<tr>
 					<td>登录名 :</td>
-					<td><form:input path="loginName" /></td>
-					<td><form:errors path="loginName" cssClass="error" /></td>
+					<td>${user.loginName }</td>
+					<td></td>
 				</tr>
 				<tr>
 					<td>密码 :</td>

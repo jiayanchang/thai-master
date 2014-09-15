@@ -20,6 +20,6 @@ public interface GoodsDao {
 
 	public List<Goods> list(GoodsVo vo);
 
-	public PaginationSupport getGoodsesPage(String title, String dept, String arr, int status, int currPage, Integer merchantId);
+	public PaginationSupport getGoodsesPage(String title, String dept, String arr, Integer[] statuses, int currPage, Integer merchantId);
 
 }

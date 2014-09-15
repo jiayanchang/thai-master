@@ -98,4 +98,20 @@ public class ChannelController {
 		channelService.update(channelbean, userprofile);
 		return modelAndView;
 	}
+
+	@RequestMapping(value = "/open/{id}")
+	public ModelAndView open(@PathVariable int id, HttpSession session) {
+		ModelAndView modelAndView = new ModelAndView("redirect:/a/channel/list");
+		UserProfile userprofile = (UserProfile) session.getAttribute("userprofile");
+		channelService.open(id, userprofile);
+		return modelAndView;
+	}
+
+	@RequestMapping(value = "/close/{id}")
+	public ModelAndView close(@PathVariable int id, HttpSession session) {
+		ModelAndView modelAndView = new ModelAndView("redirect:/a/channel/list");
+		UserProfile userprofile = (UserProfile) session.getAttribute("userprofile");
+		channelService.close(id, userprofile);
+		return modelAndView;
+	}
 }

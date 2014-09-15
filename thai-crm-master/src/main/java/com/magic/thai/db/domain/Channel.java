@@ -164,6 +164,14 @@ public class Channel {
 		}
 	}
 
+	public boolean isEnabled() {
+		return status == Status.ENABLED;
+	}
+
+	public boolean isDisabled() {
+		return status == Status.DISABLED;
+	}
+
 	@Override
 	public String toString() {
 		return "Channel [id=" + id + ", name=" + name + ", token=" + token + ", status=" + status + ", operatorId=" + operatorId

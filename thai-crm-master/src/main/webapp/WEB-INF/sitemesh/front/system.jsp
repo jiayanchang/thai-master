@@ -22,8 +22,8 @@
 <tr>
 <td>
 	<ul>
-		<li>新建员工</li>
-		<li>员工查询</li>
+		<li><a href="${pageContext.request.contextPath}/f/user/add">新建员工</a></li>
+		<li><a href="${pageContext.request.contextPath}/f/user/list">员工查询</a></li>
 	</ul>
 </td>
 <td>

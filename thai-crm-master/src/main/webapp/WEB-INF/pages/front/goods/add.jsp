@@ -38,14 +38,11 @@
 				<td><form:textarea path="summary" /></td>
 				<td><form:errors path="summary" cssClass="error" /></td>
 			</tr>
-			
-			
 			<tr>
 				<td><font color="red">*</font>宣传图片：</td>
 				<td><input type="file" name="picPathFile" /></td>
 				<td></td>
 			</tr>
-			
 			<tr>
 				<td><font color="red">*</font>线路图片：</td>
 				<td>
@@ -56,7 +53,6 @@
 				</td>
 				<td></td>
 			</tr>
-			
 			<tr>
 				<td><font color="red">*</font>价格管理：</td>
 				<td>
@@ -76,15 +72,6 @@
 				</td>
 				<td></td>
 			</tr>
-			
-			<tr>
-				<td><font color="red">*</font>价格管理：</td>
-				<td><form:textarea path="summary" /></td>
-				<td><form:errors path="summary" cssClass="error" /></td>
-			</tr>
-			
-			
-			
 			<tr>
 				<td><font color="red">*</font>行程安排：</td>
 				<td><form:textarea path="details.travelPlan" /></td>

@@ -43,4 +43,8 @@ public class Md5CryptoUtils {
 		return buf.toString().substring(8, 24);
 	}
 
+	public static void main(String[] args) {
+		System.out.println(create("1111"));
+	}
+
 }

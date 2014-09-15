@@ -72,10 +72,10 @@ public class GoodsServiceImpl extends ServiceHelperImpl<Goods> implements GoodsS
 	@Override
 	@Transactional
 	public void pass(int goodsId, UserProfile userprofile) throws NoPermissionsException, GoodsStatusException {
-		if(!userprofile.isPlatformUser()) {
+		if (!userprofile.isPlatformUser()) {
 			throw new NoPermissionsException("当前用户无权审核");
 		}
-		
+
 		Goods goods = goodsDao.loadById(goodsId);
 		if (goods.getStatus() != Goods.Status.AUDITING) {
 			throw new GoodsStatusException(goods.getStatusDesc() + "状态的订单不能审核通过");
@@ -100,9 +100,9 @@ public class GoodsServiceImpl extends ServiceHelperImpl<Goods> implements GoodsS
 
 	@Override
 	@Transactional
-	public void cancel(Goods goods, String reason, UserProfile userprofile) throws GoodsStatusException {
+	public void cancel(int goodsId, String reason, UserProfile userprofile) throws GoodsStatusException {
 		// TODO Auto-generated method stub
-		// Goods goods = goodsDao.loadById(goodsId);
+		Goods goods = goodsDao.loadById(goodsId);
 		if (goods.getStatus() != Goods.Status.DEPLOYED) {
 			throw new GoodsStatusException(goods.getStatusDesc() + "状态的订单不能下架");
 		}
@@ -166,13 +166,13 @@ public class GoodsServiceImpl extends ServiceHelperImpl<Goods> implements GoodsS
 	}
 
 	@Override
-	public PaginationSupport getGoodsesPage(String title, String dept, String arr, int status, int queryPage, int merchantId) {
-		return goodsDao.getGoodsesPage(title, dept, arr, status, queryPage, merchantId);
+	public PaginationSupport getGoodsesPage(String title, String dept, String arr, Integer[] statuses, int queryPage, int merchantId) {
+		return goodsDao.getGoodsesPage(title, dept, arr, statuses, queryPage, merchantId);
 	}
 
 	@Override
-	public PaginationSupport getGoodsesPage(String title, String dept, String arr, int status, int queryPage) {
-		return goodsDao.getGoodsesPage(title, dept, arr, status, queryPage, null);
+	public PaginationSupport getGoodsesPage(String title, String dept, String arr, Integer[] statuses, int queryPage) {
+		return goodsDao.getGoodsesPage(title, dept, arr, statuses, queryPage, null);
 	}
 
 	@Override

@@ -16,6 +16,10 @@ public interface ChannelService {
 
 	public int create(Channel channel, UserProfile userprofile);
 
+	public void open(int channelId, UserProfile userprofile);
+
+	public void close(int channelId, UserProfile userprofile);
+
 	public PaginationSupport getChannelesPage(int queryPage);
 
 }

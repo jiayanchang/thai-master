@@ -48,7 +48,7 @@ public interface GoodsService {
 	 * @param goods
 	 * @param userprofile
 	 */
-	public void cancel(Goods goods, String reason, UserProfile userprofile) throws GoodsStatusException;
+	public void cancel(int goodsId, String reason, UserProfile userprofile) throws GoodsStatusException;
 
 	public void delete(int goodsId, UserProfile userprofile) throws GoodsStatusException;
 
@@ -58,8 +58,8 @@ public interface GoodsService {
 
 	public int create(Goods goods, UserProfile userprofile);
 
-	public PaginationSupport getGoodsesPage(String title, String dept, String arr, int status, int queryPage, int merchantId);
+	public PaginationSupport getGoodsesPage(String title, String dept, String arr, Integer[] statuses, int queryPage, int merchantId);
 
-	public PaginationSupport getGoodsesPage(String title, String dept, String arr, int status, int queryPage);
+	public PaginationSupport getGoodsesPage(String title, String dept, String arr, Integer[] statuses, int queryPage);
 
 }

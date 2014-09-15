@@ -23,8 +23,8 @@
 <tr>
 <td>
 	<ul>
-		<li>新建渠道</li>
-		<li>渠道查询</li>
+		<li><a href="${pageContext.request.contextPath}/a/order/list">订单查询</a></li>
+		<li><a href="${pageContext.request.contextPath}/a/order/waittings">待确定订单</a></li>
 	</ul>
 </td>
 <td>
