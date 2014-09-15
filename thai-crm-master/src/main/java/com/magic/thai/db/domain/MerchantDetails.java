@@ -20,7 +20,7 @@ public class MerchantDetails {
 	@Column(name = "logo_path")
 	private String logoPath;
 
-	@Column(name = "notes")
+	@Column(name = "notes", columnDefinition = "text")
 	private String notes;
 
 	public int getId() {

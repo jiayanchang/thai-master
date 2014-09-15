@@ -16,16 +16,16 @@ public class GoodsDetails {
 	@Column(nullable = false)
 	private int id;
 
-	@Column(name = "travel_plan")
+	@Column(name = "travel_plan", columnDefinition = "TEXT")
 	private String travelPlan;
 
-	@Column(name = "cost_desc")
+	@Column(name = "cost_desc", columnDefinition = "TEXT")
 	private String costDesc;
-	@Column(name = "book_notes")
+	@Column(name = "book_notes", columnDefinition = "TEXT")
 	private String bookNotes;
 	@Column(name = "pic_path")
 	private String picPath;
-	@Column
+	@Column(columnDefinition = "TEXT")
 	private String notes;
 	@Column(name = "line_pic_path_a")
 	private String linePicPathA;

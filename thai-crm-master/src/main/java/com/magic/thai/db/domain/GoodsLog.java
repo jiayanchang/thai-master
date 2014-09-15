@@ -34,6 +34,7 @@ public class GoodsLog {
 	private int goodsRootId;
 	@Column(name = "goods_id")
 	private int goodsId;
+	@Column(columnDefinition = "TEXT")
 	private String content;
 
 	@Column(name = "creator_id")

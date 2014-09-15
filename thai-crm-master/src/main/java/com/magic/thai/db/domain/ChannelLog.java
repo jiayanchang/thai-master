@@ -31,7 +31,7 @@ public class ChannelLog {
 	private int id;
 	@Column(name = "channel_id")
 	private int channelId;
-	@Column
+	@Column(columnDefinition = "TEXT")
 	private String content;
 
 	@Column(name = "creator_id")
