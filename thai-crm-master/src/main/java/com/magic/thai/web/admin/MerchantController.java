@@ -32,7 +32,8 @@ import com.magic.thai.security.UserProfile;
 @RequestMapping(value = "/a/merchant")
 public class MerchantController {
 
-	private static Logger logger = LoggerFactory.getLogger(MerchantController.class);
+	private static Logger logger = LoggerFactory
+			.getLogger(MerchantController.class);
 
 	@Autowired
 	MerchantService merchantService;
@@ -43,12 +44,28 @@ public class MerchantController {
 	public void initBinder(WebDataBinder binder) {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		dateFormat.setLenient(false);
-		binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
+		binder.registerCustomEditor(Date.class, new CustomDateEditor(
+				dateFormat, true));
+	}
+
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	public ModelAndView view(@PathVariable int id) {
+		ModelAndView modelAndView = new ModelAndView("/admin/merchant/view");
+		Merchant merchant = merchantService.fetch(id);
+		modelAndView.addObject("merchant", merchant);
+		return modelAndView;
+	}
+
+	@RequestMapping(value = "/{id}", method = RequestMethod.POST)
+	public ModelAndView viewOnly(@PathVariable int id) {
+		ModelAndView modelAndView = new ModelAndView("/admin/merchant/view");
+		Merchant merchant = merchantService.load(id);
+		modelAndView.addObject("merchant", merchant);
+		return modelAndView;
 	}
 
 	@RequestMapping(value = "/add", method = RequestMethod.GET)
 	public ModelAndView add() {
-		System.out.println("add");
 		ModelAndView modelAndView = new ModelAndView("/admin/merchant/add");
 		Merchant merchant = new Merchant();
 		modelAndView.addObject("merchant", merchant);
@@ -56,9 +73,14 @@ public class MerchantController {
 	}
 
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
-	public ModelAndView addProsses(@ModelAttribute("merchant") Merchant merchant, @RequestParam String adminLoginName,
-			@RequestParam String adminPassword, @RequestParam CommonsMultipartFile file, SessionStatus status, HttpSession session) {
-		UserProfile userprofile = (UserProfile) session.getAttribute("userprofile");
+	public ModelAndView addProsses(
+			@ModelAttribute("merchant") Merchant merchant,
+			@RequestParam String adminLoginName,
+			@RequestParam String adminPassword,
+			@RequestParam CommonsMultipartFile file, SessionStatus status,
+			HttpSession session) {
+		UserProfile userprofile = (UserProfile) session
+				.getAttribute("userprofile");
 
 		User user = new User();
 		user.setLoginName(adminLoginName);
@@ -66,7 +88,9 @@ public class MerchantController {
 		user.setName(merchant.getName());
 		merchantService.create(merchant, user, userprofile);
 		if (file != null) {
-			File imageFile = new File(session.getServletContext().getRealPath("/") + merchant.getDetails().getLogoPath());
+			File imageFile = new File(session.getServletContext().getRealPath(
+					"/")
+					+ merchant.getDetails().getLogoPath());
 			try {
 				file.transferTo(imageFile);
 			} catch (IllegalStateException e) {
@@ -92,10 +116,14 @@ public class MerchantController {
 	 * BindingResult result
 	 */
 	@RequestMapping(value = "/edit/proccess", method = RequestMethod.POST)
-	public ModelAndView editUserprosses(@ModelAttribute("merchant") Merchant merchantbean, @RequestParam CommonsMultipartFile file,
-			SessionStatus status, HttpSession session) {
-		ModelAndView modelAndView = new ModelAndView("redirect:/admin/merchant/list");
-		UserProfile userprofile = (UserProfile) session.getAttribute("userprofile");
+	public ModelAndView editUserprosses(
+			@ModelAttribute("merchant") Merchant merchantbean,
+			@RequestParam CommonsMultipartFile file, SessionStatus status,
+			HttpSession session) {
+		ModelAndView modelAndView = new ModelAndView(
+				"redirect:/admin/merchant/list");
+		UserProfile userprofile = (UserProfile) session
+				.getAttribute("userprofile");
 
 		Merchant merchant = merchantService.fetch(merchantbean.getId());
 		merchant.setCodeName(merchantbean.getCodeName());
@@ -106,7 +134,9 @@ public class MerchantController {
 		merchantService.update(merchant, userprofile);
 
 		if (file != null) {
-			File imageFile = new File(session.getServletContext().getRealPath("/") + merchantbean.getDetails().getLogoPath());
+			File imageFile = new File(session.getServletContext().getRealPath(
+					"/")
+					+ merchantbean.getDetails().getLogoPath());
 			try {
 				if (imageFile.exists()) {
 					imageFile.delete();
@@ -123,8 +153,10 @@ public class MerchantController {
 
 	@RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
 	public ModelAndView delete(@PathVariable int id, HttpSession session) {
-		ModelAndView modelAndView = new ModelAndView("redirect:/a/merchant/list");
-		UserProfile userprofile = (UserProfile) session.getAttribute("userprofile");
+		ModelAndView modelAndView = new ModelAndView(
+				"redirect:/a/merchant/list");
+		UserProfile userprofile = (UserProfile) session
+				.getAttribute("userprofile");
 		merchantService.delete(id, userprofile);
 		message = "User successfull delete";
 		return modelAndView;
@@ -132,35 +164,29 @@ public class MerchantController {
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView list(HttpSession session) {
-		UserProfile userprofile = (UserProfile) session.getAttribute("userprofile");
+		UserProfile userprofile = (UserProfile) session
+				.getAttribute("userprofile");
 
 		ModelAndView modelandView = new ModelAndView("/admin/merchant/list");
-		modelandView.addObject("ps", merchantService.getMerchantsPage(null, -1, 1));
+		modelandView.addObject("ps",
+				merchantService.getMerchantsPage(null, -1, 1));
 		return modelandView;
 	}
 
 	@RequestMapping(value = "/list", method = RequestMethod.POST)
-	public ModelAndView searchMerchants(@RequestParam String name, @RequestParam int status, @RequestParam int page, HttpSession session) {
-		UserProfile userprofile = (UserProfile) session.getAttribute("userprofile");
+	public ModelAndView searchMerchants(@RequestParam String name,
+			@RequestParam int status, @RequestParam int page,
+			HttpSession session) {
+		UserProfile userprofile = (UserProfile) session
+				.getAttribute("userprofile");
 		logger.info("status : {}, currPage : {}", status, page);
 		ModelAndView modelandView = new ModelAndView("/admin/merchant/list");
-		modelandView.addObject("ps", merchantService.getMerchantsPage(name, status, page));
+		modelandView.addObject("ps",
+				merchantService.getMerchantsPage(name, status, page));
 		modelandView.addObject("name", name);
 		modelandView.addObject("page", page);
 		modelandView.addObject("status", status);
 		return modelandView;
 	}
 
-	// @RequestMapping(value = "/json", method = RequestMethod.GET)
-	// public String json4Combo() {
-	// List<UserControllerDomain> listUcd = DomainToControllerDomain
-	// .domaintoControllerList(userService.getAll());
-	//
-	// message = "";
-	// return null;
-	// }
-
-	public static void main(String[] args) {
-		System.out.println(MerchantController.class.getClassLoader().getResource("decorators.xml"));
-	}
 }

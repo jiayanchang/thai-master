@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,14 +30,31 @@ public class GoodsController {
 	public void initBinder(WebDataBinder binder) {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		dateFormat.setLenient(false);
-		binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
+		binder.registerCustomEditor(Date.class, new CustomDateEditor(
+				dateFormat, true));
+	}
+
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	public ModelAndView view(@PathVariable int id) {
+		ModelAndView modelandView = new ModelAndView("/admin/goods/view");
+		modelandView.addObject("goods", goodsService.fetch(id));
+		return modelandView;
+	}
+
+	@RequestMapping(value = "/{id}", method = RequestMethod.POST)
+	public ModelAndView viewOnly(@PathVariable int id) {
+		ModelAndView modelandView = new ModelAndView("/admin/goods/view");
+		modelandView.addObject("goods", goodsService.load(id));
+		return modelandView;
 	}
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	public ModelAndView listPost(@RequestParam String title, @RequestParam String dept, @RequestParam String arr,
+	public ModelAndView listPost(@RequestParam String title,
+			@RequestParam String dept, @RequestParam String arr,
 			@RequestParam Integer status, @RequestParam Integer page) {
 		ModelAndView modelandView = new ModelAndView("/admin/goods/list");
-		modelandView.addObject("ps", goodsService.getGoodsesPage(title, dept, arr, status == null ? -1 : status, page == null ? 1 : page));
+		modelandView.addObject("ps", goodsService.getGoodsesPage(title, dept,
+				arr, status == null ? -1 : status, page == null ? 1 : page));
 		return modelandView;
 	}
 
@@ -56,4 +74,5 @@ public class GoodsController {
 		modelAndView.addObject("goods", goods);
 		return modelAndView;
 	}
+
 }

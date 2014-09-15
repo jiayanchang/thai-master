@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>  
 <decorators defaultdir="/WEB-INF/sitemesh/">  
-    <decorator name="main" page="basic.jsp">  
+    <!-- <decorator name="main" page="basic.jsp">  
         <pattern>/*</pattern>  
-    </decorator>
+    </decorator> -->
     <decorator name="system" page="admin/system.jsp">
         <pattern>/a/merchant/*</pattern>
         <pattern>/a/user/*</pattern>

@@ -13,6 +13,8 @@ public interface UserService {
 
 	User findUserbyId(int id);
 
+	User findByLoginName(String loginName);
+
 	int create(User user, UserProfile userprofile);
 
 	int create(User user, Merchant merchant, UserProfile userprofile);

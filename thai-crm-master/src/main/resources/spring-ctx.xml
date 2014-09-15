@@ -5,19 +5,32 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
 	http://www.springframework.org/schema/beans/spring-beans.xsd
 	http://www.springframework.org/schema/context
-    http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+    http://www.springframework.org/schema/context/spring-context-3.1.xsd">
 
-	
 	<context:component-scan base-package="com.magic.thai" />
 	<context:annotation-config />
-	<!--  <mvc:resources location="/upload/logo" mapping="/logo/**"/> -->
-	 
+
 	<!-- Register the Customer.properties -->
 	<bean id="messageSource"
 		class="org.springframework.context.support.ResourceBundleMessageSource"
 		abstract="false">
 		<property name="basename" value="Customer" />
 	</bean>
+	<!-- enable json view -->
+	<bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+        <property name="order" value="1" />
+        <property name="mediaTypes">
+            <map>
+                <entry key="json" value="application/json" />
+            </map>
+        </property>
+        <property name="defaultViews">
+            <list>
+                <bean class="org.springframework.web.servlet.view.json.MappingJacksonJsonView"/>
+            </list>
+        </property>
+        <property name="ignoreAcceptHeader" value="true" />
+    </bean>
 
 	<bean id="viewResolver"
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -28,14 +41,12 @@
 			<value>.jsp</value>
 		</property>
 	</bean>
-	
+
 	<bean id="multipartResolver"
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
 
 
 	<context:property-placeholder location="classpath:application-config.properties" />
-
-
 
 	<!-- datasource -->
 	<import resource="classpath:spring-ds.xml" />

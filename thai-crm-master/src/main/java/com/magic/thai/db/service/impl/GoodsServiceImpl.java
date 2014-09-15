@@ -22,6 +22,7 @@ import com.magic.thai.db.service.GoodsService;
 import com.magic.thai.db.service.UserService;
 import com.magic.thai.db.vo.GoodsVo;
 import com.magic.thai.exception.GoodsStatusException;
+import com.magic.thai.exception.NoPermissionsException;
 import com.magic.thai.security.UserProfile;
 import com.magic.thai.util.PaginationSupport;
 
@@ -70,7 +71,11 @@ public class GoodsServiceImpl extends ServiceHelperImpl<Goods> implements GoodsS
 
 	@Override
 	@Transactional
-	public void pass(int goodsId, UserProfile userprofile) throws GoodsStatusException {
+	public void pass(int goodsId, UserProfile userprofile) throws NoPermissionsException, GoodsStatusException {
+		if(!userprofile.isPlatformUser()) {
+			throw new NoPermissionsException("当前用户无权审核");
+		}
+		
 		Goods goods = goodsDao.loadById(goodsId);
 		if (goods.getStatus() != Goods.Status.AUDITING) {
 			throw new GoodsStatusException(goods.getStatusDesc() + "状态的订单不能审核通过");

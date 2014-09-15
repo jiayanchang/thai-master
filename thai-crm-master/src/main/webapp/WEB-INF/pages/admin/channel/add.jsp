@@ -107,20 +107,28 @@ function addGoods(){
 		alert("请选择商品");
 		return false;
 	}
-	$.getJSON("${pageContext.request.contextPath}/json/goods/" + id, function(result){
-		var last_tr = $("#goodsInvsTbl tbody tr:last");
-		var index = last_tr.length > 0 ? last_tr.attr("index") : 0;
-		var html = '<tr index="' + index + '">'
-			+ '<td>' + result.title + '</td>'
-			+ '<td>' + result.goodsCount + '</td>'
-			+ '<td><input type="hidden" name="goodsInvs[' + index + '].goodsId" value="' + result.id + '"/>'
-			+ '<input name="goodsInvs[' + index + '].allocatedAmount"/></td>'
-			+ '<td>' + result.soldCount + '</td>'
-			+ '<td>' + (result.goodsCount - result.soldCount) + '</td>'
-			+ '<td><a href="javascript:removeGoods(' + index + ');">删除</a></td>'
-			+ '</tr>';	
-			
-		$("#goodsInvsTbl tbody").append($(html));
+	
+	jQuery.ajax({
+	    type: 'POST',
+		encoding:"UTF-8",
+	    dataType:"json", 
+	    contentType: "application/x-www-form-urlencoded;  charset=UTF-8",
+	    url: "${pageContext.request.contextPath}/a/goods/" + id + ".json",
+		success: function(result) {
+			var last_tr = $("#goodsInvsTbl tbody tr:last");
+			var index = last_tr.length > 0 ? last_tr.attr("index") : 0;
+			var html = '<tr index="' + index + '">'
+				+ '<td>' + result.title + '</td>'
+				+ '<td>' + result.goodsCount + '</td>'
+				+ '<td><input type="hidden" name="goodsInvs[' + index + '].goodsId" value="' + result.id + '"/>'
+				+ '<input name="goodsInvs[' + index + '].allocatedAmount"/></td>'
+				+ '<td>' + result.soldCount + '</td>'
+				+ '<td>' + (result.goodsCount - result.soldCount) + '</td>'
+				+ '<td><a href="javascript:removeGoods(' + index + ');">删除</a></td>'
+				+ '</tr>';	
+				
+			$("#goodsInvsTbl tbody").append($(html));
+		}
 	});
 }
 function addMerchant(){
@@ -129,21 +137,28 @@ function addMerchant(){
 		alert("请选择商品");
 		return false;
 	}
-	$.getJSON("${pageContext.request.contextPath}/json/merchant/" + id, function(result){
-		var last_tr = $("#merchantInvsTbl tbody tr:last");
-		var index = last_tr.length > 0 ? last_tr.attr("index") : 0;
-		var html = '<tr index="' + index + '">'
-				+ '<td>' + result.name + '</td>'
-				+ '<td></td>'
-				+ '<td><input type="hidden" name="merchantInvs[' + index + '].merchantId" value="' + result.id + '"/>'
-				+ '<input name="merchantInvs[' + index + '].allocatedAmount"/></td>'
-				+ '<td></td>'
-				+ '<td></td>'
-				+ '<td></td>'
-				+ '<td><a href="javascript:removeGoods(' + index + ');">删除</a></td>'
-				+ '</tr>';	
-			
-		$("#merchantInvsTbl tbody").append($(html));
+	jQuery.ajax({
+	    type: 'POST',
+		encoding:"UTF-8",
+	    dataType:"json", 
+	    contentType: "application/x-www-form-urlencoded;  charset=UTF-8",
+	    url: "${pageContext.request.contextPath}/a/merchant/" + id + ".json",
+		success: function(result) {
+			var last_tr = $("#merchantInvsTbl tbody tr:last");
+			var index = last_tr.length > 0 ? last_tr.attr("index") : 0;
+			var html = '<tr index="' + index + '">'
+					+ '<td>' + result.name + '</td>'
+					+ '<td></td>'
+					+ '<td><input type="hidden" name="merchantInvs[' + index + '].merchantId" value="' + result.id + '"/>'
+					+ '<input name="merchantInvs[' + index + '].allocatedAmount"/></td>'
+					+ '<td></td>'
+					+ '<td></td>'
+					+ '<td></td>'
+					+ '<td><a href="javascript:removeGoods(' + index + ');">删除</a></td>'
+					+ '</tr>';	
+				
+			$("#merchantInvsTbl tbody").append($(html));
+		}
 	});
 }
 

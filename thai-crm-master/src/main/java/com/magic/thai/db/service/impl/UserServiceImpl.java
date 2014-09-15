@@ -31,6 +31,11 @@ public class UserServiceImpl extends ServiceHelperImpl<User> implements UserServ
 	}
 
 	@Override
+	public User findByLoginName(String loginName) {
+		return userDao.getUserByLoginName(loginName);
+	}
+
+	@Override
 	public UserProfile login(String username, String password) throws LoginException {
 		User user = userDao.getUserByLoginName(username);
 		Assert.notNull(user, "用户不存在");

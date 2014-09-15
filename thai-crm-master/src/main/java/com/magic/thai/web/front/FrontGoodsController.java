@@ -76,13 +76,8 @@ public class FrontGoodsController {
 			@RequestParam CommonsMultipartFile linePicPathCFile, @RequestParam CommonsMultipartFile linePicPathDFile, HttpSession session) {
 		ModelAndView modelAndView = new ModelAndView("/front/goods/list");
 		UserProfile userprofile = (UserProfile) session.getAttribute("userprofile");
-
+		goods.setStatus(Goods.Status.AUDITING);
 		int id = goodsService.create(goods, userprofile);
-		goods.getDetails().setPicPath("/upload/goods/" + id + "/PicPath.jpg");
-		goods.getDetails().setLinePicPathA(id + "/a.jpg");
-		goods.getDetails().setLinePicPathB(id + "/b.jpg");
-		goods.getDetails().setLinePicPathC(id + "/c.jpg");
-		goods.getDetails().setLinePicPathD(id + "/d.jpg");
 
 		if (uploadFile(picPathFile, session.getServletContext(), goods, "picPath.jpg")) {
 			goods.getDetails().setPicPath(

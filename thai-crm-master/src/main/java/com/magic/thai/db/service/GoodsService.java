@@ -6,6 +6,7 @@ import com.magic.thai.db.domain.Goods;
 import com.magic.thai.db.domain.GoodsDetails;
 import com.magic.thai.db.vo.GoodsVo;
 import com.magic.thai.exception.GoodsStatusException;
+import com.magic.thai.exception.NoPermissionsException;
 import com.magic.thai.security.UserProfile;
 import com.magic.thai.util.PaginationSupport;
 
@@ -31,7 +32,7 @@ public interface GoodsService {
 	 * @param goodsId
 	 * @param userprofile
 	 */
-	public void pass(int goodsId, UserProfile userprofile) throws GoodsStatusException;
+	public void pass(int goodsId, UserProfile userprofile) throws NoPermissionsException, GoodsStatusException;
 
 	/**
 	 * 驳回

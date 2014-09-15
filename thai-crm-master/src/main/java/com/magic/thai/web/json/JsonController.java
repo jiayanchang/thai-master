@@ -4,11 +4,14 @@ import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,11 +26,16 @@ import com.magic.thai.db.dao.HotelDao;
 import com.magic.thai.db.domain.Goods;
 import com.magic.thai.db.domain.Hotel;
 import com.magic.thai.db.domain.Merchant;
+import com.magic.thai.db.domain.User;
 import com.magic.thai.db.service.GoodsService;
 import com.magic.thai.db.service.MerchantService;
+import com.magic.thai.db.service.UserService;
 import com.magic.thai.db.vo.GoodsVo;
 import com.magic.thai.db.vo.HotelVo;
 import com.magic.thai.db.vo.MerchantVo;
+import com.magic.thai.exception.GoodsStatusException;
+import com.magic.thai.exception.NoPermissionsException;
+import com.magic.thai.security.UserProfile;
 
 @Controller
 @RequestMapping(value = "/json")
@@ -37,6 +45,9 @@ public class JsonController {
 
 	@Autowired
 	MerchantService merchantService;
+
+	@Autowired
+	UserService userService;
 
 	@Autowired
 	GoodsService goodsService;
@@ -56,7 +67,6 @@ public class JsonController {
 	@RequestMapping(value = "/merchants", method = RequestMethod.POST)
 	@ResponseBody
 	public String getmerchants(@RequestParam String title, @RequestParam Integer limitF4list) {
-		System.out.println("getmerchants");
 		MerchantVo vo = new MerchantVo();
 		vo.nameKeyword = title;
 		if (limitF4list != null)
@@ -99,7 +109,9 @@ public class JsonController {
 	@ResponseBody
 	public String getmerchant(@PathVariable int id) {
 		Gson gson = new Gson();
-		return gson.toJson(merchantService.load(id));
+		Merchant merchant = merchantService.load(id);
+		System.out.println(gson.toJson(merchant));
+		return gson.toJson(merchant);
 	}
 
 	@RequestMapping(value = "/goods/{id}", method = RequestMethod.GET)
@@ -109,4 +121,43 @@ public class JsonController {
 		return gson.toJson(goodsService.load(id));
 	}
 
+	@RequestMapping(value = "/goods/pass/{id}", method = RequestMethod.POST)
+	@ResponseBody
+	public String procAuditGoods(@PathVariable int id, HttpSession session) {
+		UserProfile userprofile = (UserProfile) session.getAttribute("userprofile");
+		DataVo result;
+		try {
+			goodsService.pass(id, userprofile);
+			result = DataVo.success(id);
+		} catch (NoPermissionsException e) {
+			e.printStackTrace();
+			result = DataVo.fail("您不能审核该商品");
+		} catch (GoodsStatusException e) {
+			e.printStackTrace();
+			result = DataVo.fail(e.getMessage());
+		}
+		Gson gson = new Gson();
+		return gson.toJson(result);
+	}
+
+	@RequestMapping("/show")
+	public String toShow(ModelMap model) {
+		User user = new User();
+		user.setName("中文");
+		model.put("user", user);
+		return "/show";
+	}
+
+	@RequestMapping("/validateLoginName")
+	public ModelMap validateLoginName(@RequestParam String loginName, @RequestParam Integer userId, ModelMap model) {
+		User user = userService.findByLoginName(loginName);
+		DataVo vo;
+		if (user == null || (userId != null && userId.intValue() == user.getId())) {
+			vo = DataVo.success(null);
+		} else {
+			vo = DataVo.fail("当前登录名已存在");
+		}
+		model.put("data", vo);
+		return model;
+	}
 }

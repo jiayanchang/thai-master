@@ -4,7 +4,10 @@
 
 <html>
 <head>
-<link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery/jquery-1.10.2.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery/jquery-ui.min.js"></script>
+
+<%-- <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet" type="text/css" /> --%>
 <title>User Edit</title>
 </head>
 
@@ -36,10 +39,24 @@
 			</table>
 		</form>
 	</div>
+		<input type="button" value="start" onclick="ajaxreq()"/>
 </body>
 <script type="text/javascript">  
     function refresh() {  
         document.getElementById("image").src="/captcha?"+new Date();  
     }  
+    function ajaxreq(){
+		jQuery.ajax({
+		    type: 'POST',
+    		encoding:"UTF-8",
+		    dataType:"json", 
+		    data: 'loginName=admin&userId=1',
+		    contentType: "application/x-www-form-urlencoded;  charset=UTF-8",
+		    url: '/crm/json/validateLoginName.json',
+			success: function(result) {
+				alert(result.data.success);
+			}
+		});
+	}
 </script>  
 </html>
