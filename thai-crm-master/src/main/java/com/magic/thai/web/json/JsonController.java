@@ -36,6 +36,7 @@ import com.magic.thai.db.vo.MerchantVo;
 import com.magic.thai.exception.GoodsStatusException;
 import com.magic.thai.exception.NoPermissionsException;
 import com.magic.thai.security.UserProfile;
+import com.magic.thai.web.DataVo;
 
 @Controller
 @RequestMapping(value = "/json")
