@@ -1,5 +1,6 @@
 package com.magic.thai.security;
 
+import com.magic.thai.db.domain.Merchant;
 import com.magic.thai.db.domain.User;
 
 /**
@@ -10,14 +11,21 @@ import com.magic.thai.db.domain.User;
  */
 public class UserProfile {
 
-	public UserProfile(User user) {
+	public UserProfile(User user, Merchant merchant) {
 		this.user = user;
+		this.merchant = merchant;
 	}
 
 	private User user;
 
 	public User getUser() {
 		return user;
+	}
+
+	private Merchant merchant;
+
+	public Merchant getMerchant() {
+		return merchant;
 	}
 
 	public boolean isPlatformUser() {

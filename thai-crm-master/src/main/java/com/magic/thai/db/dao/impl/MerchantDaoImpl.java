@@ -13,12 +13,16 @@ import org.springframework.stereotype.Repository;
 
 import com.magic.thai.db.dao.HibernateCommonDAO;
 import com.magic.thai.db.dao.MerchantDao;
+import com.magic.thai.db.dao.MerchantDetailsDao;
 import com.magic.thai.db.domain.Merchant;
 import com.magic.thai.db.vo.MerchantVo;
 import com.magic.thai.util.PaginationSupport;
 
 @Repository(value = "merchantDao")
 public class MerchantDaoImpl extends HibernateCommonDAO<Merchant> implements MerchantDao {
+
+	@Autowired
+	MerchantDetailsDao merchantDetailsDao;
 
 	@Autowired
 	public MerchantDaoImpl(SessionFactory sessionFactory) {
@@ -46,6 +50,13 @@ public class MerchantDaoImpl extends HibernateCommonDAO<Merchant> implements Mer
 	@Override
 	public Merchant loadById(int id) {
 		return super.loadById(id);
+	}
+
+	@Override
+	public Merchant fetch(int id) {
+		Merchant merchant = loadById(id);
+		merchant.setDetails(merchantDetailsDao.loadById(id));
+		return merchant;
 	}
 
 	@Override

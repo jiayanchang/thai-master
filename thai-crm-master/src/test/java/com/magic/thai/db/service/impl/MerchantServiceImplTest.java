@@ -3,6 +3,7 @@ package com.magic.thai.db.service.impl;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.magic.thai.db.domain.Merchant;
 import com.magic.thai.db.domain.User;
 import com.magic.thai.db.service.MerchantService;
 import com.magic.thai.security.UserProfile;
@@ -14,9 +15,10 @@ public class MerchantServiceImplTest extends BaseTest {
 
 	static UserProfile userprofile;
 	static User user = new User();
+	static Merchant merchant = new Merchant();
 	static {
 		user.setCodeName("testu");
-		userprofile = new UserProfile(user);
+		userprofile = new UserProfile(user, merchant);
 	}
 
 	@Test

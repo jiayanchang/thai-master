@@ -21,6 +21,7 @@ import com.magic.thai.db.service.GoodsService;
 import com.magic.thai.exception.GoodsStatusException;
 import com.magic.thai.exception.NoPermissionsException;
 import com.magic.thai.security.UserProfile;
+import com.magic.thai.web.DataVo;
 
 @Controller
 @RequestMapping(value = "/a/goods")
@@ -116,8 +117,10 @@ public class GoodsController {
 		UserProfile userprofile = (UserProfile) session.getAttribute("userprofile");
 		try {
 			goodsService.cancel(id, reason, userprofile);
+			modelandView.addObject("data", DataVo.success(id));
 		} catch (GoodsStatusException e) {
 			e.printStackTrace();
+			modelandView.addObject("data", DataVo.fail(e.getMessage()));
 			modelandView.addObject("message", e.getMessage());
 		}
 		return modelandView;

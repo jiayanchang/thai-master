@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
+import com.magic.thai.db.dao.MerchantDao;
 import com.magic.thai.db.dao.UserDao;
 import com.magic.thai.db.domain.Merchant;
 import com.magic.thai.db.domain.User;
@@ -25,6 +26,8 @@ public class UserServiceImpl extends ServiceHelperImpl<User> implements UserServ
 
 	@Autowired
 	private UserDao userDao;
+	@Autowired
+	private MerchantDao merchantDao;
 
 	public User findUserbyId(int id) {
 		return super.find(User.class, id);
@@ -40,7 +43,7 @@ public class UserServiceImpl extends ServiceHelperImpl<User> implements UserServ
 		User user = userDao.getUserByLoginName(username);
 		Assert.notNull(user, "用户不存在");
 		Assert.isTrue(user.getPassword().equals(Md5CryptoUtils.create(password)), "用户名或密码错误");
-		return new UserProfile(user);
+		return new UserProfile(user, merchantDao.fetch(user.getMerchantId()));
 	}
 
 	@Override

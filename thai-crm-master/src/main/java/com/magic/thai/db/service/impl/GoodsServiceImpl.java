@@ -108,7 +108,7 @@ public class GoodsServiceImpl extends ServiceHelperImpl<Goods> implements GoodsS
 		}
 		goods.setStatus(Goods.Status.CANNELED);
 		goodsDao.update(goods);
-		goodsLogDao.create(new GoodsLog(goods, userprofile.getUser(), "商品下架"));
+		goodsLogDao.create(new GoodsLog(goods, userprofile.getUser(), "商品下架,原因：" + reason));
 	}
 
 	@Override

@@ -1,3 +1,4 @@
+<%@page import="com.magic.thai.security.UserProfile"%>
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ taglib prefix="decorator" uri="http://www.opensymphony.com/sitemesh/decorator"%>  
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -10,6 +11,7 @@
 <tr>
 <td>
 	LOGO
+	<img src="<%=((UserProfile)session.getAttribute("userprofile")).getMerchant().getDetails().getLogoPath()  %>"/>
 </td>
 <td>
 	<ul style="float: left">

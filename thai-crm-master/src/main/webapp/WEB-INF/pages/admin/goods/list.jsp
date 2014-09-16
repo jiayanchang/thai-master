@@ -11,7 +11,7 @@
 
 <br/>
 <div class="data">
-<c:url var="submitUrl" value="/f/goods/list"/>
+<c:url var="submitUrl" value="/a/goods/list"/>
 <form:form action="${submitUrl}" method="POST">
 <table border="1px" cellpadding="0" cellspacing="0" width="100%">
 <tr> 
@@ -69,7 +69,7 @@
 				<a href="${pageContext.request.contextPath}/a/goods/audit/${goods.id} ">审批</a><br/>
 			</c:if>
 			<c:if test="${goods.deployed }">
-				<a href="javascript:cancel(${goods.id }) ">下架</a><br/>
+				<a id="cancel-btn" val="${goods.id }" href="javascript:openDialog(${goods.id}); ">下架</a><br/>
 			</c:if>
 			</td>
 		</tr>
@@ -79,27 +79,51 @@
 </div>
 <input name="page" type="hidden" value="1"/>
 </form:form>
+<div id="dialog-form" title="Basic dialog">
+	<input type="hidden" id="goodsId"/>
+	<textarea id="reason" rows="7" cols="32"></textarea>
+</div>
 <script type="text/javascript">
-function cancel(goodsId) {
-	if(confirm("确认下架？")) {
-		jQuery.ajax({
-		    type: 'POST',
-			encoding:"UTF-8",
-		    dataType:"json", 
-		    data:'id=' + goodsId,
-		    contentType: "application/x-www-form-urlencoded;  charset=UTF-8",
-		    url: "${pageContext.request.contextPath}/a/cancel.json",
-			success: function(result) {
-				if(result.data.success) {
-					alert("下架成功");
-					$("form").submit();
-				} else {
-					alert(result.data.message);
-				}
-			}
-		});
-	}
-}
+	var dialog = $( "#dialog-form" ).dialog({
+	    autoOpen: false,
+	    height: 300,
+	    width: 350,
+	    title:'原因',
+	    modal: true,
+	    buttons: {
+	      "确认拒绝": function(){
+	    	  jQuery.ajax({
+	  		    type: 'POST',
+	  			encoding:"UTF-8",
+	  		    dataType:"json", 
+	  		    data:'id=' + $("#goodsId").val() + '&reason=' + $("#reason").val(),
+	  		    contentType: "application/x-www-form-urlencoded;  charset=UTF-8",
+	  		    url: "${pageContext.request.contextPath}/a/goods/cancel.json",
+	  			success: function(result) {//TODO 没执行success方法
+	  				dialog.dialog( "close" );
+	  				alert(result);
+	  				if(result.data.success) {
+	  					alert("下架成功");
+	  					$("form").submit();
+	  				} else {
+	  					alert(result.data.message);
+	  				}
+	  			}
+	  		});
+	      	
+	      },
+	      "取消" : function() {
+	        dialog.dialog( "close" );
+	      }
+	    },
+	    close: function() {
+	  	  dialog.dialog( "close" );
+	    }
+	});
 
+function openDialog(id) {
+	$("#goodsId").val(id);
+	dialog.dialog( "open" );
+}
 </script>
 </div>

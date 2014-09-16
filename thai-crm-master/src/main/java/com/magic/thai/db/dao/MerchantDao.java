@@ -12,6 +12,8 @@ public interface MerchantDao {
 
 	public Merchant loadById(int id);
 
+	public Merchant fetch(int id);
+
 	public Integer create(Merchant entity);
 
 	public void update(Merchant entity);
