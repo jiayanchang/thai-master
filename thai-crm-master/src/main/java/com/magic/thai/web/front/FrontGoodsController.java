@@ -76,7 +76,14 @@ public class FrontGoodsController {
 			@RequestParam CommonsMultipartFile linePicPathCFile, @RequestParam CommonsMultipartFile linePicPathDFile, HttpSession session) {
 		ModelAndView modelAndView = new ModelAndView("redirect:/f/goods/list");
 		UserProfile userprofile = (UserProfile) session.getAttribute("userprofile");
-		goods.setStatus(Goods.Status.AUDITING);
+		create(goods, picPathFile, linePicPathAFile, linePicPathBFile, linePicPathCFile, linePicPathDFile, session, userprofile);
+		modelAndView.addObject("goods", goods);
+		return modelAndView;
+	}
+
+	private void create(Goods goods, CommonsMultipartFile picPathFile, CommonsMultipartFile linePicPathAFile,
+			CommonsMultipartFile linePicPathBFile, CommonsMultipartFile linePicPathCFile, CommonsMultipartFile linePicPathDFile,
+			HttpSession session, UserProfile userprofile) {
 		goodsService.create(goods, userprofile);
 
 		if (uploadFile(picPathFile, session.getServletContext(), goods, "picPath.jpg")) {
@@ -95,8 +102,6 @@ public class FrontGoodsController {
 			goods.getDetails().setLinePicPathD("/resources/goods/" + goods.getRootId() + "/d.jpg");
 		}
 		goodsService.update(goods.getDetails(), userprofile);
-		modelAndView.addObject("goods", goods);
-		return modelAndView;
 	}
 
 	private boolean uploadFile(CommonsMultipartFile file, ServletContext context, Goods goods, String filename) {

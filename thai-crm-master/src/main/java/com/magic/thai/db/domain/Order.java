@@ -18,9 +18,6 @@ public class Order {
 	@Column(unique = true, nullable = false)
 	private int id;
 
-	@Column(nullable = false)
-	private String name;
-
 	@Column(name = "order_no", nullable = false)
 	private String orderNo;
 
@@ -64,19 +61,19 @@ public class Order {
 	 * @author yanchang
 	 */
 	public static final class Status {
-		public static final int ENABLED = 0;
-		public static final int DISABLED = 1;
+		public static final int NEW = 0;// 新订单待确认
+		public static final int COMPLETED = 1;// 已确认
 		public static final int DELETED = 2;
 	}
 
-	public String getStatusDesc() {
-		if (status == Status.DELETED) {
-			return "已删除";
-		} else if (status == Status.DISABLED) {
-			return "已停用";
-		} else {
-			return "已启用";
-		}
-	}
+	// public String getStatusDesc() {
+	// if (status == Status.DELETED) {
+	// return "已删除";
+	// } else if (status == Status.DISABLED) {
+	// return "已停用";
+	// } else {
+	// return "已启用";
+	// }
+	// }
 
 }

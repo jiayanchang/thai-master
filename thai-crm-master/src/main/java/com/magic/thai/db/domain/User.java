@@ -174,6 +174,10 @@ public class User {
 		}
 	}
 
+	public boolean isPlatformUser() {
+		return getType() == User.Type.PLATFORM;
+	}
+
 	@Override
 	public String toString() {
 		return name + "(" + codeName + ")" + "[" + loginName + "]";

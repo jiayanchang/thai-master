@@ -17,7 +17,9 @@ public class MerchantServiceImplTest extends BaseTest {
 	static User user = new User();
 	static Merchant merchant = new Merchant();
 	static {
-		user.setCodeName("testu");
+		user.setId(1);
+		user.setCodeName("admin");
+		user.setMerchantId(1);
 		userprofile = new UserProfile(user, merchant);
 	}
 

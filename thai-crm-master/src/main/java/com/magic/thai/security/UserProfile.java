@@ -29,7 +29,7 @@ public class UserProfile {
 	}
 
 	public boolean isPlatformUser() {
-		return user.getType() == User.Type.PLATFORM;
+		return user.isPlatformUser();
 	}
 
 }

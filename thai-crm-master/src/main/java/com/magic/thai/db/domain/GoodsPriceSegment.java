@@ -2,11 +2,15 @@ package com.magic.thai.db.domain;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -18,8 +22,10 @@ public class GoodsPriceSegment {
 	@Column(unique = true, nullable = false)
 	private int id;
 
-	@Column(name = "goods_id")
-	private int goodsId;
+	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH }, fetch = FetchType.LAZY)
+	@JoinColumn(name = "goods_id")
+	private Goods goods;
+
 	@Column(name = "start_date")
 	private Date startDate;
 	@Column(name = "end_date")
@@ -38,14 +44,6 @@ public class GoodsPriceSegment {
 
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	public int getGoodsId() {
-		return goodsId;
-	}
-
-	public void setGoodsId(int goodsId) {
-		this.goodsId = goodsId;
 	}
 
 	public Date getStartDate() {
@@ -88,9 +86,17 @@ public class GoodsPriceSegment {
 		this.childPrice = childPrice;
 	}
 
+	public Goods getGoods() {
+		return goods;
+	}
+
+	public void setGoods(Goods goods) {
+		this.goods = goods;
+	}
+
 	@Override
 	public String toString() {
-		return "GoodsPriceSegment [id=" + id + ", goodsId=" + goodsId + ", startDate=" + startDate + ", endDate=" + endDate + ", orderBy="
+		return "GoodsPriceSegment [id=" + id + ", goods=" + goods + ", startDate=" + startDate + ", endDate=" + endDate + ", orderBy="
 				+ orderBy + ", auditPrice=" + auditPrice + ", childPrice=" + childPrice + "]";
 	}
 }

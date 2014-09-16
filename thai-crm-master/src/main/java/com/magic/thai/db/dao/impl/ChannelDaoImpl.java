@@ -1,16 +1,25 @@
 package com.magic.thai.db.dao.impl;
 
+import java.util.List;
+
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.magic.thai.db.dao.ChannelDao;
+import com.magic.thai.db.dao.ChannelGoodsInvDao;
+import com.magic.thai.db.dao.ChannelMerchantInvDao;
 import com.magic.thai.db.dao.HibernateCommonDAO;
 import com.magic.thai.db.domain.Channel;
 import com.magic.thai.util.PaginationSupport;
 
 @Repository(value = "channelDao")
 public class ChannelDaoImpl extends HibernateCommonDAO<Channel> implements ChannelDao {
+
+	@Autowired
+	ChannelGoodsInvDao channelGoodsInvDao;
+	@Autowired
+	ChannelMerchantInvDao channelMerchantInvDao;
 
 	@Autowired
 	public ChannelDaoImpl(SessionFactory sessionFactory) {
@@ -39,6 +48,19 @@ public class ChannelDaoImpl extends HibernateCommonDAO<Channel> implements Chann
 	public PaginationSupport getChannelesPage(int currPage) {
 		String hql = "from Channel where status != " + Channel.Status.DELETED;
 		return super.find(hql, currPage, 30);
+	}
+
+	@Override
+	public Channel fetchByToken(String token) {
+		String hql = "from Channel where token = '" + token + "' status != " + Channel.Status.DELETED;
+		List<Channel> channels = super.find(hql);
+		Channel channel = null;
+		if (channels != null && channels.size() > 0) {
+			channel = channels.get(0);
+			channel.setMerchantInvs(channelMerchantInvDao.getInvs(channel.getId()));
+			channel.setGoodsInvs(channelGoodsInvDao.getInvs(channel.getId()));
+		}
+		return channel;
 	}
 
 }

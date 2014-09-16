@@ -29,6 +29,7 @@ import com.magic.thai.db.domain.Merchant;
 import com.magic.thai.db.domain.User;
 import com.magic.thai.db.service.GoodsService;
 import com.magic.thai.db.service.MerchantService;
+import com.magic.thai.db.service.OrderService;
 import com.magic.thai.db.service.UserService;
 import com.magic.thai.db.vo.GoodsVo;
 import com.magic.thai.db.vo.HotelVo;
@@ -52,6 +53,9 @@ public class JsonController {
 
 	@Autowired
 	GoodsService goodsService;
+
+	@Autowired
+	OrderService orderService;
 
 	@Autowired
 	HotelDao hotelDao;
@@ -161,4 +165,20 @@ public class JsonController {
 		model.put("data", vo);
 		return model;
 	}
+
+	@RequestMapping("/auditingGoodsCount")
+	public ModelMap auditingGoodsCount(HttpSession session, ModelMap model) {
+		DataVo vo = DataVo.success(goodsService.getAuditingGoodsCount(null));
+		model.put("data", vo);
+		return model;
+	}
+
+	@RequestMapping("/auditingOrderCount")
+	public ModelMap auditingOrderCount(HttpSession session, ModelMap model) {
+		UserProfile userprofile = (UserProfile) session.getAttribute("userprofile");
+		DataVo vo = DataVo.success(orderService.auditingOrderCount(userprofile.getUser()));
+		model.put("data", vo);
+		return model;
+	}
+
 }

@@ -56,11 +56,6 @@ public class GoodsController {
 		return listPost(null, null, null, null, 1);
 	}
 
-	@RequestMapping(value = "/audits", method = RequestMethod.GET)
-	public ModelAndView audits() {
-		return listPost(null, null, null, Goods.Status.AUDITING, 1);
-	}
-
 	@RequestMapping(value = "/list", method = RequestMethod.POST)
 	public ModelAndView listPost(@RequestParam String title, @RequestParam String dept, @RequestParam String arr,
 			@RequestParam Integer status, @RequestParam Integer page) {
@@ -73,6 +68,11 @@ public class GoodsController {
 		modelandView.addObject("status", status);
 		modelandView.addObject("page", page);
 		return modelandView;
+	}
+
+	@RequestMapping(value = "/audits", method = RequestMethod.GET)
+	public ModelAndView audits() {
+		return listPost(null, null, null, Goods.Status.AUDITING, 1);
 	}
 
 	@RequestMapping(value = "/audit/{id}", method = RequestMethod.GET)

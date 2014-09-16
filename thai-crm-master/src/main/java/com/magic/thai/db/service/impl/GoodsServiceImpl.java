@@ -1,5 +1,6 @@
 package com.magic.thai.db.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -8,29 +9,38 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.magic.thai.db.dao.ChannelDao;
 import com.magic.thai.db.dao.GoodsDao;
 import com.magic.thai.db.dao.GoodsDetailsDao;
 import com.magic.thai.db.dao.GoodsLogDao;
 import com.magic.thai.db.dao.GoodsPriceSegmentDao;
 import com.magic.thai.db.dao.MerchantDao;
+import com.magic.thai.db.domain.Channel;
+import com.magic.thai.db.domain.ChannelGoodsInv;
+import com.magic.thai.db.domain.ChannelMerchantInv;
 import com.magic.thai.db.domain.Goods;
 import com.magic.thai.db.domain.GoodsDetails;
 import com.magic.thai.db.domain.GoodsLog;
 import com.magic.thai.db.domain.GoodsPriceSegment;
 import com.magic.thai.db.domain.Merchant;
+import com.magic.thai.db.domain.User;
 import com.magic.thai.db.service.GoodsService;
 import com.magic.thai.db.service.UserService;
 import com.magic.thai.db.vo.GoodsVo;
+import com.magic.thai.exception.GoodsCheckedException;
 import com.magic.thai.exception.GoodsStatusException;
 import com.magic.thai.exception.NoPermissionsException;
+import com.magic.thai.exception.ThaiException;
 import com.magic.thai.security.UserProfile;
+import com.magic.thai.util.Asserts;
+import com.magic.thai.util.CalendarUtils;
 import com.magic.thai.util.PaginationSupport;
 
 @Service("goodsService")
 @Transactional
 public class GoodsServiceImpl extends ServiceHelperImpl<Goods> implements GoodsService {
 
-	static Logger logger = LoggerFactory.getLogger(GoodsServiceImpl.class);
+	private static Logger logger = LoggerFactory.getLogger(GoodsServiceImpl.class);
 
 	@Autowired
 	private GoodsDao goodsDao;
@@ -44,6 +54,8 @@ public class GoodsServiceImpl extends ServiceHelperImpl<Goods> implements GoodsS
 	private GoodsPriceSegmentDao goodsPriceSegmentDao;
 	@Autowired
 	private MerchantDao merchantDao;
+	@Autowired
+	private ChannelDao channelDao;
 
 	@Override
 	public Goods load(int id) {
@@ -56,6 +68,17 @@ public class GoodsServiceImpl extends ServiceHelperImpl<Goods> implements GoodsS
 		goods.setDetails(goodsDetailsDao.loadById(id));
 		goods.setSegments(goodsPriceSegmentDao.getSegments(goods));
 		return goods;
+	}
+
+	@Override
+	public List<Goods> fetchList(String channelToken) {
+		// Channel channel = channelDao.fetchByToken(channelToken);
+		// Goods goods = goodsDao.loadById(id);
+		// goods.setDetails(goodsDetailsDao.loadById(id));
+		// goods.setSegments(goodsPriceSegmentDao.getSegments(goods));
+		// return goods;
+		// TODO
+		return goodsDao.fetchList(null, null);
 	}
 
 	@Override
@@ -143,6 +166,7 @@ public class GoodsServiceImpl extends ServiceHelperImpl<Goods> implements GoodsS
 	@Override
 	@Transactional
 	public int create(Goods goods, UserProfile userprofile) {
+		goods.setStatus(Goods.Status.AUDITING);
 		Merchant merchant = merchantDao.loadById(userprofile.getUser().getMerchantId());
 		goods.setMerchantId(merchant.getId());
 		goods.setMerchantName(merchant.getName());
@@ -152,7 +176,7 @@ public class GoodsServiceImpl extends ServiceHelperImpl<Goods> implements GoodsS
 		goodsDetailsDao.create(goods.getDetails());
 		int i = 0;
 		for (GoodsPriceSegment segment : goods.getSegments()) {
-			segment.setGoodsId(id);
+			segment.setGoods(goods);
 			segment.setOrderBy(i++);
 			goods.setAdultTotalPrice(segment.getAuditPrice() + goods.getAdultTotalPrice());
 			goods.setChildTotalPrice(segment.getChildPrice() + goods.getChildTotalPrice());
@@ -178,6 +202,49 @@ public class GoodsServiceImpl extends ServiceHelperImpl<Goods> implements GoodsS
 	@Override
 	public List<Goods> list(GoodsVo vo) {
 		return goodsDao.list(vo);
+	}
+
+	@Override
+	public boolean checkGoods(String channelToken, int goodsId, Date deptDate, int count) throws ThaiException {
+		Channel channel = channelDao.fetchByToken(channelToken);
+		Asserts.notNull(channel, new GoodsCheckedException("当前渠道TOKEN无效"));
+		Goods goods = goodsDao.loadById(goodsId);
+		Asserts.notNull(goods, new GoodsCheckedException("当前商品已变更或不存在"));
+		Asserts.isTrue(goods.isDeployed() && !goods.isReadOnly(), new GoodsCheckedException("当前商品不可用"));
+
+		if (CalendarUtils.large(new Date(), deptDate, 20)) {
+			logger.info("TOKEN={},出发时间={},商品={},库存={}，已售={}, NOW={}", new Object[] { channelToken, deptDate, goodsId,
+					goods.getGoodsCount(), goods.getSoldCount(), new Date() });
+			return true;
+		}
+
+		ChannelGoodsInv channelGoodsInv = channel.getGoodsInv(goods.getRootId());
+
+		if (channelGoodsInv != null) {
+			logger.info(
+					"TOKEN={},出发时间={},商品={},G分配量={}, 库存={}，已售={}",
+					new Object[] { channelToken, deptDate, goodsId, channelGoodsInv.getAllocatedAmount(), goods.getGoodsCount(),
+							goods.getSoldCount() });
+			int enable = ((Float) ((channelGoodsInv.getAllocatedAmount() / 100f) * goods.getGoodsCount())).intValue();
+			return enable >= goods.getSoldCount() + count;
+		} else {
+			ChannelMerchantInv channelMerchantInv = channel.getMerchantInv(goods.getMerchantId());
+			if (channelMerchantInv != null) {
+				logger.info("TOKEN={},出发时间={},商品={},M分配量={}, 库存={}，已售={}", new Object[] { channelToken, deptDate, goodsId,
+						channelMerchantInv.getAllocatedAmount(), goods.getGoodsCount(), goods.getSoldCount() });
+				int enable = ((Float) ((channelMerchantInv.getAllocatedAmount() / 100f) * goods.getGoodsCount())).intValue();
+				return enable >= goods.getSoldCount() + count;
+			} else {
+				logger.info("TOKEN={},出发时间={},商品={},库存={}，已售={}  没有匹配条件",
+						new Object[] { channelToken, deptDate, goodsId, goods.getGoodsCount(), goods.getSoldCount() });
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public int getAuditingGoodsCount(User user) {
+		return goodsDao.getAuditingGoodsCount(user);
 	}
 
 }

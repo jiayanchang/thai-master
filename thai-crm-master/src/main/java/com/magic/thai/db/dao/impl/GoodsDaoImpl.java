@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.MatchMode;
@@ -13,8 +14,12 @@ import org.springframework.stereotype.Repository;
 
 import com.magic.thai.db.dao.GoodsDao;
 import com.magic.thai.db.dao.HibernateCommonDAO;
+import com.magic.thai.db.domain.Channel;
+import com.magic.thai.db.domain.ChannelGoodsInv;
+import com.magic.thai.db.domain.ChannelMerchantInv;
 import com.magic.thai.db.domain.Goods;
 import com.magic.thai.db.domain.Merchant;
+import com.magic.thai.db.domain.User;
 import com.magic.thai.db.vo.GoodsVo;
 import com.magic.thai.util.PaginationSupport;
 
@@ -78,6 +83,37 @@ public class GoodsDaoImpl extends HibernateCommonDAO<Goods> implements GoodsDao 
 		criterions.add(Restrictions.eq("readOnly", false));
 		criterions.add(Restrictions.ne("status", Merchant.Status.DELETED));
 		return super.find(criterions, currPage, 30);
+	}
+
+	@Override
+	public int getAuditingGoodsCount(User user) {
+		String hql = "";
+		hql = "select count(1) from Goods where status = " + Goods.Status.AUDITING;
+		Query query = super.getSession().createQuery(hql);
+		Object o = query.uniqueResult();
+		return (Integer) o;
+	}
+
+	@Override
+	public List<Goods> fetchList(GoodsVo vo, Channel channel) {
+		String hql = "SELECT DISTINCT g FROM Goods g LEFT JOIN FETCH g.segments WHERE 1=1";
+
+		if (channel.getGoodsInvs().size() > 0) {
+			String ids = "";
+			for (ChannelGoodsInv inv : channel.getGoodsInvs()) {
+				ids += "," + inv.getGoodsId();
+			}
+			hql += " AND g.rootId in ( " + ids.substring(1) + " )";
+		}
+
+		if (channel.getMerchantInvs().size() > 0) {
+			String ids = "";
+			for (ChannelMerchantInv inv : channel.getMerchantInvs()) {
+				ids += "," + inv.getMerchantId();
+			}
+			hql += " AND g.merchantId in ( " + ids.substring(1) + " )";
+		}
+		return super.find(hql);
 	}
 
 }

@@ -9,7 +9,6 @@ import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.magic.thai.db.domain.Order;
 import com.magic.thai.db.service.OrderService;
+import com.magic.thai.db.vo.OrderVo;
 import com.magic.thai.security.UserProfile;
 
 @Controller
@@ -33,30 +33,29 @@ public class FrontOrderController {
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
 	}
 
-	@RequestMapping(value = "/list")
-	public ModelAndView listPost(@RequestParam String title, @RequestParam String dept, @RequestParam String arr,
-			@RequestParam Integer status, @RequestParam Integer page, HttpSession session) {
-		UserProfile userprofile = (UserProfile) session.getAttribute("userprofile");
+	@RequestMapping(value = "/list", method = RequestMethod.GET)
+	public ModelAndView list(HttpSession session) {
+		return listPost(null, null, 1, session);
+	}
 
-		ModelAndView modelandView = new ModelAndView("/admin/order/list");
-		modelandView.addObject("ps", orderService.getOrderesPage(title, dept, arr, status == null ? -1 : status, page == null ? 1 : page,
-				userprofile.getUser().getMerchantId()));
+	@RequestMapping(value = "/list", method = RequestMethod.POST)
+	public ModelAndView listPost(@RequestParam String orderNo, @RequestParam Integer status, @RequestParam Integer page, HttpSession session) {
+		UserProfile userprofile = (UserProfile) session.getAttribute("userprofile");
+		ModelAndView modelandView = new ModelAndView("/front/order/list");
+		OrderVo vo = new OrderVo();
+		vo.orderNo = orderNo;
+		if (status != null) {
+			vo.statuses = new Integer[] { status };
+		}
+		modelandView.addObject("ps", orderService.getOrderesPage(vo, page == null ? 1 : page, userprofile.getUser().getMerchantId()));
 		return modelandView;
 	}
 
 	@RequestMapping(value = "/add", method = RequestMethod.GET)
 	public ModelAndView add() {
-		ModelAndView modelAndView = new ModelAndView("/front/order/add");
-		Order order = new Order();
-		modelAndView.addObject("order", order);
-		return modelAndView;
+		ModelAndView modelandView = new ModelAndView("/front/order/add");
+		modelandView.addObject("order", new Order());
+		return modelandView;
 	}
 
-	@RequestMapping(value = "/add", method = RequestMethod.POST)
-	public ModelAndView addProcess(@ModelAttribute Order order) {
-		ModelAndView modelAndView = new ModelAndView("/front/order/list");
-
-		modelAndView.addObject("order", order);
-		return modelAndView;
-	}
 }

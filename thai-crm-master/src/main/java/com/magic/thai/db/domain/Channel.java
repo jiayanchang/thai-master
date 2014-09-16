@@ -139,6 +139,15 @@ public class Channel {
 		return goodsInvs;
 	}
 
+	public ChannelGoodsInv getGoodsInv(int goodsRootId) {
+		for (ChannelGoodsInv channelGoodsInv : getGoodsInvs()) {
+			if (channelGoodsInv.getGoodsId() == goodsRootId) {
+				return channelGoodsInv;
+			}
+		}
+		return null;
+	}
+
 	public void setGoodsInvs(List<ChannelGoodsInv> goodsInvs) {
 		this.goodsInvs = goodsInvs;
 	}
@@ -148,6 +157,15 @@ public class Channel {
 			merchantInvs = new ArrayList<ChannelMerchantInv>();
 		}
 		return merchantInvs;
+	}
+
+	public ChannelMerchantInv getMerchantInv(int merchantId) {
+		for (ChannelMerchantInv channelMerchantInv : getMerchantInvs()) {
+			if (channelMerchantInv.getMerchantId() == merchantId) {
+				return channelMerchantInv;
+			}
+		}
+		return null;
 	}
 
 	public void setMerchantInvs(List<ChannelMerchantInv> merchantInvs) {
