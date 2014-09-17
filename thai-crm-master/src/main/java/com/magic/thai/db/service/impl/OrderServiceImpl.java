@@ -2,6 +2,7 @@ package com.magic.thai.db.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.magic.thai.db.dao.OrderDao;
 import com.magic.thai.db.domain.Order;
@@ -13,6 +14,7 @@ import com.magic.thai.security.UserProfile;
 import com.magic.thai.util.PaginationSupport;
 
 @Service("orderService")
+@Transactional
 public class OrderServiceImpl extends ServiceHelperImpl<User> implements OrderService {
 
 	@Autowired
@@ -43,12 +45,6 @@ public class OrderServiceImpl extends ServiceHelperImpl<User> implements OrderSe
 
 	@Override
 	public void change(int orderId, String reason, UserProfile userprofile) throws OrderStatusException {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void refund(Order order, String reason, UserProfile userprofile) throws OrderStatusException {
 		// TODO Auto-generated method stub
 
 	}

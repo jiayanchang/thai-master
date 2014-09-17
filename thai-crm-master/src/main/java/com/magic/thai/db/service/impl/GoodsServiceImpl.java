@@ -228,33 +228,38 @@ public class GoodsServiceImpl extends ServiceHelperImpl<Goods> implements GoodsS
 		Asserts.notNull(channel, new GoodsCheckedException("当前渠道TOKEN无效"));
 		Goods goods = goodsDao.loadById(goodsId);
 		Asserts.notNull(goods, new GoodsCheckedException("当前商品已变更或不存在"));
+		return checkGoods(channel, goods, deptDate, count);
+	}
+
+	@Override
+	public boolean checkGoods(Channel channel, Goods goods, Date deptDate, int count) throws ThaiException {
+		Asserts.notNull(channel, new GoodsCheckedException("当前渠道TOKEN无效"));
+		Asserts.notNull(goods, new GoodsCheckedException("当前商品已变更或不存在"));
 		Asserts.isTrue(goods.isDeployed() && !goods.isReadOnly(), new GoodsCheckedException("当前商品不可用"));
 
 		if (CalendarUtils.large(new Date(), deptDate, 20)) {
-			logger.info("TOKEN={},出发时间={},商品={},库存={}，已售={}, NOW={}", new Object[] { channelToken, deptDate, goodsId,
-					goods.getGoodsCount(), goods.getSoldCount(), new Date() });
+			logger.info("TOKEN={},出发时间={},商品={},库存={}，已售={}, NOW={}",
+					new Object[] { channel.getToken(), deptDate, goods.getId(), goods.getGoodsCount(), goods.getSoldCount(), new Date() });
 			return true;
 		}
 
 		ChannelGoodsInv channelGoodsInv = channel.getGoodsInv(goods.getRootId());
 
 		if (channelGoodsInv != null) {
-			logger.info(
-					"TOKEN={},出发时间={},商品={},G分配量={}, 库存={}，已售={}",
-					new Object[] { channelToken, deptDate, goodsId, channelGoodsInv.getAllocatedAmount(), goods.getGoodsCount(),
-							goods.getSoldCount() });
+			logger.info("TOKEN={},出发时间={},商品={},G分配量={}, 库存={}，已售={}", new Object[] { channel.getToken(), deptDate, goods.getId(),
+					channelGoodsInv.getAllocatedAmount(), goods.getGoodsCount(), goods.getSoldCount() });
 			int enable = ((Float) ((channelGoodsInv.getAllocatedAmount() / 100f) * goods.getGoodsCount())).intValue();
 			return enable >= goods.getSoldCount() + count;
 		} else {
 			ChannelMerchantInv channelMerchantInv = channel.getMerchantInv(goods.getMerchantId());
 			if (channelMerchantInv != null) {
-				logger.info("TOKEN={},出发时间={},商品={},M分配量={}, 库存={}，已售={}", new Object[] { channelToken, deptDate, goodsId,
+				logger.info("TOKEN={},出发时间={},商品={},M分配量={}, 库存={}，已售={}", new Object[] { channel.getToken(), deptDate, goods.getId(),
 						channelMerchantInv.getAllocatedAmount(), goods.getGoodsCount(), goods.getSoldCount() });
 				int enable = ((Float) ((channelMerchantInv.getAllocatedAmount() / 100f) * goods.getGoodsCount())).intValue();
 				return enable >= goods.getSoldCount() + count;
 			} else {
 				logger.info("TOKEN={},出发时间={},商品={},库存={}，已售={}  没有匹配条件",
-						new Object[] { channelToken, deptDate, goodsId, goods.getGoodsCount(), goods.getSoldCount() });
+						new Object[] { channel.getToken(), deptDate, goods.getId(), goods.getGoodsCount(), goods.getSoldCount() });
 			}
 		}
 		return false;

@@ -8,6 +8,12 @@ public interface OrderDao {
 
 	public Order loadById(int id);
 
+	public Order fetch(int id);
+
+	public Order loadByNo(String orderNo);
+
+	public Order fetchByNo(String orderNo);
+
 	public Integer create(Order entity);
 
 	public void update(Order entity);

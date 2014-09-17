@@ -280,6 +280,13 @@ public class Goods {
 		return this.status == Status.DEPLOYED;
 	}
 
+	public GoodsPriceSegment getLastSegment() {
+		if (getSegments().size() > 0) {
+			return getSegments().get(getSegments().size() - 1);
+		}
+		return null;
+	}
+
 	@Override
 	public String toString() {
 		return "Goods [merchantName=" + merchantName + ", title=" + title + ", dept=" + dept + ", arrived=" + arrived + ", status="

@@ -13,6 +13,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.magic.thai.util.CalendarUtils;
+
 @Entity
 @Table(name = "goods_price_seg")
 public class GoodsPriceSegment {
@@ -92,6 +94,18 @@ public class GoodsPriceSegment {
 
 	public void setGoods(Goods goods) {
 		this.goods = goods;
+	}
+
+	public boolean exsits(Date date) {
+		if (startDate == null && endDate == null) {
+			return true;
+		} else if (startDate == null && endDate != null) {
+			return date.before(CalendarUtils.lastOfDay(endDate));
+		} else if (startDate != null && endDate == null) {
+			return date.after(startDate);
+		} else {
+			return date.after(startDate) && date.before(CalendarUtils.lastOfDay(endDate));
+		}
 	}
 
 	@Override

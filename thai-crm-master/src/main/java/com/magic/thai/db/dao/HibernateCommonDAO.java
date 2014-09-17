@@ -139,7 +139,7 @@ public class HibernateCommonDAO<T> extends HibernateDaoSupport {
 		});
 	}
 
-	public List find(final List<Criterion> temp) {
+	public List<T> find(final List<Criterion> temp) {
 		Criterion[] criterions = new Criterion[temp.size()];
 		temp.toArray(criterions);
 		return this.find(criterions, null, -1);
@@ -198,8 +198,8 @@ public class HibernateCommonDAO<T> extends HibernateDaoSupport {
 					}
 				}
 				PaginationSupport ps = new PaginationSupport(page, rowPerPage);
-				Long totalCount = (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
-				ps.setTotalCount(totalCount == null ? 0 : totalCount.intValue());
+				Long total = ((Long) criteria.setProjection(Projections.rowCount()).uniqueResult());
+				ps.setTotalCount(total == null ? 0 : total.intValue());
 				if (orders != null) {
 					for (Order order : orders) {
 						criteria.addOrder(order);

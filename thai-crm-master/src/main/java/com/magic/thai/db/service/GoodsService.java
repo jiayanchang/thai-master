@@ -3,6 +3,7 @@ package com.magic.thai.db.service;
 import java.util.Date;
 import java.util.List;
 
+import com.magic.thai.db.domain.Channel;
 import com.magic.thai.db.domain.Goods;
 import com.magic.thai.db.domain.GoodsDetails;
 import com.magic.thai.db.domain.User;
@@ -76,6 +77,8 @@ public interface GoodsService {
 	 * @return
 	 */
 	public boolean checkGoods(String channelToken, int goodsId, Date deptDate, int count) throws ThaiException;
+
+	public boolean checkGoods(Channel channel, Goods goods, Date deptDate, int count) throws ThaiException;
 
 	public int getAuditingGoodsCount(User user);
 

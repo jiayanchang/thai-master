@@ -37,14 +37,6 @@ public interface OrderService {
 	 */
 	public void change(int orderId, String reason, UserProfile userprofile) throws OrderStatusException;
 
-	/**
-	 * 退款
-	 * 
-	 * @param order
-	 * @param userprofile
-	 */
-	public void refund(Order order, String reason, UserProfile userprofile) throws OrderStatusException;
-
 	public void delete(int orderId, UserProfile userprofile) throws OrderStatusException;
 
 	public void update(Order orderbean, UserProfile userprofile) throws OrderStatusException;
