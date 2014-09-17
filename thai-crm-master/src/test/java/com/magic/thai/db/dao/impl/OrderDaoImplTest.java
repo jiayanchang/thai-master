@@ -15,7 +15,7 @@ public class OrderDaoImplTest extends BaseTest {
 
 	@Test
 	public void test() {
-		PaginationSupport ps = orderDao.getOrderesPage(new OrderVo(), 1, null);
+		PaginationSupport ps = orderDao.getOrderesPage(new OrderVo());
 		System.out.println(ps);
 		// fail("Not yet implemented");
 	}

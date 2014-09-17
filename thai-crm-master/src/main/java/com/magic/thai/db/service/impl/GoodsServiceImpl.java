@@ -3,6 +3,8 @@ package com.magic.thai.db.service.impl;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,9 +66,12 @@ public class GoodsServiceImpl extends ServiceHelperImpl<Goods> implements GoodsS
 
 	@Override
 	public Goods fetch(int id) {
+
 		Goods goods = goodsDao.loadById(id);
+		Hibernate.initialize(goods.getSegments());
+		// Hibernate.initialize(goods.getDetails());
 		goods.setDetails(goodsDetailsDao.loadById(id));
-		goods.setSegments(goodsPriceSegmentDao.getSegments(goods));
+		// goods.setSegments(goodsPriceSegmentDao.getSegments(goods));
 		return goods;
 	}
 
@@ -146,8 +151,8 @@ public class GoodsServiceImpl extends ServiceHelperImpl<Goods> implements GoodsS
 		if (goods.getStatus() != Goods.Status.AUDITING) {
 			throw new GoodsStatusException(goods.getStatusDesc() + "状态的订单不能修改");
 		}
-
-		create(goodsbean);
+		updateFilePath(goods.getDetails(), goodsbean.getDetails());
+		create(goodsbean, userprofile);
 		goodsbean.setRootId(goods.getRootId());
 		goodsbean.setParentId(goods.getId());
 		goodsDao.update(goodsbean);
@@ -156,6 +161,24 @@ public class GoodsServiceImpl extends ServiceHelperImpl<Goods> implements GoodsS
 		goodsDao.update(goods);
 
 		goodsLogDao.create(new GoodsLog(goods, userprofile.getUser(), "修改商品信息，新内容为" + goodsbean));
+	}
+
+	private void updateFilePath(GoodsDetails source, GoodsDetails target) {
+		if (StringUtils.isBlank(target.getPicPath())) {
+			target.setPicPath(source.getPicPath());
+		}
+		if (StringUtils.isBlank(target.getLinePicPathA())) {
+			target.setLinePicPathA(source.getLinePicPathA());
+		}
+		if (StringUtils.isBlank(target.getLinePicPathB())) {
+			target.setLinePicPathB(source.getLinePicPathB());
+		}
+		if (StringUtils.isBlank(target.getLinePicPathC())) {
+			target.setLinePicPathC(source.getLinePicPathC());
+		}
+		if (StringUtils.isBlank(target.getLinePicPathD())) {
+			target.setLinePicPathD(source.getLinePicPathD());
+		}
 	}
 
 	@Override
@@ -190,13 +213,8 @@ public class GoodsServiceImpl extends ServiceHelperImpl<Goods> implements GoodsS
 	}
 
 	@Override
-	public PaginationSupport getGoodsesPage(String title, String dept, String arr, Integer[] statuses, int queryPage, int merchantId) {
-		return goodsDao.getGoodsesPage(title, dept, arr, statuses, queryPage, merchantId);
-	}
-
-	@Override
-	public PaginationSupport getGoodsesPage(String title, String dept, String arr, Integer[] statuses, int queryPage) {
-		return goodsDao.getGoodsesPage(title, dept, arr, statuses, queryPage, null);
+	public PaginationSupport getGoodsesPage(GoodsVo vo) {
+		return goodsDao.getGoodsesPage(vo);
 	}
 
 	@Override

@@ -198,7 +198,8 @@ public class HibernateCommonDAO<T> extends HibernateDaoSupport {
 					}
 				}
 				PaginationSupport ps = new PaginationSupport(page, rowPerPage);
-				ps.setTotalCount(((Long) criteria.setProjection(Projections.rowCount()).uniqueResult()).intValue());
+				Long totalCount = (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+				ps.setTotalCount(totalCount == null ? 0 : totalCount.intValue());
 				if (orders != null) {
 					for (Order order : orders) {
 						criteria.addOrder(order);

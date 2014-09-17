@@ -37,7 +37,7 @@ public class OrderDaoImpl extends HibernateCommonDAO<Order> implements OrderDao 
 	}
 
 	@Override
-	public PaginationSupport getOrderesPage(OrderVo vo, int currPage, Integer merchantId) {
+	public PaginationSupport getOrderesPage(OrderVo vo) {
 		ArrayList<Criterion> criterions = new ArrayList<Criterion>();
 		if (StringUtils.isNotBlank(vo.orderNo)) {
 			criterions.add(Restrictions.eq("orderNo", vo.orderNo));
@@ -48,11 +48,11 @@ public class OrderDaoImpl extends HibernateCommonDAO<Order> implements OrderDao 
 		if (vo.channelId != null) {
 			criterions.add(Restrictions.eq("channelId", vo.channelId));
 		}
-		if (merchantId != null) {
-			criterions.add(Restrictions.eq("merchantId", merchantId));
+		if (vo.merchantId != null) {
+			criterions.add(Restrictions.eq("merchantId", vo.merchantId));
 		}
 		criterions.add(Restrictions.ne("status", Merchant.Status.DELETED));
-		return super.find(criterions, currPage, 30);
+		return super.find(criterions, vo.page, 30);
 	}
 
 }

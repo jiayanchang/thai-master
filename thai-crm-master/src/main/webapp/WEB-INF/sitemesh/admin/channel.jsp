@@ -6,7 +6,7 @@
 <html>
 <header>
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/js/jquery/jquery-ui.css">
-		<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/base.css">
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/base.css">
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title>Magic Thai</title>

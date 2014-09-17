@@ -24,7 +24,7 @@ public interface GoodsDao {
 
 	public List<Goods> fetchList(GoodsVo vo, Channel channel);
 
-	public PaginationSupport getGoodsesPage(String title, String dept, String arr, Integer[] statuses, int currPage, Integer merchantId);
+	public PaginationSupport getGoodsesPage(GoodsVo vo);
 
 	public int getAuditingGoodsCount(User user);
 }

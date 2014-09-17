@@ -1,11 +1,15 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%> 
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <div class="content">
 	<h1>编辑商品</h1>
 	<c:url var="addUrl" value="/f/goods/edit/proccess"/>
 	<form:form action="${addUrl}" method="POST" commandName="goods" enctype="multipart/form-data">
+	
+	<font color="red">${message }</font>
+	
 		<form:hidden path="id"/>
 		<table>
 			<tr>
@@ -43,7 +47,7 @@
 			<tr>
 				<td><font color="red">*</font>宣传图片：</td>
 				<td><input type="file" name="picPathFile" /></td>
-				<td></td>
+				<td><img alt="" src="${pageContext.request.contextPath}${goods.details.picPath }"></td>
 			</tr>
 			
 			<tr>
@@ -54,24 +58,41 @@
 					<input type="file" name="linePicPathCFile" />
 					<input type="file" name="linePicPathDFile" />
 				</td>
-				<td></td>
+				<td>
+					<img alt="" src="${pageContext.request.contextPath}${goods.details.linePicPathA }">
+					<img alt="" src="${pageContext.request.contextPath}${goods.details.linePicPathB }">
+					<img alt="" src="${pageContext.request.contextPath}${goods.details.linePicPathC }">
+					<img alt="" src="${pageContext.request.contextPath}${goods.details.linePicPathD }">
+				</td>
 			</tr>
 			
 			<tr>
 				<td><font color="red">*</font>价格管理：</td>
 				<td>
 					<table id="price_tbl">
-						<tr>
-							<td><input name="startDate"/></td>
+						<c:forEach var="segment" items="${goods.segments }" varStatus="status">
+						<tr index="${status.index }">
+							<td>
+								<input type="hidden" tag="id" name="segments[${status.index }].id" value="${segment.id }"/>
+								<input name="segments[${status.index }].startDate" value="<fmt:formatDate value="${segment.startDate }" type="date" dateStyle="medium"/>"/>
+							</td>
 							<td></td>
-							<td><input name="endDate"/></td>
+							<td><input name="segments[${status.index }].endDate" value="<fmt:formatDate value="${segment.endDate }" type="date" dateStyle="medium"/>"/></td>
 							<td><font color="red">*</font>价格：</td>
-							<td><input name="auditPrice"/></td>
+							<td><input name="segments[${status.index }].auditPrice" value="${segment.auditPrice }"/></td>
 							<td>（成人）</td>
-							<td><input name="childPrice"/></td>
+							<td><input name="segments[${status.index }].childPrice" value="${segment.childPrice }"/></td>
 							<td>（儿童）</td>
-							<td><a href="" onclick="addPriceSegment();">【+】</a></td>
+							<td>
+								<c:if test="${status.index eq 0 }">
+									<a href="javascript:addPriceSegment();">【+】</a>
+								</c:if>
+								<c:if test="${status.index ne 0 }">
+									<a href="javascript:removePriceSegment(${status.index });">【-】</a>
+								</c:if>
+							</td>
 						</tr>
+						</c:forEach>
 					</table>
 				</td>
 				<td></td>
@@ -111,7 +132,27 @@
 		</table>
 		<form:hidden path="details.id" />
 	</form:form>
-	<p>
-		<a href="${pageContext.request.contextPath}/"><button class="button2">Back</button></a>
-	</p>
 </div>
+<script>
+	function addPriceSegment(){
+		var index = 1 + parseInt($("#price_tbl tr:last").attr("index"));
+		var html = '<tr index="' + index + '">'
+			+'<td><input name="segments[' + index + '].startDate" tag="date"/></td>'
+			+'<td></td>'
+			+'<td><input name="segments[' + index + '].endDate" tag="date"/></td>'
+			+'<td><font color="red">*</font>价格：</td>'
+			+'<td><input name="segments[' + index + '].auditPrice"/></td>'
+			+'<td>（成人）</td>'
+			+'<td><input name="segments[' + index + '].childPrice"/></td>'
+			+'<td>（儿童）</td>'
+			+'<td><a href="javascript:removePriceSegment(' + index + ');">【-】</a></td>'
+			+'</tr>';	
+		var newtr = $(html);
+		$("#price_tbl").append(newtr);
+		$("#price_tbl [tag=date]").datepicker({dateFormat:'yy/mm/dd'});
+	}
+	
+	function removePriceSegment(index){
+		$("#price_tbl tr[index=" + index + "]").remove();
+	}
+</script>

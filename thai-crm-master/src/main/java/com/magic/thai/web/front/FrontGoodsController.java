@@ -2,8 +2,8 @@ package com.magic.thai.web.front;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,8 +24,9 @@ import org.springframework.web.servlet.ModelAndView;
 import com.magic.thai.db.domain.Goods;
 import com.magic.thai.db.domain.GoodsPriceSegment;
 import com.magic.thai.db.service.GoodsService;
+import com.magic.thai.db.vo.GoodsVo;
+import com.magic.thai.exception.GoodsStatusException;
 import com.magic.thai.security.UserProfile;
-import com.magic.thai.util.PaginationSupport;
 
 @Controller
 @RequestMapping(value = "/f/goods")
@@ -41,23 +43,19 @@ public class FrontGoodsController {
 	}
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	public ModelAndView list() {
-		ModelAndView modelandView = new ModelAndView("/front/goods/list");
-		PaginationSupport ps = goodsService.getGoodsesPage(null, null, null, null, 1, 11);
-		System.out.println("ps : " + ps.getItems().size());
-		modelandView.addObject("ps", ps);
-		return modelandView;
+	public ModelAndView list(HttpSession session) {
+		GoodsVo vo = new GoodsVo();
+		return listPost(vo, session);
 	}
 
 	@RequestMapping(value = "/list", method = RequestMethod.POST)
-	public ModelAndView listPost(@RequestParam String title, @RequestParam String dept, @RequestParam String arr,
-			@RequestParam Integer status, @RequestParam Integer page, HttpSession session) {
-		System.out.println(1);
+	public ModelAndView listPost(@ModelAttribute GoodsVo vo, HttpSession session) {
 		UserProfile userprofile = (UserProfile) session.getAttribute("userprofile");
+		vo.merchantId = userprofile.getUser().getMerchantId() + "";
 
 		ModelAndView modelandView = new ModelAndView("/front/goods/list");
-		modelandView.addObject("ps", goodsService.getGoodsesPage(title, dept, arr, status == null ? null : new Integer[] { status },
-				page == null ? 1 : page, userprofile.getUser().getMerchantId()));
+		modelandView.addObject("ps", goodsService.getGoodsesPage(vo));
+		modelandView.addObject("goodsVo", vo);
 		return modelandView;
 	}
 
@@ -70,38 +68,76 @@ public class FrontGoodsController {
 		return modelAndView;
 	}
 
+	@RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
+	public ModelAndView edit(@PathVariable int id) {
+		ModelAndView modelAndView = new ModelAndView("/front/goods/edit");
+		modelAndView.addObject("goods", goodsService.fetch(id));
+		return modelAndView;
+	}
+
+	@RequestMapping(value = "/edit/proccess", method = RequestMethod.POST)
+	public ModelAndView editProccess(@ModelAttribute Goods goods, @RequestParam CommonsMultipartFile picPathFile,
+			@RequestParam CommonsMultipartFile linePicPathAFile, @RequestParam CommonsMultipartFile linePicPathBFile,
+			@RequestParam CommonsMultipartFile linePicPathCFile, @RequestParam CommonsMultipartFile linePicPathDFile, HttpSession session) {
+		ModelAndView modelAndView = new ModelAndView("redirect:/f/goods/list");
+		UserProfile userprofile = (UserProfile) session.getAttribute("userprofile");
+		try {
+			updateFile(goods, picPathFile, linePicPathAFile, linePicPathBFile, linePicPathCFile, linePicPathDFile, session);
+			goodsService.update(goods, userprofile);
+			modelAndView.addObject("message", "编辑成功");
+		} catch (GoodsStatusException e) {
+			e.printStackTrace();
+			modelAndView.setViewName("/front/goods/edit");
+			modelAndView.addObject("message", e.getMessage());
+		}
+		return modelAndView;
+	}
+
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	public ModelAndView addProcess(@ModelAttribute Goods goods, @RequestParam CommonsMultipartFile picPathFile,
 			@RequestParam CommonsMultipartFile linePicPathAFile, @RequestParam CommonsMultipartFile linePicPathBFile,
 			@RequestParam CommonsMultipartFile linePicPathCFile, @RequestParam CommonsMultipartFile linePicPathDFile, HttpSession session) {
 		ModelAndView modelAndView = new ModelAndView("redirect:/f/goods/list");
 		UserProfile userprofile = (UserProfile) session.getAttribute("userprofile");
-		create(goods, picPathFile, linePicPathAFile, linePicPathBFile, linePicPathCFile, linePicPathDFile, session, userprofile);
+		goodsService.create(goods, userprofile);
+		updateFile(goods, picPathFile, linePicPathAFile, linePicPathBFile, linePicPathCFile, linePicPathDFile, session);
+		goodsService.update(goods.getDetails(), userprofile);
 		modelAndView.addObject("goods", goods);
 		return modelAndView;
 	}
 
-	private void create(Goods goods, CommonsMultipartFile picPathFile, CommonsMultipartFile linePicPathAFile,
+	private void updateFile(Goods goods, CommonsMultipartFile picPathFile, CommonsMultipartFile linePicPathAFile,
 			CommonsMultipartFile linePicPathBFile, CommonsMultipartFile linePicPathCFile, CommonsMultipartFile linePicPathDFile,
-			HttpSession session, UserProfile userprofile) {
-		goodsService.create(goods, userprofile);
-
+			HttpSession session) {
 		if (uploadFile(picPathFile, session.getServletContext(), goods, "picPath.jpg")) {
 			goods.getDetails().setPicPath("/resources/goods/" + goods.getRootId() + "/picPath.jpg");
+		} else {
+			goods.getDetails().setPicPath(null);
 		}
+
 		if (uploadFile(linePicPathAFile, session.getServletContext(), goods, "a.jpg")) {
 			goods.getDetails().setLinePicPathA("/resources/goods/" + goods.getRootId() + "/a.jpg");
+		} else {
+			goods.getDetails().setLinePicPathA(null);
 		}
+
 		if (uploadFile(linePicPathBFile, session.getServletContext(), goods, "b.jpg")) {
 			goods.getDetails().setLinePicPathB("/resources/goods/" + goods.getRootId() + "/b.jpg");
+		} else {
+			goods.getDetails().setLinePicPathB(null);
 		}
+
 		if (uploadFile(linePicPathCFile, session.getServletContext(), goods, "c.jpg")) {
 			goods.getDetails().setLinePicPathC("/resources/goods/" + goods.getRootId() + "/c.jpg");
+		} else {
+			goods.getDetails().setLinePicPathC(null);
 		}
+
 		if (uploadFile(linePicPathDFile, session.getServletContext(), goods, "d.jpg")) {
 			goods.getDetails().setLinePicPathD("/resources/goods/" + goods.getRootId() + "/d.jpg");
+		} else {
+			goods.getDetails().setLinePicPathD(null);
 		}
-		goodsService.update(goods.getDetails(), userprofile);
 	}
 
 	private boolean uploadFile(CommonsMultipartFile file, ServletContext context, Goods goods, String filename) {

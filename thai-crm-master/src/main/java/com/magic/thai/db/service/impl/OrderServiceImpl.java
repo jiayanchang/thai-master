@@ -1,8 +1,9 @@
 package com.magic.thai.db.service.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import com.magic.thai.db.dao.OrderDao;
 import com.magic.thai.db.domain.Order;
 import com.magic.thai.db.domain.User;
 import com.magic.thai.db.service.OrderService;
@@ -11,14 +12,15 @@ import com.magic.thai.exception.OrderStatusException;
 import com.magic.thai.security.UserProfile;
 import com.magic.thai.util.PaginationSupport;
 
-@Service("userService")
-@Transactional
+@Service("orderService")
 public class OrderServiceImpl extends ServiceHelperImpl<User> implements OrderService {
+
+	@Autowired
+	OrderDao orderDao;
 
 	@Override
 	public Order load(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		return orderDao.loadById(id);
 	}
 
 	@Override
@@ -64,15 +66,14 @@ public class OrderServiceImpl extends ServiceHelperImpl<User> implements OrderSe
 	}
 
 	@Override
-	public PaginationSupport getOrderesPage(OrderVo vo, int queryPage, int merchantId) {
-		// TODO Auto-generated method stub
-		return null;
+	public PaginationSupport getOrderesPage(OrderVo vo, int merchantId) {
+		vo.merchantId = merchantId;
+		return orderDao.getOrderesPage(vo);
 	}
 
 	@Override
-	public PaginationSupport getOrderesPage(OrderVo vo, int queryPage) {
-		// TODO Auto-generated method stub
-		return null;
+	public PaginationSupport getOrderesPage(OrderVo vo) {
+		return orderDao.getOrderesPage(vo);
 	}
 
 	@Override

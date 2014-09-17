@@ -23,8 +23,12 @@ public class Order {
 
 	@Column(name = "channel_id", nullable = false)
 	private int channelId;
+	@Column(name = "channel_name", nullable = false)
+	private String channelName;
 	@Column(name = "merchant_id", nullable = false)
 	private int merchantId;
+	@Column(name = "merchant_name", nullable = false)
+	private String merchantName;
 	@Column
 	private String contractor;
 	@Column(name = "contractor_tel")
@@ -66,14 +70,14 @@ public class Order {
 		public static final int DELETED = 2;
 	}
 
-	// public String getStatusDesc() {
-	// if (status == Status.DELETED) {
-	// return "已删除";
-	// } else if (status == Status.DISABLED) {
-	// return "已停用";
-	// } else {
-	// return "已启用";
-	// }
-	// }
+	public String getStatusDesc() {
+		if (status == Status.DELETED) {
+			return "已删除";
+		} else if (status == Status.COMPLETED) {
+			return "已确认";
+		} else {
+			return "待确认";
+		}
+	}
 
 }

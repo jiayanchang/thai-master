@@ -10,6 +10,7 @@ import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.magic.thai.db.domain.Goods;
 import com.magic.thai.db.service.GoodsService;
+import com.magic.thai.db.vo.GoodsVo;
 import com.magic.thai.exception.GoodsStatusException;
 import com.magic.thai.exception.NoPermissionsException;
 import com.magic.thai.security.UserProfile;
@@ -53,26 +55,23 @@ public class GoodsController {
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView list() {
-		return listPost(null, null, null, null, 1);
+		return listPost(new GoodsVo());
 	}
 
 	@RequestMapping(value = "/list", method = RequestMethod.POST)
-	public ModelAndView listPost(@RequestParam String title, @RequestParam String dept, @RequestParam String arr,
-			@RequestParam Integer status, @RequestParam Integer page) {
+	public ModelAndView listPost(@ModelAttribute GoodsVo goodsVo) {
+		goodsVo.excludeStatuses = new Integer[] { Goods.Status.NEW, Goods.Status.REJECTED };
 		ModelAndView modelandView = new ModelAndView("/admin/goods/list");
-		modelandView.addObject("ps",
-				goodsService.getGoodsesPage(title, dept, arr, status == null ? null : new Integer[] { status }, page == null ? 1 : page));
-		modelandView.addObject("title", title);
-		modelandView.addObject("dept", dept);
-		modelandView.addObject("arr", arr);
-		modelandView.addObject("status", status);
-		modelandView.addObject("page", page);
+		modelandView.addObject("ps", goodsService.getGoodsesPage(goodsVo));
+		modelandView.addObject("vo", goodsVo);
 		return modelandView;
 	}
 
 	@RequestMapping(value = "/audits", method = RequestMethod.GET)
 	public ModelAndView audits() {
-		return listPost(null, null, null, Goods.Status.AUDITING, 1);
+		GoodsVo vo = new GoodsVo();
+		vo.status = Goods.Status.AUDITING;
+		return listPost(vo);
 	}
 
 	@RequestMapping(value = "/audit/{id}", method = RequestMethod.GET)

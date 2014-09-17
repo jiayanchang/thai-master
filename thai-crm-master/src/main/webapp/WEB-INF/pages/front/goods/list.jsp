@@ -12,29 +12,29 @@
 <br/>
 <div class="data">
 <c:url var="submitUrl" value="/f/goods/list"/>
-<form:form action="${submitUrl}" method="POST">
+<form:form action="${submitUrl}" method="POST" commandName="goodsVo">
 <table border="1px" cellpadding="0" cellspacing="0" width="100%">
 <tr> 
 	<td>产品名称：</td>
-	<td colspan="3"><input name="title" value="${title }"/></td>
+	<td colspan="3"><form:input path="titleKeyword"/></td>
 	<td></td>
 	<td></td>
 </tr>
 <tr> 
 	<td>出发地：</td>
-	<td><input name="dept" value="${dept }"/></td>
+	<td><form:input path="dept"/></td>
 	<td>目的地：</td>
-	<td><input name="arr" value="${arr }"/></td>
+	<td><form:input path="arr"/></td>
 	<td>状态</td>
 	<td>
-		<select name="status">
-			<option value="-1" >全部</option>
-			<option value="0">新商品待上架</option>
-			<option value="1">待审核</option>
-			<option value="2">审核失败</option>
-			<option value="3">已上架</option>
-			<option value="4">已下架</option>
-		</select>
+		<form:select path="status">
+			<form:option value="-1" >全部</form:option>
+			<form:option value="0">新商品待上架</form:option>
+			<form:option value="1">待审核</form:option>
+			<form:option value="2">审核失败</form:option>
+			<form:option value="3">已上架</form:option>
+			<form:option value="4">已下架</form:option>
+		</form:select>
 	</td>
 	<td><input type="submit" value="submit" class="button2" /></td>
 </tr>
@@ -63,8 +63,8 @@
 			<td>${goods.goodsCount}</td>
 			<td>${goods.statusDesc}</td>
 			<td>
-				<a href="${pageContext.request.contextPath}/a/merchant/edit/${merchant.id} ">修改</a><br/>
-				<a href="${pageContext.request.contextPath}/a/merchant/delete/${merchant.id} ">删除</a><br/>
+				<a href="${pageContext.request.contextPath}/f/goods/edit/${goods.id} ">修改</a><br/>
+				<a href="${pageContext.request.contextPath}/f/goods/delete/${goods.id} ">删除</a><br/>
 			</td>
 		</tr>
 	</c:forEach>

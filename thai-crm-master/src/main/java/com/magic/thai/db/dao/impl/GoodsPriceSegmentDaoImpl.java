@@ -33,7 +33,7 @@ public class GoodsPriceSegmentDaoImpl extends HibernateCommonDAO<GoodsPriceSegme
 
 	@Override
 	public List<GoodsPriceSegment> getSegments(Goods goods) {
-		return super.find("from GoodsPriceSegment where goodsId = " + goods.getId());
+		return super.find("from GoodsPriceSegment where goods.id = " + goods.getId());
 	}
 
 }

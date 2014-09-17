@@ -63,16 +63,16 @@ public interface GoodsService {
 
 	public int create(Goods goods, UserProfile userprofile);
 
-	public PaginationSupport getGoodsesPage(String title, String dept, String arr, Integer[] statuses, int queryPage, int merchantId);
-
-	public PaginationSupport getGoodsesPage(String title, String dept, String arr, Integer[] statuses, int queryPage);
+	public PaginationSupport getGoodsesPage(GoodsVo vo);
 
 	/**
 	 * 检测商品库存， 通过通道规则的设置校验库存量
 	 * 
 	 * @param channelToken
-	 * @param goodsId 商品id(root id)
-	 * @param deptDate 出发时间
+	 * @param goodsId
+	 *            商品id(root id)
+	 * @param deptDate
+	 *            出发时间
 	 * @return
 	 */
 	public boolean checkGoods(String channelToken, int goodsId, Date deptDate, int count) throws ThaiException;

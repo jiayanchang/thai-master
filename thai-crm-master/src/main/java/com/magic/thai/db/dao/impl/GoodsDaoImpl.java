@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Criterion;
@@ -63,26 +64,43 @@ public class GoodsDaoImpl extends HibernateCommonDAO<Goods> implements GoodsDao 
 	}
 
 	@Override
-	public PaginationSupport getGoodsesPage(String title, String dept, String arrived, Integer[] statuses, int currPage, Integer merchantId) {
+	public PaginationSupport getGoodsesPage(GoodsVo vo) {
 		ArrayList<Criterion> criterions = new ArrayList<Criterion>();
-		if (StringUtils.isNotBlank(title)) {
-			criterions.add(Restrictions.like("title", title, MatchMode.ANYWHERE));
+		if (StringUtils.isNotBlank(vo.titleKeyword)) {
+			criterions.add(Restrictions.like("title", vo.titleKeyword, MatchMode.ANYWHERE));
 		}
-		if (StringUtils.isNotBlank(dept)) {
-			criterions.add(Restrictions.eq("dept", dept));
+		if (StringUtils.isNotBlank(vo.dept)) {
+			criterions.add(Restrictions.eq("dept", vo.dept));
 		}
-		if (StringUtils.isNotBlank(arrived)) {
-			criterions.add(Restrictions.eq("arrived", dept));
+		if (StringUtils.isNotBlank(vo.arr)) {
+			criterions.add(Restrictions.eq("arrived", vo.arr));
 		}
-		if (statuses != null && statuses.length > 0) {
-			criterions.add(Restrictions.in("status", statuses));
+		if (vo.statuses != null && vo.statuses.length > 0) {
+			criterions.add(Restrictions.in("status", vo.statuses));
 		}
-		if (merchantId != null) {
-			criterions.add(Restrictions.eq("merchantId", merchantId));
+		if (vo.status >= 0) {
+			criterions.add(Restrictions.eq("status", vo.status));
+		}
+		if (StringUtils.isNotBlank(vo.merchantId)) {
+			criterions.add(Restrictions.eq("merchantId", NumberUtils.toInt(vo.merchantId)));
+		}
+		if (StringUtils.isNotBlank(vo.merchantName)) {
+			criterions.add(Restrictions.like("merchantName", vo.merchantName, MatchMode.ANYWHERE));
+		}
+		if (StringUtils.isNotBlank(vo.goodsId)) {
+			criterions.add(Restrictions.eq("id", vo.goodsId));
+		}
+		if (StringUtils.isNotBlank(vo.goodsName)) {
+			criterions.add(Restrictions.like("goodsName", vo.goodsName, MatchMode.ANYWHERE));
+		}
+		if (vo.excludeStatuses != null && vo.excludeStatuses.length > 0) {
+			for (Integer s : vo.excludeStatuses) {
+				criterions.add(Restrictions.ne("status", s));
+			}
 		}
 		criterions.add(Restrictions.eq("readOnly", false));
 		criterions.add(Restrictions.ne("status", Merchant.Status.DELETED));
-		return super.find(criterions, currPage, 30);
+		return super.find(criterions, vo.page, 30);
 	}
 
 	@Override

@@ -12,6 +12,6 @@ public interface OrderDao {
 
 	public void update(Order entity);
 
-	public PaginationSupport getOrderesPage(OrderVo vo, int currPage, Integer merchantId);
+	public PaginationSupport getOrderesPage(OrderVo vo);
 
 }

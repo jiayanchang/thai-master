@@ -8,11 +8,15 @@ import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.magic.thai.db.domain.Order;
 import com.magic.thai.db.service.MerchantService;
+import com.magic.thai.db.service.OrderService;
+import com.magic.thai.db.vo.OrderVo;
 
 @Controller
 @RequestMapping(value = "/a/order")
@@ -20,6 +24,9 @@ public class OrderController {
 
 	@Autowired
 	MerchantService merchantService;
+
+	@Autowired
+	OrderService orderService;
 
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
@@ -30,8 +37,23 @@ public class OrderController {
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView listUserPage() {
+		OrderVo vo = new OrderVo();
+		return listPost(vo);
+	}
+
+	@RequestMapping(value = "/list", method = RequestMethod.POST)
+	public ModelAndView listPost(@ModelAttribute OrderVo vo) {
 		ModelAndView modelandView = new ModelAndView("/admin/order/list");
+		modelandView.addObject("vo", vo);
+		modelandView.addObject("ps", orderService.getOrderesPage(vo));
 		return modelandView;
+	}
+
+	@RequestMapping(value = "/waittings", method = RequestMethod.GET)
+	public ModelAndView waittings() {
+		OrderVo vo = new OrderVo();
+		vo.statuses = new Integer[] { Order.Status.NEW };
+		return listPost(vo);
 	}
 
 }

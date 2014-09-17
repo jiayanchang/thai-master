@@ -49,9 +49,9 @@ public interface OrderService {
 
 	public void update(Order orderbean, UserProfile userprofile) throws OrderStatusException;
 
-	public PaginationSupport getOrderesPage(OrderVo vo, int queryPage, int merchantId);
+	public PaginationSupport getOrderesPage(OrderVo vo, int merchantId);
 
-	public PaginationSupport getOrderesPage(OrderVo vo, int queryPage);
+	public PaginationSupport getOrderesPage(OrderVo vo);
 
 	/**
 	 * 获取待确认订单数量

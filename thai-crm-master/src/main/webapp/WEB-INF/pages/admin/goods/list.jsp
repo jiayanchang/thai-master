@@ -3,16 +3,14 @@
 <%@ page language="java" pageEncoding="UTF-8"%>  
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<div class="content">
 <h1>商品列表</h1>
 <p>Here you can see the list of the goods, add them, remove or update.</p>
 
 <p>${message}</p>
 
 <br/>
-<div class="data">
 <c:url var="submitUrl" value="/a/goods/list"/>
-<form:form action="${submitUrl}" method="POST">
+<form:form action="${submitUrl}" method="POST" commandName="vo">
 <table border="1px" cellpadding="0" cellspacing="0" width="100%">
 <tr> 
 	<td>商品名称：</td>
@@ -21,21 +19,27 @@
 	<td></td>
 </tr>
 <tr> 
-	<td>出发地：</td>
-	<td><input name="dept" value="${dept }"/></td>
-	<td>目的地：</td>
-	<td><input name="arr" value="${arr }"/></td>
+	<td>产品编号：</td>
+	<td><form:input path="goodsId"/></td>
+	<td>产品名称：</td>
+	<td><form:input path="goodsName"/></td>
 	<td>状态</td>
 	<td>
+	
 		<select name="status">
 			<option value="-1" >全部</option>
-			<option value="0">新商品待上架</option>
 			<option value="1">待审核</option>
-			<option value="2">审核失败</option>
 			<option value="3">已上架</option>
 			<option value="4">已下架</option>
 		</select>
 	</td>
+</tr>
+<tr> 
+	<td>商家编号：</td>
+	<td><form:input path="merchantId"/></td>
+	<td>商家名称：</td>
+	<td><form:input path="merchantName"/></td>
+	<td></td>
 	<td><input type="submit" value="submit" class="button2" /></td>
 </tr>
 </table>
@@ -76,8 +80,7 @@
 	</c:forEach>
 	</tbody>
 </table>
-</div>
-<input name="page" type="hidden" value="1"/>
+<%@ include file="../../page.jsp"%>
 </form:form>
 <div id="dialog-form" title="Basic dialog">
 	<input type="hidden" id="goodsId"/>
@@ -126,4 +129,3 @@ function openDialog(id) {
 	dialog.dialog( "open" );
 }
 </script>
-</div>
