@@ -8,7 +8,7 @@ import com.magic.thai.db.domain.OrderTraveler;
 public class TravelerVo {
 
 	private String name;
-	private Integer idType;
+	private Integer idType = OrderTraveler.IdType.IDCARD;
 	private Integer gender = OrderTraveler.Gender.MALE;
 	private String birth;
 	private String effectiveDate;// 证件有效期

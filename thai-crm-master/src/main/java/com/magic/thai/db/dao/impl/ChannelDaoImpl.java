@@ -52,7 +52,7 @@ public class ChannelDaoImpl extends HibernateCommonDAO<Channel> implements Chann
 
 	@Override
 	public Channel fetchByToken(String token) {
-		String hql = "from Channel where token = '" + token + "' status != " + Channel.Status.DELETED;
+		String hql = "from Channel where token = '" + token + "' and status != " + Channel.Status.DELETED;
 		List<Channel> channels = super.find(hql);
 		Channel channel = null;
 		if (channels != null && channels.size() > 0) {

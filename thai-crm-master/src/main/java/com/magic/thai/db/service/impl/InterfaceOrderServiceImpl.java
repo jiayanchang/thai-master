@@ -9,10 +9,12 @@ import org.springframework.transaction.annotation.Transactional;
 import com.magic.thai.db.dao.ChannelDao;
 import com.magic.thai.db.dao.GoodsDao;
 import com.magic.thai.db.dao.OrderDao;
+import com.magic.thai.db.dao.OrderLogDao;
 import com.magic.thai.db.dao.OrderTravelerDao;
 import com.magic.thai.db.domain.Channel;
 import com.magic.thai.db.domain.Goods;
 import com.magic.thai.db.domain.Order;
+import com.magic.thai.db.domain.OrderLog;
 import com.magic.thai.db.domain.OrderTraveler;
 import com.magic.thai.db.service.GoodsService;
 import com.magic.thai.db.service.InterfaceOrderService;
@@ -33,7 +35,7 @@ import com.magic.thai.web.ws.vo.TravelerVo;
 
 @Service("interfaceOrderService")
 @Transactional
-public class IntefaceOrderServiceImpl extends ServiceHelperImpl<Order> implements InterfaceOrderService {
+public class InterfaceOrderServiceImpl extends ServiceHelperImpl<Order> implements InterfaceOrderService {
 
 	@Autowired
 	private OrderDao orderDao;
@@ -47,6 +49,8 @@ public class IntefaceOrderServiceImpl extends ServiceHelperImpl<Order> implement
 	private GoodsService goodsService;
 	@Autowired
 	private OrderService orderService;
+	@Autowired
+	private OrderLogDao orderLogDao;
 	@Autowired
 	private GoodsPriceCalculator goodsPriceCalculator;
 
@@ -74,8 +78,9 @@ public class IntefaceOrderServiceImpl extends ServiceHelperImpl<Order> implement
 		order.setContractorMobile(vo.getOrderContactorMobile());
 		// order.setContractorTel();
 		order.setCreatedDate(new Date());
-		// order.setCreatorId(creatorId);
-		// order.setCreatorName(creatorName);
+		order.setCreatorId(channel.getId());
+		order.setCreatorType(Order.UserType.CHANNEL);
+		order.setCreatorName(channel.getName());
 
 		order.setDeptDate(vo.deptDateObj);
 
@@ -90,7 +95,7 @@ public class IntefaceOrderServiceImpl extends ServiceHelperImpl<Order> implement
 		double sum = 0d;
 		for (TravelerVo travelerVo : vo.getTravelers()) {
 			OrderTraveler orderTraveler = new OrderTraveler();
-
+			orderTraveler.setOrder(order);
 			orderTraveler.setBirth(travelerVo.getBirth());
 			orderTraveler.setEffectiveDate(travelerVo.getEffectiveDate());
 			orderTraveler.setGender(travelerVo.getGender());
@@ -157,6 +162,6 @@ public class IntefaceOrderServiceImpl extends ServiceHelperImpl<Order> implement
 
 		order.setStatus(Order.Status.NEW);// 恢复为待确认
 		orderDao.update(order);
-
+		orderLogDao.create(new OrderLog(order, channel, vo.getReason()));
 	}
 }

@@ -1,6 +1,5 @@
 package com.magic.thai.db.vo;
 
-import java.util.Date;
 
 public class OrderVo {
 
@@ -14,8 +13,8 @@ public class OrderVo {
 	public Integer channelId;
 	public Integer merchantId;
 	public String orderNo;
-	public Date startDate;
-	public Date endDate;
+	public String startDate;
+	public String endDate;
 	public String dept;
 	public String arr;
 	public int limitF4list = -1;
@@ -40,19 +39,19 @@ public class OrderVo {
 		this.orderNo = orderNo;
 	}
 
-	public Date getStartDate() {
+	public String getStartDate() {
 		return startDate;
 	}
 
-	public void setStartDate(Date startDate) {
+	public void setStartDate(String startDate) {
 		this.startDate = startDate;
 	}
 
-	public Date getEndDate() {
+	public String getEndDate() {
 		return endDate;
 	}
 
-	public void setEndDate(Date endDate) {
+	public void setEndDate(String endDate) {
 		this.endDate = endDate;
 	}
 

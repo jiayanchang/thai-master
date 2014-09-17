@@ -23,7 +23,7 @@ public class OrderLog {
 		this.creatorId = user.getId();
 		this.createdDate = new Date();
 		this.creatorName = user.getCodeName();
-		this.creatorType = Type.USER;
+		this.creatorType = Order.UserType.USER;
 	}
 
 	public OrderLog(Order order, Channel channel, String content) {
@@ -32,7 +32,7 @@ public class OrderLog {
 		this.creatorId = channel.getId();
 		this.createdDate = new Date();
 		this.creatorName = channel.getName();
-		this.creatorType = Type.CHANNEL;
+		this.creatorType = Order.UserType.CHANNEL;
 	}
 
 	@Id
@@ -52,18 +52,6 @@ public class OrderLog {
 	private Date createdDate;
 	@Column(name = "creator_name")
 	private String creatorName;
-
-	/**
-	 * 0=用户 1=客服 2=系统 3=渠道接口
-	 * 
-	 * @author yanchang
-	 */
-	public static class Type {
-		public static final int USER = 0;
-		public static final int STAFF = 1;
-		public static final int SYSTEM = 2;
-		public static final int CHANNEL = 3;
-	}
 
 	public int getId() {
 		return id;

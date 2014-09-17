@@ -9,7 +9,7 @@ public interface OrderLogDao {
 
 	public Integer create(OrderLog entity);
 
-	public List<OrderLog> getLogs(int orderRootId);
+	public List<OrderLog> getLogs(int orderId);
 
 	public List<OrderLog> getLogs(Order order);
 }

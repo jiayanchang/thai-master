@@ -27,6 +27,7 @@ import org.springframework.http.client.SimpleClientHttpRequestFactory;
 
 import com.magic.thai.web.ws.vo.CreateOrderVo;
 import com.magic.thai.web.ws.vo.ErrorMessage;
+import com.magic.thai.web.ws.vo.TravelerVo;
 import com.magic.thai.web.ws.vo.WebServiceResult;
 
 public class WebServiceControllorTest {
@@ -36,9 +37,28 @@ public class WebServiceControllorTest {
 		String url = "http://localhost:8080/crm/ws/createOrder";
 
 		CreateOrderVo createOrderVo = new CreateOrderVo();
+		createOrderVo.setDeptDate("2014-01-02");
+		createOrderVo.setGoodsId(1);
+		createOrderVo.setOrderContactorMobile("13900987766");
 		createOrderVo.setOrderContactor("贾彦昌");
+		createOrderVo.setToken("61ab279c07a758c9e64f40fec837e4");
+
+		TravelerVo vo = new TravelerVo();
+		// vo.setBirth(birth);
+		// vo.setEffectiveDate(effectiveDate);
+		// vo.setGender(gender);
+		vo.setIdNo("2929384747473939922");
+		// vo.setIdType(idType);
+		vo.setMobile("13900987766");
+		vo.setName("贾彦昌");
+		vo.setNationality("中国");
+		// vo.setType(type);
+
+		createOrderVo.getTravelers().add(vo);
+
 		// String xmlData = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
-		// xmlData += "<user><username>zhang</username><password>123</password></user>";
+		// xmlData +=
+		// "<user><username>zhang</username><password>123</password></user>";
 		JAXBContext jaxbContext = JAXBContext.newInstance(CreateOrderVo.class);
 		Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
 		jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
@@ -58,7 +78,8 @@ public class WebServiceControllorTest {
 		post.setEntity(xmlEntity);
 
 		HttpResponse response = new DefaultHttpClient().execute(post);
-		// HttpResponse response = excuteRequest(new DefaultHttpClient(), post, null);
+		// HttpResponse response = excuteRequest(new DefaultHttpClient(), post,
+		// null);
 		HttpEntity responseEntity = response.getEntity();
 		// 如果是块压缩，那需要使用gzip解码
 		Header contentEncoding = response.getFirstHeader("Content-Encoding");
@@ -69,7 +90,7 @@ public class WebServiceControllorTest {
 		System.out.println(html);
 	}
 
-	@Test
+	// @Test
 	public void testTemp() throws Exception {
 		WebServiceResult r = new WebServiceResult();
 		ErrorMessage e = new ErrorMessage();

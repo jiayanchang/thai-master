@@ -1,4 +1,4 @@
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page language="java" pageEncoding="UTF-8"%>  
     
@@ -20,65 +20,65 @@
 
 <br/>
 <div class="data">
-<c:url var="submitUrl" value="/a/user/list"/>
-<form:form action="${submitUrl}" method="POST">
+<c:url var="submitUrl" value="/f/order/list"/>
+<form:form action="${submitUrl}" method="POST" commandName="vo">
 <table border="1px" cellpadding="0" cellspacing="0" width="100%">
 <tr> 
-	<td>用户</td>
-	<td><input name="name" value="${name }"/></td>
-	<td>登录名</td>
-	<td><input name="loginName" value="${loginName }"/></td>
+	<td>订单号：</td>
+	<td><form:input path="orderNo" /></td>
+	<td>下单时间：</td>
+	<td><form:input path="startDate" /></td>
+	<td>--</td>
+	<td><form:input path="endDate" /></td>
 	<td>状态</td>
 	<td>
-		<select name="status">
-			<option value="-1" >全部</option>
-			<option value="0">已启用</option>
-			<option value="1">已停用</option>
-		</select>
+		<form:select path="status">
+			<form:option value="-1" >全部</form:option>
+			<form:option value="0">待确认</form:option>
+			<form:option value="1">已确认</form:option>
+		</form:select>
 	</td>
+</tr>
+<tr> 	
+	<td>出发地：</td>
+	<td><form:input path="dept" /></td>
+	<td>目的地：</td>
+	<td><form:input path="arr" /></td>
 	<td><input type="submit" value="submit" class="button2" /></td>
 </tr>
 </table>
 <table border="1px" cellpadding="0" cellspacing="0" width="100%">
 <thead>
 <tr> 
-<th width="10%">ID</th>
-<th width="30%">用户</th>
-<th width="10%">编号</th>
-<th width="20%">登录名</th>
-<th width="10%">手机</th>
-<th width="10%">状态</th>
+<th width="10%">订单号</th>
+<th width="30%">下单时间</th>
+<th width="10%">联系人</th>
+<th width="20%">联系电话</th>
+<th width="10%">订单状态</th>
+<th width="10%">处理人</th>
 <th>Action</th>
 </tr>
 </thead>
 <tbody>
-<c:forEach items="${ps.items}" var="user" >
+<c:forEach items="${ps.items}" var="order" >
 <tr>
-	<td>${user.id}</td>
-	<td>${user.name}</td>
-	<td>${user.codeName}</td>
-	<td>${user.loginName}</td>
-	<td>${user.mobile}</td>
-	<td>${user.statusDesc}</td>
+	<td>${order.orderNo}</td>
+	<td>${order.createdDate}</td>
+	<td>${order.contractor}</td>
+	<td>${order.contractorMobile}</td>
+	<td>${order.statusDesc}</td>
+	<td>${order.lastOperatorName}</td>
 	<td>
-	<a href="${pageContext.request.contextPath}/a/user/edit/${user.id} ">修改</a><br/>
-	<a href="${pageContext.request.contextPath}/a/user/delete/${user.id} ">删除</a><br/>
+	<a href="${pageContext.request.contextPath}/f/order/edit/${order.id} ">修改</a><br/>
+	<a href="${pageContext.request.contextPath}/f/order/${order.id} ">详情</a><br/>
 	</td>
 </tr>
 </c:forEach>
 </tbody>
 </table>
 </div>
-<table>
-<tr>
-<td>
-</td>
-<td>
-<p><a href="${pageContext.request.contextPath}/a/user/add">新增员工</a></p>
-</td>
-</tr>
-</table>
-<input name="page" type="hidden" value="1"/>
+<%@ include file="../../page.jsp"%>
+
 </form:form>
 </div>
 </body>

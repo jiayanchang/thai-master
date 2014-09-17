@@ -42,6 +42,13 @@ public class FrontGoodsController {
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
 	}
 
+	@RequestMapping(value = "/{id}")
+	public ModelAndView listPost(@PathVariable int id) {
+		ModelAndView modelandView = new ModelAndView("/front/goods/view");
+		modelandView.addObject("goods", goodsService.fetch(id));
+		return modelandView;
+	}
+
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView list(HttpSession session) {
 		GoodsVo vo = new GoodsVo();

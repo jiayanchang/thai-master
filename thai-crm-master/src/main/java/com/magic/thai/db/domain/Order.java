@@ -17,7 +17,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
-@Table(name = "order")
+@Table(name = "channel_order")
 @XmlRootElement
 public class Order {
 
@@ -26,7 +26,7 @@ public class Order {
 	@Column(unique = true, nullable = false)
 	private int id;
 
-	@Column(name = "order_no", nullable = false)
+	@Column(name = "order_no")
 	private String orderNo;
 
 	@Column(name = "goods_id", nullable = false)
@@ -38,13 +38,13 @@ public class Order {
 	@Column(name = "channel_id", nullable = false)
 	private int channelId;
 
-	@Column(name = "channelName", nullable = false)
+	@Column(name = "channel_name", nullable = false)
 	private String channelName;
 
 	@Column(name = "merchant_id", nullable = false)
 	private int merchantId;
 
-	@Column(name = "merchantName", nullable = false)
+	@Column(name = "merchant_name", nullable = false)
 	private String merchantName;
 
 	@Column
@@ -77,6 +77,9 @@ public class Order {
 	@Column(name = "creator_name")
 	private String creatorName;
 
+	@Column(name = "creator_type")
+	private int creatorType;
+
 	@Column(name = "last_operator_id")
 	private int lastOperatorId;
 
@@ -86,7 +89,7 @@ public class Order {
 	@Column(name = "last_operator_name")
 	private String lastOperatorName;
 
-	@OneToMany(mappedBy = "traveler")
+	@OneToMany(mappedBy = "order")
 	private List<OrderTraveler> travelers = new ArrayList<OrderTraveler>();
 
 	/**
@@ -108,6 +111,18 @@ public class Order {
 		} else {
 			return "待确认";
 		}
+	}
+
+	/**
+	 * 0=用户 1=客服 2=系统 3=渠道接口
+	 * 
+	 * @author yanchang
+	 */
+	public static class UserType {
+		public static final int USER = 0;
+		public static final int STAFF = 1;
+		public static final int SYSTEM = 2;
+		public static final int CHANNEL = 3;
 	}
 
 	@XmlTransient
@@ -303,6 +318,14 @@ public class Order {
 
 	public void setGoodsName(String goodsName) {
 		this.goodsName = goodsName;
+	}
+
+	public int getCreatorType() {
+		return creatorType;
+	}
+
+	public void setCreatorType(int creatorType) {
+		this.creatorType = creatorType;
 	}
 
 }

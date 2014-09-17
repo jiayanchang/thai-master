@@ -13,7 +13,7 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
-@Table(name = "order_traveler")
+@Table(name = "channel_order_traveler")
 public class OrderTraveler {
 
 	@Id
@@ -38,6 +38,8 @@ public class OrderTraveler {
 	private String effectiveDate;// 证件有效期
 	@Column(name = "birth")
 	private String birth;
+	@Column(name = "nationality")
+	private String nationality;
 	@Column(name = "mobile")
 	private String mobile;
 	@Column(name = "type", nullable = false)
@@ -55,6 +57,14 @@ public class OrderTraveler {
 		public static final int CHILD = 1;// 儿童
 	}
 
+	public String getTypeDesc() {
+		if (type == Type.ADULT) {
+			return "成人";
+		} else {
+			return "儿童";
+		}
+	}
+
 	/**
 	 * 0为男，1为女，2为未知或其他
 	 * 
@@ -64,6 +74,39 @@ public class OrderTraveler {
 		public static final int MALE = 0;// 男
 		public static final int FEMALE = 1;// 女
 		public static final int UNKNOW = 2;// 未知
+	}
+
+	public String getGenderDesc() {
+		if (gender == Gender.MALE) {
+			return "男";
+		} else if (gender == Gender.MALE) {
+			return "女";
+		} else {
+			return "未知";
+		}
+	}
+
+	/**
+	 * 身份证、护照
+	 * 
+	 * @author yanchang
+	 *
+	 */
+	public static class IdType {
+
+		public static final int IDCARD = 0;
+		public static final int PASSPORT = 1;
+		public static final int OTHER = 9;
+	}
+
+	public String getIdTypeDesc() {
+		if (idType == IdType.IDCARD) {
+			return "身份证";
+		} else if (idType == IdType.PASSPORT) {
+			return "护照";
+		} else {
+			return "其他";
+		}
 	}
 
 	@XmlTransient
@@ -159,6 +202,14 @@ public class OrderTraveler {
 
 	public void setPrice(double price) {
 		this.price = price;
+	}
+
+	public String getNationality() {
+		return nationality;
+	}
+
+	public void setNationality(String nationality) {
+		this.nationality = nationality;
 	}
 
 	@Override

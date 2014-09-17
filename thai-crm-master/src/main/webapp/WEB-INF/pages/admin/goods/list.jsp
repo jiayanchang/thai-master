@@ -9,7 +9,7 @@
 <p>${message}</p>
 
 <br/>
-<c:url var="submitUrl" value="/a/goods/list"/>
+<c:url var="submitUrl" value="/f/goods/list"/>
 <form:form action="${submitUrl}" method="POST" commandName="vo">
 <table border="1px" cellpadding="0" cellspacing="0" width="100%">
 <tr> 
@@ -80,7 +80,9 @@
 	</c:forEach>
 	</tbody>
 </table>
+
 <%@ include file="../../page.jsp"%>
+
 </form:form>
 <div id="dialog-form" title="Basic dialog">
 	<input type="hidden" id="goodsId"/>

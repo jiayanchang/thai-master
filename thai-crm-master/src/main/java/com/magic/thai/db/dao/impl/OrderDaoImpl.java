@@ -72,12 +72,28 @@ public class OrderDaoImpl extends HibernateCommonDAO<Order> implements OrderDao 
 		if (vo.statuses != null && vo.statuses.length > 0) {
 			criterions.add(Restrictions.in("status", vo.statuses));
 		}
+		if (vo.status != null && vo.status >= 0) {
+			criterions.add(Restrictions.eq("status", vo.status));
+		}
 		if (vo.channelId != null) {
 			criterions.add(Restrictions.eq("channelId", vo.channelId));
 		}
 		if (vo.merchantId != null) {
 			criterions.add(Restrictions.eq("merchantId", vo.merchantId));
 		}
+		if (StringUtils.isNotBlank(vo.startDate)) {
+			criterions.add(Restrictions.ge("createdDate", vo.startDate));
+		}
+		if (StringUtils.isNotBlank(vo.endDate)) {
+			criterions.add(Restrictions.le("createdDate", vo.endDate));
+		}
+		if (StringUtils.isNotBlank(vo.dept)) {
+			criterions.add(Restrictions.eq("dept", vo.dept));
+		}
+		if (StringUtils.isNotBlank(vo.dept)) {
+			criterions.add(Restrictions.eq("createdDate", vo.dept));
+		}
+
 		criterions.add(Restrictions.ne("status", Merchant.Status.DELETED));
 		return super.find(criterions, vo.page, 30);
 	}

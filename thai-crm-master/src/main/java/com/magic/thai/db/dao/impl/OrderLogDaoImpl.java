@@ -28,7 +28,7 @@ public class OrderLogDaoImpl extends HibernateCommonDAO<OrderLog> implements Ord
 
 	@Override
 	public List<OrderLog> getLogs(int orderRootId) {
-		return super.find("from OrderLog where orderRootId = " + orderRootId);
+		return super.find("from OrderLog where orderId = " + orderRootId);
 	}
 
 	@Override

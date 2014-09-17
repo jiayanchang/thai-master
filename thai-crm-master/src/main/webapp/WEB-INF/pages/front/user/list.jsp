@@ -20,7 +20,7 @@
 
 <br/>
 <div class="data">
-<c:url var="submitUrl" value="/a/user/list"/>
+<c:url var="submitUrl" value="/f/user/list"/>
 <form:form action="${submitUrl}" method="POST">
 <table border="1px" cellpadding="0" cellspacing="0" width="100%">
 <tr> 
@@ -69,16 +69,9 @@
 </tbody>
 </table>
 </div>
-<table>
-<tr>
-<td>
-</td>
-<td>
-<p><a href="${pageContext.request.contextPath}/a/user/add">新增员工</a></p>
-</td>
-</tr>
-</table>
-<input name="page" type="hidden" value="1"/>
+
+<%@ include file="../../page.jsp"%>
+
 </form:form>
 </div>
 </body>

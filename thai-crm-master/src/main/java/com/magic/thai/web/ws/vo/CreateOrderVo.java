@@ -1,5 +1,6 @@
 package com.magic.thai.web.ws.vo;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -63,6 +64,9 @@ public class CreateOrderVo {
 	@XmlElementWrapper(name = "travelers")
 	@XmlElement(name = "traveler")
 	public List<TravelerVo> getTravelers() {
+		if (travelers == null) {
+			travelers = new ArrayList<TravelerVo>();
+		}
 		return travelers;
 	}
 

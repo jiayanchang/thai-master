@@ -65,16 +65,9 @@
 </tbody>
 </table>
 </div>
-<table>
-<tr>
-<td>
-</td>
-<td>
-<p><a href="${pageContext.request.contextPath}/a/merchant/add">新增商户</a></p>
-</td>
-</tr>
-</table>
-<input name="page" type="hidden" value="1"/>
+
+<%@ include file="../../page.jsp"%>
+
 </form:form>
 </div>
 </body>

@@ -13,17 +13,17 @@
 </td>
 <td>
 	<ul style="float: left">
-		<li><a href="${pageContext.request.contextPath}/a/goods/list">商品管理</a></li>
+		<li><a href="${pageContext.request.contextPath}/f/goods/list">商品管理</a></li>
 		<li>订单管理</li>
-		<li><a href="${pageContext.request.contextPath}/a/merchant/list">系统管理</a></li>
+		<li><a href="${pageContext.request.contextPath}/f/user/list">系统管理</a></li>
 	</ul>
 </td>
 </tr>
 <tr>
 <td>
 	<ul>
-		<li>新建渠道</li>
-		<li>渠道查询</li>
+		<li><a href="${pageContext.request.contextPath}/f/order/add">新建订单</a></li>
+		<li><a href="${pageContext.request.contextPath}/f/order/list">订单查询</a></li>
 	</ul>
 </td>
 <td>

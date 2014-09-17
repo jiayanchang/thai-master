@@ -11,6 +11,7 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.PropertyException;
 import javax.xml.bind.Unmarshaller;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,10 +49,10 @@ public class WebServiceControllor {
 		CreateOrderVo vo = (CreateOrderVo) unmarshall(requestBody, CreateOrderVo.class);
 		// WebServiceResult result = new WebServiceResult();
 		try {
-			Asserts.notNull(vo.getToken(), new ParameterException("TOKEN不能为空"));
-			Asserts.notNull(vo.getDeptDate(), new ParameterException("出发日期不能为空"));
+			Asserts.isTrue(StringUtils.isNotBlank(vo.getToken()), new ParameterException("TOKEN不能为空"));
+			Asserts.isTrue(StringUtils.isNotBlank(vo.getDeptDate()), new ParameterException("出发日期不能为空"));
 			Asserts.notNull(vo.getGoodsId(), new ParameterException("商品ID不能为空"));
-			Asserts.notNull(vo.getOrderContactor(), new ParameterException("订单联系人不能为空"));
+			Asserts.isTrue(StringUtils.isNotBlank(vo.getOrderContactor()), new ParameterException("订单联系人不能为空"));
 			Asserts.notNull(vo.getTravelers(), new ParameterException("游客不能为空"));
 			Asserts.isTrue(vo.getTravelers().size() > 0, new ParameterException("游客不能为空"));
 
@@ -61,10 +62,10 @@ public class WebServiceControllor {
 				throw new ParameterException("出发日期格式异常");
 			}
 			for (TravelerVo travelerVo : vo.getTravelers()) {
-				Asserts.notNull(travelerVo.getIdNo(), new ParameterException("游客证件号不能为空"));
+				Asserts.isTrue(StringUtils.isNotBlank(travelerVo.getIdNo()), new ParameterException("游客证件号不能为空"));
 				Asserts.notNull(travelerVo.getIdType(), new ParameterException("游客证件类型不能为空"));
-				Asserts.notNull(travelerVo.getName(), new ParameterException("游客姓名不能为空"));
-				Asserts.notNull(travelerVo.getNationality(), new ParameterException("游客国籍不能为空"));
+				Asserts.isTrue(StringUtils.isNotBlank(travelerVo.getName()), new ParameterException("游客姓名不能为空"));
+				Asserts.isTrue(StringUtils.isNotBlank(travelerVo.getNationality()), new ParameterException("游客国籍不能为空"));
 			}
 			Order order = interfaceOrderService.create(vo);
 			responseResult(response, new WebServiceResult().success(order));

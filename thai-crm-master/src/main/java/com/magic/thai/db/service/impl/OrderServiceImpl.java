@@ -1,5 +1,6 @@
 package com.magic.thai.db.service.impl;
 
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,8 +28,9 @@ public class OrderServiceImpl extends ServiceHelperImpl<User> implements OrderSe
 
 	@Override
 	public Order fetch(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		Order order = orderDao.loadById(id);
+		Hibernate.initialize(order.getTravelers());
+		return order;
 	}
 
 	@Override

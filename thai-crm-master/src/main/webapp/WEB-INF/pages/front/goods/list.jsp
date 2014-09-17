@@ -71,6 +71,7 @@
 	</tbody>
 </table>
 </div>
-<input name="page" type="hidden" value="1"/>
+
+<%@ include file="../../page.jsp"%>
 </form:form>
 </div>

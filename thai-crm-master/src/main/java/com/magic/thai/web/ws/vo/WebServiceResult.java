@@ -33,7 +33,7 @@ public class WebServiceResult {
 
 	public WebServiceResult fail(ThaiException e) {
 		setData(new ErrorMessage(e.getErrorCode().name(), e.getMessage()));
-		setSuccess(true);
+		setSuccess(false);
 		return this;
 	}
 
