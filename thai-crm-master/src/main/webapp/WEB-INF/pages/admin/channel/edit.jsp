@@ -20,110 +20,108 @@
 	}
 	</style>
 
-	<div class="content">
-		<h1>渠道库存管理</h1>
-		<c:url var="addUrl" value="/a/channel/edit/process"/>
-		<form:form action="${addUrl}" method="POST" commandName="channel">
-			<form:hidden path="id"/>
-			<table>
-				<tr>
-					<td>渠道名称 :</td>
-					<td>${channel.name}</td>
-					<td>运营人 :</td>
+<h1>渠道库存管理</h1>
+<c:url var="addUrl" value="/a/channel/edit/process"/>
+<form:form action="${addUrl}" method="POST" commandName="channel">
+	<form:hidden path="id"/>
+	<table>
+		<tr>
+			<td>渠道名称 :</td>
+			<td>${channel.name}</td>
+			<td>运营人 :</td>
+			<td>
+				<form:select path="operatorId">
+					<option value="0"></option>
+					<c:forEach var="user" items="${users }">
+						<form:option value="${user.id}">${user.name }</form:option>
+					</c:forEach>
+				</form:select>
+			</td>
+			<td><form:errors path="operatorId" cssClass="error" /></td>
+		</tr>
+	</table>
+	按商品匹配：
+	<select id="goods" name="goods">
+		<option value="0"></option>
+		<c:forEach var="goods" items="${goodses }">
+			<option value="${goods.id}">${goods.title }</option>
+		</c:forEach>
+	</select>
+	<br>
+	<a href="javascript:addGoods();">添加</a>
+	<table id="goodsInvsTbl">
+		<thead>
+		<tr>
+			<th>商品名称</th>
+			<th>总库存</th>
+			<th>分配库存</th>
+			<th>已售数量</th>
+			<th>商品剩余数量</th>
+			<th>操作</th>
+		</tr>
+		</thead>
+		<tbody>
+			<c:forEach var="goodsInv" items="${channel.goodsInvs }" varStatus="status">
+				<tr idx="${goodsInv.id}">
+					<td>${goodsInv.goods.title}</td>
+					<td>${goodsInv.goods.goodsCount}</td>
 					<td>
-						<form:select path="operatorId">
-							<option value="0"></option>
-							<c:forEach var="user" items="${users }">
-								<form:option value="${user.id}">${user.name }</form:option>
-							</c:forEach>
-						</form:select>
+						<input type="hidden" tag="id" name="goodsInvs[${status.index }].id" value="${goodsInv.id}"/>
+						<input type="hidden" tag="gid" name="goodsInvs[${status.index }].goodsId" value="${goodsInv.goodsId}"/>
+						<input tag="allocatedAmount" name="goodsInvs[${status.index }].allocatedAmount" value="${goodsInv.allocatedAmount}"/>
 					</td>
-					<td><form:errors path="operatorId" cssClass="error" /></td>
+					<td>${goodsInv.goods.soldCount}</td>
+					<td>${goodsInv.goods.goodsCount - goodsInv.goods.soldCount}</td>
+					<td><a href="javascript:removeGoods(${goodsInv.id});">删除</a></td>
 				</tr>
-			</table>
-			按商品匹配：
-			<select id="goods" name="goods">
-				<option value="0"></option>
-				<c:forEach var="goods" items="${goodses }">
-					<option value="${goods.id}">${goods.title }</option>
-				</c:forEach>
-			</select>
-			<br>
-			<a href="javascript:addGoods();">添加</a>
-			<table id="goodsInvsTbl">
-				<thead>
-				<tr>
-					<th>商品名称</th>
-					<th>总库存</th>
-					<th>分配库存</th>
-					<th>已售数量</th>
-					<th>商品剩余数量</th>
-					<th>操作</th>
+			</c:forEach>
+		</tbody>
+	</table>
+	按商家匹配：
+	<select id="merchant" name="merchant">
+		<option value="0"></option>
+		<c:forEach var="merchant" items="${merchants }">
+			<option value="${merchant.id}">${merchant.name }</option>
+		</c:forEach>
+	</select>
+	<br>
+	<a href="javascript:addMerchant();">添加</a>
+	<table id="merchantInvsTbl">
+		<thead>
+			<tr>
+				<th>商家名称</th>
+				<th>总库存</th>
+				<th>分配库存</th>
+				<th>已售数量</th>
+				<th>订单量</th>
+				<th>交易额</th>
+				<th>操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			<c:forEach var="merchantInv" items="${channel.merchantInvs }" varStatus="status">
+				<tr idx="${merchantInv.id }">
+					<td>${merchantInv.merchant.name }</td>
+					<td></td>
+					<td>
+					<input type="hidden" tag="id" name="merchantInvs[${status.index }].id" value="${merchantInv.id }"/>
+					<input type="hidden" tag="mid" name="merchantInvs[${status.index }].merchantId" value="${merchantInv.merchantId }"/>
+					<input type="type" tag="allocatedAmount" name="merchantInvs[${status.index }].allocatedAmount" value="${merchantInv.allocatedAmount }"/></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td><a href="javascript:removeMerchant(${merchantInv.id });">删除</a></td>
 				</tr>
-				</thead>
-				<tbody>
-					<c:forEach var="goodsInv" items="${channel.goodsInvs }" varStatus="status">
-						<tr idx="${goodsInv.id}">
-							<td>${goodsInv.goods.title}</td>
-							<td>${goodsInv.goods.goodsCount}</td>
-							<td>
-								<input type="hidden" tag="id" name="goodsInvs[${status.index }].id" value="${goodsInv.id}"/>
-								<input type="hidden" tag="gid" name="goodsInvs[${status.index }].goodsId" value="${goodsInv.goodsId}"/>
-								<input tag="allocatedAmount" name="goodsInvs[${status.index }].allocatedAmount" value="${goodsInv.allocatedAmount}"/>
-							</td>
-							<td>${goodsInv.goods.soldCount}</td>
-							<td>${goodsInv.goods.goodsCount - goodsInv.goods.soldCount}</td>
-							<td><a href="javascript:removeGoods(${goodsInv.id});">删除</a></td>
-						</tr>
-					</c:forEach>
-				</tbody>
-			</table>
-			按商家匹配：
-			<select id="merchant" name="merchant">
-				<option value="0"></option>
-				<c:forEach var="merchant" items="${merchants }">
-					<option value="${merchant.id}">${merchant.name }</option>
-				</c:forEach>
-			</select>
-			<br>
-			<a href="javascript:addMerchant();">添加</a>
-			<table id="merchantInvsTbl">
-				<thead>
-					<tr>
-						<th>商家名称</th>
-						<th>总库存</th>
-						<th>分配库存</th>
-						<th>已售数量</th>
-						<th>订单量</th>
-						<th>交易额</th>
-						<th>操作</th>
-					</tr>
-				</thead>
-				<tbody>
-					<c:forEach var="merchantInv" items="${channel.merchantInvs }" varStatus="status">
-						<tr idx="${merchantInv.id }">
-							<td>${merchantInv.merchant.name }</td>
-							<td></td>
-							<td>
-							<input type="hidden" tag="id" name="merchantInvs[${status.index }].id" value="${merchantInv.id }"/>
-							<input type="hidden" tag="mid" name="merchantInvs[${status.index }].merchantId" value="${merchantInv.merchantId }"/>
-							<input type="type" tag="allocatedAmount" name="merchantInvs[${status.index }].allocatedAmount" value="${merchantInv.allocatedAmount }"/></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td><a href="javascript:removeMerchant(${merchantInv.id });">删除</a></td>
-						</tr>
-					</c:forEach>
-				</tbody>
-			</table>
-			
-			<table>
-				<tr>
-					<td><input type="submit" value="submit" class="button2" /></td>
-				</tr>
-			</table>
-		</form:form>
-	</div>
+			</c:forEach>
+		</tbody>
+	</table>
+	
+	<table>
+		<tr>
+			<td><input type="submit" value="submit" class="button2" /></td>
+		</tr>
+	</table>
+</form:form>
 <script type="text/javascript">
 
 function addGoods(){

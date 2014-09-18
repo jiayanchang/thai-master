@@ -11,15 +11,9 @@
 
 </head>
 <body>
-<div class="content">
 <h1>员工列表</h1>
-<p>Here you can see the list of the user, add them, remove or update.</p>
-
 <p>${message}</p>
-
-
 <br/>
-<div class="data">
 <c:url var="submitUrl" value="/a/user/list"/>
 <form:form action="${submitUrl}" method="POST">
 <table border="1px" cellpadding="0" cellspacing="0" width="100%">
@@ -68,10 +62,8 @@
 </c:forEach>
 </tbody>
 </table>
-</div>
 
 <%@ include file="../../page.jsp"%>
 
 </form:form>
-</div>
 </body>

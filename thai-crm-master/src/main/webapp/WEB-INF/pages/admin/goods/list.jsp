@@ -3,11 +3,9 @@
 <%@ page language="java" pageEncoding="UTF-8"%>  
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+
 <h1>商品列表</h1>
-<p>Here you can see the list of the goods, add them, remove or update.</p>
-
 <p>${message}</p>
-
 <br/>
 <c:url var="submitUrl" value="/f/goods/list"/>
 <form:form action="${submitUrl}" method="POST" commandName="vo">

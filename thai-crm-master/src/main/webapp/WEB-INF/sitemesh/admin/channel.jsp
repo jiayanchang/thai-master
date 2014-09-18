@@ -5,11 +5,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery/jquery-ui.min.js"></script>
 <html>
 <header>
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/js/jquery/jquery-ui.css">
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/base.css">
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<title>Magic Thai</title>
+	<%@ include file="../head.jsp"%>
 </header>
 <body>
 <table>
@@ -17,7 +13,7 @@
 <td>
 	<img src="${pageContext.request.contextPath}/<%=((UserProfile)session.getAttribute("userprofile")).getMerchant().getDetails().getLogoPath()  %>"/>
 	<%=((UserProfile)session.getAttribute("userprofile")).getUser().getName()  %>
-		<a href="${pageContext.request.contextPath}/logout">退出</a>
+	<a href="${pageContext.request.contextPath}/logout">退出</a>
 </td>
 <td>
 	<ul>

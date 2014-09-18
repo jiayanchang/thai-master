@@ -3,20 +3,15 @@
 <%@ taglib prefix="decorator" uri="http://www.opensymphony.com/sitemesh/decorator"%>  
 <html>
 <head>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery/jquery-1.10.2.js"></script>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery/jquery-ui.min.js"></script>
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/js/jquery/jquery-ui.css">
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/base.css">
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
-<!-- 	  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
- -->	
+	<%@ include file="../head.jsp"%>
 </head>
 <body  >
 <table>
 <tr>
 <td>
 	<img src="${pageContext.request.contextPath}/<%=((UserProfile)session.getAttribute("userprofile")).getMerchant().getDetails().getLogoPath()  %>"/>
-		<a href="${pageContext.request.contextPath}/logout">退出</a>
+	<%=((UserProfile)session.getAttribute("userprofile")).getUser().getName()  %>
+	<a href="${pageContext.request.contextPath}/logout">退出</a>
 </td>
 <td>
 	<ul>

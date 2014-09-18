@@ -11,7 +11,8 @@
 <tr>
 <td>
 	<img src="${pageContext.request.contextPath}/<%=((UserProfile)session.getAttribute("userprofile")).getMerchant().getDetails().getLogoPath()  %>"/>
-		<a href="${pageContext.request.contextPath}/logout">退出</a>
+	<%=((UserProfile)session.getAttribute("userprofile")).getUser().getName()  %>
+	<a href="${pageContext.request.contextPath}/logout">退出</a>
 </td>
 <td>
 	<ul style="float: left">

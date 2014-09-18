@@ -20,82 +20,80 @@
 	}
 	</style>
 
-	<div class="content">
-		<h1>添加渠2道</h1>
-		<c:url var="addUrl" value="/a/channel/add"/>
-		<form:form action="${addUrl}" method="POST" commandName="channel">
-			<table>
-				<tr>
-					<td>渠道名称 :</td>
-					<td><form:input path="name" /></td>
-					<td><form:errors path="name" cssClass="error" /></td>
-					<td>运营人 :</td>
-					<td>
-						<form:select path="operatorId">
-							<option value="0"></option>
-							<c:forEach var="user" items="${users }">
-								<form:option value="${user.id}">${user.name }</form:option>
-							</c:forEach>
-						</form:select>
-					</td>
-					<td><form:errors path="operatorId" cssClass="error" /></td>
-				</tr>
-			</table>
-			按商品匹配：
-			<select id="goods" name="goods">
-				<option value="0"></option>
-				<c:forEach var="goods" items="${goodses }">
-					<option value="${goods.id}">${goods.title }</option>
-				</c:forEach>
-			</select>
-			<br>
-			<a href="javascript:addGoods();">添加</a>
-			<table id="goodsInvsTbl">
-				<thead>
-				<tr>
-					<th>商品名称</th>
-					<th>总库存</th>
-					<th>分配库存</th>
-					<th>已售数量</th>
-					<th>商品剩余数量</th>
-					<th>操作</th>
-				</tr>
-				</thead>
-				<tbody>
-				</tbody>
-			</table>
-			按商家匹配：
-			<select id="merchant" name="merchant">
-				<option value="0"></option>
-				<c:forEach var="merchant" items="${merchants }">
-					<option value="${merchant.id}">${merchant.name }</option>
-				</c:forEach>
-			</select>
-			<br>
-			<a href="javascript:addMerchant();">添加</a>
-			<table id="merchantInvsTbl">
-				<thead>
-					<tr>
-						<th>商家名称</th>
-						<th>总库存</th>
-						<th>分配库存</th>
-						<th>已售数量</th>
-						<th>订单量</th>
-						<th>交易额</th>
-						<th>操作</th>
-					</tr>
-				</thead>
-				<tbody>
-				</tbody>
-			</table>
-			
-			<table>
-				<tr>
-					<td><input type="submit" value="submit" class="button2" /></td>
-				</tr>
-			</table>
-		</form:form>
-	</div>
+<h1>添加渠2道</h1>
+<c:url var="addUrl" value="/a/channel/add"/>
+<form:form action="${addUrl}" method="POST" commandName="channel">
+	<table>
+		<tr>
+			<td>渠道名称 :</td>
+			<td><form:input path="name" /></td>
+			<td><form:errors path="name" cssClass="error" /></td>
+			<td>运营人 :</td>
+			<td>
+				<form:select path="operatorId">
+					<option value="0"></option>
+					<c:forEach var="user" items="${users }">
+						<form:option value="${user.id}">${user.name }</form:option>
+					</c:forEach>
+				</form:select>
+			</td>
+			<td><form:errors path="operatorId" cssClass="error" /></td>
+		</tr>
+	</table>
+	按商品匹配：
+	<select id="goods" name="goods">
+		<option value="0"></option>
+		<c:forEach var="goods" items="${goodses }">
+			<option value="${goods.id}">${goods.title }</option>
+		</c:forEach>
+	</select>
+	<br>
+	<a href="javascript:addGoods();">添加</a>
+	<table id="goodsInvsTbl">
+		<thead>
+		<tr>
+			<th>商品名称</th>
+			<th>总库存</th>
+			<th>分配库存</th>
+			<th>已售数量</th>
+			<th>商品剩余数量</th>
+			<th>操作</th>
+		</tr>
+		</thead>
+		<tbody>
+		</tbody>
+	</table>
+	按商家匹配：
+	<select id="merchant" name="merchant">
+		<option value="0"></option>
+		<c:forEach var="merchant" items="${merchants }">
+			<option value="${merchant.id}">${merchant.name }</option>
+		</c:forEach>
+	</select>
+	<br>
+	<a href="javascript:addMerchant();">添加</a>
+	<table id="merchantInvsTbl">
+		<thead>
+			<tr>
+				<th>商家名称</th>
+				<th>总库存</th>
+				<th>分配库存</th>
+				<th>已售数量</th>
+				<th>订单量</th>
+				<th>交易额</th>
+				<th>操作</th>
+			</tr>
+		</thead>
+		<tbody>
+		</tbody>
+	</table>
+	
+	<table>
+		<tr>
+			<td><input type="submit" value="submit" class="button2" /></td>
+		</tr>
+	</table>
+</form:form>
 <script type="text/javascript">
 
 function addGoods(){

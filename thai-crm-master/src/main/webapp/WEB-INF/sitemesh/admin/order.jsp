@@ -3,14 +3,15 @@
 <%@ taglib prefix="decorator" uri="http://www.opensymphony.com/sitemesh/decorator"%>  
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>泰奇幻</title>
+	<%@ include file="../head.jsp"%>
 </head>
 <body>
 <table>
 <tr>
 <td>
 	<img src="${pageContext.request.contextPath}/<%=((UserProfile)session.getAttribute("userprofile")).getMerchant().getDetails().getLogoPath()  %>"/>
+	<%=((UserProfile)session.getAttribute("userprofile")).getUser().getName()  %>
+	<a href="${pageContext.request.contextPath}/logout">退出</a>
 </td>
 <td>
 	<ul style="float: left">
