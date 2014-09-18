@@ -1,3 +1,4 @@
+<%@page import="com.magic.thai.security.UserProfile"%>
 <%@ taglib prefix="decorator" uri="http://www.opensymphony.com/sitemesh/decorator"%>  
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
@@ -6,7 +7,8 @@
 <table>
 <tr>
 <td>
-	<h1>LOGO</h1>
+	<img src="${pageContext.request.contextPath}/<%=((UserProfile)session.getAttribute("userprofile")).getMerchant().getDetails().getLogoPath()  %>"/>
+		<a href="${pageContext.request.contextPath}/logout">退出</a>
 </td>
 <td>
 	<ul>

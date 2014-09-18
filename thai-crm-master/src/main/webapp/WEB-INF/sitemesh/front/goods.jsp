@@ -1,3 +1,4 @@
+<%@page import="com.magic.thai.security.UserProfile"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%> 
@@ -11,7 +12,8 @@
 	<table>
 	<tr>
 	<td>
-		LOGO
+		<img src="${pageContext.request.contextPath}/<%=((UserProfile)session.getAttribute("userprofile")).getMerchant().getDetails().getLogoPath()  %>"/>
+		<a href="${pageContext.request.contextPath}/logout">退出</a>
 	</td>
 	<td>
 		<ul>

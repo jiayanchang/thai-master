@@ -15,7 +15,8 @@
 <table>
 <tr>
 <td>
-	<h1>LOGO</h1>
+	<img src="${pageContext.request.contextPath}/<%=((UserProfile)session.getAttribute("userprofile")).getMerchant().getDetails().getLogoPath()  %>"/>
+		<a href="${pageContext.request.contextPath}/logout">退出</a>
 </td>
 <td>
 	<ul>

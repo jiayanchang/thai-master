@@ -1,3 +1,4 @@
+<%@page import="com.magic.thai.security.UserProfile"%>
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ taglib prefix="decorator" uri="http://www.opensymphony.com/sitemesh/decorator"%>  
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -9,7 +10,8 @@
 <table>
 <tr>
 <td>
-	LOGO
+	<img src="${pageContext.request.contextPath}/<%=((UserProfile)session.getAttribute("userprofile")).getMerchant().getDetails().getLogoPath()  %>"/>
+		<a href="${pageContext.request.contextPath}/logout">退出</a>
 </td>
 <td>
 	<ul style="float: left">

@@ -22,12 +22,12 @@
 <table border="1px" cellpadding="0" cellspacing="0" width="100%">
 	<thead>
 	<tr> 
-		<th width="10%">ID</th>
-		<th width="30%">订单号</th>
-		<th width="30%">所属商家</th>
-		<th width="10%">渠道</th>
-		<th width="20%">下单时间</th>
-		<th width="10%">联系人</th>
+		<th width="5%">ID</th>
+		<th width="10%">订单号</th>
+		<th width="10%">所属商家</th>
+		<th width="5%">渠道</th>
+		<th width="10%">下单时间</th>
+		<th width="5%">联系人</th>
 		<th width="10%">联系电话</th>
 		<th width="10%">订单状态</th>
 		<th width="10%">处理人</th>
@@ -41,14 +41,14 @@
 			<td>${order.orderNo}</td>
 			<td>${order.merchantName}</td>
 			<td>${order.channelName}</td>
-			<td>${order.createDate}</td>
+			<td>${order.createdDate}</td>
 			<td>${order.contractor}</td>
 			<td>${order.contractorTel}</td>
 			<td>${order.statusDesc}</td>
 			<td>${order.lastOperatorName}</td>
 			<td>
-				<a href="javascript:openDialog(${goods.id}); ">编辑备注</a>
-				<a href="${pageContext.request.contextPath}/a/order/${goods.id} ">详情</a>
+				<a href="javascript:openDialog(${order.id}); ">编辑备注</a>
+				<a href="${pageContext.request.contextPath}/a/order/${order.id} ">详情</a>
 			</td>
 		</tr>
 	</c:forEach>

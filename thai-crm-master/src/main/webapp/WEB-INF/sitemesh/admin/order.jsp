@@ -10,8 +10,7 @@
 <table>
 <tr>
 <td>
-	LOGO
-	<img src="<%=((UserProfile)session.getAttribute("userprofile")).getMerchant().getDetails().getLogoPath()  %>"/>
+	<img src="${pageContext.request.contextPath}/<%=((UserProfile)session.getAttribute("userprofile")).getMerchant().getDetails().getLogoPath()  %>"/>
 </td>
 <td>
 	<ul style="float: left">
