@@ -3,6 +3,7 @@ package com.magic.thai.db.domain;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -15,6 +16,9 @@ public class GoodsDetails {
 	@GenericGenerator(name = "id", strategy = "assigned")
 	@Column(nullable = false)
 	private int id;
+
+	@OneToOne(mappedBy = "details")
+	private Goods goods;
 
 	@Column(name = "travel_plan", columnDefinition = "TEXT")
 	private String travelPlan;
@@ -46,6 +50,14 @@ public class GoodsDetails {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public Goods getGoods() {
+		return goods;
+	}
+
+	public void setGoods(Goods goods) {
+		this.goods = goods;
 	}
 
 	public String getTravelPlan() {

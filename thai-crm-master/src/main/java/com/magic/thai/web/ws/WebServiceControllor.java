@@ -3,6 +3,7 @@ package com.magic.thai.web.ws;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.JAXBContext;
@@ -21,6 +22,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.magic.thai.db.domain.Goods;
 import com.magic.thai.db.domain.Order;
 import com.magic.thai.db.service.InterfaceOrderService;
 import com.magic.thai.exception.ThaiException;
@@ -51,9 +53,8 @@ public class WebServiceControllor {
 		// WebServiceResult result = new WebServiceResult();
 		try {
 			Asserts.isTrue(StringUtils.isNotBlank(vo.getToken()), new ParameterException("TOKEN不能为空"));
-
-			// Order order = interfaceOrderService.create(vo);
-			// responseResult(response, new WebServiceResult().success(order));
+			List<Goods> goodses = interfaceOrderService.queryGoodses(vo);
+			responseResult(response, new WebServiceResult().success(goodses));
 		} catch (ThaiException e) {
 			responseResult(response, new WebServiceResult().fail(e));
 			// } catch (JAXBException e) {

@@ -7,6 +7,7 @@ import com.magic.thai.db.domain.Goods;
 import com.magic.thai.db.domain.User;
 import com.magic.thai.db.vo.GoodsVo;
 import com.magic.thai.util.PaginationSupport;
+import com.magic.thai.web.ws.vo.QueryGoodsVo;
 
 public interface GoodsDao {
 
@@ -22,7 +23,7 @@ public interface GoodsDao {
 
 	public List<Goods> list(GoodsVo vo);
 
-	public List<Goods> fetchList(GoodsVo vo, Channel channel);
+	public List<Goods> fetchList(QueryGoodsVo vo, Channel channel);
 
 	public PaginationSupport getGoodsesPage(GoodsVo vo);
 
