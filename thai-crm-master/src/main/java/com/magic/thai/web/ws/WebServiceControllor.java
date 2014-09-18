@@ -30,6 +30,7 @@ import com.magic.thai.exception.webservice.ParameterException;
 import com.magic.thai.util.Asserts;
 import com.magic.thai.web.ws.vo.CheckGoodsVo;
 import com.magic.thai.web.ws.vo.CreateOrderVo;
+import com.magic.thai.web.ws.vo.QueryGoodsVo;
 import com.magic.thai.web.ws.vo.QueryOrderVo;
 import com.magic.thai.web.ws.vo.TravelerVo;
 import com.magic.thai.web.ws.vo.WebServiceResult;
@@ -42,6 +43,26 @@ public class WebServiceControllor {
 
 	@Autowired
 	private InterfaceOrderService interfaceOrderService;
+
+	@RequestMapping(value = "/queryGoods", headers = "Accept=application/xml")
+	public void queryGoods(@RequestBody String requestBody, HttpServletResponse response, ModelMap model) throws Exception {
+		logger.info("threadId={}, queryGoods={}", Thread.currentThread().getId(), requestBody);
+		QueryGoodsVo vo = (QueryGoodsVo) unmarshall(requestBody, QueryGoodsVo.class);
+		// WebServiceResult result = new WebServiceResult();
+		try {
+			Asserts.isTrue(StringUtils.isNotBlank(vo.getToken()), new ParameterException("TOKEN不能为空"));
+
+			// Order order = interfaceOrderService.create(vo);
+			// responseResult(response, new WebServiceResult().success(order));
+		} catch (ThaiException e) {
+			responseResult(response, new WebServiceResult().fail(e));
+			// } catch (JAXBException e) {
+			// responseResult(response, new WebServiceResult().fail(new FormatException("请求参数格式异常")));
+		} catch (Exception e) {
+			e.printStackTrace();
+			responseResult(response, new WebServiceResult().fail(new NativeException("系统内部错误")));
+		}
+	}
 
 	@RequestMapping(value = "/createOrder", headers = "Accept=application/xml")
 	public void createOrder(@RequestBody String requestBody, HttpServletResponse response, ModelMap model) throws Exception {

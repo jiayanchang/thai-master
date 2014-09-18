@@ -117,33 +117,23 @@ public class FrontGoodsController {
 			CommonsMultipartFile linePicPathBFile, CommonsMultipartFile linePicPathCFile, CommonsMultipartFile linePicPathDFile,
 			HttpSession session) {
 		if (uploadFile(picPathFile, session.getServletContext(), goods, "picPath.jpg")) {
-			goods.getDetails().setPicPath("/resources/goods/" + goods.getRootId() + "/picPath.jpg");
-		} else {
-			goods.getDetails().setPicPath(null);
+			goods.getDetails().setPicPath("/resources/goods/" + goods.getId() + "/picPath.jpg");
 		}
 
 		if (uploadFile(linePicPathAFile, session.getServletContext(), goods, "a.jpg")) {
-			goods.getDetails().setLinePicPathA("/resources/goods/" + goods.getRootId() + "/a.jpg");
-		} else {
-			goods.getDetails().setLinePicPathA(null);
+			goods.getDetails().setLinePicPathA("/resources/goods/" + goods.getId() + "/a.jpg");
 		}
 
 		if (uploadFile(linePicPathBFile, session.getServletContext(), goods, "b.jpg")) {
-			goods.getDetails().setLinePicPathB("/resources/goods/" + goods.getRootId() + "/b.jpg");
-		} else {
-			goods.getDetails().setLinePicPathB(null);
+			goods.getDetails().setLinePicPathB("/resources/goods/" + goods.getId() + "/b.jpg");
 		}
 
 		if (uploadFile(linePicPathCFile, session.getServletContext(), goods, "c.jpg")) {
-			goods.getDetails().setLinePicPathC("/resources/goods/" + goods.getRootId() + "/c.jpg");
-		} else {
-			goods.getDetails().setLinePicPathC(null);
+			goods.getDetails().setLinePicPathC("/resources/goods/" + goods.getId() + "/c.jpg");
 		}
 
 		if (uploadFile(linePicPathDFile, session.getServletContext(), goods, "d.jpg")) {
-			goods.getDetails().setLinePicPathD("/resources/goods/" + goods.getRootId() + "/d.jpg");
-		} else {
-			goods.getDetails().setLinePicPathD(null);
+			goods.getDetails().setLinePicPathD("/resources/goods/" + goods.getId() + "/d.jpg");
 		}
 	}
 
@@ -151,7 +141,7 @@ public class FrontGoodsController {
 		if (file == null) {
 			return false;
 		}
-		String parentPath = context.getRealPath("/") + "/upload/goods/" + goods.getRootId();
+		String parentPath = context.getRealPath("/") + "/upload/goods/" + goods.getId();
 		File parentDir = new File(parentPath);
 		if (!parentDir.exists()) {
 			parentDir.mkdir();

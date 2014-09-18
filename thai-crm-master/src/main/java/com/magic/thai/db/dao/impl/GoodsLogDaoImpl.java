@@ -28,12 +28,12 @@ public class GoodsLogDaoImpl extends HibernateCommonDAO<GoodsLog> implements Goo
 
 	@Override
 	public List<GoodsLog> getLogs(int goodsRootId) {
-		return super.find("from GoodsLog where goodsRootId = " + goodsRootId);
+		return super.find("from GoodsLog where goodsId = " + goodsRootId);
 	}
 
 	@Override
 	public List<GoodsLog> getLogs(Goods goods) {
-		return getLogs(goods.getRootId());
+		return getLogs(goods.getId());
 	}
 
 }

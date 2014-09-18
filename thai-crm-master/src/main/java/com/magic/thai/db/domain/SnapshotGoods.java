@@ -16,7 +16,7 @@ import com.google.gson.annotations.Expose;
 
 @Entity
 @Table(name = "goods")
-public class Goods {
+public class SnapshotGoods {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,6 +29,15 @@ public class Goods {
 
 	@Column(name = "merchant_name")
 	private String merchantName;
+
+	@Column(name = "goods_id")
+	private int goodsId;
+
+	@Column(name = "order_id")
+	private int orderId;
+
+	@Column(name = "channel_id")
+	private int channelId;
 
 	@Column
 	@Expose
@@ -65,24 +74,10 @@ public class Goods {
 	private int soldCount;// 已售
 
 	@Transient
-	private GoodsDetails details; // 非hibnate关联
+	private SnapshotGoodsDetails details; // 非hibnate关联
 
-	@OneToMany(mappedBy = "goods")
-	private List<GoodsPriceSegment> segments = new ArrayList<GoodsPriceSegment>();
-
-	/**
-	 * 0=新商品待上架 1=待审核 2=已上架 3=已下架 4=已删除
-	 * 
-	 * @author yanchang
-	 */
-	public static final class Status {
-		public static final int NEW = 0;// 新商品待上架
-		public static final int AUDITING = 1;// 待审核
-		public static final int REJECTED = 2; // 审核失败
-		public static final int DEPLOYED = 3;// 已上架
-		public static final int CANNELED = 4;// 已下架
-		public static final int DELETED = 5;// 已删除
-	}
+	@OneToMany(mappedBy = "snapshotGoods")
+	private List<SnapshotGoodsPriceSegment> segments = new ArrayList<SnapshotGoodsPriceSegment>();
 
 	public int getId() {
 		return id;
@@ -196,39 +191,47 @@ public class Goods {
 		this.adultTotalPrice = adultTotalPrice;
 	}
 
-	public void setDetails(GoodsDetails details) {
-		this.details = details;
+	public int getGoodsId() {
+		return goodsId;
 	}
 
-	public void setSegments(List<GoodsPriceSegment> segments) {
-		this.segments = segments;
+	public void setGoodsId(int goodsId) {
+		this.goodsId = goodsId;
 	}
 
-	public String getStatusDesc() {
-		if (status == Status.DELETED) {
-			return "已删除";
-		} else if (status == Status.CANNELED) {
-			return "已下架";
-		} else if (status == Status.REJECTED) {
-			return "未通过";
-		} else if (status == Status.DEPLOYED) {
-			return "已上架";
-		} else if (status == Status.AUDITING) {
-			return "待审核";
-		} else {
-			return "新商品";
-		}
+	public int getOrderId() {
+		return orderId;
 	}
 
-	public GoodsDetails getDetails() {
+	public void setOrderId(int orderId) {
+		this.orderId = orderId;
+	}
+
+	public int getChannelId() {
+		return channelId;
+	}
+
+	public void setChannelId(int channelId) {
+		this.channelId = channelId;
+	}
+
+	public SnapshotGoodsDetails getDetails() {
 		if (details == null) {
-			details = new GoodsDetails();
+			details = new SnapshotGoodsDetails();
 		}
 		return details;
 	}
 
-	public List<GoodsPriceSegment> getSegments() {
+	public void setDetails(SnapshotGoodsDetails details) {
+		this.details = details;
+	}
+
+	public List<SnapshotGoodsPriceSegment> getSegments() {
 		return segments;
+	}
+
+	public void setSegments(List<SnapshotGoodsPriceSegment> segments) {
+		this.segments = segments;
 	}
 
 	public int getSoldCount() {
@@ -239,37 +242,13 @@ public class Goods {
 		this.soldCount = soldCount;
 	}
 
-	public boolean isAuditing() {
-		return this.status == Status.AUDITING;
-	}
-
-	public boolean isDeployed() {
-		return this.status == Status.DEPLOYED;
-	}
-
-	public GoodsPriceSegment getLastSegment() {
-		if (getSegments().size() > 0) {
-			return getSegments().get(getSegments().size() - 1);
-		}
-		return null;
-	}
-
 	@Override
 	public String toString() {
-		return "Goods [merchantName=" + merchantName + ", title=" + title + ", dept=" + dept + ", arrived=" + arrived + ", status="
-				+ status + ", hotelName=" + hotelName + ", travelDays=" + travelDays + ", goodsCount=" + goodsCount + ", childTotalPrice="
-				+ childTotalPrice + ", adultTotalPrice=" + adultTotalPrice + "]";
+		return "SnapshotGoods [id=" + id + ", merchantId=" + merchantId + ", merchantName=" + merchantName + ", goodsId=" + goodsId
+				+ ", orderId=" + orderId + ", channelId=" + channelId + ", title=" + title + ", dept=" + dept + ", arrived=" + arrived
+				+ ", summary=" + summary + ", status=" + status + ", hotelId=" + hotelId + ", hotelName=" + hotelName + ", travelDays="
+				+ travelDays + ", childTotalPrice=" + childTotalPrice + ", adultTotalPrice=" + adultTotalPrice + ", goodsCount="
+				+ goodsCount + ", soldCount=" + soldCount + ", details=" + details + ", segments=" + segments + "]";
 	}
 
-	// @Override
-	// public boolean equals(Object obj) {
-	// Goods goods = (Goods) obj;
-	//
-	// return goods.getArrived().equalsIgnoreCase(this.getArrived()) &&
-	// goods.getDept().equalsIgnoreCase(this.getDept())
-	// && goods.getTravelDays() == this.getTravelDays() &&
-	// this.getAdultTotalPrice() == goods.getAdultTotalPrice()
-	// && this.getChildTotalPrice() == goods.getChildTotalPrice() &&
-	// this.getHotelId() == goods.getHotelId() && this.get;
-	// }
 }

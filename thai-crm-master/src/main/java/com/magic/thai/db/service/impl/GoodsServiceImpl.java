@@ -3,7 +3,6 @@ package com.magic.thai.db.service.impl;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
 import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -77,12 +76,6 @@ public class GoodsServiceImpl extends ServiceHelperImpl<Goods> implements GoodsS
 
 	@Override
 	public List<Goods> fetchList(String channelToken) {
-		// Channel channel = channelDao.fetchByToken(channelToken);
-		// Goods goods = goodsDao.loadById(id);
-		// goods.setDetails(goodsDetailsDao.loadById(id));
-		// goods.setSegments(goodsPriceSegmentDao.getSegments(goods));
-		// return goods;
-		// TODO
 		return goodsDao.fetchList(null, null);
 	}
 
@@ -151,34 +144,56 @@ public class GoodsServiceImpl extends ServiceHelperImpl<Goods> implements GoodsS
 		if (goods.getStatus() != Goods.Status.AUDITING) {
 			throw new GoodsStatusException(goods.getStatusDesc() + "状态的订单不能修改");
 		}
-		updateFilePath(goods.getDetails(), goodsbean.getDetails());
 		create(goodsbean, userprofile);
-		goodsbean.setRootId(goods.getRootId());
-		goodsbean.setParentId(goods.getId());
-		goodsDao.update(goodsbean);
 
-		goods.setReadOnly(true);
+		goods.setTitle(goodsbean.getTitle());
+		goods.setDept(goodsbean.getDept());
+		goods.setArrived(goodsbean.getArrived());
+		goods.setTravelDays(goodsbean.getTravelDays());
+		goods.setGoodsCount(goodsbean.getGoodsCount());
+		goods.setSummary(goodsbean.getSummary());
+
+		goods.getDetails().setTravelPlan(goodsbean.getDetails().getTravelPlan());
+		goods.getDetails().setCostDesc(goodsbean.getDetails().getCostDesc());
+		goods.getDetails().setBookNotes(goodsbean.getDetails().getBookNotes());
+		goods.getDetails().setNotes(goodsbean.getDetails().getNotes());
+
+		goods.setAdultTotalPrice(0);
+		goods.setChildTotalPrice(0);
+
+		for (int j = goods.getSegments().size() - 1; j >= 0; j--) {
+			GoodsPriceSegment segment = goods.getSegments().get(j);
+			boolean exsits = false;
+			for (int i = goodsbean.getSegments().size() - 1; i >= 0; i--) {
+				GoodsPriceSegment segmentbean = goodsbean.getSegments().get(i);
+
+				if (segmentbean.getId() > 0 && segment.getId() == segmentbean.getId()) {
+					segment.setAuditPrice(segmentbean.getAuditPrice());
+					segment.setChildPrice(segmentbean.getChildPrice());
+					segment.setStartDate(segmentbean.getStartDate());
+					segment.setEndDate(segmentbean.getEndDate());
+					goods.setAdultTotalPrice(segment.getAuditPrice() + goods.getAdultTotalPrice());
+					goods.setChildTotalPrice(segment.getChildPrice() + goods.getChildTotalPrice());
+					segment.setGoods(goods);
+					goodsPriceSegmentDao.update(segment);
+					goodsbean.getSegments().remove(i);
+					exsits = true;
+				}
+			}
+
+			if (!exsits) {
+				goods.getSegments().remove(j);
+				goodsPriceSegmentDao.delete(segment);
+			}
+		}
+
+		for (GoodsPriceSegment segmentbean : goodsbean.getSegments()) {
+			segmentbean.setGoods(goods);
+			goodsPriceSegmentDao.create(segmentbean);
+		}
+
 		goodsDao.update(goods);
-
 		goodsLogDao.create(new GoodsLog(goods, userprofile.getUser(), "修改商品信息，新内容为" + goodsbean));
-	}
-
-	private void updateFilePath(GoodsDetails source, GoodsDetails target) {
-		if (StringUtils.isBlank(target.getPicPath())) {
-			target.setPicPath(source.getPicPath());
-		}
-		if (StringUtils.isBlank(target.getLinePicPathA())) {
-			target.setLinePicPathA(source.getLinePicPathA());
-		}
-		if (StringUtils.isBlank(target.getLinePicPathB())) {
-			target.setLinePicPathB(source.getLinePicPathB());
-		}
-		if (StringUtils.isBlank(target.getLinePicPathC())) {
-			target.setLinePicPathC(source.getLinePicPathC());
-		}
-		if (StringUtils.isBlank(target.getLinePicPathD())) {
-			target.setLinePicPathD(source.getLinePicPathD());
-		}
 	}
 
 	@Override
@@ -197,16 +212,13 @@ public class GoodsServiceImpl extends ServiceHelperImpl<Goods> implements GoodsS
 		goods.getDetails().setId(id);
 
 		goodsDetailsDao.create(goods.getDetails());
-		int i = 0;
 		for (GoodsPriceSegment segment : goods.getSegments()) {
 			segment.setGoods(goods);
-			segment.setOrderBy(i++);
 			goods.setAdultTotalPrice(segment.getAuditPrice() + goods.getAdultTotalPrice());
 			goods.setChildTotalPrice(segment.getChildPrice() + goods.getChildTotalPrice());
 			goodsPriceSegmentDao.create(segment);
 		}
-		goods.setRootId(goods.getId());
-		// update total amount and rootid
+		// update total amount
 		goodsDao.update(goods);
 		goodsLogDao.create(new GoodsLog(goods, userprofile.getUser(), "创建商品信息，新内容为" + goods));
 		return 0;
@@ -235,7 +247,7 @@ public class GoodsServiceImpl extends ServiceHelperImpl<Goods> implements GoodsS
 	public boolean checkGoods(Channel channel, Goods goods, Date deptDate, int count) throws ThaiException {
 		Asserts.notNull(channel, new GoodsCheckedException("当前渠道TOKEN无效"));
 		Asserts.notNull(goods, new GoodsCheckedException("当前商品已变更或不存在"));
-		Asserts.isTrue(goods.isDeployed() && !goods.isReadOnly(), new GoodsCheckedException("当前商品不可用"));
+		Asserts.isTrue(goods.isDeployed(), new GoodsCheckedException("当前商品不可用"));
 
 		if (CalendarUtils.large(new Date(), deptDate, 20)) {
 			logger.info("TOKEN={},出发时间={},商品={},库存={}，已售={}, NOW={}",
@@ -243,7 +255,7 @@ public class GoodsServiceImpl extends ServiceHelperImpl<Goods> implements GoodsS
 			return true;
 		}
 
-		ChannelGoodsInv channelGoodsInv = channel.getGoodsInv(goods.getRootId());
+		ChannelGoodsInv channelGoodsInv = channel.getGoodsInv(goods.getId());
 
 		if (channelGoodsInv != null) {
 			logger.info("TOKEN={},出发时间={},商品={},G分配量={}, 库存={}，已售={}", new Object[] { channel.getToken(), deptDate, goods.getId(),

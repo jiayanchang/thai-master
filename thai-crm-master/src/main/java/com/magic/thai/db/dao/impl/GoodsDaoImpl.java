@@ -58,7 +58,6 @@ public class GoodsDaoImpl extends HibernateCommonDAO<Goods> implements GoodsDao 
 		if (vo.statuses != null && vo.statuses.length > 0) {
 			criterions.add(Restrictions.in("status", vo.statuses));
 		}
-		criterions.add(Restrictions.eq("readOnly", false));
 		criterions.add(Restrictions.ne("status", Merchant.Status.DELETED));
 		return super.find(criterions, vo.limitF4list);
 	}
@@ -98,7 +97,6 @@ public class GoodsDaoImpl extends HibernateCommonDAO<Goods> implements GoodsDao 
 				criterions.add(Restrictions.ne("status", s));
 			}
 		}
-		criterions.add(Restrictions.eq("readOnly", false));
 		criterions.add(Restrictions.ne("status", Merchant.Status.DELETED));
 		return super.find(criterions, vo.page, 30);
 	}
@@ -121,7 +119,7 @@ public class GoodsDaoImpl extends HibernateCommonDAO<Goods> implements GoodsDao 
 			for (ChannelGoodsInv inv : channel.getGoodsInvs()) {
 				ids += "," + inv.getGoodsId();
 			}
-			hql += " AND g.rootId in ( " + ids.substring(1) + " )";
+			hql += " AND g.id in ( " + ids.substring(1) + " )";
 		}
 
 		if (channel.getMerchantInvs().size() > 0) {

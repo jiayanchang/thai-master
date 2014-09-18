@@ -13,11 +13,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.magic.thai.util.CalendarUtils;
-
 @Entity
-@Table(name = "goods_price_seg")
-public class GoodsPriceSegment {
+@Table(name = "snapshot_goods_price_seg")
+public class SnapshotGoodsPriceSegment {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,16 +23,21 @@ public class GoodsPriceSegment {
 	private int id;
 
 	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH }, fetch = FetchType.LAZY)
-	@JoinColumn(name = "goods_id")
-	private Goods goods;
+	@JoinColumn(name = "goods_snapshot_id")
+	private SnapshotGoods snapshotGoods;
+
+	@Column(name = "goods_id")
+	private int goodsId;
 
 	@Column(name = "start_date")
 	private Date startDate;
+
 	@Column(name = "end_date")
 	private Date endDate;
 
 	@Column(name = "audit_price")
 	private double auditPrice;
+
 	@Column(name = "child_price")
 	private double childPrice;
 
@@ -78,29 +81,20 @@ public class GoodsPriceSegment {
 		this.childPrice = childPrice;
 	}
 
-	public Goods getGoods() {
-		return goods;
+	public SnapshotGoods getSnapshotGoods() {
+		return snapshotGoods;
 	}
 
-	public void setGoods(Goods goods) {
-		this.goods = goods;
+	public void setSnapshotGoods(SnapshotGoods snapshotGoods) {
+		this.snapshotGoods = snapshotGoods;
 	}
 
-	public boolean exsits(Date date) {
-		if (startDate == null && endDate == null) {
-			return true;
-		} else if (startDate == null && endDate != null) {
-			return date.before(CalendarUtils.lastOfDay(endDate));
-		} else if (startDate != null && endDate == null) {
-			return date.after(startDate);
-		} else {
-			return date.after(startDate) && date.before(CalendarUtils.lastOfDay(endDate));
-		}
+	public int getGoodsId() {
+		return goodsId;
 	}
 
-	@Override
-	public String toString() {
-		return "GoodsPriceSegment [id=" + id + ", goods=" + goods + ", startDate=" + startDate + ", endDate=" + endDate + ", auditPrice="
-				+ auditPrice + ", childPrice=" + childPrice + "]";
+	public void setGoodsId(int goodsId) {
+		this.goodsId = goodsId;
 	}
+
 }

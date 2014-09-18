@@ -19,7 +19,6 @@ public class GoodsLog {
 
 	public GoodsLog(Goods goods, User user, String content) {
 		this.goodsId = goods.getId();
-		this.goodsRootId = goods.getRootId();
 		this.content = content;
 		this.creatorId = user.getId();
 		this.createdDate = new Date();
@@ -30,8 +29,6 @@ public class GoodsLog {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(unique = true, nullable = false)
 	private int id;
-	@Column(name = "goods_root_id")
-	private int goodsRootId;
 	@Column(name = "goods_id")
 	private int goodsId;
 	@Column(columnDefinition = "TEXT")
@@ -50,14 +47,6 @@ public class GoodsLog {
 
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	public int getGoodsRootId() {
-		return goodsRootId;
-	}
-
-	public void setGoodsRootId(int goodsRootId) {
-		this.goodsRootId = goodsRootId;
 	}
 
 	public String getContent() {
@@ -102,8 +91,7 @@ public class GoodsLog {
 
 	@Override
 	public String toString() {
-		return "GoodsLog [id=" + id + ", goodsRootId=" + goodsRootId + ", goodsId=" + goodsId + ", content=" + content + ", creatorId="
-				+ creatorId + ", createdDate=" + createdDate + ", creatorName=" + creatorName + "]";
+		return "GoodsLog [id=" + id + ", goodsId=" + goodsId + ", content=" + content + ", creatorId=" + creatorId + ", createdDate="
+				+ createdDate + ", creatorName=" + creatorName + "]";
 	}
-
 }

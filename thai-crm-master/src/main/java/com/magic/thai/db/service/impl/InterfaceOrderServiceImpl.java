@@ -19,6 +19,7 @@ import com.magic.thai.db.domain.OrderTraveler;
 import com.magic.thai.db.service.GoodsService;
 import com.magic.thai.db.service.InterfaceOrderService;
 import com.magic.thai.db.service.OrderService;
+import com.magic.thai.db.service.SnapshotGoodsService;
 import com.magic.thai.db.service.strategy.GoodsPriceCalculator;
 import com.magic.thai.exception.GoodsCheckedException;
 import com.magic.thai.exception.OrderStatusException;
@@ -45,6 +46,8 @@ public class InterfaceOrderServiceImpl extends ServiceHelperImpl<Order> implemen
 	private OrderTravelerDao orderTravelerDao;
 	@Autowired
 	private ChannelDao channelDao;
+	@Autowired
+	private SnapshotGoodsService snapshotGoodsService;
 	@Autowired
 	private GoodsService goodsService;
 	@Autowired
@@ -114,6 +117,9 @@ public class InterfaceOrderServiceImpl extends ServiceHelperImpl<Order> implemen
 		for (OrderTraveler t : order.getTravelers()) {
 			orderTravelerDao.create(t);
 		}
+
+		// 生成商品快照
+		snapshotGoodsService.create(goods, order);
 
 		// 生成单号
 		order.setOrderNo(OrderNoGenerator.no(order));

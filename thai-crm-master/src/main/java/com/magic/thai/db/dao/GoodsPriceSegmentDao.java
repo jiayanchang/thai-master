@@ -13,6 +13,8 @@ public interface GoodsPriceSegmentDao {
 
 	public void update(GoodsPriceSegment entity);
 
+	public void delete(GoodsPriceSegment entity);
+
 	public List<GoodsPriceSegment> getSegments(Goods goods);
 
 }

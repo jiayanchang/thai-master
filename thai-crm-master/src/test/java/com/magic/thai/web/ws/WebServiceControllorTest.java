@@ -5,7 +5,10 @@ import java.io.StringWriter;
 import java.net.URI;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
@@ -14,10 +17,13 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.GzipDecompressingEntity;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.junit.Test;
 import org.springframework.http.HttpMethod;
@@ -73,6 +79,13 @@ public class WebServiceControllorTest {
 		headers.add(new String[] { "Accept", "*/*" });
 		headers.add(new String[] { "Content-Type", "text/xml" });
 
+		Map<String, String> params = new HashMap<String, String>();
+		List<NameValuePair> strParams = new ArrayList<NameValuePair>();
+		for (Entry<String, String> entry : params.entrySet()) {
+			strParams.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
+		}
+		UrlEncodedFormEntity urlEncodedFormEntity = new UrlEncodedFormEntity(strParams, "UTF-8");
+
 		HttpPost post = new HttpPost(url);
 		// setHead(post, headers);
 		post.setEntity(xmlEntity);
@@ -87,6 +100,7 @@ public class WebServiceControllorTest {
 			responseEntity = new GzipDecompressingEntity(responseEntity);
 		}
 		String html = EntityUtils.toString(responseEntity, "UTF-8");
+
 		System.out.println(html);
 	}
 
