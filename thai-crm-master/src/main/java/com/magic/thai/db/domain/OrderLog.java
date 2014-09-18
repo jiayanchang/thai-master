@@ -17,13 +17,17 @@ public class OrderLog {
 
 	}
 
-	public OrderLog(Order order, User user, String content) {
-		this.orderId = order.getId();
+	public OrderLog(int orderId, User user, String content) {
+		this.orderId = orderId;
 		this.content = content;
 		this.creatorId = user.getId();
 		this.createdDate = new Date();
 		this.creatorName = user.getCodeName();
 		this.creatorType = Order.UserType.USER;
+	}
+
+	public OrderLog(Order order, User user, String content) {
+		this(order.getId(), user, content);
 	}
 
 	public OrderLog(Order order, Channel channel, String content) {

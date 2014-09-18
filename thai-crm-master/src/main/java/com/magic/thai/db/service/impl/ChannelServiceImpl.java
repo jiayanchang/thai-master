@@ -78,36 +78,43 @@ public class ChannelServiceImpl extends ServiceHelperImpl<Channel> implements Ch
 
 		for (int i = channel.getGoodsInvs().size() - 1; i >= 0; i--) {
 			ChannelGoodsInv record = channel.getGoodsInvs().get(i);
-			for (ChannelGoodsInv bean : channelbean.getGoodsInvs()) {
-				if (bean.getId() == 0) {
-					bean.setChannelId(channel.getId());
-					channelGoodsInvDao.create(bean);
-				} else if (bean.getId() == record.getId()) {
+			for (int j = channelbean.getGoodsInvs().size() - 1; j >= 0; j--) {
+				ChannelGoodsInv bean = channelbean.getGoodsInvs().get(j);
+				if (bean.getId() == record.getId()) {
 					record.setAllocatedAmount(bean.getAllocatedAmount());
 					channelGoodsInvDao.update(record);
 					channel.getGoodsInvs().remove(i);
+					channelbean.getGoodsInvs().remove(j);
 				}
 			}
 		}
+		for (ChannelGoodsInv bean : channelbean.getGoodsInvs()) {
+			bean.setChannelId(channel.getId());
+			channelGoodsInvDao.create(bean);
+		}
+
 		for (ChannelGoodsInv record : channel.getGoodsInvs()) {
 			channelGoodsInvDao.delete(record);
 		}
 
 		for (int i = channel.getMerchantInvs().size() - 1; i >= 0; i--) {
 			ChannelMerchantInv record = channel.getMerchantInvs().get(i);
-			for (ChannelMerchantInv bean : channelbean.getMerchantInvs()) {
-				if (bean.getId() == 0) {
-					bean.setChannelId(channel.getId());
-					channelMerchantInvDao.create(bean);
-				} else if (bean.getId() == record.getId()) {
+			for (int j = channelbean.getMerchantInvs().size() - 1; j >= 0; j--) {
+				ChannelMerchantInv bean = channelbean.getMerchantInvs().get(j);
+				if (bean.getId() == record.getId()) {
 					record.setAllocatedAmount(bean.getAllocatedAmount());
 					channelMerchantInvDao.update(record);
 					channel.getMerchantInvs().remove(i);
+					channelbean.getMerchantInvs().remove(j);
 				}
 			}
 		}
 		for (ChannelMerchantInv record : channel.getMerchantInvs()) {
 			channelMerchantInvDao.delete(record);
+		}
+		for (ChannelMerchantInv record : channelbean.getMerchantInvs()) {
+			record.setChannelId(channel.getId());
+			channelMerchantInvDao.create(record);
 		}
 
 		channelLogDao.create(new ChannelLog(channel, userprofile.getUser(), "修改渠道信息，新内容为" + channel));

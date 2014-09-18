@@ -24,6 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.magic.thai.db.domain.Goods;
 import com.magic.thai.db.domain.GoodsPriceSegment;
 import com.magic.thai.db.service.GoodsService;
+import com.magic.thai.db.service.SnapshotGoodsService;
 import com.magic.thai.db.vo.GoodsVo;
 import com.magic.thai.exception.GoodsStatusException;
 import com.magic.thai.security.UserProfile;
@@ -36,6 +37,9 @@ public class FrontGoodsController {
 	@Autowired
 	GoodsService goodsService;
 
+	@Autowired
+	SnapshotGoodsService snapshotGoodsService;
+
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
@@ -47,6 +51,13 @@ public class FrontGoodsController {
 	public ModelAndView listPost(@PathVariable int id) {
 		ModelAndView modelandView = new ModelAndView("/front/goods/view");
 		modelandView.addObject("goods", goodsService.fetch(id));
+		return modelandView;
+	}
+
+	@RequestMapping(value = "/snapshot/{orderId}")
+	public ModelAndView snapshot(@PathVariable int orderId) {
+		ModelAndView modelandView = new ModelAndView("/admin/goods/snapshot");
+		modelandView.addObject("goods", snapshotGoodsService.fetchByOrder(orderId));
 		return modelandView;
 	}
 

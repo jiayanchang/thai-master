@@ -41,8 +41,12 @@
 			<td>${merchant.statusDesc}</td>
 			<td>
 			<a href="${pageContext.request.contextPath}/a/merchant/edit/${merchant.id} ">修改</a><br/>
-			<a href="${pageContext.request.contextPath}/a/merchant/enable/${merchant.id} ">启用</a><br/>
-			<a href="${pageContext.request.contextPath}/a/merchant/disable/${merchant.id} ">停用</a><br/>
+			<c:if test="${merchant.enabled }">
+				<a href="${pageContext.request.contextPath}/a/merchant/disable/${merchant.id} ">停用</a><br/>
+			</c:if>
+			<c:if test="${merchant.disabled }">
+				<a href="${pageContext.request.contextPath}/a/merchant/enable/${merchant.id} ">启用</a><br/>
+			</c:if>
 			<a href="${pageContext.request.contextPath}/a/merchant/delete/${merchant.id} ">删除</a><br/>
 			</td>
 		</tr>

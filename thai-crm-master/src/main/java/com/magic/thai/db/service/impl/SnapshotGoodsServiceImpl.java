@@ -14,6 +14,7 @@ import com.magic.thai.db.domain.Goods;
 import com.magic.thai.db.domain.GoodsPriceSegment;
 import com.magic.thai.db.domain.Order;
 import com.magic.thai.db.domain.SnapshotGoods;
+import com.magic.thai.db.domain.SnapshotGoodsDetails;
 import com.magic.thai.db.domain.SnapshotGoodsPriceSegment;
 import com.magic.thai.db.service.SnapshotGoodsService;
 
@@ -41,6 +42,7 @@ public class SnapshotGoodsServiceImpl implements SnapshotGoodsService {
 	public SnapshotGoods fetchByOrder(int id) {
 		SnapshotGoods snapshotGoods = snapshotGoodsDao.loadByOrderId(id);
 		if (snapshotGoods != null) {
+			Hibernate.initialize(snapshotGoods.getDetails());
 			Hibernate.initialize(snapshotGoods.getSegments());
 		}
 		return snapshotGoods;
@@ -49,6 +51,7 @@ public class SnapshotGoodsServiceImpl implements SnapshotGoodsService {
 	@Override
 	public void create(Goods goods, Order order) {
 		SnapshotGoods snapshotGoods = new SnapshotGoods();
+		snapshotGoods.setDetails(new SnapshotGoodsDetails());
 		snapshotGoods.setTitle(goods.getTitle());
 		snapshotGoods.setDept(goods.getDept());
 		snapshotGoods.setArrived(goods.getArrived());
@@ -57,6 +60,8 @@ public class SnapshotGoodsServiceImpl implements SnapshotGoodsService {
 		snapshotGoods.setSummary(goods.getSummary());
 		snapshotGoods.setChannelId(order.getChannelId());
 		snapshotGoods.setOrderId(order.getId());
+		snapshotGoods.setGoodsId(goods.getId());
+		snapshotGoods.setMerchantId(goods.getMerchantId());
 
 		snapshotGoods.getDetails().setTravelPlan(goods.getDetails().getTravelPlan());
 		snapshotGoods.getDetails().setCostDesc(goods.getDetails().getCostDesc());

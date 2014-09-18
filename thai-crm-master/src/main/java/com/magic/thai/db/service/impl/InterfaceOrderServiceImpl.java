@@ -63,7 +63,7 @@ public class InterfaceOrderServiceImpl extends ServiceHelperImpl<Order> implemen
 	@Transactional
 	public Order create(CreateOrderVo vo) throws ThaiException {
 		Channel channel = channelDao.fetchByToken(vo.getToken());
-		Goods goods = goodsService.load(vo.getGoodsId());
+		Goods goods = goodsService.fetch(vo.getGoodsId());
 		Asserts.isTrue(goodsService.checkGoods(channel, goods, vo.deptDateObj, vo.getTravelers().size()), new GoodsCheckedException(
 				"商品数量不足"));
 
@@ -110,6 +110,7 @@ public class InterfaceOrderServiceImpl extends ServiceHelperImpl<Order> implemen
 			orderTraveler.setMobile(travelerVo.getMobile());
 			orderTraveler.setName(travelerVo.getName());
 			orderTraveler.setType(travelerVo.getType());
+			orderTraveler.setNationality(travelerVo.getNationality());
 			orderTraveler.setPrice(goodsPriceCalculator.price(goods, orderTraveler));
 			order.getTravelers().add(orderTraveler);
 			sum += orderTraveler.getPrice();
@@ -174,6 +175,11 @@ public class InterfaceOrderServiceImpl extends ServiceHelperImpl<Order> implemen
 		Order order = orderDao.fetchByNo(vo.getOrderNo());
 		Asserts.notNull(order, new ParameterException("订单号有误"));
 		Asserts.isTrue(order.isCompleted(), new OrderStatusException("订单在" + order.getStatusDesc() + "状态下不能申请退单"));
+
+		// 清空最后操作者，列表页面客服可直接区分哪些订单没有处理
+		order.setLastOperatorDate(null);
+		order.setLastOperatorName(null);
+		order.setLastOperatorId(0);
 
 		order.setStatus(Order.Status.NEW);// 恢复为待确认
 		orderDao.update(order);

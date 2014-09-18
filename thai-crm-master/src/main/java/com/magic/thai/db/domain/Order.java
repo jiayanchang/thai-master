@@ -214,7 +214,6 @@ public class Order {
 		this.travelerNum = travelerNum;
 	}
 
-	@XmlTransient
 	public int getStatus() {
 		return status;
 	}
@@ -320,6 +319,7 @@ public class Order {
 		this.goodsName = goodsName;
 	}
 
+	@XmlTransient
 	public int getCreatorType() {
 		return creatorType;
 	}

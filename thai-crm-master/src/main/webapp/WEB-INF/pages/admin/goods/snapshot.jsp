@@ -84,3 +84,4 @@
 		</tr>
 	</table>
 </form:form>
+<a href="javascript:window.close();">关闭</a>

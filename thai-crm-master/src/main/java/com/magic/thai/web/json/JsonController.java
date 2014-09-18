@@ -122,7 +122,7 @@ public class JsonController {
 	@RequestMapping(value = "/goods/{id}", method = RequestMethod.GET)
 	@ResponseBody
 	public String getgoods(@PathVariable int id) {
-		Gson gson = new Gson();
+		Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 		return gson.toJson(goodsService.load(id));
 	}
 

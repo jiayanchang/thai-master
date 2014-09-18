@@ -32,6 +32,7 @@ import com.magic.thai.exception.webservice.ParameterException;
 import com.magic.thai.util.Asserts;
 import com.magic.thai.web.ws.vo.CheckGoodsVo;
 import com.magic.thai.web.ws.vo.CreateOrderVo;
+import com.magic.thai.web.ws.vo.GoodsListVo;
 import com.magic.thai.web.ws.vo.QueryGoodsesVo;
 import com.magic.thai.web.ws.vo.QueryOrderVo;
 import com.magic.thai.web.ws.vo.TravelerVo;
@@ -54,10 +55,13 @@ public class WebServiceControllor {
 		try {
 			Asserts.isTrue(StringUtils.isNotBlank(vo.getToken()), new ParameterException("TOKEN不能为空"));
 			List<Goods> goodses = interfaceOrderService.queryGoodses(vo);
-			responseResult(response, new WebServiceResult().success(goodses));
+			GoodsListVo goodsListVo = new GoodsListVo();
+			goodsListVo.setGoodses(goodses);
+			responseResult(response, new WebServiceResult().success(goodsListVo));
 		} catch (ThaiException e) {
 			responseResult(response, new WebServiceResult().fail(e));
 		} catch (JAXBException e) {
+			e.printStackTrace();
 			responseResult(response, new WebServiceResult().fail(new FormatException("请求参数格式异常")));
 		} catch (Exception e) {
 			e.printStackTrace();

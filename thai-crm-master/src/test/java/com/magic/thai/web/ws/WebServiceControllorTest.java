@@ -36,24 +36,26 @@ import org.springframework.http.client.ClientHttpRequest;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 
+import com.magic.thai.web.ws.vo.CheckGoodsVo;
 import com.magic.thai.web.ws.vo.CreateOrderVo;
 import com.magic.thai.web.ws.vo.QueryGoodsesVo;
+import com.magic.thai.web.ws.vo.QueryOrderVo;
 import com.magic.thai.web.ws.vo.TravelerVo;
 
 public class WebServiceControllorTest {
 
-	private static final String token = "123";
+	private static final String token = "61ab279c07a758c9e64f40fec837e4";
 
 	@Test
 	public void testCreatOrder() throws Exception {
 		String url = "http://localhost:8080/crm/ws/createOrder";
 
 		CreateOrderVo createOrderVo = new CreateOrderVo();
-		createOrderVo.setDeptDate("2014-01-02");
-		createOrderVo.setGoodsId(1);
+		createOrderVo.setDeptDate("2014-09-19");
+		createOrderVo.setGoodsId(7);
 		createOrderVo.setOrderContactorMobile("13900987766");
 		createOrderVo.setOrderContactor("贾彦昌");
-		createOrderVo.setToken("61ab279c07a758c9e64f40fec837e4");
+		createOrderVo.setToken(token);
 
 		TravelerVo vo = new TravelerVo();
 		// vo.setBirth(birth);
@@ -80,6 +82,31 @@ public class WebServiceControllorTest {
 
 		QueryGoodsesVo vo = new QueryGoodsesVo();
 		vo.setToken(token);
+		String xmlData = marshall(vo);
+		String html = xmlrequest(url, xmlData);
+		System.out.println(html);
+	}
+
+	@Test
+	public void testCheckGoods() throws Exception {
+		String url = "http://localhost:8080/crm/ws/checkGoods";
+
+		CheckGoodsVo vo = new CheckGoodsVo();
+		vo.setToken(token);
+		vo.setGoodsId(7);
+		vo.setDeptDate("2014-09-19");
+		String xmlData = marshall(vo);
+		String html = xmlrequest(url, xmlData);
+		System.out.println(html);
+	}
+
+	@Test
+	public void testQueryOrder() throws Exception {
+		String url = "http://localhost:8080/crm/ws/queryOrder";
+		QueryOrderVo vo = new QueryOrderVo();
+		vo.setToken(token);
+		vo.setOrderNo("020214091800000005");
+
 		String xmlData = marshall(vo);
 		String html = xmlrequest(url, xmlData);
 		System.out.println(html);

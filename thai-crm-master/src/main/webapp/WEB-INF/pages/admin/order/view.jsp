@@ -22,7 +22,7 @@
 		</tr>
 		<tr>
 			<td>购买商品名称：</td>
-			<td><a href="javascript:window.open(\"${pageContext.request.contextPath}/f/goods/snapshot/${order.goodsId }\")">${order.goodsName }</a></td>
+			<td><a href="javascript:window.open('${pageContext.request.contextPath}/a/goods/snapshot/${order.id }')">${order.goodsName }</a></td>
 		</tr>
 		<tr>
 			<td>联系人：</td>

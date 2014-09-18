@@ -60,7 +60,7 @@ public class GoodsController {
 	@RequestMapping(value = "/snapshot/{orderId}")
 	public ModelAndView snapshot(@PathVariable int orderId) {
 		ModelAndView modelandView = new ModelAndView("/admin/goods/snapshot");
-		modelandView.addObject("goods", snapshotGoodsService.fetch(orderId));
+		modelandView.addObject("goods", snapshotGoodsService.fetchByOrder(orderId));
 		return modelandView;
 	}
 

@@ -10,22 +10,24 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
 @Table(name = "goods_details")
+@XmlRootElement
 public class GoodsDetails {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	// @GenericGenerator(name = "id", strategy = "assigned")
 	@Column(nullable = false)
+	@XmlTransient
 	private int id;
 
-	// @OneToOne(mappedBy = "details")
-	// @OneToOne(cascade = CascadeType.ALL)
-	// @JoinColumn(name = "id")
 	@OneToOne(targetEntity = Goods.class, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH }, fetch = FetchType.LAZY)
 	@JoinColumn(name = "goods_id")
+	@XmlTransient
 	private Goods goods;
 
 	@Column(name = "travel_plan", columnDefinition = "TEXT")
@@ -52,6 +54,7 @@ public class GoodsDetails {
 	@Column(name = "line_pic_path_f")
 	private String linePicPathF;
 
+	@XmlTransient
 	public Goods getGoods() {
 		return goods;
 	}
@@ -148,6 +151,7 @@ public class GoodsDetails {
 		this.bookNotes = bookNotes;
 	}
 
+	@XmlTransient
 	public int getId() {
 		return id;
 	}

@@ -20,7 +20,7 @@ public class CalendarUtils {
 
 		bc.add(Calendar.DAY_OF_MONTH, days);
 
-		return bc.after(ac);
+		return bc.before(ac);
 	}
 
 	public static Date lastOfDay(Date before) {

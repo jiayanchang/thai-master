@@ -71,11 +71,15 @@ public class ChannelController {
 		modelAndView.addObject("goodses", goodsService.list(new GoodsVo(new Integer[] { Goods.Status.DEPLOYED })));
 		modelAndView.addObject("merchants", merchantService.list(new MerchantVo()));
 
+		setUserOptions(modelAndView, userprofile);
+		return modelAndView;
+	}
+
+	private void setUserOptions(ModelAndView modelAndView, UserProfile userprofile) {
 		UserVo vo = new UserVo();
 		vo.merchantId = userprofile.getMerchant().getId();
 		vo.containsPf4list = true;
 		modelAndView.addObject("users", userService.list(vo));
-		return modelAndView;
 	}
 
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
@@ -89,10 +93,12 @@ public class ChannelController {
 	@RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
 	public ModelAndView edit(@PathVariable int id, HttpSession session) {
 		ModelAndView modelAndView = new ModelAndView("/admin/channel/edit");
+		UserProfile userprofile = (UserProfile) session.getAttribute("userprofile");
+
 		modelAndView.addObject("channel", channelService.fetch(id));
 		modelAndView.addObject("goodses", goodsService.list(new GoodsVo(new Integer[] { Goods.Status.DEPLOYED })));
 		modelAndView.addObject("merchants", merchantService.list(new MerchantVo()));
-		modelAndView.addObject("users", userService.list(new UserVo()));
+		setUserOptions(modelAndView, userprofile);
 		return modelAndView;
 	}
 

@@ -71,6 +71,14 @@ public class Merchant {
 		public static final int DELETED = 2;
 	}
 
+	public boolean isEnabled() {
+		return this.status == Status.ENABLED;
+	}
+
+	public boolean isDisabled() {
+		return this.status == Status.DISABLED;
+	}
+
 	public int getId() {
 		return id;
 	}

@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlTransient;
 
 import com.magic.thai.util.CalendarUtils;
 
@@ -30,6 +31,7 @@ public class GoodsPriceSegment {
 
 	@Column(name = "start_date")
 	private Date startDate;
+
 	@Column(name = "end_date")
 	private Date endDate;
 
@@ -38,6 +40,7 @@ public class GoodsPriceSegment {
 	@Column(name = "child_price")
 	private double childPrice;
 
+	@XmlTransient
 	public int getId() {
 		return id;
 	}
@@ -78,6 +81,7 @@ public class GoodsPriceSegment {
 		this.childPrice = childPrice;
 	}
 
+	@XmlTransient
 	public Goods getGoods() {
 		return goods;
 	}

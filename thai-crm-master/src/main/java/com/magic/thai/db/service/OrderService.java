@@ -4,6 +4,7 @@ import com.magic.thai.db.domain.Order;
 import com.magic.thai.db.domain.User;
 import com.magic.thai.db.vo.OrderVo;
 import com.magic.thai.exception.OrderStatusException;
+import com.magic.thai.exception.ThaiException;
 import com.magic.thai.security.UserProfile;
 import com.magic.thai.util.PaginationSupport;
 
@@ -19,15 +20,7 @@ public interface OrderService {
 	 * @param order
 	 * @param userprofile
 	 */
-	public void confirm(Order order, UserProfile userprofile) throws OrderStatusException;
-
-	/**
-	 * 下单
-	 * 
-	 * @param orderId
-	 * @param userprofile
-	 */
-	public void create(int orderId, UserProfile userprofile) throws OrderStatusException;
+	public void confirm(int orderId, String reason, UserProfile userprofile) throws ThaiException;
 
 	/**
 	 * 变更
@@ -36,6 +29,16 @@ public interface OrderService {
 	 * @param userprofile
 	 */
 	public void change(int orderId, String reason, UserProfile userprofile) throws OrderStatusException;
+
+	/**
+	 * 跟进处理
+	 * 
+	 * @param orderId
+	 * @param reason
+	 * @param userprofile
+	 * @throws ThaiException
+	 */
+	public void proc(int orderId, String reason, UserProfile userprofile) throws ThaiException;
 
 	public void delete(int orderId, UserProfile userprofile) throws OrderStatusException;
 
