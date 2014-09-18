@@ -38,6 +38,15 @@ public class SnapshotGoodsServiceImpl implements SnapshotGoodsService {
 	}
 
 	@Override
+	public SnapshotGoods fetchByOrder(int id) {
+		SnapshotGoods snapshotGoods = snapshotGoodsDao.loadByOrderId(id);
+		if (snapshotGoods != null) {
+			Hibernate.initialize(snapshotGoods.getSegments());
+		}
+		return snapshotGoods;
+	}
+
+	@Override
 	public void create(Goods goods, Order order) {
 		SnapshotGoods snapshotGoods = new SnapshotGoods();
 		snapshotGoods.setTitle(goods.getTitle());

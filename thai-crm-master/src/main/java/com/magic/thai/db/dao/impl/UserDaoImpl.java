@@ -95,7 +95,7 @@ public class UserDaoImpl extends HibernateCommonDAO<User> implements UserDao {
 			criterions.add(Restrictions.ne("type", Merchant.Type.PLATFORM));
 		}
 		if (vo.merchantId > 0) {
-			criterions.add(Restrictions.ne("type", Merchant.Type.PLATFORM));
+			criterions.add(Restrictions.eq("merchantId", vo.merchantId));
 		}
 		if (vo.statuses != null && vo.statuses.length > 0) {
 			criterions.add(Restrictions.in("status", vo.statuses));

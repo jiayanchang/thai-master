@@ -3,19 +3,22 @@ package com.magic.thai.db.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import com.google.gson.annotations.Expose;
 
 @Entity
-@Table(name = "goods")
+@Table(name = "snapshot_goods")
 public class SnapshotGoods {
 
 	@Id
@@ -59,12 +62,6 @@ public class SnapshotGoods {
 	@Column(name = "travel_days")
 	private int travelDays;// 行程天数
 
-	@Column(name = "child_total_price")
-	private double childTotalPrice;
-
-	@Column(name = "adult_total_price")
-	private double adultTotalPrice;
-
 	@Expose
 	@Column(name = "goods_count")
 	private int goodsCount;// 库存
@@ -73,7 +70,8 @@ public class SnapshotGoods {
 	@Column(name = "sold_count")
 	private int soldCount;// 已售
 
-	@Transient
+	@OneToOne(targetEntity = SnapshotGoodsDetails.class, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH }, fetch = FetchType.LAZY)
+	@PrimaryKeyJoinColumn
 	private SnapshotGoodsDetails details; // 非hibnate关联
 
 	@OneToMany(mappedBy = "snapshotGoods")
@@ -175,22 +173,6 @@ public class SnapshotGoods {
 		this.goodsCount = goodsCount;
 	}
 
-	public double getChildTotalPrice() {
-		return childTotalPrice;
-	}
-
-	public void setChildTotalPrice(double childTotalPrice) {
-		this.childTotalPrice = childTotalPrice;
-	}
-
-	public double getAdultTotalPrice() {
-		return adultTotalPrice;
-	}
-
-	public void setAdultTotalPrice(double adultTotalPrice) {
-		this.adultTotalPrice = adultTotalPrice;
-	}
-
 	public int getGoodsId() {
 		return goodsId;
 	}
@@ -216,9 +198,6 @@ public class SnapshotGoods {
 	}
 
 	public SnapshotGoodsDetails getDetails() {
-		if (details == null) {
-			details = new SnapshotGoodsDetails();
-		}
 		return details;
 	}
 
@@ -247,8 +226,8 @@ public class SnapshotGoods {
 		return "SnapshotGoods [id=" + id + ", merchantId=" + merchantId + ", merchantName=" + merchantName + ", goodsId=" + goodsId
 				+ ", orderId=" + orderId + ", channelId=" + channelId + ", title=" + title + ", dept=" + dept + ", arrived=" + arrived
 				+ ", summary=" + summary + ", status=" + status + ", hotelId=" + hotelId + ", hotelName=" + hotelName + ", travelDays="
-				+ travelDays + ", childTotalPrice=" + childTotalPrice + ", adultTotalPrice=" + adultTotalPrice + ", goodsCount="
-				+ goodsCount + ", soldCount=" + soldCount + ", details=" + details + ", segments=" + segments + "]";
+				+ travelDays + ", goodsCount=" + goodsCount + ", soldCount=" + soldCount + ", details=" + details + ", segments="
+				+ segments + "]";
 	}
 
 }

@@ -27,6 +27,7 @@ import com.magic.thai.db.service.GoodsService;
 import com.magic.thai.db.vo.GoodsVo;
 import com.magic.thai.exception.GoodsStatusException;
 import com.magic.thai.security.UserProfile;
+import com.magic.thai.util.PaginationSupport;
 
 @Controller
 @RequestMapping(value = "/f/goods")
@@ -37,7 +38,7 @@ public class FrontGoodsController {
 
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 		dateFormat.setLenient(false);
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
 	}
@@ -61,8 +62,9 @@ public class FrontGoodsController {
 		vo.merchantId = userprofile.getUser().getMerchantId() + "";
 
 		ModelAndView modelandView = new ModelAndView("/front/goods/list");
-		modelandView.addObject("ps", goodsService.getGoodsesPage(vo));
-		modelandView.addObject("goodsVo", vo);
+		PaginationSupport ps = goodsService.getGoodsesPage(vo);
+		modelandView.addObject("ps", ps);
+		modelandView.addObject("vo", vo);
 		return modelandView;
 	}
 

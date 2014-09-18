@@ -1,5 +1,7 @@
 package com.magic.thai.db.dao.impl;
 
+import java.util.List;
+
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -25,6 +27,12 @@ public class SnapshotGoodsDaoImpl extends HibernateCommonDAO<SnapshotGoods> impl
 	@Override
 	public Integer create(SnapshotGoods entity) {
 		return (Integer) super.create(entity);
+	}
+
+	@Override
+	public SnapshotGoods loadByOrderId(int id) {
+		List<SnapshotGoods> ss = super.find("from SnapshotGoods where orderId = " + id);
+		return ss == null || ss.size() == 0 ? null : ss.get(0);
 	}
 
 }

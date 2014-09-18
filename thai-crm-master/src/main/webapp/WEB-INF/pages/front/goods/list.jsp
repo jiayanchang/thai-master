@@ -12,7 +12,7 @@
 <br/>
 <div class="data">
 <c:url var="submitUrl" value="/f/goods/list"/>
-<form:form action="${submitUrl}" method="POST" commandName="goodsVo">
+<form:form action="${submitUrl}" method="POST" commandName="vo">
 <table border="1px" cellpadding="0" cellspacing="0" width="100%">
 <tr> 
 	<td>产品名称：</td>

@@ -3,12 +3,13 @@ package com.magic.thai.db.domain;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-@Table(name = "goods_details")
+@Table(name = "snapshot_goods_details")
 public class SnapshotGoodsDetails {
 
 	@Id
@@ -18,6 +19,9 @@ public class SnapshotGoodsDetails {
 
 	@Column(name = "goods_details_id")
 	private int goodsDetailsId;
+
+	@OneToOne(mappedBy = "details")
+	private SnapshotGoods snapshotGoods;
 
 	@Column(name = "travel_plan", columnDefinition = "TEXT")
 	private String travelPlan;

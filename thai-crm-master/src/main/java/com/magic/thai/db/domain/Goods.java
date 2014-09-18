@@ -3,7 +3,6 @@ package com.magic.thai.db.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,7 +11,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -64,8 +62,7 @@ public class Goods {
 	@Column(name = "sold_count")
 	private int soldCount;// 已售
 
-	@OneToOne(targetEntity = GoodsDetails.class, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH }, fetch = FetchType.LAZY)
-	@PrimaryKeyJoinColumn
+	@OneToOne(mappedBy = "goods", fetch = FetchType.LAZY)
 	private GoodsDetails details; // 非hibnate关联
 
 	@OneToMany(mappedBy = "goods")

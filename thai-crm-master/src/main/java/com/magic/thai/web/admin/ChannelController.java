@@ -63,13 +63,18 @@ public class ChannelController {
 	}
 
 	@RequestMapping(value = "/add", method = RequestMethod.GET)
-	public ModelAndView add() {
+	public ModelAndView add(HttpSession session) {
 		ModelAndView modelAndView = new ModelAndView("/admin/channel/add");
+		UserProfile userprofile = (UserProfile) session.getAttribute("userprofile");
 		Channel channel = new Channel();
 		modelAndView.addObject("channel", channel);
 		modelAndView.addObject("goodses", goodsService.list(new GoodsVo(new Integer[] { Goods.Status.DEPLOYED })));
 		modelAndView.addObject("merchants", merchantService.list(new MerchantVo()));
-		modelAndView.addObject("users", userService.list(new UserVo()));
+
+		UserVo vo = new UserVo();
+		vo.merchantId = userprofile.getMerchant().getId();
+		vo.containsPf4list = true;
+		modelAndView.addObject("users", userService.list(vo));
 		return modelAndView;
 	}
 

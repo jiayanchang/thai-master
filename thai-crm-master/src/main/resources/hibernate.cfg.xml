@@ -9,12 +9,16 @@
 	    <mapping class="com.magic.thai.db.domain.Goods" />
 	    <mapping class="com.magic.thai.db.domain.GoodsDetails" />
 	    <mapping class="com.magic.thai.db.domain.GoodsPriceSegment" />
+	    <mapping class="com.magic.thai.db.domain.SnapshotGoods" />
+	    <mapping class="com.magic.thai.db.domain.SnapshotGoodsDetails" />
+	    <mapping class="com.magic.thai.db.domain.SnapshotGoodsPriceSegment" />
 	    <mapping class="com.magic.thai.db.domain.GoodsLog" />
 	    <mapping class="com.magic.thai.db.domain.Merchant" />
 	    <mapping class="com.magic.thai.db.domain.MerchantDetails" />
 	    <mapping class="com.magic.thai.db.domain.Channel" />
 	    <mapping class="com.magic.thai.db.domain.ChannelMerchantInv" />
 	    <mapping class="com.magic.thai.db.domain.ChannelGoodsInv" />
+	    <mapping class="com.magic.thai.db.domain.ChannelLog" />
 	    <mapping class="com.magic.thai.db.domain.Order" />
 	    <mapping class="com.magic.thai.db.domain.OrderLog" />
 	    <mapping class="com.magic.thai.db.domain.OrderTraveler" />

@@ -25,4 +25,11 @@
     <decorator name="fsystem" page="front/system.jsp">
         <pattern>/f/user/*</pattern>
     </decorator>
+    <decorator name="fsystem" page="front/system.jsp">
+        <pattern>/f/user/*</pattern>
+    </decorator>
+    <excludes>
+    	<pattern>/f/goods/snapshot/*</pattern>
+    	<pattern>/a/goods/snapshot/*</pattern>
+    </excludes>
 </decorators>

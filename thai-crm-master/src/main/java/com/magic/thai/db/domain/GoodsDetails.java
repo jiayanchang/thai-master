@@ -1,23 +1,31 @@
 package com.magic.thai.db.domain;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "goods_details")
 public class GoodsDetails {
 
 	@Id
-	@GenericGenerator(name = "id", strategy = "assigned")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	// @GenericGenerator(name = "id", strategy = "assigned")
 	@Column(nullable = false)
 	private int id;
 
-	@OneToOne(mappedBy = "details")
+	// @OneToOne(mappedBy = "details")
+	// @OneToOne(cascade = CascadeType.ALL)
+	// @JoinColumn(name = "id")
+	@OneToOne(targetEntity = Goods.class, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH }, fetch = FetchType.LAZY)
+	@JoinColumn(name = "goods_id")
 	private Goods goods;
 
 	@Column(name = "travel_plan", columnDefinition = "TEXT")
@@ -43,14 +51,6 @@ public class GoodsDetails {
 	private String linePicPathE;
 	@Column(name = "line_pic_path_f")
 	private String linePicPathF;
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
 
 	public Goods getGoods() {
 		return goods;
@@ -146,6 +146,14 @@ public class GoodsDetails {
 
 	public void setBookNotes(String bookNotes) {
 		this.bookNotes = bookNotes;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 }

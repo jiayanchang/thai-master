@@ -66,12 +66,9 @@ public class GoodsServiceImpl extends ServiceHelperImpl<Goods> implements GoodsS
 
 	@Override
 	public Goods fetch(int id) {
-
 		Goods goods = goodsDao.loadById(id);
 		Hibernate.initialize(goods.getSegments());
-		// Hibernate.initialize(goods.getDetails());
-		goods.setDetails(goodsDetailsDao.loadById(id));
-		// goods.setSegments(goodsPriceSegmentDao.getSegments(goods));
+		Hibernate.initialize(goods.getDetails());
 		return goods;
 	}
 
@@ -205,8 +202,8 @@ public class GoodsServiceImpl extends ServiceHelperImpl<Goods> implements GoodsS
 		Merchant merchant = merchantDao.loadById(userprofile.getUser().getMerchantId());
 		goods.setMerchantId(merchant.getId());
 		goods.setMerchantName(merchant.getName());
+		goods.getDetails().setGoods(goods);
 		int id = goodsDao.create(goods);
-		goods.getDetails().setId(id);
 
 		goodsDetailsDao.create(goods.getDetails());
 		for (GoodsPriceSegment segment : goods.getSegments()) {

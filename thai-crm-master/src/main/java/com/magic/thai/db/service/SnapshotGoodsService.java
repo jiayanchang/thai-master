@@ -8,5 +8,7 @@ public interface SnapshotGoodsService {
 
 	public SnapshotGoods fetch(int id);
 
+	public SnapshotGoods fetchByOrder(int orderId);
+
 	public void create(Goods goods, Order order);
 }
