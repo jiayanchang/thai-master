@@ -30,7 +30,11 @@ CREATE TABLE `channel` (
   `amount` double(12,2) unsigned NOT NULL DEFAULT '0.00',
   `goods_count` int(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+/*Data for the table `channel` */
+
+insert  into `channel`(`id`,`name`,`token`,`operator_id`,`operator_name`,`status`,`order_count`,`amount`,`goods_count`) values (2,'taobao','61ab279c07a758c9e64f40fec837e4',1,'管理员',0,0,0.00,0);
 
 /*Table structure for table `channel_goods_inv` */
 
@@ -44,6 +48,8 @@ CREATE TABLE `channel_goods_inv` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+/*Data for the table `channel_goods_inv` */
+
 /*Table structure for table `channel_merchant_inv` */
 
 DROP TABLE IF EXISTS `channel_merchant_inv`;
@@ -54,7 +60,11 @@ CREATE TABLE `channel_merchant_inv` (
   `channel_id` int(11) NOT NULL COMMENT '渠道id',
   `allocated_amount` float NOT NULL COMMENT '分配的库存',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+/*Data for the table `channel_merchant_inv` */
+
+insert  into `channel_merchant_inv`(`id`,`merchant_id`,`channel_id`,`allocated_amount`) values (2,2,2,80);
 
 /*Table structure for table `channel_order` */
 
@@ -86,6 +96,8 @@ CREATE TABLE `channel_order` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+/*Data for the table `channel_order` */
+
 /*Table structure for table `channel_order_traveler` */
 
 DROP TABLE IF EXISTS `channel_order_traveler`;
@@ -108,6 +120,8 @@ CREATE TABLE `channel_order_traveler` (
   CONSTRAINT `FK130C19D4BA83CE7C` FOREIGN KEY (`order_id`) REFERENCES `channel_order` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+/*Data for the table `channel_order_traveler` */
+
 /*Table structure for table `goods` */
 
 DROP TABLE IF EXISTS `goods`;
@@ -126,17 +140,21 @@ CREATE TABLE `goods` (
   `goods_count` int(5) NOT NULL COMMENT '库存量',
   `sold_count` int(5) NOT NULL DEFAULT '0' COMMENT '已售数量',
   `status` int(2) NOT NULL COMMENT '0=新商品待上架 1=待审核 2=已上架  3=已下架',
-  PRIMARY KEY (`id`),
-  KEY `FK5DF97567D99D565` (`id`),
-  CONSTRAINT `FK5DF97567D99D565` FOREIGN KEY (`id`) REFERENCES `goods_details` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+
+/*Data for the table `goods` */
+
+insert  into `goods`(`id`,`merchant_id`,`merchant_name`,`title`,`dept`,`arrived`,`hotel_id`,`hotel_name`,`summary`,`travel_days`,`goods_count`,`sold_count`,`status`) values (7,2,'达拉斯','goods1','can','pek',0,NULL,'dfsdfdsd s',5,10,0,3);
+insert  into `goods`(`id`,`merchant_id`,`merchant_name`,`title`,`dept`,`arrived`,`hotel_id`,`hotel_name`,`summary`,`travel_days`,`goods_count`,`sold_count`,`status`) values (8,2,'达拉斯','goods2','pek','sha',0,NULL,'s dfs vdsds  fds',8,10,0,3);
 
 /*Table structure for table `goods_details` */
 
 DROP TABLE IF EXISTS `goods_details`;
 
 CREATE TABLE `goods_details` (
-  `id` int(11) unsigned NOT NULL,
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `goods_id` int(11) NOT NULL,
   `travel_plan` text COMMENT '行程安排',
   `cost_desc` text COMMENT '费用说明',
   `book_notes` text COMMENT '预定须知',
@@ -149,7 +167,12 @@ CREATE TABLE `goods_details` (
   `line_pic_path_e` varchar(200) DEFAULT NULL,
   `line_pic_path_f` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+/*Data for the table `goods_details` */
+
+insert  into `goods_details`(`id`,`goods_id`,`travel_plan`,`cost_desc`,`book_notes`,`notes`,`pic_path`,`line_pic_path_a`,`line_pic_path_b`,`line_pic_path_c`,`line_pic_path_d`,`line_pic_path_e`,`line_pic_path_f`) values (1,7,'dsfsdfs ','sdf sdfs','dfdsfs','sdfsdf',NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+insert  into `goods_details`(`id`,`goods_id`,`travel_plan`,`cost_desc`,`book_notes`,`notes`,`pic_path`,`line_pic_path_a`,`line_pic_path_b`,`line_pic_path_c`,`line_pic_path_d`,`line_pic_path_e`,`line_pic_path_f`) values (2,8,'ewefewfw','fwef','wefw','efwefwefwfwef','/resources/goods/8/picPath.jpg','/resources/goods/8/a.jpg','/resources/goods/8/b.jpg','/resources/goods/8/c.jpg','/resources/goods/8/d.jpg',NULL,NULL);
 
 /*Table structure for table `goods_price_seg` */
 
@@ -163,7 +186,12 @@ CREATE TABLE `goods_price_seg` (
   `audit_price` double(10,3) NOT NULL DEFAULT '0.000',
   `child_price` double(10,3) NOT NULL DEFAULT '0.000',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+
+/*Data for the table `goods_price_seg` */
+
+insert  into `goods_price_seg`(`id`,`goods_id`,`start_date`,`end_date`,`audit_price`,`child_price`) values (8,7,'2014-09-18','2014-09-20',1000.000,800.000);
+insert  into `goods_price_seg`(`id`,`goods_id`,`start_date`,`end_date`,`audit_price`,`child_price`) values (9,8,'2014-09-18','2014-09-20',1001.000,211.000);
 
 /*Table structure for table `hotel` */
 
@@ -183,6 +211,8 @@ CREATE TABLE `hotel` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=41971 DEFAULT CHARSET=utf8;
 
+/*Data for the table `hotel` */
+
 /*Table structure for table `log_channel` */
 
 DROP TABLE IF EXISTS `log_channel`;
@@ -195,7 +225,11 @@ CREATE TABLE `log_channel` (
   `created_date` datetime DEFAULT NULL,
   `creator_name` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+/*Data for the table `log_channel` */
+
+insert  into `log_channel`(`id`,`channel_id`,`content`,`creator_id`,`created_date`,`creator_name`) values (1,2,'创建渠道信息，新内容为Channel [id=2, name=taobao, token=61ab279c07a758c9e64f40fec837e4, status=0, operatorId=1, operatorName=管理员, orderCount=0, amount=0.0, goodsCount=0, goodsInvs=[], merchantInvs=[ChannelMerchantInv [id=2, channelId=2, merchantId=2, allocatedAmount=80.0]]]',1,'2014-09-18 20:10:45','admin');
 
 /*Table structure for table `log_goods` */
 
@@ -209,7 +243,14 @@ CREATE TABLE `log_goods` (
   `creator_name` varchar(50) NOT NULL,
   `created_date` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+
+/*Data for the table `log_goods` */
+
+insert  into `log_goods`(`id`,`goods_id`,`content`,`creator_id`,`creator_name`,`created_date`) values (7,7,'创建商品信息，新内容为Goods [merchantName=达拉斯, title=goods1, dept=can, arrived=pek, status=1, hotelName=null, travelDays=5, goodsCount=10]',2,'dalas','2014-09-18 19:43:54');
+insert  into `log_goods`(`id`,`goods_id`,`content`,`creator_id`,`creator_name`,`created_date`) values (8,8,'创建商品信息，新内容为Goods [merchantName=达拉斯, title=goods2, dept=pek, arrived=sha, status=1, hotelName=null, travelDays=8, goodsCount=10]',2,'dalas','2014-09-18 19:59:22');
+insert  into `log_goods`(`id`,`goods_id`,`content`,`creator_id`,`creator_name`,`created_date`) values (9,7,'商品通过审核，已上架',1,'admin','2014-09-18 20:02:24');
+insert  into `log_goods`(`id`,`goods_id`,`content`,`creator_id`,`creator_name`,`created_date`) values (10,8,'商品通过审核，已上架',1,'admin','2014-09-18 20:02:29');
 
 /*Table structure for table `log_order` */
 
@@ -225,6 +266,8 @@ CREATE TABLE `log_order` (
   `creator_type` int(2) NOT NULL COMMENT '0=用户 1=客服 2=系统 3=渠道接口',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `log_order` */
 
 /*Table structure for table `merchant` */
 
@@ -242,7 +285,12 @@ CREATE TABLE `merchant` (
   `created_date` datetime NOT NULL,
   `creator_name` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+/*Data for the table `merchant` */
+
+insert  into `merchant`(`id`,`name`,`code_name`,`status`,`type`,`tel`,`mobile`,`creator_id`,`created_date`,`creator_name`) values (1,'泰奇幻','magicthai',0,2,NULL,NULL,0,'2014-09-18 19:42:49','admin');
+insert  into `merchant`(`id`,`name`,`code_name`,`status`,`type`,`tel`,`mobile`,`creator_id`,`created_date`,`creator_name`) values (2,'达拉斯','dalas',0,0,'12312314','13890229876',1,'2014-09-18 19:43:15','管理员');
 
 /*Table structure for table `merchant_details` */
 
@@ -255,6 +303,11 @@ CREATE TABLE `merchant_details` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+/*Data for the table `merchant_details` */
+
+insert  into `merchant_details`(`id`,`logo_path`,`notes`) values (1,NULL,NULL);
+insert  into `merchant_details`(`id`,`logo_path`,`notes`) values (2,'/upload/logo/_2.jpg','dsfsd');
+
 /*Table structure for table `role_group` */
 
 DROP TABLE IF EXISTS `role_group`;
@@ -266,6 +319,8 @@ CREATE TABLE `role_group` (
   `token` varchar(20) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `role_group` */
 
 /*Table structure for table `snapshot_goods` */
 
@@ -293,6 +348,8 @@ CREATE TABLE `snapshot_goods` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
+/*Data for the table `snapshot_goods` */
+
 /*Table structure for table `snapshot_goods_details` */
 
 DROP TABLE IF EXISTS `snapshot_goods_details`;
@@ -314,6 +371,8 @@ CREATE TABLE `snapshot_goods_details` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+/*Data for the table `snapshot_goods_details` */
+
 /*Table structure for table `snapshot_goods_price_seg` */
 
 DROP TABLE IF EXISTS `snapshot_goods_price_seg`;
@@ -328,6 +387,8 @@ CREATE TABLE `snapshot_goods_price_seg` (
   `child_price` double(10,3) NOT NULL DEFAULT '0.000',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+
+/*Data for the table `snapshot_goods_price_seg` */
 
 /*Table structure for table `tuser` */
 
@@ -347,7 +408,12 @@ CREATE TABLE `tuser` (
   `created_date` datetime DEFAULT NULL,
   `creator_name` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+/*Data for the table `tuser` */
+
+insert  into `tuser`(`id`,`name`,`code_name`,`mobile`,`login_name`,`password`,`merchant_id`,`type`,`status`,`creator_id`,`created_date`,`creator_name`) values (1,'管理员','admin',NULL,'admin','b59c67bf196a4758191e42f76670ceba',1,2,0,0,NULL,'admin');
+insert  into `tuser`(`id`,`name`,`code_name`,`mobile`,`login_name`,`password`,`merchant_id`,`type`,`status`,`creator_id`,`created_date`,`creator_name`) values (2,'达拉斯','dalas',NULL,'dalas','b59c67bf196a4758191e42f76670ceba',2,0,0,1,'2014-09-18 19:43:15','admin');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
