@@ -53,9 +53,6 @@ public class SnapshotGoodsServiceImpl implements SnapshotGoodsService {
 		snapshotGoods.getDetails().setCostDesc(goods.getDetails().getCostDesc());
 		snapshotGoods.getDetails().setBookNotes(goods.getDetails().getBookNotes());
 		snapshotGoods.getDetails().setNotes(goods.getDetails().getNotes());
-
-		snapshotGoods.setChildTotalPrice(goods.getChildTotalPrice());
-		snapshotGoods.setAdultTotalPrice(goods.getAdultTotalPrice());
 		int id = snapshotGoodsDao.create(snapshotGoods);
 
 		snapshotGoods.getDetails().setId(id);

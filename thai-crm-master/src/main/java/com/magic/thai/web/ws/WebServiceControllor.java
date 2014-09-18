@@ -3,6 +3,7 @@ package com.magic.thai.web.ws;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.JAXBContext;
@@ -21,6 +22,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.magic.thai.db.domain.Goods;
 import com.magic.thai.db.domain.Order;
 import com.magic.thai.db.service.InterfaceOrderService;
 import com.magic.thai.exception.ThaiException;
@@ -30,7 +32,7 @@ import com.magic.thai.exception.webservice.ParameterException;
 import com.magic.thai.util.Asserts;
 import com.magic.thai.web.ws.vo.CheckGoodsVo;
 import com.magic.thai.web.ws.vo.CreateOrderVo;
-import com.magic.thai.web.ws.vo.QueryGoodsVo;
+import com.magic.thai.web.ws.vo.QueryGoodsesVo;
 import com.magic.thai.web.ws.vo.QueryOrderVo;
 import com.magic.thai.web.ws.vo.TravelerVo;
 import com.magic.thai.web.ws.vo.WebServiceResult;
@@ -44,20 +46,19 @@ public class WebServiceControllor {
 	@Autowired
 	private InterfaceOrderService interfaceOrderService;
 
-	@RequestMapping(value = "/queryGoods", headers = "Accept=application/xml")
-	public void queryGoods(@RequestBody String requestBody, HttpServletResponse response, ModelMap model) throws Exception {
-		logger.info("threadId={}, queryGoods={}", Thread.currentThread().getId(), requestBody);
-		QueryGoodsVo vo = (QueryGoodsVo) unmarshall(requestBody, QueryGoodsVo.class);
+	@RequestMapping(value = "/queryGoodses", headers = "Accept=application/xml")
+	public void queryGoodses(@RequestBody String requestBody, HttpServletResponse response, ModelMap model) throws Exception {
+		logger.info("threadId={}, queryGoodses={}", Thread.currentThread().getId(), requestBody);
+		QueryGoodsesVo vo = (QueryGoodsesVo) unmarshall(requestBody, QueryGoodsesVo.class);
 		// WebServiceResult result = new WebServiceResult();
 		try {
 			Asserts.isTrue(StringUtils.isNotBlank(vo.getToken()), new ParameterException("TOKEN不能为空"));
-
-			// Order order = interfaceOrderService.create(vo);
-			// responseResult(response, new WebServiceResult().success(order));
+			List<Goods> goodses = interfaceOrderService.queryGoodses(vo);
+			responseResult(response, new WebServiceResult().success(goodses));
 		} catch (ThaiException e) {
 			responseResult(response, new WebServiceResult().fail(e));
-			// } catch (JAXBException e) {
-			// responseResult(response, new WebServiceResult().fail(new FormatException("请求参数格式异常")));
+		} catch (JAXBException e) {
+			responseResult(response, new WebServiceResult().fail(new FormatException("请求参数格式异常")));
 		} catch (Exception e) {
 			e.printStackTrace();
 			responseResult(response, new WebServiceResult().fail(new NativeException("系统内部错误")));

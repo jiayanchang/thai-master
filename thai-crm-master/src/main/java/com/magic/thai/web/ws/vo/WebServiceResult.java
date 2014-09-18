@@ -1,14 +1,17 @@
 package com.magic.thai.web.ws.vo;
 
+import java.util.ArrayList;
+
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 
+import com.magic.thai.db.domain.Goods;
 import com.magic.thai.db.domain.Order;
 import com.magic.thai.db.domain.OrderTraveler;
 import com.magic.thai.exception.ThaiException;
 
 @XmlRootElement(name = "result")
-@XmlSeeAlso({ ErrorMessage.class, Order.class, OrderTraveler.class })
+@XmlSeeAlso({ ErrorMessage.class, Order.class, OrderTraveler.class, Goods.class, ArrayList.class })
 public class WebServiceResult {
 
 	private boolean success;

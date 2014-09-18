@@ -23,6 +23,7 @@ import com.magic.thai.db.domain.Merchant;
 import com.magic.thai.db.domain.User;
 import com.magic.thai.db.vo.GoodsVo;
 import com.magic.thai.util.PaginationSupport;
+import com.magic.thai.web.ws.vo.QueryGoodsesVo;
 
 @Repository(value = "goodsDao")
 public class GoodsDaoImpl extends HibernateCommonDAO<Goods> implements GoodsDao {
@@ -111,8 +112,13 @@ public class GoodsDaoImpl extends HibernateCommonDAO<Goods> implements GoodsDao 
 	}
 
 	@Override
-	public List<Goods> fetchList(GoodsVo vo, Channel channel) {
-		String hql = "SELECT DISTINCT g FROM Goods g LEFT JOIN FETCH g.segments WHERE 1=1";
+	public List<Goods> fetchList(QueryGoodsesVo vo, Channel channel) {
+		String hql = "SELECT DISTINCT g FROM Goods g LEFT JOIN FETCH g.segments LEFT JOIN FETCH g.details WHERE status = "
+				+ Goods.Status.DEPLOYED;
+
+		// 20天后的不用验证
+		// g.goodsCount > g.soldCount and
+		// 获取不用校验库存 因为20天后是不限库存的
 
 		if (channel.getGoodsInvs().size() > 0) {
 			String ids = "";

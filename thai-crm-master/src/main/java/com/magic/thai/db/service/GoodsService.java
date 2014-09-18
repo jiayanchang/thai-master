@@ -13,6 +13,7 @@ import com.magic.thai.exception.NoPermissionsException;
 import com.magic.thai.exception.ThaiException;
 import com.magic.thai.security.UserProfile;
 import com.magic.thai.util.PaginationSupport;
+import com.magic.thai.web.ws.vo.QueryGoodsesVo;
 
 public interface GoodsService {
 
@@ -20,9 +21,16 @@ public interface GoodsService {
 
 	public Goods fetch(int id);
 
-	public List<Goods> fetchList(String channelToken);
-
 	public List<Goods> list(GoodsVo vo);
+
+	/**
+	 * 获取渠道方的商品列表
+	 * 
+	 * @param channel
+	 * @param vo
+	 * @return
+	 */
+	public List<Goods> fetchList(QueryGoodsesVo vo, Channel channel);
 
 	/**
 	 * 商家提交上架
@@ -70,10 +78,8 @@ public interface GoodsService {
 	 * 检测商品库存， 通过通道规则的设置校验库存量
 	 * 
 	 * @param channelToken
-	 * @param goodsId
-	 *            商品id(root id)
-	 * @param deptDate
-	 *            出发时间
+	 * @param goodsId 商品id(root id)
+	 * @param deptDate 出发时间
 	 * @return
 	 */
 	public boolean checkGoods(String channelToken, int goodsId, Date deptDate, int count) throws ThaiException;

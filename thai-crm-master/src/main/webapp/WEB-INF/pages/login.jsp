@@ -15,6 +15,7 @@
 	<div class="content">
 	<h1>login</h1>
 		<form method="POST" action="${pageContext.request.contextPath}/" enctype="multipart/form-data">
+			<font color="red">${message }</font>
 			<table>
 				<tr>
 					<td>UserName :</td>
@@ -39,7 +40,6 @@
 			</table>
 		</form>
 	</div>
-		<input type="button" value="start" onclick="ajaxreq()"/>
 </body>
 <script type="text/javascript">  
     function refresh() {  

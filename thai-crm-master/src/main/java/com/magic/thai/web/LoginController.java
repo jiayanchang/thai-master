@@ -32,22 +32,27 @@ public class LoginController {
 	public ModelAndView login(@RequestParam String loginName, @RequestParam String password, @RequestParam String captcha,
 			HttpSession session, HttpServletRequest request) throws Exception {
 
-		// result.rejectValue("email", "error.user",
-		// "An account already exists for this email.");
-		// ObjectError error = new
-		// ObjectError("email","An account already exists for this email.");
-		// result.addError(error);
 		logger.info("{} login! captcha is {}", loginName, session.getAttribute("captcha"));
 		// Assert.isTrue(captcha.equalsIgnoreCase(session.getAttribute("captcha").toString()),
 		// "验证码错误");
-		UserProfile userprofile = userService.login(loginName, password);
 
-		session.setAttribute("userprofile", userprofile);
-		if (userprofile.isPlatformUser()) {
-			return new ModelAndView("redirect:/a/order/list");
-		} else {
-			return new ModelAndView("redirect:/f/goods/list");
+		ModelAndView modelAndView = new ModelAndView();
+
+		UserProfile userprofile;
+		try {
+			userprofile = userService.login(loginName, password);
+			session.setAttribute("userprofile", userprofile);
+			if (userprofile.isPlatformUser()) {
+				modelAndView.setViewName("redirect:/a/order/list");
+			} else {
+				modelAndView.setViewName("redirect:/f/order/list");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			modelAndView.addObject("message", e.getMessage());
+			modelAndView.setViewName("/login");
 		}
+		return modelAndView;
 	}
 
 	@RequestMapping(value = "/a/index")

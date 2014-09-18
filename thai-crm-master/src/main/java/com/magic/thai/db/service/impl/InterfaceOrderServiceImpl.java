@@ -1,6 +1,7 @@
 package com.magic.thai.db.service.impl;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,7 @@ import com.magic.thai.util.CalendarUtils;
 import com.magic.thai.util.OrderNoGenerator;
 import com.magic.thai.web.ws.vo.CheckGoodsVo;
 import com.magic.thai.web.ws.vo.CreateOrderVo;
+import com.magic.thai.web.ws.vo.QueryGoodsesVo;
 import com.magic.thai.web.ws.vo.QueryOrderVo;
 import com.magic.thai.web.ws.vo.RefundOrderVo;
 import com.magic.thai.web.ws.vo.TravelerVo;
@@ -132,6 +134,13 @@ public class InterfaceOrderServiceImpl extends ServiceHelperImpl<Order> implemen
 		channelDao.update(channel);
 
 		return order;
+	}
+
+	@Override
+	public List<Goods> queryGoodses(QueryGoodsesVo vo) throws ThaiException {
+		Channel channel = channelDao.fetchByToken(vo.getToken());
+		Asserts.notNull(channel, new ParameterException("TOKEN有误"));
+		return goodsService.fetchList(vo, channel);
 	}
 
 	@Override

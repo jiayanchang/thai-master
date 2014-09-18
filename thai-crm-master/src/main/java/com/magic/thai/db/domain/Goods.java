@@ -3,19 +3,25 @@ package com.magic.thai.db.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import com.google.gson.annotations.Expose;
 
 @Entity
 @Table(name = "goods")
+@XmlRootElement
 public class Goods {
 
 	@Id
@@ -50,12 +56,6 @@ public class Goods {
 	@Column(name = "travel_days")
 	private int travelDays;// 行程天数
 
-	@Column(name = "child_total_price")
-	private double childTotalPrice;
-
-	@Column(name = "adult_total_price")
-	private double adultTotalPrice;
-
 	@Expose
 	@Column(name = "goods_count")
 	private int goodsCount;// 库存
@@ -64,7 +64,8 @@ public class Goods {
 	@Column(name = "sold_count")
 	private int soldCount;// 已售
 
-	@Transient
+	@OneToOne(targetEntity = GoodsDetails.class, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH }, fetch = FetchType.LAZY)
+	@PrimaryKeyJoinColumn
 	private GoodsDetails details; // 非hibnate关联
 
 	@OneToMany(mappedBy = "goods")
@@ -92,6 +93,7 @@ public class Goods {
 		this.id = id;
 	}
 
+	@XmlTransient
 	public int getMerchantId() {
 		return merchantId;
 	}
@@ -116,6 +118,7 @@ public class Goods {
 		this.dept = dept;
 	}
 
+	@XmlTransient
 	public String getMerchantName() {
 		return merchantName;
 	}
@@ -140,6 +143,7 @@ public class Goods {
 		this.summary = summary;
 	}
 
+	@XmlTransient
 	public int getStatus() {
 		return status;
 	}
@@ -148,6 +152,7 @@ public class Goods {
 		this.status = status;
 	}
 
+	@XmlTransient
 	public String getHotelName() {
 		return hotelName;
 	}
@@ -156,6 +161,7 @@ public class Goods {
 		this.hotelName = hotelName;
 	}
 
+	@XmlTransient
 	public int getHotelId() {
 		return hotelId;
 	}
@@ -172,28 +178,13 @@ public class Goods {
 		this.travelDays = travelDays;
 	}
 
+	@XmlTransient
 	public int getGoodsCount() {
 		return goodsCount;
 	}
 
 	public void setGoodsCount(int goodsCount) {
 		this.goodsCount = goodsCount;
-	}
-
-	public double getChildTotalPrice() {
-		return childTotalPrice;
-	}
-
-	public void setChildTotalPrice(double childTotalPrice) {
-		this.childTotalPrice = childTotalPrice;
-	}
-
-	public double getAdultTotalPrice() {
-		return adultTotalPrice;
-	}
-
-	public void setAdultTotalPrice(double adultTotalPrice) {
-		this.adultTotalPrice = adultTotalPrice;
 	}
 
 	public void setDetails(GoodsDetails details) {
@@ -221,9 +212,6 @@ public class Goods {
 	}
 
 	public GoodsDetails getDetails() {
-		if (details == null) {
-			details = new GoodsDetails();
-		}
 		return details;
 	}
 
@@ -231,6 +219,7 @@ public class Goods {
 		return segments;
 	}
 
+	@XmlTransient
 	public int getSoldCount() {
 		return soldCount;
 	}
@@ -239,14 +228,17 @@ public class Goods {
 		this.soldCount = soldCount;
 	}
 
+	@XmlTransient
 	public boolean isAuditing() {
 		return this.status == Status.AUDITING;
 	}
 
+	@XmlTransient
 	public boolean isDeployed() {
 		return this.status == Status.DEPLOYED;
 	}
 
+	@XmlTransient
 	public GoodsPriceSegment getLastSegment() {
 		if (getSegments().size() > 0) {
 			return getSegments().get(getSegments().size() - 1);
@@ -257,19 +249,7 @@ public class Goods {
 	@Override
 	public String toString() {
 		return "Goods [merchantName=" + merchantName + ", title=" + title + ", dept=" + dept + ", arrived=" + arrived + ", status="
-				+ status + ", hotelName=" + hotelName + ", travelDays=" + travelDays + ", goodsCount=" + goodsCount + ", childTotalPrice="
-				+ childTotalPrice + ", adultTotalPrice=" + adultTotalPrice + "]";
+				+ status + ", hotelName=" + hotelName + ", travelDays=" + travelDays + ", goodsCount=" + goodsCount + "]";
 	}
 
-	// @Override
-	// public boolean equals(Object obj) {
-	// Goods goods = (Goods) obj;
-	//
-	// return goods.getArrived().equalsIgnoreCase(this.getArrived()) &&
-	// goods.getDept().equalsIgnoreCase(this.getDept())
-	// && goods.getTravelDays() == this.getTravelDays() &&
-	// this.getAdultTotalPrice() == goods.getAdultTotalPrice()
-	// && this.getChildTotalPrice() == goods.getChildTotalPrice() &&
-	// this.getHotelId() == goods.getHotelId() && this.get;
-	// }
 }

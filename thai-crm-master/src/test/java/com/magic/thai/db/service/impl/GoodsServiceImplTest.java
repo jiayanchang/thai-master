@@ -24,13 +24,13 @@ public class GoodsServiceImplTest extends BaseTest {
 		// System.out.println(newGoods);
 		// fail("Not yet implemented");
 
-		List<Goods> goodses = goodsService.fetchList(null);
-		for (Goods goods : goodses) {
-			System.out.println(goods);
-			for (GoodsPriceSegment s : goods.getSegments()) {
-				System.out.println(s);
-			}
-		}
+		// List<Goods> goodses = goodsService.fetchList(null);
+		// for (Goods goods : goodses) {
+		// System.out.println(goods);
+		// for (GoodsPriceSegment s : goods.getSegments()) {
+		// System.out.println(s);
+		// }
+		// }
 	}
 
 	private int createNewGoods() {

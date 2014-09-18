@@ -36,6 +36,7 @@ import com.magic.thai.security.UserProfile;
 import com.magic.thai.util.Asserts;
 import com.magic.thai.util.CalendarUtils;
 import com.magic.thai.util.PaginationSupport;
+import com.magic.thai.web.ws.vo.QueryGoodsesVo;
 
 @Service("goodsService")
 @Transactional
@@ -75,8 +76,9 @@ public class GoodsServiceImpl extends ServiceHelperImpl<Goods> implements GoodsS
 	}
 
 	@Override
-	public List<Goods> fetchList(String channelToken) {
-		return goodsDao.fetchList(null, null);
+	public List<Goods> fetchList(QueryGoodsesVo vo, Channel channel) {
+		List<Goods> goods = goodsDao.fetchList(vo, channel);
+		return goods;
 	}
 
 	@Override
@@ -158,9 +160,6 @@ public class GoodsServiceImpl extends ServiceHelperImpl<Goods> implements GoodsS
 		goods.getDetails().setBookNotes(goodsbean.getDetails().getBookNotes());
 		goods.getDetails().setNotes(goodsbean.getDetails().getNotes());
 
-		goods.setAdultTotalPrice(0);
-		goods.setChildTotalPrice(0);
-
 		for (int j = goods.getSegments().size() - 1; j >= 0; j--) {
 			GoodsPriceSegment segment = goods.getSegments().get(j);
 			boolean exsits = false;
@@ -172,8 +171,6 @@ public class GoodsServiceImpl extends ServiceHelperImpl<Goods> implements GoodsS
 					segment.setChildPrice(segmentbean.getChildPrice());
 					segment.setStartDate(segmentbean.getStartDate());
 					segment.setEndDate(segmentbean.getEndDate());
-					goods.setAdultTotalPrice(segment.getAuditPrice() + goods.getAdultTotalPrice());
-					goods.setChildTotalPrice(segment.getChildPrice() + goods.getChildTotalPrice());
 					segment.setGoods(goods);
 					goodsPriceSegmentDao.update(segment);
 					goodsbean.getSegments().remove(i);
@@ -214,8 +211,6 @@ public class GoodsServiceImpl extends ServiceHelperImpl<Goods> implements GoodsS
 		goodsDetailsDao.create(goods.getDetails());
 		for (GoodsPriceSegment segment : goods.getSegments()) {
 			segment.setGoods(goods);
-			goods.setAdultTotalPrice(segment.getAuditPrice() + goods.getAdultTotalPrice());
-			goods.setChildTotalPrice(segment.getChildPrice() + goods.getChildTotalPrice());
 			goodsPriceSegmentDao.create(segment);
 		}
 		// update total amount
