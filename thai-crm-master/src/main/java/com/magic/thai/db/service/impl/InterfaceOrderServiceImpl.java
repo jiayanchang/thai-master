@@ -17,6 +17,7 @@ import com.magic.thai.db.domain.Goods;
 import com.magic.thai.db.domain.Order;
 import com.magic.thai.db.domain.OrderLog;
 import com.magic.thai.db.domain.OrderTraveler;
+import com.magic.thai.db.service.ChannelService;
 import com.magic.thai.db.service.GoodsService;
 import com.magic.thai.db.service.InterfaceOrderService;
 import com.magic.thai.db.service.OrderService;
@@ -48,6 +49,8 @@ public class InterfaceOrderServiceImpl extends ServiceHelperImpl<Order> implemen
 	private OrderTravelerDao orderTravelerDao;
 	@Autowired
 	private ChannelDao channelDao;
+	@Autowired
+	private ChannelService channelService;
 	@Autowired
 	private SnapshotGoodsService snapshotGoodsService;
 	@Autowired
@@ -141,7 +144,9 @@ public class InterfaceOrderServiceImpl extends ServiceHelperImpl<Order> implemen
 	public List<Goods> queryGoodses(QueryGoodsesVo vo) throws ThaiException {
 		Channel channel = channelDao.fetchByToken(vo.getToken());
 		Asserts.notNull(channel, new ParameterException("TOKEN有误"));
-		return goodsService.fetchList(vo, channel);
+		List<Goods> goodses = goodsService.fetchList(vo, channel);
+		channelService.refreshSoldGoodsCount(channel, goodses.size());
+		return goodses;
 	}
 
 	@Override
@@ -174,6 +179,7 @@ public class InterfaceOrderServiceImpl extends ServiceHelperImpl<Order> implemen
 		Asserts.notNull(channel, new ParameterException("TOKEN有误"));
 		Order order = orderDao.fetchByNo(vo.getOrderNo());
 		Asserts.notNull(order, new ParameterException("订单号有误"));
+		Asserts.isTrue(order.getChannelId() == channel.getId(), new OrderStatusException("没有权限操作此订单"));
 		Asserts.isTrue(order.isCompleted(), new OrderStatusException("订单在" + order.getStatusDesc() + "状态下不能申请退单"));
 
 		// 清空最后操作者，列表页面客服可直接区分哪些订单没有处理
@@ -183,6 +189,6 @@ public class InterfaceOrderServiceImpl extends ServiceHelperImpl<Order> implemen
 
 		order.setStatus(Order.Status.NEW);// 恢复为待确认
 		orderDao.update(order);
-		orderLogDao.create(new OrderLog(order, channel, vo.getReason()));
+		orderLogDao.create(new OrderLog(order, channel, "退单申请：" + vo.getReason()));
 	}
 }

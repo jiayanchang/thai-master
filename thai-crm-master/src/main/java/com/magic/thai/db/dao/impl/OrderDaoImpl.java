@@ -15,6 +15,7 @@ import com.magic.thai.db.dao.HibernateCommonDAO;
 import com.magic.thai.db.dao.OrderDao;
 import com.magic.thai.db.domain.Merchant;
 import com.magic.thai.db.domain.Order;
+import com.magic.thai.db.domain.User;
 import com.magic.thai.db.vo.OrderVo;
 import com.magic.thai.util.PaginationSupport;
 
@@ -98,4 +99,13 @@ public class OrderDaoImpl extends HibernateCommonDAO<Order> implements OrderDao 
 		return super.find(criterions, vo.page, 30);
 	}
 
+	@Override
+	public int auditingOrderCount(User user) {
+		String hql = "select count(*) from Order where status = " + Order.Status.NEW;
+		if (!user.isPlatformUser()) {
+			hql += " and merchantId = " + user.getMerchantId();
+		}
+
+		return ((Long) super.getSession().createQuery(hql).uniqueResult()).intValue();
+	}
 }

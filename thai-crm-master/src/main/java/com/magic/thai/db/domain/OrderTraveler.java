@@ -13,7 +13,7 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
-@Table(name = "channel_order_traveler")
+@Table(name = "merchant_order_traveler")
 public class OrderTraveler {
 
 	@Id

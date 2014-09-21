@@ -17,7 +17,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
-@Table(name = "channel_order")
+@Table(name = "merchant_order")
 @XmlRootElement
 public class Order {
 

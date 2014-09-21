@@ -37,7 +37,7 @@
 			<td>${order.statusDesc}</td>
 			<td>${order.lastOperatorName}</td>
 			<td>
-				<a href="javascript:openDialog(${order.id}); ">编辑备注</a>
+				<a href="javascript:openDialog(${order.id}, '${order.orderNo}'); ">编辑备注</a>
 				<a href="${pageContext.request.contextPath}/a/order/${order.id} ">详情</a>
 			</td>
 		</tr>
@@ -46,63 +46,6 @@
 </table>
 <%@ include file="../../page.jsp"%>
 </form:form>
-<div id="dialog-form" title="Basic dialog">
+<div id="dialog-form" title="Basic dialog" style="display:none;">
 	<textarea id="reason" rows="7" cols="32"></textarea>
 </div>
-
-<script>
-
-function openDialog(id, orderNo) {
-	$("#reason").val("");
-	jQuery.ajax({
-	    type: 'POST',
-		encoding:"UTF-8",
-	    dataType:"json", 
-	    data : 'orderNo=' + orderNo,
-	    contentType: "application/x-www-form-urlencoded;  charset=UTF-8",
-	    url: "${pageContext.request.contextPath}/a/order/lock.json",
-		success: function(result) {
-			if(result.data.success) {
-				dialog.dialog( "open" );
-			} else {
-				alert(result.data.message);				
-			}
-		}
-	});
-	
-	
-	var dialog = $( "#dialog-form" ).dialog({
-	    autoOpen: false,
-	    height: 300,
-	    width: 350,
-	    title:'原因',
-	    modal: true,
-	    buttons: {
-	      "提交": function(){
-	    	  jQuery.ajax({
-	    		    type: 'POST',
-	    			encoding:"UTF-8",
-	    		    dataType:"json", 
-	    		    data : 'id=' + id + "&reason=" + $("#reason"),
-	    		    contentType: "application/x-www-form-urlencoded;  charset=UTF-8",
-	    		    url: "${pageContext.request.contextPath}/a/order/proc.json",
-	    			success: function(result) {
-	    				if(result.data.success) {
-	    					dialog.dialog( "close" );
-	    					$("form").submit();
-	    				} else {
-	    					alert(result.data.message);				
-	    				}
-	    			}
-	    		});
-	      },
-	      "取消" : function() {
-	        dialog.dialog( "close" );
-	      }
-	    },
-	    close: function() {
-	  	  dialog.dialog( "close" );
-	    }
-	});
-}
-</script>

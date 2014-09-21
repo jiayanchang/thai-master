@@ -52,9 +52,11 @@ public class UserServiceImpl extends ServiceHelperImpl<User> implements UserServ
 		if (StringUtils.isBlank(user.getCodeName())) {
 			user.setCodeName(user.getLoginName());
 		}
+		user.setType(userprofile.getMerchant().getType());
 		user.setCreatedDate(new Date());
 		user.setCreatorId(userprofile.getUser().getId());
 		user.setCreatorName(userprofile.getUser().getCodeName());
+		user.setPasswordSource(user.getPassword());
 		user.setPassword(Md5CryptoUtils.create(user.getPassword()));
 		return userDao.create(user);
 	}
@@ -68,12 +70,14 @@ public class UserServiceImpl extends ServiceHelperImpl<User> implements UserServ
 		user.setCreatedDate(new Date());
 		user.setCreatorId(userprofile.getUser().getId());
 		user.setCreatorName(userprofile.getUser().getCodeName());
+		user.setPasswordSource(user.getPassword());
 		user.setPassword(Md5CryptoUtils.create(user.getPassword()));
 		return userDao.create(user);
 	}
 
 	@Override
 	public void update(User user, UserProfile userprofile) {
+		user.setPasswordSource(user.getPassword());
 		user.setPassword(Md5CryptoUtils.create(user.getPassword()));
 		userDao.update(user);
 	}

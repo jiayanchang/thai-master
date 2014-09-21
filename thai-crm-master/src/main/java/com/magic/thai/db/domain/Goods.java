@@ -12,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -212,6 +214,8 @@ public class Goods {
 		return details;
 	}
 
+	@XmlElementWrapper(name = "segments")
+	@XmlElement(name = "segment")
 	public List<GoodsPriceSegment> getSegments() {
 		return segments;
 	}

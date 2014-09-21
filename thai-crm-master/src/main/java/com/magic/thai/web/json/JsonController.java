@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,16 +27,18 @@ import com.magic.thai.db.dao.HotelDao;
 import com.magic.thai.db.domain.Goods;
 import com.magic.thai.db.domain.Hotel;
 import com.magic.thai.db.domain.Merchant;
+import com.magic.thai.db.domain.Order;
 import com.magic.thai.db.domain.User;
 import com.magic.thai.db.service.GoodsService;
 import com.magic.thai.db.service.MerchantService;
 import com.magic.thai.db.service.OrderService;
 import com.magic.thai.db.service.UserService;
+import com.magic.thai.db.service.strategy.LockManager;
 import com.magic.thai.db.vo.GoodsVo;
 import com.magic.thai.db.vo.HotelVo;
 import com.magic.thai.db.vo.MerchantVo;
-import com.magic.thai.exception.GoodsStatusException;
-import com.magic.thai.exception.NoPermissionsException;
+import com.magic.thai.db.vo.UserVo;
+import com.magic.thai.exception.ThaiException;
 import com.magic.thai.security.UserProfile;
 import com.magic.thai.web.DataVo;
 
@@ -126,43 +129,71 @@ public class JsonController {
 		return gson.toJson(goodsService.load(id));
 	}
 
-	@RequestMapping(value = "/goods/pass/{id}", method = RequestMethod.POST)
-	@ResponseBody
-	public String procAuditGoods(@PathVariable int id, HttpSession session) {
-		UserProfile userprofile = (UserProfile) session.getAttribute("userprofile");
-		DataVo result;
-		try {
-			goodsService.pass(id, userprofile);
-			result = DataVo.success(id);
-		} catch (NoPermissionsException e) {
-			e.printStackTrace();
-			result = DataVo.fail("您不能审核该商品");
-		} catch (GoodsStatusException e) {
-			e.printStackTrace();
-			result = DataVo.fail(e.getMessage());
-		}
-		Gson gson = new Gson();
-		return gson.toJson(result);
-	}
-
-	@RequestMapping("/show")
-	public String toShow(ModelMap model) {
-		User user = new User();
-		user.setName("中文");
-		model.put("user", user);
-		return "/show";
-	}
-
-	@RequestMapping("/validateLoginName")
-	public ModelMap validateLoginName(@RequestParam String loginName, @RequestParam Integer userId, ModelMap model) {
+	@RequestMapping("/validateUser")
+	public ModelMap validateUser(@RequestParam String loginName, @RequestParam String userId, ModelMap model, HttpSession session) {
 		User user = userService.findByLoginName(loginName);
 		DataVo vo;
-		if (user == null || (userId != null && userId.intValue() == user.getId())) {
+
+		UserProfile userprofile = (UserProfile) session.getAttribute("userprofile");
+		if (user == null || !StringUtils.equals(userId, user.getId() + "")) {
 			vo = DataVo.success(null);
+			List<User> users = userService.list(new UserVo(new Integer[] { User.Status.DISABLED, User.Status.ENABLED }, userprofile
+					.getMerchant().getId()));
+			if (users.size() > 9) {
+				vo = DataVo.fail("用户数量已经用完");
+			}
 		} else {
 			vo = DataVo.fail("当前登录名已存在");
 		}
 		model.put("data", vo);
+		return model;
+	}
+
+	@RequestMapping(value = "/lock", method = RequestMethod.POST)
+	public ModelMap lock(@RequestParam String orderNo, HttpSession session, ModelMap model) {
+		UserProfile userprofile = (UserProfile) session.getAttribute("userprofile");
+		try {
+			LockManager.lock(orderNo, userprofile, true);
+			model.put("data", DataVo.success("锁单成功").setMessage("锁单成功"));
+		} catch (ThaiException e) {
+			e.printStackTrace();
+			model.put("data", DataVo.fail(null).setMessage(e.getMessage()));
+		}
+		return model;
+	}
+
+	@RequestMapping(value = "/unlock", method = RequestMethod.POST)
+	public ModelMap unlock(@RequestParam String orderNo, HttpSession session, ModelMap model) {
+		UserProfile userprofile = (UserProfile) session.getAttribute("userprofile");
+		try {
+			LockManager.unlock(orderNo);
+			model.put("data", DataVo.success("锁单成功").setMessage("锁单成功"));
+		} catch (ThaiException e) {
+			e.printStackTrace();
+			model.put("data", DataVo.fail(null).setMessage(e.getMessage()));
+		}
+		return model;
+	}
+
+	@RequestMapping(value = "/orderproc", method = RequestMethod.POST)
+	public ModelMap procPost(@RequestParam int orderId, @RequestParam String reason, HttpSession session, ModelMap model) {
+		UserProfile userprofile = (UserProfile) session.getAttribute("userprofile");
+		Order order = orderService.load(orderId);
+		try {
+			if (!LockManager.hasLock(order.getOrderNo()) || LockManager.isOwnLock(order.getOrderNo(), userprofile)
+					|| LockManager.isInvalidLock(order.getOrderNo())) {
+				LockManager.lock(order.getOrderNo(), userprofile, false);
+				orderService.proc(orderId, reason, userprofile);
+				model.put("data", DataVo.success("操作成功"));
+				LockManager.unlock(order.getOrderNo());
+			} else {
+				model.put("data", DataVo.fail("操作失败:" + LockManager.getLock(order.getOrderNo())));
+			}
+		} catch (ThaiException e) {
+			e.printStackTrace();
+			model.put("data", DataVo.fail("操作失败:" + e.getMessage()));
+		}
+
 		return model;
 	}
 

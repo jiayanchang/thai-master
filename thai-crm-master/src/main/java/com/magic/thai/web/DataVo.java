@@ -14,7 +14,7 @@ public class DataVo {
 		DataVo vo = new DataVo();
 		vo.setData(null);
 		vo.setMessage(msg);
-		vo.setSuccess(true);
+		vo.setSuccess(false);
 		return vo;
 	}
 
@@ -42,8 +42,9 @@ public class DataVo {
 		return message;
 	}
 
-	public void setMessage(String message) {
+	public DataVo setMessage(String message) {
 		this.message = message;
+		return this;
 	}
 
 }

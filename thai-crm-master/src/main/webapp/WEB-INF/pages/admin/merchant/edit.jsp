@@ -34,7 +34,7 @@
 		</tr>
 		<tr>
 			<td></td>
-			<td><img src="${pageContext.request.contextPath}${merchant.details.logoPath}"></td>
+			<td><img src="${pageContext.request.contextPath}/resources/logo/${merchant.id}.jpg"></td>
 			<td></td>
 		</tr>
 		<tr>

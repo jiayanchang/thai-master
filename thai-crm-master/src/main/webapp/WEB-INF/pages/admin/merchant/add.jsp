@@ -12,10 +12,15 @@
 			<td><form:errors path="name" cssClass="error" /></td>
 		</tr>
 		<tr>
+			<td>英文名 :</td>
+			<td><form:input path="nameEn" /></td>
+			<td><form:errors path="nameEn" cssClass="error" /></td>
+		</tr>
+		<%-- <tr>
 			<td>代码 :</td>
 			<td><form:input path="codeName" /></td>
 			<td><form:errors path="codeName" cssClass="error" /></td>
-		</tr>
+		</tr> --%>
 		<tr>
 			<td>联系电话 :</td>
 			<td><form:input path="tel" /></td>

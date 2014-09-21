@@ -2,19 +2,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page language="java" pageEncoding="UTF-8"%>  
     
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
- <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet" type="text/css" /> 
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>List of Order</title>
-
-</head>
-<body>
-<div class="content">
 <h1>订单列表</h1>
 <p>Here you can see the list of the order, add them, remove or update.</p>
-
 <p>${message}</p>
 
 
@@ -69,8 +58,8 @@
 	<td>${order.statusDesc}</td>
 	<td>${order.lastOperatorName}</td>
 	<td>
-	<a href="${pageContext.request.contextPath}/f/order/edit/${order.id} ">修改</a><br/>
-	<a href="${pageContext.request.contextPath}/f/order/${order.id} ">详情</a><br/>
+		<a href="javascript:openDialog(${order.id}, '${order.orderNo}'); ">编辑备注</a>
+		<a href="${pageContext.request.contextPath}/f/order/${order.id} ">详情</a>
 	</td>
 </tr>
 </c:forEach>
@@ -80,5 +69,6 @@
 <%@ include file="../../page.jsp"%>
 
 </form:form>
+<div id="dialog-form" title="Basic dialog" style="display:none;">
+	<textarea id="reason" rows="7" cols="32"></textarea>
 </div>
-</body>

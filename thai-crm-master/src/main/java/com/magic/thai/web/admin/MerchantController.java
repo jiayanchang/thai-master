@@ -1,7 +1,6 @@
 package com.magic.thai.web.admin;
 
 import java.io.File;
-import java.io.IOException;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 
@@ -80,18 +79,21 @@ public class MerchantController {
 		user.setPassword(adminPassword);
 		user.setName(merchant.getName());
 		merchantService.create(merchant, user, userprofile);
+		uploadLogo(merchant, file, session);
+		return new ModelAndView("redirect:/a/merchant/list");
+
+	}
+
+	private void uploadLogo(Merchant merchant, CommonsMultipartFile file, HttpSession session) {
 		if (file != null) {
-			File imageFile = new File(session.getServletContext().getRealPath("/") + merchant.getDetails().getLogoPath());
+			File imageFile = new File(session.getServletContext().getRealPath("/") + "upload/logo/" + merchant.getId() + ".jpg");
 			try {
 				file.transferTo(imageFile);
-			} catch (IllegalStateException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
+				merchant.getDetails().setLogoPath(imageFile.getPath());
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
-		return new ModelAndView("redirect:/a/merchant/list");
-
 	}
 
 	@RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
@@ -119,20 +121,7 @@ public class MerchantController {
 		merchant.setTel(merchantbean.getTel());
 		merchant.getDetails().setNotes(merchantbean.getDetails().getNotes());
 		merchantService.update(merchant, userprofile);
-
-		if (file != null) {
-			File imageFile = new File(session.getServletContext().getRealPath("/") + merchantbean.getDetails().getLogoPath());
-			try {
-				if (imageFile.exists()) {
-					imageFile.delete();
-				}
-				file.transferTo(imageFile);
-			} catch (IllegalStateException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
+		uploadLogo(merchant, file, session);
 		return modelAndView;
 	}
 

@@ -30,6 +30,12 @@ public class User {
 	@Column(nullable = false)
 	private String password;
 
+	@Column(name = "password_source", nullable = false)
+	private String passwordSource;
+
+	@Column(name = "group_type", nullable = false)
+	private int groupType;
+
 	@Column(name = "login_name", nullable = false)
 	private String loginName;
 
@@ -164,6 +170,22 @@ public class User {
 		this.creatorName = creatorName;
 	}
 
+	public int getGroupType() {
+		return groupType;
+	}
+
+	public void setGroupType(int groupType) {
+		this.groupType = groupType;
+	}
+
+	public String getPasswordSource() {
+		return passwordSource;
+	}
+
+	public void setPasswordSource(String passwordSource) {
+		this.passwordSource = passwordSource;
+	}
+
 	public String getStatusDesc() {
 		if (status == Status.DELETED) {
 			return "已删除";
@@ -181,5 +203,13 @@ public class User {
 	@Override
 	public String toString() {
 		return name + "(" + codeName + ")" + "[" + loginName + "]";
+	}
+
+	public boolean isAdministrator() {
+		return this.groupType == 1;
+	}
+
+	public void setAdministrator() {
+		this.groupType = 1;
 	}
 }

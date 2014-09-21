@@ -1,24 +1,23 @@
 <%@page import="com.magic.thai.security.UserProfile"%>
-<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="decorator" uri="http://www.opensymphony.com/sitemesh/decorator"%>  
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>泰奇幻</title>
+	<%@ include file="../head.jsp"%>
 </head>
 <body>
 <table>
 <tr>
 <td>
-	<img src="${pageContext.request.contextPath}/<%=((UserProfile)session.getAttribute("userprofile")).getMerchant().getDetails().getLogoPath()  %>"/>
-	<%=((UserProfile)session.getAttribute("userprofile")).getUser().getName()  %>
-	<a href="${pageContext.request.contextPath}/logout">退出</a>
+	<%@ include file="../logo.jsp"%>
 </td>
 <td>
 	<ul style="float: left">
 		<li><a href="${pageContext.request.contextPath}/f/goods/list">商品管理</a></li>
 		<li>订单管理</li>
-		<li><a href="${pageContext.request.contextPath}/f/user/list">系统管理</a></li>
+		<% if(((UserProfile)session.getAttribute("userprofile")).isAdministrator()) { %>
+			<li><a href="${pageContext.request.contextPath}/f/user/list">系统管理</a></li>
+		<% } %>
 	</ul>
 </td>
 </tr>
@@ -27,6 +26,7 @@
 	<ul>
 		<li><a href="${pageContext.request.contextPath}/f/order/add">新建订单</a></li>
 		<li><a href="${pageContext.request.contextPath}/f/order/list">订单查询</a></li>
+		<li><a href="${pageContext.request.contextPath}/f/order/audits">待确定订单<span id="orderMonitorSpan"></span></a></li>
 	</ul>
 </td>
 <td>
@@ -34,5 +34,6 @@
 </td>
 </tr>
 </table>
+<%@ include file="../notify.jsp"%>
 </body>
 </html>

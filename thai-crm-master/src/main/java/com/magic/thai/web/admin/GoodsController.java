@@ -43,17 +43,10 @@ public class GoodsController {
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
 	}
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/{id}")
 	public ModelAndView view(@PathVariable int id) {
 		ModelAndView modelandView = new ModelAndView("/admin/goods/view");
 		modelandView.addObject("goods", goodsService.fetch(id));
-		return modelandView;
-	}
-
-	@RequestMapping(value = "/{id}", method = RequestMethod.POST)
-	public ModelAndView viewOnly(@PathVariable int id) {
-		ModelAndView modelandView = new ModelAndView("/admin/goods/view");
-		modelandView.addObject("goods", goodsService.load(id));
 		return modelandView;
 	}
 

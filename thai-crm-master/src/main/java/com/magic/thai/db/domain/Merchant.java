@@ -26,6 +26,10 @@ public class Merchant {
 	@Expose
 	private String name;
 
+	@Column(name = "name_en", nullable = false)
+	@Expose
+	private String nameEn;
+
 	@Column(name = "code_name")
 	@Expose
 	private String codeName;

@@ -1,11 +1,8 @@
 package com.magic.thai.web.ws;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
-import java.net.URI;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,15 +28,12 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.junit.Test;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.client.ClientHttpRequest;
-import org.springframework.http.client.ClientHttpResponse;
-import org.springframework.http.client.SimpleClientHttpRequestFactory;
 
 import com.magic.thai.web.ws.vo.CheckGoodsVo;
 import com.magic.thai.web.ws.vo.CreateOrderVo;
 import com.magic.thai.web.ws.vo.QueryGoodsesVo;
 import com.magic.thai.web.ws.vo.QueryOrderVo;
+import com.magic.thai.web.ws.vo.RefundOrderVo;
 import com.magic.thai.web.ws.vo.TravelerVo;
 
 public class WebServiceControllorTest {
@@ -105,8 +99,20 @@ public class WebServiceControllorTest {
 		String url = "http://localhost:8080/crm/ws/queryOrder";
 		QueryOrderVo vo = new QueryOrderVo();
 		vo.setToken(token);
-		vo.setOrderNo("020214091800000005");
+		vo.setOrderNo("020214091900000004");
 
+		String xmlData = marshall(vo);
+		String html = xmlrequest(url, xmlData);
+		System.out.println(html);
+	}
+
+	@Test
+	public void testRefund() throws Exception {
+		String url = "http://localhost:8080/crm/ws/refundOrder";
+		RefundOrderVo vo = new RefundOrderVo();
+		vo.setToken(token + "2");
+		vo.setOrderNo("020214091900000004");
+		vo.setReason("死了，去不了了");
 		String xmlData = marshall(vo);
 		String html = xmlrequest(url, xmlData);
 		System.out.println(html);
@@ -153,22 +159,4 @@ public class WebServiceControllorTest {
 		return html;
 	}
 
-	public void test() throws Exception {
-		// 请求的地址
-		String url = "http://localhost:8080/crm/ws/createOrder";
-		// ①创建Http Request(内部使用HttpURLConnection)
-		ClientHttpRequest request = new SimpleClientHttpRequestFactory().createRequest(new URI(url), HttpMethod.POST);
-		// ②设置客户端可接受的媒体类型（即需要什么类型的响应体数据）
-		// request.getHeaders().set("Accept", "application/xml");
-		// ③发送请求并得到响应
-		ClientHttpResponse response = request.execute();
-		// ④得到响应体的编码方式
-		Charset charset = response.getHeaders().getContentType().getCharSet();
-		// ⑤得到响应体的内容
-		InputStream is = response.getBody();
-		byte bytes[] = new byte[(int) response.getHeaders().getContentLength()];
-		is.read(bytes);
-		String xmlData = new String(bytes, charset);
-		System.out.println("charset : " + charset + ", xml data : " + xmlData);
-	}
 }

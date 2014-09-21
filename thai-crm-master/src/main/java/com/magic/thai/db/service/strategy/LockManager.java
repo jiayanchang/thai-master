@@ -7,6 +7,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.http.impl.cookie.DateParseException;
 import org.apache.http.impl.cookie.DateUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.magic.thai.exception.ThaiException;
 import com.magic.thai.exception.ThaiLogicException;
@@ -16,41 +18,61 @@ import com.magic.thai.util.Asserts;
 public class LockManager {
 
 	/**
-	 * key=orderNo, value=-userid-username-datetime
+	 * key=orderNo, value=-userid-username-datetime-
 	 */
 	private static ConcurrentHashMap<String, String> orderLocks = new ConcurrentHashMap<String, String>();
 
-	static final int watting_minute = 5 * 60 * 1000;
+	private static Logger logger = LoggerFactory.getLogger(LockManager.class);
 
-	public static void lock(String orderNo, UserProfile userprofile) throws ThaiException {
+	static final int watting_minute = 5;
+	static final String date_format_pattern = "yyyy/MM/dd hh:mm:ss";
+
+	public static void lock(String orderNo, UserProfile userprofile, boolean needsRelock) throws ThaiException {
 		Asserts.notBlank(orderNo, new ThaiLogicException("订单号为空"));
 		synchronized (orderLocks) {
 			if (hasLock(orderNo)) {
+				logger.info("{} has lock : {}", orderNo, userprofile);
 				if (isOwnLock(orderNo, userprofile)) {
-					setLock(orderNo, userprofile);
-				} else if (isInvalidLock(orderNo)) {
-					setLock(orderNo, userprofile);
+					logger.info("{} is own lock : {}", orderNo, userprofile);
+					if (needsRelock)
+						setLock(orderNo, userprofile);
+				} else if (!isInvalidLock(orderNo)) {
+					logger.info("{} is valid lock : {}", orderNo, userprofile);
+					if (needsRelock)
+						setLock(orderNo, userprofile);
 				} else {
-					throw new ThaiLogicException("当前订单锁定失败");
+					logger.info("{} locked fail : {}", orderNo, userprofile);
+					throw new ThaiLogicException(getLock(orderNo));
 				}
 			} else {
+				logger.info("{} not lock : {}", orderNo, userprofile);
 				setLock(orderNo, userprofile);
 			}
 		}
+	}
+
+	public static Date getLockedTime(int userid, String orderNo) throws DateParseException, ThaiException {
+		String value = orderLocks.get(orderNo);
+		Asserts.notBlank(value, new ThaiLogicException("LOCK的值为空"));
+		String[] varr = value.split("-");
+		Date locked = DateUtils.parseDate(varr[3], new String[] { date_format_pattern });
+		logger.info("value:{}, locked:{}", value, locked);
+		return locked;
 	}
 
 	public static String getLock(String orderNo) throws ThaiException {
 		String value = orderLocks.get(orderNo);
 		Asserts.notBlank(value, new ThaiLogicException("LOCK的值为空"));
 		String[] varr = value.split("-");
-		return varr[2] + "在" + varr[3] + "已经开始处理了";
+		return varr[2] + "在" + varr[3].substring(12) + "已经开始处理了";
 	}
 
 	private static void setLock(String orderNo, UserProfile userprofile) {
+		System.out.println(orderNo + " : " + userprofile);
 		orderLocks.put(
 				orderNo,
 				"-" + userprofile.getUser().getId() + "-" + userprofile.getUser().getName() + "-"
-						+ DateFormatUtils.format(new Date(), "yyyy/MM/dd hh:mm:ss") + "-");
+						+ DateFormatUtils.format(new Date(), date_format_pattern) + "-");
 	}
 
 	public static void unlock(String orderNo) throws ThaiException {
@@ -73,7 +95,7 @@ public class LockManager {
 		String dstr = value.split("-")[3];
 		Date date = null;
 		try {
-			DateUtils.parseDate(dstr, new String[] { "yyyy/MM/dd hh:mm:ss" });
+			date = DateUtils.parseDate(dstr, new String[] { date_format_pattern });
 		} catch (DateParseException e) {
 			e.printStackTrace();
 			return true;
@@ -82,7 +104,6 @@ public class LockManager {
 		Calendar c = Calendar.getInstance();
 		c.setTime(date);
 		c.add(Calendar.MINUTE, watting_minute);
-
 		return c.getTime().after(new Date());
 	}
 

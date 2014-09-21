@@ -6,7 +6,12 @@ public class UserVo {
 	}
 
 	public UserVo(Integer[] statuses) {
+		this(statuses, 0);
+	}
+
+	public UserVo(Integer[] statuses, int merchantId) {
 		this.statuses = statuses;
+		this.merchantId = merchantId;
 	}
 
 	public String nameKeyword;

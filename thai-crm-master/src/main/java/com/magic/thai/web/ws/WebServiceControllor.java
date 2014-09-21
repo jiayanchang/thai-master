@@ -35,6 +35,7 @@ import com.magic.thai.web.ws.vo.CreateOrderVo;
 import com.magic.thai.web.ws.vo.GoodsListVo;
 import com.magic.thai.web.ws.vo.QueryGoodsesVo;
 import com.magic.thai.web.ws.vo.QueryOrderVo;
+import com.magic.thai.web.ws.vo.RefundOrderVo;
 import com.magic.thai.web.ws.vo.TravelerVo;
 import com.magic.thai.web.ws.vo.WebServiceResult;
 
@@ -128,11 +129,11 @@ public class WebServiceControllor {
 	public void refundOrder(@RequestBody String requestBody, HttpServletResponse response, ModelMap model) throws Exception {
 		logger.info("threadId={}, refundOrder={}", Thread.currentThread().getId(), requestBody);
 		try {
-			QueryOrderVo vo = (QueryOrderVo) unmarshall(requestBody, QueryOrderVo.class);
+			RefundOrderVo vo = (RefundOrderVo) unmarshall(requestBody, RefundOrderVo.class);
 			Asserts.notNull(vo.getToken(), new ParameterException("TOKEN不能为空"));
 			Asserts.notNull(vo.getOrderNo(), new ParameterException("单号不能为空"));
-			Order order = interfaceOrderService.query(vo);
-			responseResult(response, new WebServiceResult().success(order));
+			interfaceOrderService.refund(vo);
+			responseResult(response, new WebServiceResult().success("退单申请成功"));
 		} catch (ThaiException e) {
 			responseResult(response, new WebServiceResult().fail(e));
 		} catch (JAXBException e) {

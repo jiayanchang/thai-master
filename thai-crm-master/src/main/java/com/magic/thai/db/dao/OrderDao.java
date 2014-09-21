@@ -1,6 +1,7 @@
 package com.magic.thai.db.dao;
 
 import com.magic.thai.db.domain.Order;
+import com.magic.thai.db.domain.User;
 import com.magic.thai.db.vo.OrderVo;
 import com.magic.thai.util.PaginationSupport;
 
@@ -20,4 +21,5 @@ public interface OrderDao {
 
 	public PaginationSupport getOrderesPage(OrderVo vo);
 
+	public int auditingOrderCount(User user);
 }

@@ -9,16 +9,16 @@
 <table>
 <tr>
 <td>
-	<img src="${pageContext.request.contextPath}/<%=((UserProfile)session.getAttribute("userprofile")).getMerchant().getDetails().getLogoPath()  %>"/>
-	<%=((UserProfile)session.getAttribute("userprofile")).getUser().getName()  %>
-	<a href="${pageContext.request.contextPath}/logout">退出</a>
+		<%@ include file="../logo.jsp"%>
 </td>
 <td>
 	<ul style="float: left">
 		<li><a href="${pageContext.request.contextPath}/a/goods/list">商品管理</a></li>
 		<li>订单管理</li>
 		<li><a href="${pageContext.request.contextPath}/a/channel/list">渠道管理</a></li>
-		<li><a href="${pageContext.request.contextPath}/a/merchant/list">系统管理</a></li>
+		<% if(((UserProfile)session.getAttribute("userprofile")).isAdministrator()) { %>
+			<li><a href="${pageContext.request.contextPath}/a/merchant/list">系统管理</a></li>
+		<% } %>
 	</ul>
 </td>
 </tr>
@@ -26,7 +26,7 @@
 <td>
 	<ul>
 		<li><a href="${pageContext.request.contextPath}/a/order/list">订单查询</a></li>
-		<li><a href="${pageContext.request.contextPath}/a/order/waittings">待确定订单</a></li>
+		<li><a href="${pageContext.request.contextPath}/a/order/waittings">待确定订单<span id="orderMonitorSpan"></span></a></li>
 	</ul>
 </td>
 <td>
@@ -34,5 +34,6 @@
 </td>
 </tr>
 </table>
+<%@ include file="../notify.jsp"%>
 </body>
 </html>

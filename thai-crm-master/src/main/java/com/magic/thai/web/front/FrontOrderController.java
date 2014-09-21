@@ -41,7 +41,7 @@ public class FrontOrderController {
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
 	}
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/{id}")
 	public ModelAndView view(@PathVariable int id) {
 		ModelAndView modelandView = new ModelAndView("/front/order/view");
 		Order order = orderService.fetch(id);

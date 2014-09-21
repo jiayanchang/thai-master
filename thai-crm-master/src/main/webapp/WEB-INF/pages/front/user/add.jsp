@@ -5,7 +5,7 @@
 <body>
 	<div class="content">
 		<h1>新建员工</h1>
-		<c:url var="addUrl" value="/a/user/add"/>
+		<c:url var="addUrl" value="/f/user/add"/>
 		<form:form action="${addUrl}" method="POST" commandName="user" >
 			<form:hidden path="id"/>
 			<table>
@@ -21,7 +21,7 @@
 				</tr>
 				<tr>
 					<td>登录名 :</td>
-					<td><form:input path="loginName" /></td>
+					<td><form:input id="loginName" path="loginName" /></td>
 					<td><form:errors path="loginName" cssClass="error" /></td>
 				</tr>
 				<tr>
@@ -40,11 +40,28 @@
 					<td><form:errors path="mobile" cssClass="error" /></td>
 				</tr>
 				<tr>
-					<td colspan="3"><input type="submit" value="submit" class="button2" /></td>
+					<td colspan="3"><input type="button" value="提交" class="button2"  onclick="submitForm();"/></td>
 				</tr>
 			</table>
 		</form:form>
-		<p>
-			<a href="${pageContext.request.contextPath}/"><button class="button2">Back</button></a>
-		</p>
 	</div>
+
+	<script>
+		function submitForm() {
+			jQuery.ajax({
+			    type: 'POST',
+				encoding:"UTF-8",
+			    dataType:"json", 
+			    data:'loginName=' + $("#loginName").val() + "&userId=",
+			    contentType: "application/x-www-form-urlencoded;  charset=UTF-8",
+			    url: "${pageContext.request.contextPath}/json/validateUser.json",
+				success: function(result) {
+					if(result.data.success) {
+						$("form").submit();
+					} else {
+						alert(result.data.message);
+					}
+				}
+			});
+		}
+	</script>

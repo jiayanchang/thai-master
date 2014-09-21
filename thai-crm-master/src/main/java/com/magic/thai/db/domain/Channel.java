@@ -1,6 +1,7 @@
 package com.magic.thai.db.domain;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -43,6 +44,9 @@ public class Channel {
 
 	@Column(name = "goods_count")
 	private int goodsCount;
+
+	@Column(name = "refresh_time")
+	private Date refreshTime;
 
 	@Transient
 	private List<ChannelGoodsInv> goodsInvs;
@@ -130,6 +134,14 @@ public class Channel {
 
 	public void setGoodsCount(int goodsCount) {
 		this.goodsCount = goodsCount;
+	}
+
+	public Date getRefreshTime() {
+		return refreshTime;
+	}
+
+	public void setRefreshTime(Date refreshTime) {
+		this.refreshTime = refreshTime;
 	}
 
 	public List<ChannelGoodsInv> getGoodsInvs() {

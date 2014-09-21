@@ -1,9 +1,9 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%> 
-
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/js/lock.js">
 <h1>订单详情</h1>
-<c:url var="addUrl" value="/f/order/confirm"/>
+<c:url var="addUrl" value="/a/order/${order.id }"/>
 <form:form action="${addUrl}" method="POST" commandName="order">
 	<form:hidden path="id"/>
 	订单详情:
@@ -60,30 +60,30 @@
 		</c:forEach>
 	</table>
 	
-	订单处理记录：
+	订单处理记录：<a href="javascript:openDialog(${order.id}, '${order.orderNo}');">新建备注</a>
 	<table>
 		<tr>
 			<th>处理人员</th>
 			<th>备注</th>
 			<th>处理时间</th>
+			<th>提交时间</th>
 		</tr>
 		<c:forEach var="log" items="${logs }">
 			<tr>
 				<td>${log.content }</td>
 				<td>${log.creatorName }</td>
+				<td>${log.lockedDate }</td>
 				<td>${log.createdDate }</td>
 			</tr>
 		</c:forEach>
 	</table>
-	
-	本次处理备注：
-	<textarea name="log" rows="10" cols="100"></textarea>
-	<input type="submit" value="submit" class="button2" />
-	<input type="button" value="back" onclick="back();" class="button2" />
 </form:form>
+<div id="dialog-form" title="Basic dialog" style="display:none;">
+	<textarea id="reason" rows="7" cols="32"></textarea>
+</div>
 <script>
 	function back(){
-		$("form").action = '${pageContext.request.contextPath}/f/order/list';
+		$("form").action = '${pageContext.request.contextPath}/a/order/list';
 		$("form").submit();
 	}
 </script>

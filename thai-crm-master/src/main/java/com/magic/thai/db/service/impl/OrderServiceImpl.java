@@ -2,6 +2,7 @@ package com.magic.thai.db.service.impl;
 
 import java.util.Date;
 
+import org.apache.http.impl.cookie.DateParseException;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ import com.magic.thai.db.domain.Order;
 import com.magic.thai.db.domain.OrderLog;
 import com.magic.thai.db.domain.User;
 import com.magic.thai.db.service.OrderService;
+import com.magic.thai.db.service.strategy.LockManager;
 import com.magic.thai.db.vo.OrderVo;
 import com.magic.thai.exception.OrderStatusException;
 import com.magic.thai.exception.ThaiException;
@@ -62,7 +64,17 @@ public class OrderServiceImpl extends ServiceHelperImpl<User> implements OrderSe
 		order.setLastOperatorId(userprofile.getUser().getId());
 		order.setLastOperatorName(userprofile.getUser().getName());
 		order.setLastOperatorDate(new Date());
-		orderLogDao.create(new OrderLog(order, userprofile.getUser(), reason));
+
+		Date lockdate = null;
+		try {
+			lockdate = LockManager.getLockedTime(userprofile.getUser().getId(), order.getOrderNo());
+		} catch (DateParseException e) {
+			e.printStackTrace();
+		} catch (ThaiException e) {
+			e.printStackTrace();
+		}
+
+		orderLogDao.create(new OrderLog(order, userprofile.getUser(), reason, lockdate));
 		orderDao.update(order);
 	}
 
@@ -98,8 +110,7 @@ public class OrderServiceImpl extends ServiceHelperImpl<User> implements OrderSe
 
 	@Override
 	public int auditingOrderCount(User user) {
-		// TODO Auto-generated method stub
-		return 0;
+		return orderDao.auditingOrderCount(user);
 	}
 
 }

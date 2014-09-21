@@ -28,6 +28,15 @@ public class UserProfile {
 		return merchant;
 	}
 
+	public boolean isAdministrator() {
+		return this.getUser().isAdministrator();
+	}
+
+	@Override
+	public String toString() {
+		return "UserProfile [user=" + user + ", merchant=" + merchant + "]";
+	}
+
 	public boolean isPlatformUser() {
 		return user.isPlatformUser();
 	}

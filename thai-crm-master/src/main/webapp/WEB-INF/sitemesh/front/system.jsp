@@ -1,18 +1,15 @@
 <%@page import="com.magic.thai.security.UserProfile"%>
-<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="decorator" uri="http://www.opensymphony.com/sitemesh/decorator"%>  
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>泰奇幻</title>
+	<%@ include file="../head.jsp"%>
 </head>
 <body>
 <table>
 <tr>
 <td>
-	<img src="${pageContext.request.contextPath}/<%=((UserProfile)session.getAttribute("userprofile")).getMerchant().getDetails().getLogoPath()  %>"/>
-	<%=((UserProfile)session.getAttribute("userprofile")).getUser().getName()  %>
-	<a href="${pageContext.request.contextPath}/logout">退出</a>
+	<%@ include file="../logo.jsp"%>
 </td>
 <td>
 	<ul style="float: left">
@@ -34,5 +31,6 @@
 </td>
 </tr>
 </table>
+<%@ include file="../notify.jsp"%>
 </body>
 </html>

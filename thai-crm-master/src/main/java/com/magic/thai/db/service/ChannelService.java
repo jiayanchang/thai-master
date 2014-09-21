@@ -22,4 +22,12 @@ public interface ChannelService {
 
 	public PaginationSupport getChannelesPage(int queryPage);
 
+	/**
+	 * 刷新推送商品数量
+	 * 
+	 * @param channel
+	 * @param count
+	 */
+	public void refreshSoldGoodsCount(Channel channel, int count);
+
 }

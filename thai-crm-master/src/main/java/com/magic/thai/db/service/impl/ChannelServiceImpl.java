@@ -1,5 +1,7 @@
 package com.magic.thai.db.service.impl;
 
+import java.util.Date;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -161,6 +163,13 @@ public class ChannelServiceImpl extends ServiceHelperImpl<Channel> implements Ch
 	@Override
 	public PaginationSupport getChannelesPage(int queryPage) {
 		return channelDao.getChannelesPage(queryPage);
+	}
+
+	@Override
+	public void refreshSoldGoodsCount(Channel channel, int count) {
+		channel.setGoodsCount(count);
+		channel.setRefreshTime(new Date());
+		channelDao.update(channel);
 	}
 
 }

@@ -14,6 +14,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlTransient;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import com.magic.thai.util.CalendarUtils;
 
 @Entity
@@ -27,6 +29,7 @@ public class GoodsPriceSegment {
 
 	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH }, fetch = FetchType.LAZY)
 	@JoinColumn(name = "goods_id")
+	@JsonIgnore
 	private Goods goods;
 
 	@Column(name = "start_date")

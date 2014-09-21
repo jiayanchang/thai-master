@@ -30,6 +30,11 @@ public class OrderLog {
 		this(order.getId(), user, content);
 	}
 
+	public OrderLog(Order order, User user, String content, Date lockdate) {
+		this(order.getId(), user, content);
+		this.lockedDate = lockdate;
+	}
+
 	public OrderLog(Order order, Channel channel, String content) {
 		this.orderId = order.getId();
 		this.content = content;
@@ -56,6 +61,8 @@ public class OrderLog {
 	private Date createdDate;
 	@Column(name = "creator_name")
 	private String creatorName;
+	@Column(name = "locked_date")
+	private Date lockedDate;
 
 	public int getId() {
 		return id;
@@ -111,6 +118,20 @@ public class OrderLog {
 
 	public void setCreatorName(String creatorName) {
 		this.creatorName = creatorName;
+	}
+
+	public Date getLockedDate() {
+		return lockedDate;
+	}
+
+	public void setLockedDate(Date lockedDate) {
+		this.lockedDate = lockedDate;
+	}
+
+	@Override
+	public String toString() {
+		return "OrderLog [id=" + id + ", orderId=" + orderId + ", content=" + content + ", creatorId=" + creatorId + ", creatorType="
+				+ creatorType + ", createdDate=" + createdDate + ", creatorName=" + creatorName + ", lockedDate=" + lockedDate + "]";
 	}
 
 }

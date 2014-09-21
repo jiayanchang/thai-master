@@ -61,8 +61,8 @@
 	<td>${user.mobile}</td>
 	<td>${user.statusDesc}</td>
 	<td>
-	<a href="${pageContext.request.contextPath}/a/user/edit/${user.id} ">修改</a><br/>
-	<a href="${pageContext.request.contextPath}/a/user/delete/${user.id} ">删除</a><br/>
+		<a href="${pageContext.request.contextPath}/f/user/edit/${user.id} ">修改</a><br/>
+		<a href="${pageContext.request.contextPath}/f/user/delete/${user.id} ">删除</a><br/>
 	</td>
 </tr>
 </c:forEach>
