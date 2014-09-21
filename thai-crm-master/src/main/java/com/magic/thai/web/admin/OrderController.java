@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.magic.thai.db.dao.OrderLogDao;
-import com.magic.thai.db.domain.Order;
+import com.magic.thai.db.dao.MerchantOrderNotesDao;
+import com.magic.thai.db.domain.ChannelOrder;
+import com.magic.thai.db.domain.MerchantOrder;
+import com.magic.thai.db.service.ChannelOrderService;
 import com.magic.thai.db.service.GoodsService;
 import com.magic.thai.db.service.MerchantService;
 import com.magic.thai.db.service.OrderService;
@@ -32,7 +34,9 @@ public class OrderController {
 	@Autowired
 	GoodsService goodsService;
 	@Autowired
-	OrderLogDao orderLogDao;
+	MerchantOrderNotesDao merchantOrderNotesDao;
+	@Autowired
+	ChannelOrderService channelOrderService;
 
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
@@ -44,15 +48,16 @@ public class OrderController {
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ModelAndView view(@PathVariable int id) {
 		ModelAndView modelandView = new ModelAndView("/admin/order/view");
-		Order order = orderService.fetch(id);
+		MerchantOrder order = orderService.fetch(id);
 		modelandView.addObject("order", order);
-		modelandView.addObject("logs", orderLogDao.getLogs(id));
+		modelandView.addObject("logs", merchantOrderNotesDao.getLogs(id));
 		return modelandView;
 	}
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView listUserPage() {
 		OrderVo vo = new OrderVo();
+		vo.orderType = ChannelOrder.OrderType.CHANNEL_ORDER;
 		return listPost(vo);
 	}
 
@@ -67,8 +72,24 @@ public class OrderController {
 	@RequestMapping(value = "/waittings", method = RequestMethod.GET)
 	public ModelAndView waittings() {
 		OrderVo vo = new OrderVo();
-		vo.statuses = new Integer[] { Order.Status.NEW };
+		vo.orderType = ChannelOrder.OrderType.CHANNEL_ORDER;
+		vo.statuses = new Integer[] { MerchantOrder.Status.NEW };
 		return listPost(vo);
+	}
+
+	@RequestMapping(value = "/channelorders", method = RequestMethod.GET)
+	public ModelAndView channelorders(@ModelAttribute OrderVo vo) {
+		ModelAndView modelandView = new ModelAndView("/admin/order/channelorders");
+		modelandView.addObject("vo", vo);
+		modelandView.addObject("ps", channelOrderService.getOrderesPage(vo));
+		return modelandView;
+	}
+
+	@RequestMapping(value = "/channelorder/{id}")
+	public ModelAndView channelorders(@PathVariable int id) {
+		ModelAndView modelandView = new ModelAndView("/admin/order/channel_order_view");
+		modelandView.addObject("channelOrder", channelOrderService.fetch(id));
+		return modelandView;
 	}
 
 }

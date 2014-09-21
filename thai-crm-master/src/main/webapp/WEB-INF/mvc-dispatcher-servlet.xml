@@ -14,5 +14,6 @@
 	<mvc:resources location="/js/" mapping="/js/**" />
 	<mvc:resources location="/image/" mapping="/image/**" />
 	<mvc:resources location="/upload/" mapping="/resources/**" /> 
+	<mvc:resources location="/fckeditor/" mapping="/fckeditor/**" /> 
 	<mvc:annotation-driven /> 
 </beans>

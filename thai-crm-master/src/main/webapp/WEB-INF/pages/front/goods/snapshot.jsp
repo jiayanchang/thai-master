@@ -30,7 +30,7 @@
 			</tr>
 			<tr>
 				<td>推荐理由：</td>
-				<td>${goods.summary }<</td>
+				<td>${goods.summary }</td>
 			</tr>
 			<tr>
 				<td>宣传图片：</td>
@@ -40,10 +40,10 @@
 			<tr>
 				<td>线路图片：</td>
 				<td>
-					<img src="${pageContext.request.contextPath}${goods.details.linePicPathA }"/>
-					<img src="${pageContext.request.contextPath}${goods.details.linePicPathB }"/>
-					<img src="${pageContext.request.contextPath}${goods.details.linePicPathC }"/>
-					<img src="${pageContext.request.contextPath}${goods.details.linePicPathD }"/>
+					<img alt="" src="${pageContext.request.contextPath}${goods.details.linePicPathA }">
+					<img alt="" src="${pageContext.request.contextPath}${goods.details.linePicPathB }">
+					<img alt="" src="${pageContext.request.contextPath}${goods.details.linePicPathC }">
+					<img alt="" src="${pageContext.request.contextPath}${goods.details.linePicPathD }">
 				</td>
 			</tr>
 			
@@ -77,7 +77,7 @@
 			</tr>
 			<tr>
 				<td>预定须知：</td>
-				<td>>${goods.details.bookNotes }</td>
+				<td>${goods.details.bookNotes }</td>
 			</tr>
 			<tr>
 				<td>备注：</td>

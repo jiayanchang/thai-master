@@ -1,7 +1,6 @@
 package com.magic.thai.web.ws.vo;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -11,22 +10,36 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "createOrder")
 public class CreateOrderVo {
 
-	private Integer goodsId;
 	private String token;
 	private String orderContactor;
 	private String orderContactorMobile;
-	private String deptDate;
+	private String orderContactorEmail;
 
-	public Date deptDateObj;// 解析后
+	private List<TravelerVo> travelers = new ArrayList<TravelerVo>();
 
-	private List<TravelerVo> travelers;
+	private List<BuyGoodsVo> goodses = new ArrayList<BuyGoodsVo>();
 
-	public Integer getGoodsId() {
-		return goodsId;
+	@XmlElementWrapper(name = "goodses")
+	@XmlElement(name = "goods")
+	public List<BuyGoodsVo> getGoodses() {
+		return goodses;
 	}
 
-	public void setGoodsId(Integer goodsId) {
-		this.goodsId = goodsId;
+	public void setGoodses(List<BuyGoodsVo> goodses) {
+		this.goodses = goodses;
+	}
+
+	@XmlElementWrapper(name = "travelers")
+	@XmlElement(name = "traveler")
+	public List<TravelerVo> getTravelers() {
+		if (travelers == null) {
+			travelers = new ArrayList<TravelerVo>();
+		}
+		return travelers;
+	}
+
+	public void setTravelers(List<TravelerVo> travelers) {
+		this.travelers = travelers;
 	}
 
 	public String getToken() {
@@ -53,31 +66,12 @@ public class CreateOrderVo {
 		this.orderContactorMobile = orderContactorMobile;
 	}
 
-	public String getDeptDate() {
-		return deptDate;
+	public String getOrderContactorEmail() {
+		return orderContactorEmail;
 	}
 
-	public void setDeptDate(String deptDate) {
-		this.deptDate = deptDate;
-	}
-
-	@XmlElementWrapper(name = "travelers")
-	@XmlElement(name = "traveler")
-	public List<TravelerVo> getTravelers() {
-		if (travelers == null) {
-			travelers = new ArrayList<TravelerVo>();
-		}
-		return travelers;
-	}
-
-	public void setTravelers(List<TravelerVo> travelers) {
-		this.travelers = travelers;
-	}
-
-	@Override
-	public String toString() {
-		return "CreateOrderVo [goodsId=" + goodsId + ", token=" + token + ", orderContactor=" + orderContactor + ", orderContactorMobile="
-				+ orderContactorMobile + ", deptDate=" + deptDate + ", travelers=" + travelers + "]";
+	public void setOrderContactorEmail(String orderContactorEmail) {
+		this.orderContactorEmail = orderContactorEmail;
 	}
 
 }

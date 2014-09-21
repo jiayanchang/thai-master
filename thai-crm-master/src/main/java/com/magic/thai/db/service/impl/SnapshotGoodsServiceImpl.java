@@ -7,12 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.magic.thai.db.dao.GoodsDao;
 import com.magic.thai.db.dao.SnapshotGoodsDao;
 import com.magic.thai.db.dao.SnapshotGoodsDetailsDao;
 import com.magic.thai.db.dao.SnapshotGoodsPriceSegmentDao;
 import com.magic.thai.db.domain.Goods;
 import com.magic.thai.db.domain.GoodsPriceSegment;
-import com.magic.thai.db.domain.Order;
+import com.magic.thai.db.domain.MerchantOrderGoods;
 import com.magic.thai.db.domain.SnapshotGoods;
 import com.magic.thai.db.domain.SnapshotGoodsDetails;
 import com.magic.thai.db.domain.SnapshotGoodsPriceSegment;
@@ -25,6 +26,8 @@ public class SnapshotGoodsServiceImpl implements SnapshotGoodsService {
 	private static Logger logger = LoggerFactory.getLogger(SnapshotGoodsServiceImpl.class);
 
 	@Autowired
+	private GoodsDao goodsDao;
+	@Autowired
 	private SnapshotGoodsDao snapshotGoodsDao;
 	@Autowired
 	private SnapshotGoodsPriceSegmentDao snapshotGoodsPriceSegmentDao;
@@ -35,21 +38,23 @@ public class SnapshotGoodsServiceImpl implements SnapshotGoodsService {
 	public SnapshotGoods fetch(int id) {
 		SnapshotGoods snapshotGoods = snapshotGoodsDao.loadById(id);
 		Hibernate.initialize(snapshotGoods.getSegments());
+		Hibernate.initialize(snapshotGoods.getDetails());
 		return snapshotGoods;
 	}
 
 	@Override
-	public SnapshotGoods fetchByOrder(int id) {
-		SnapshotGoods snapshotGoods = snapshotGoodsDao.loadByOrderId(id);
-		if (snapshotGoods != null) {
-			Hibernate.initialize(snapshotGoods.getDetails());
-			Hibernate.initialize(snapshotGoods.getSegments());
-		}
+	public SnapshotGoods fetchByMogId(int id) {
+		SnapshotGoods snapshotGoods = snapshotGoodsDao.loadByMerchanOrderGoodsId(id);
+		Hibernate.initialize(snapshotGoods.getSegments());
+		Hibernate.initialize(snapshotGoods.getDetails());
 		return snapshotGoods;
 	}
 
 	@Override
-	public void create(Goods goods, Order order) {
+	public void create(MerchantOrderGoods merchantOrderGoods) {
+
+		Goods goods = goodsDao.loadById(merchantOrderGoods.getGoodsId());
+
 		SnapshotGoods snapshotGoods = new SnapshotGoods();
 		snapshotGoods.setDetails(new SnapshotGoodsDetails());
 		snapshotGoods.setTitle(goods.getTitle());
@@ -58,8 +63,10 @@ public class SnapshotGoodsServiceImpl implements SnapshotGoodsService {
 		snapshotGoods.setTravelDays(goods.getTravelDays());
 		snapshotGoods.setGoodsCount(goods.getGoodsCount());
 		snapshotGoods.setSummary(goods.getSummary());
-		snapshotGoods.setChannelId(order.getChannelId());
-		snapshotGoods.setOrderId(order.getId());
+		snapshotGoods.setChannelId(merchantOrderGoods.getChannelId());
+
+		snapshotGoods.setMerchantOrderGoodsId(merchantOrderGoods.getId());
+
 		snapshotGoods.setGoodsId(goods.getId());
 		snapshotGoods.setMerchantId(goods.getMerchantId());
 
@@ -67,9 +74,18 @@ public class SnapshotGoodsServiceImpl implements SnapshotGoodsService {
 		snapshotGoods.getDetails().setCostDesc(goods.getDetails().getCostDesc());
 		snapshotGoods.getDetails().setBookNotes(goods.getDetails().getBookNotes());
 		snapshotGoods.getDetails().setNotes(goods.getDetails().getNotes());
+
+		snapshotGoods.getDetails().setPicPath(goods.getDetails().getPicPath());
+		snapshotGoods.getDetails().setLinePicPathA(goods.getDetails().getLinePicPathA());
+		snapshotGoods.getDetails().setLinePicPathB(goods.getDetails().getLinePicPathB());
+		snapshotGoods.getDetails().setLinePicPathC(goods.getDetails().getLinePicPathC());
+		snapshotGoods.getDetails().setLinePicPathD(goods.getDetails().getLinePicPathD());
+		snapshotGoods.getDetails().setLinePicPathE(goods.getDetails().getLinePicPathE());
+		snapshotGoods.getDetails().setLinePicPathF(goods.getDetails().getLinePicPathF());
+
 		int id = snapshotGoodsDao.create(snapshotGoods);
 
-		snapshotGoods.getDetails().setId(id);
+		snapshotGoods.getDetails().setGoods(snapshotGoods);
 		snapshotGoodsDetailsDao.create(snapshotGoods.getDetails());
 
 		for (GoodsPriceSegment segment : goods.getSegments()) {

@@ -40,4 +40,19 @@ public class CalendarUtils {
 		bc.set(Calendar.SECOND, 0);
 		return bc.getTime();
 	}
+
+	public static boolean isIn24hour(Date compare) {
+		Calendar bc = Calendar.getInstance();
+		bc.setTime(compare);
+		bc.add(Calendar.HOUR_OF_DAY, -24);
+		return new Date().after(bc.getTime());
+	}
+
+	public static boolean isInHalfMonth(Date compare) {
+		Calendar bc = Calendar.getInstance();
+		bc.setTime(compare);
+		bc.add(Calendar.DAY_OF_MONTH, -15);
+		return new Date().after(bc.getTime());
+	}
+
 }

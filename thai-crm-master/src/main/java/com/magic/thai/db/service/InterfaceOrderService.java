@@ -2,9 +2,10 @@ package com.magic.thai.db.service;
 
 import java.util.List;
 
+import com.magic.thai.db.domain.ChannelOrder;
 import com.magic.thai.db.domain.Goods;
-import com.magic.thai.db.domain.Order;
 import com.magic.thai.exception.ThaiException;
+import com.magic.thai.security.UserProfile;
 import com.magic.thai.web.ws.vo.CheckGoodsVo;
 import com.magic.thai.web.ws.vo.CreateOrderVo;
 import com.magic.thai.web.ws.vo.QueryGoodsesVo;
@@ -20,7 +21,17 @@ public interface InterfaceOrderService {
 	 * @param userprofile
 	 * @return 返回订单号
 	 */
-	public Order create(CreateOrderVo vo) throws ThaiException;
+	public ChannelOrder create(CreateOrderVo vo) throws ThaiException;
+
+	/**
+	 * 人工下单
+	 * 
+	 * @param vo
+	 * @param userprofile
+	 * @return
+	 * @throws ThaiException
+	 */
+	public ChannelOrder create(CreateOrderVo vo, UserProfile userprofile) throws ThaiException;
 
 	/**
 	 * 校验库存量
@@ -38,7 +49,7 @@ public interface InterfaceOrderService {
 	 * @return
 	 * @throws ThaiException
 	 */
-	public Order query(QueryOrderVo vo) throws ThaiException;
+	public ChannelOrder query(QueryOrderVo vo) throws ThaiException;
 
 	/**
 	 * 查询商品列表

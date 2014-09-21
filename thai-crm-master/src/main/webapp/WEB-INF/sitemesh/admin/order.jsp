@@ -26,7 +26,8 @@
 <td>
 	<ul>
 		<li><a href="${pageContext.request.contextPath}/a/order/list">订单查询</a></li>
-		<li><a href="${pageContext.request.contextPath}/a/order/waittings">待确定订单<span id="orderMonitorSpan"></span></a></li>
+		<li><a href="${pageContext.request.contextPath}/a/order/waittings" title="创建时间大于15分钟的订单数量">待确定订单<span id="orderMonitorSpan"></span></a></li>
+		<li><a href="${pageContext.request.contextPath}/a/order/channelorders">渠道总单</a></li>
 	</ul>
 </td>
 <td>

@@ -1,5 +1,8 @@
 package com.magic.thai.web.ws.vo;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "refundOrder")
@@ -8,6 +11,8 @@ public class RefundOrderVo {
 	private String token;
 	private String orderNo;
 	private String reason;
+
+	private List<RefundGoodsVo> goodsVo = new ArrayList<RefundGoodsVo>();
 
 	public String getToken() {
 		return token;
@@ -31,6 +36,14 @@ public class RefundOrderVo {
 
 	public void setReason(String reason) {
 		this.reason = reason;
+	}
+
+	public List<RefundGoodsVo> getGoodsVo() {
+		return goodsVo;
+	}
+
+	public void setGoodsVo(List<RefundGoodsVo> goodsVo) {
+		this.goodsVo = goodsVo;
 	}
 
 	@Override

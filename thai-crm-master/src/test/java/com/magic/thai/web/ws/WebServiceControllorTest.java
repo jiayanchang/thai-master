@@ -29,10 +29,12 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.junit.Test;
 
+import com.magic.thai.web.ws.vo.BuyGoodsVo;
 import com.magic.thai.web.ws.vo.CheckGoodsVo;
 import com.magic.thai.web.ws.vo.CreateOrderVo;
 import com.magic.thai.web.ws.vo.QueryGoodsesVo;
 import com.magic.thai.web.ws.vo.QueryOrderVo;
+import com.magic.thai.web.ws.vo.RefundGoodsVo;
 import com.magic.thai.web.ws.vo.RefundOrderVo;
 import com.magic.thai.web.ws.vo.TravelerVo;
 
@@ -45,24 +47,32 @@ public class WebServiceControllorTest {
 		String url = "http://localhost:8080/crm/ws/createOrder";
 
 		CreateOrderVo createOrderVo = new CreateOrderVo();
-		createOrderVo.setDeptDate("2014-09-19");
-		createOrderVo.setGoodsId(7);
+		createOrderVo.setOrderContactorEmail("jiayanchang@yeah.net");
 		createOrderVo.setOrderContactorMobile("13900987766");
 		createOrderVo.setOrderContactor("贾彦昌");
 		createOrderVo.setToken(token);
 
-		TravelerVo vo = new TravelerVo();
-		// vo.setBirth(birth);
-		// vo.setEffectiveDate(effectiveDate);
-		// vo.setGender(gender);
-		vo.setIdNo("2929384747473939922");
-		// vo.setIdType(idType);
-		vo.setMobile("13900987766");
-		vo.setName("贾彦昌");
-		vo.setNationality("中国");
-		// vo.setType(type);
+		for (int i = 0; i < 1; i++) {
+			TravelerVo vo = new TravelerVo();
+			// vo.setBirth(birth);
+			// vo.setEffectiveDate(effectiveDate);
+			// vo.setGender(gender);
+			vo.setIdNo("2929384747473939922");
+			vo.setMobile("13900987766");
+			vo.setName("贾彦昌" + i);
+			vo.setNationality("中国");
+			// vo.setType(type);
+			createOrderVo.getTravelers().add(vo);
+		}
 
-		createOrderVo.getTravelers().add(vo);
+		for (int i = 0; i < 1; i++) {
+			BuyGoodsVo vo = new BuyGoodsVo();
+			vo.setDeptDate("2014-09-30");
+			vo.setGoodsId(i + 1);
+			vo.setQty(1);
+			vo.setPrice(100 + i * 5);
+			createOrderVo.getGoodses().add(vo);
+		}
 
 		String xmlData = marshall(createOrderVo);
 		String html = xmlrequest(url, xmlData);
@@ -99,7 +109,7 @@ public class WebServiceControllorTest {
 		String url = "http://localhost:8080/crm/ws/queryOrder";
 		QueryOrderVo vo = new QueryOrderVo();
 		vo.setToken(token);
-		vo.setOrderNo("020214091900000004");
+		vo.setOrderNo("C0114092200000009");
 
 		String xmlData = marshall(vo);
 		String html = xmlrequest(url, xmlData);
@@ -110,9 +120,12 @@ public class WebServiceControllorTest {
 	public void testRefund() throws Exception {
 		String url = "http://localhost:8080/crm/ws/refundOrder";
 		RefundOrderVo vo = new RefundOrderVo();
-		vo.setToken(token + "2");
-		vo.setOrderNo("020214091900000004");
+		vo.setToken(token);
+		vo.setOrderNo("C0114092300000021");
 		vo.setReason("死了，去不了了");
+
+		vo.getGoodsVo().add(new RefundGoodsVo(1, RefundGoodsVo.Type.REFUND, 1, null));
+
 		String xmlData = marshall(vo);
 		String html = xmlrequest(url, xmlData);
 		System.out.println(html);

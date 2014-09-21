@@ -30,8 +30,8 @@ public class SnapshotGoodsDaoImpl extends HibernateCommonDAO<SnapshotGoods> impl
 	}
 
 	@Override
-	public SnapshotGoods loadByOrderId(int id) {
-		List<SnapshotGoods> ss = super.find("from SnapshotGoods where orderId = " + id);
+	public SnapshotGoods loadByMerchanOrderGoodsId(int id) {
+		List<SnapshotGoods> ss = super.find("from SnapshotGoods where merchantOrderGoodsId = " + id);
 		return ss == null || ss.size() == 0 ? null : ss.get(0);
 	}
 

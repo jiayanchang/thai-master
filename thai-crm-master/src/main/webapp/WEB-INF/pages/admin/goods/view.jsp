@@ -29,7 +29,7 @@
 		</tr>
 		<tr>
 			<td>推荐理由：</td>
-			<td>${goods.summary }<</td>
+			<td>${goods.summary }</td>
 		</tr>
 		<tr>
 			<td>宣传图片：</td>
@@ -76,7 +76,7 @@
 		</tr>
 		<tr>
 			<td>预定须知：</td>
-			<td>>${goods.details.bookNotes }</td>
+			<td>${goods.details.bookNotes }</td>
 		</tr>
 		<tr>
 			<td>备注：</td>

@@ -1,6 +1,5 @@
 package com.magic.thai.db.vo;
 
-
 public class OrderVo {
 
 	public OrderVo() {
@@ -11,7 +10,12 @@ public class OrderVo {
 	}
 
 	public Integer channelId;
+	public Integer orderType;
 	public Integer merchantId;
+
+	public String merchantName;
+	public String channelName;
+
 	public String orderNo;
 	public String startDate;
 	public String endDate;
@@ -109,6 +113,30 @@ public class OrderVo {
 
 	public void setStatus(Integer status) {
 		this.status = status;
+	}
+
+	public Integer getOrderType() {
+		return orderType;
+	}
+
+	public void setOrderType(Integer orderType) {
+		this.orderType = orderType;
+	}
+
+	public String getMerchantName() {
+		return merchantName;
+	}
+
+	public void setMerchantName(String merchantName) {
+		this.merchantName = merchantName;
+	}
+
+	public String getChannelName() {
+		return channelName;
+	}
+
+	public void setChannelName(String channelName) {
+		this.channelName = channelName;
 	}
 
 }

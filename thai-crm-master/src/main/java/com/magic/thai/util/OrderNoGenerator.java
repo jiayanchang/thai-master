@@ -3,17 +3,26 @@ package com.magic.thai.util;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 
-import com.magic.thai.db.domain.Order;
+import com.magic.thai.db.domain.ChannelOrder;
+import com.magic.thai.db.domain.MerchantOrder;
 
 public class OrderNoGenerator {
 
-	public static String no(Order order) {
+	public static String generateMerchantOrderNo(MerchantOrder order) {
 		StringBuffer b = new StringBuffer();
 		b.append(sub(order.getMerchantId() + "", 2));
 		b.append(sub(order.getChannelId() + "", 2));
 		b.append(DateFormatUtils.format(order.getCreatedDate(), "yyMMdd"));
 		b.append(sub(order.getId() + "", 8));
 		return b.toString();
+	}
+
+	public static String generateChannelOrderNo(ChannelOrder order) {
+		StringBuffer b = new StringBuffer();
+		b.append(sub(order.getChannelId() + "", 2));
+		b.append(DateFormatUtils.format(order.getCreatedDate(), "yyMMdd"));
+		b.append(sub(order.getId() + "", 8));
+		return "C" + b.toString();
 	}
 
 	private static String sub(String source, int size) {

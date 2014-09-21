@@ -3,7 +3,6 @@ package com.magic.thai.db.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,7 +11,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 import com.google.gson.annotations.Expose;
@@ -36,8 +34,8 @@ public class SnapshotGoods {
 	@Column(name = "goods_id")
 	private int goodsId;
 
-	@Column(name = "order_id")
-	private int orderId;
+	@Column(name = "merchant_order_goods_id")
+	private int merchantOrderGoodsId;
 
 	@Column(name = "channel_id")
 	private int channelId;
@@ -70,8 +68,7 @@ public class SnapshotGoods {
 	@Column(name = "sold_count")
 	private int soldCount;// 已售
 
-	@OneToOne(targetEntity = SnapshotGoodsDetails.class, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH }, fetch = FetchType.LAZY)
-	@PrimaryKeyJoinColumn
+	@OneToOne(mappedBy = "goods", fetch = FetchType.LAZY)
 	private SnapshotGoodsDetails details; // 非hibnate关联
 
 	@OneToMany(mappedBy = "snapshotGoods")
@@ -177,16 +174,16 @@ public class SnapshotGoods {
 		return goodsId;
 	}
 
+	public int getMerchantOrderGoodsId() {
+		return merchantOrderGoodsId;
+	}
+
+	public void setMerchantOrderGoodsId(int merchantOrderGoodsId) {
+		this.merchantOrderGoodsId = merchantOrderGoodsId;
+	}
+
 	public void setGoodsId(int goodsId) {
 		this.goodsId = goodsId;
-	}
-
-	public int getOrderId() {
-		return orderId;
-	}
-
-	public void setOrderId(int orderId) {
-		this.orderId = orderId;
 	}
 
 	public int getChannelId() {
@@ -224,10 +221,10 @@ public class SnapshotGoods {
 	@Override
 	public String toString() {
 		return "SnapshotGoods [id=" + id + ", merchantId=" + merchantId + ", merchantName=" + merchantName + ", goodsId=" + goodsId
-				+ ", orderId=" + orderId + ", channelId=" + channelId + ", title=" + title + ", dept=" + dept + ", arrived=" + arrived
-				+ ", summary=" + summary + ", status=" + status + ", hotelId=" + hotelId + ", hotelName=" + hotelName + ", travelDays="
-				+ travelDays + ", goodsCount=" + goodsCount + ", soldCount=" + soldCount + ", details=" + details + ", segments="
-				+ segments + "]";
+				+ ", merchantOrderGoodsId=" + merchantOrderGoodsId + ", channelId=" + channelId + ", title=" + title + ", dept=" + dept
+				+ ", arrived=" + arrived + ", summary=" + summary + ", status=" + status + ", hotelId=" + hotelId + ", hotelName="
+				+ hotelName + ", travelDays=" + travelDays + ", goodsCount=" + goodsCount + ", soldCount=" + soldCount + ", details="
+				+ details + ", segments=" + segments + "]";
 	}
 
 }

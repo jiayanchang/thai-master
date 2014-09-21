@@ -59,6 +59,9 @@ public class GoodsDaoImpl extends HibernateCommonDAO<Goods> implements GoodsDao 
 		if (vo.statuses != null && vo.statuses.length > 0) {
 			criterions.add(Restrictions.in("status", vo.statuses));
 		}
+		if (StringUtils.isNotBlank(vo.getMerchantId())) {
+			criterions.add(Restrictions.eq("merchantId", NumberUtils.toInt(vo.getMerchantId())));
+		}
 		criterions.add(Restrictions.ne("status", Merchant.Status.DELETED));
 		return super.find(criterions, vo.limitF4list);
 	}

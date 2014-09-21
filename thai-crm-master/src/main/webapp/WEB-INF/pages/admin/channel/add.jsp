@@ -20,7 +20,7 @@
 	}
 	</style>
 
-<h1>添加渠2道</h1>
+<h1>添加渠道</h1>
 <c:url var="addUrl" value="/a/channel/add"/>
 <form:form action="${addUrl}" method="POST" commandName="channel">
 	<table>
@@ -76,9 +76,7 @@
 		<thead>
 			<tr>
 				<th>商家名称</th>
-				<th>总库存</th>
 				<th>分配库存</th>
-				<th>已售数量</th>
 				<th>订单量</th>
 				<th>交易额</th>
 				<th>操作</th>
@@ -143,10 +141,8 @@ function addMerchant(){
 			var index = last_tr.length > 0 ? last_tr.attr("index") : 0;
 			var html = '<tr index="' + index + '">'
 					+ '<td>' + result.merchant.name + '</td>'
-					+ '<td></td>'
 					+ '<td><input type="hidden" name="merchantInvs[' + index + '].merchantId" value="' + result.merchant.id + '"/>'
 					+ '<input name="merchantInvs[' + index + '].allocatedAmount"/></td>'
-					+ '<td></td>'
 					+ '<td></td>'
 					+ '<td></td>'
 					+ '<td><a href="javascript:removeGoods(' + index + ');">删除</a></td>'

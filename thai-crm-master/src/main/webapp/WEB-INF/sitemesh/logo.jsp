@@ -74,4 +74,12 @@ function openDialog(id, orderNo) {
 	    }
 	});
 }
+
+log = function(msg) {
+	try {
+		console.log("%s: %o", msg, this);
+		return this;
+	} catch (err) {
+	}
+};
 </script>

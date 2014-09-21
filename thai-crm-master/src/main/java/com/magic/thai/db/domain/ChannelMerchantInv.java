@@ -20,11 +20,17 @@ public class ChannelMerchantInv {
 	@Column(name = "channel_id")
 	private int channelId;
 
+	@Column(name = "order_count")
+	private int orderCount;
+
 	@Column(name = "merchant_id")
 	private int merchantId;
 
 	@Column(name = "allocated_amount")
 	private float allocatedAmount;
+
+	@Column
+	private double amount;
 
 	@Transient
 	private Merchant merchant;
@@ -67,6 +73,22 @@ public class ChannelMerchantInv {
 
 	public void setMerchant(Merchant merchant) {
 		this.merchant = merchant;
+	}
+
+	public int getOrderCount() {
+		return orderCount;
+	}
+
+	public void setOrderCount(int orderCount) {
+		this.orderCount = orderCount;
+	}
+
+	public double getAmount() {
+		return amount;
+	}
+
+	public void setAmount(double amount) {
+		this.amount = amount;
 	}
 
 	@Override

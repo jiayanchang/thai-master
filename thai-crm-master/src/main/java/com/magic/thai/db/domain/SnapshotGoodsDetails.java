@@ -1,27 +1,33 @@
 package com.magic.thai.db.domain;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.GenericGenerator;
+import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
 @Table(name = "snapshot_goods_details")
 public class SnapshotGoodsDetails {
 
 	@Id
-	@GenericGenerator(name = "id", strategy = "assigned")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(nullable = false)
 	private int id;
 
 	@Column(name = "goods_details_id")
 	private int goodsDetailsId;
 
-	@OneToOne(mappedBy = "details")
-	private SnapshotGoods snapshotGoods;
+	@OneToOne(targetEntity = SnapshotGoods.class, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH }, fetch = FetchType.LAZY)
+	@JoinColumn(name = "snapshot_goods_id")
+	@XmlTransient
+	private SnapshotGoods goods;
 
 	@Column(name = "travel_plan", columnDefinition = "TEXT")
 	private String travelPlan;
@@ -149,6 +155,14 @@ public class SnapshotGoodsDetails {
 
 	public void setBookNotes(String bookNotes) {
 		this.bookNotes = bookNotes;
+	}
+
+	public SnapshotGoods getGoods() {
+		return goods;
+	}
+
+	public void setGoods(SnapshotGoods goods) {
+		this.goods = goods;
 	}
 
 }

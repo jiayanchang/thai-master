@@ -6,9 +6,37 @@
 
 <c:url var="submitUrl" value="/a/order/list"/>
 <form:form action="${submitUrl}" method="POST" commandName="vo">
-<h1>List of Order</h1>
+<h1>订单列表</h1>
 <p>${message}</p>
 <br/>
+<table border="1px" cellpadding="0" cellspacing="0" width="100%">
+<tr> 
+	<td>订单号：</td>
+	<td><form:input path="orderNo" /></td>
+	<td>下单时间：</td>
+	<td><form:input path="startDate" tag="date"/></td>
+	<td>--</td>
+	<td><form:input path="endDate" tag="date"/></td>
+	<td>状态</td>
+	<td>
+		<form:select path="status">
+			<form:option value="-1" >全部</form:option>
+			<form:option value="0">待确认</form:option>
+			<form:option value="1">已确认</form:option>
+		</form:select>
+	</td>
+</tr>
+<tr> 
+	<td>渠道名称：</td>
+	<td><form:input path="channelName" /></td>
+	<td>商家名称：</td>
+	<td><form:input path="merchantName"/></td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td><input type="submit" value="submit" class="button2" /></td>
+</tr>
+</table>
 <table border="1px" cellpadding="0" cellspacing="0" width="100%">
 	<thead>
 	<tr> 
@@ -33,7 +61,7 @@
 			<td>${order.channelName}</td>
 			<td>${order.createdDate}</td>
 			<td>${order.contractor}</td>
-			<td>${order.contractorTel}</td>
+			<td>${order.contractorMobile}</td>
 			<td>${order.statusDesc}</td>
 			<td>${order.lastOperatorName}</td>
 			<td>

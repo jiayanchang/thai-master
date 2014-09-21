@@ -117,6 +117,7 @@ public class MerchantController {
 		Merchant merchant = merchantService.fetch(merchantbean.getId());
 		merchant.setCodeName(merchantbean.getCodeName());
 		merchant.setName(merchantbean.getName());
+		merchant.setNameEn(merchantbean.getNameEn());
 		merchant.setMobile(merchantbean.getMobile());
 		merchant.setTel(merchantbean.getTel());
 		merchant.getDetails().setNotes(merchantbean.getDetails().getNotes());

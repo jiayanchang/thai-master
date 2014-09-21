@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class QueryOrderVo {
 
 	private String token;
-	private String orderNo;
+	private String orderNo;// channel order no
 
 	public String getToken() {
 		return token;

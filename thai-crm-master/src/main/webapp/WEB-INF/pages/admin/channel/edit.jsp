@@ -28,6 +28,8 @@
 		<tr>
 			<td>渠道名称 :</td>
 			<td>${channel.name}</td>
+			<td>渠道TOKEN :</td>
+			<td>${channel.token}</td>
 			<td>运营人 :</td>
 			<td>
 				<form:select path="operatorId">
@@ -90,9 +92,7 @@
 		<thead>
 			<tr>
 				<th>商家名称</th>
-				<th>总库存</th>
 				<th>分配库存</th>
-				<th>已售数量</th>
 				<th>订单量</th>
 				<th>交易额</th>
 				<th>操作</th>
@@ -102,14 +102,12 @@
 			<c:forEach var="merchantInv" items="${channel.merchantInvs }" varStatus="status">
 				<tr idx="${merchantInv.id }">
 					<td>${merchantInv.merchant.name }</td>
-					<td></td>
 					<td>
 					<input type="hidden" tag="id" name="merchantInvs[${status.index }].id" value="${merchantInv.id }"/>
 					<input type="hidden" tag="mid" name="merchantInvs[${status.index }].merchantId" value="${merchantInv.merchantId }"/>
 					<input type="type" tag="allocatedAmount" name="merchantInvs[${status.index }].allocatedAmount" value="${merchantInv.allocatedAmount }"/></td>
-					<td></td>
-					<td></td>
-					<td></td>
+					<td>${merchantInv.orderCount }</td>
+					<td>${merchantInv.amount }</td>
 					<td><a href="javascript:removeMerchant(${merchantInv.id });">删除</a></td>
 				</tr>
 			</c:forEach>
@@ -152,21 +150,27 @@ function addMerchant(){
 		alert("请选择商品");
 		return false;
 	}
-	$.getJSON("${pageContext.request.contextPath}/json/merchant/" + merchantId, function(result){
-		var last_tr = $("#merchantInvsTbl tbody tr:last");
-		var index = $("#merchantInvsTbl tbody tr").length;
-		var html = '<tr idx="' + merchantId + '">'
-				+ '<td>' + result.name + '</td>'
-				+ '<td></td>'
-				+ '<td><input type="hidden" tag="mid" name="merchantInvs[' + index + '].merchantId" value="' + merchantId + '"/>'
-				+ '<input tag="allocatedAmount" name="merchantInvs[' + index + '].allocatedAmount"/></td>'
-				+ '<td></td>'
-				+ '<td></td>'
-				+ '<td></td>'
-				+ '<td><a href="javascript:removeMerchant(' + merchantId + ');">删除</a></td>'
-				+ '</tr>';	
-			
-		$("#merchantInvsTbl tbody").append($(html));
+	
+	jQuery.ajax({
+	    type: 'GET',
+		encoding:"UTF-8",
+	    dataType:"json", 
+	    contentType: "application/x-www-form-urlencoded;  charset=UTF-8",
+	    url: "${pageContext.request.contextPath}/json/merchant/" + merchantId,
+		success: function(result) {
+			var last_tr = $("#merchantInvsTbl tbody tr:last");
+			var index = $("#merchantInvsTbl tbody tr").length;
+			var html = '<tr idx="' + merchantId + '">'
+					+ '<td>' + result.data.data.name + '</td>'
+					+ '<td><input type="hidden" tag="mid" name="merchantInvs[' + index + '].merchantId" value="' + merchantId + '"/>'
+					+ '<input tag="allocatedAmount" name="merchantInvs[' + index + '].allocatedAmount" value="0.0"/></td>'
+					+ '<td>0</td>'
+					+ '<td>0.0</td>'
+					+ '<td><a href="javascript:removeMerchant(' + merchantId + ');">删除</a></td>'
+					+ '</tr>';	
+				
+			$("#merchantInvsTbl tbody").append($(html));
+		}
 	});
 }
 

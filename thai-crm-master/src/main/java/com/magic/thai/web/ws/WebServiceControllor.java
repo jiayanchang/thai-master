@@ -22,8 +22,10 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.magic.thai.db.domain.ChannelOrder;
 import com.magic.thai.db.domain.Goods;
-import com.magic.thai.db.domain.Order;
+import com.magic.thai.db.domain.MerchantOrder;
+import com.magic.thai.db.domain.MerchantOrderGoods;
 import com.magic.thai.db.service.InterfaceOrderService;
 import com.magic.thai.exception.ThaiException;
 import com.magic.thai.exception.webservice.FormatException;
@@ -32,12 +34,13 @@ import com.magic.thai.exception.webservice.ParameterException;
 import com.magic.thai.util.Asserts;
 import com.magic.thai.web.ws.vo.CheckGoodsVo;
 import com.magic.thai.web.ws.vo.CreateOrderVo;
-import com.magic.thai.web.ws.vo.GoodsListVo;
 import com.magic.thai.web.ws.vo.QueryGoodsesVo;
 import com.magic.thai.web.ws.vo.QueryOrderVo;
 import com.magic.thai.web.ws.vo.RefundOrderVo;
 import com.magic.thai.web.ws.vo.TravelerVo;
-import com.magic.thai.web.ws.vo.WebServiceResult;
+import com.magic.thai.web.ws.vo.response.GoodsListVo;
+import com.magic.thai.web.ws.vo.response.QueryOrderResult;
+import com.magic.thai.web.ws.vo.response.WebServiceResult;
 
 @Controller
 @RequestMapping(value = "/ws")
@@ -74,28 +77,24 @@ public class WebServiceControllor {
 	public void createOrder(@RequestBody String requestBody, HttpServletResponse response, ModelMap model) throws Exception {
 		logger.info("threadId={}, createOrder={}", Thread.currentThread().getId(), requestBody);
 		CreateOrderVo vo = (CreateOrderVo) unmarshall(requestBody, CreateOrderVo.class);
-		// WebServiceResult result = new WebServiceResult();
 		try {
 			Asserts.isTrue(StringUtils.isNotBlank(vo.getToken()), new ParameterException("TOKEN不能为空"));
-			Asserts.isTrue(StringUtils.isNotBlank(vo.getDeptDate()), new ParameterException("出发日期不能为空"));
-			Asserts.notNull(vo.getGoodsId(), new ParameterException("商品ID不能为空"));
 			Asserts.isTrue(StringUtils.isNotBlank(vo.getOrderContactor()), new ParameterException("订单联系人不能为空"));
+			Asserts.isTrue(StringUtils.isNotBlank(vo.getOrderContactorEmail()), new ParameterException("订单联系邮箱不能为空"));
+			Asserts.isTrue(StringUtils.isNotBlank(vo.getOrderContactorMobile()), new ParameterException("订单联系电话不能为空"));
+
 			Asserts.notNull(vo.getTravelers(), new ParameterException("游客不能为空"));
 			Asserts.isTrue(vo.getTravelers().size() > 0, new ParameterException("游客不能为空"));
+			Asserts.isTrue(vo.getGoodses().size() > 0, new ParameterException("商品不能为空"));
 
-			try {
-				vo.deptDateObj = DateUtils.parseDate(vo.getDeptDate(), new String[] { "yyyy-MM-dd", "yyyy/MM/dd" });
-			} catch (Exception e) {
-				throw new ParameterException("出发日期格式异常");
-			}
 			for (TravelerVo travelerVo : vo.getTravelers()) {
 				Asserts.isTrue(StringUtils.isNotBlank(travelerVo.getIdNo()), new ParameterException("游客证件号不能为空"));
 				Asserts.notNull(travelerVo.getIdType(), new ParameterException("游客证件类型不能为空"));
 				Asserts.isTrue(StringUtils.isNotBlank(travelerVo.getName()), new ParameterException("游客姓名不能为空"));
 				Asserts.isTrue(StringUtils.isNotBlank(travelerVo.getNationality()), new ParameterException("游客国籍不能为空"));
 			}
-			Order order = interfaceOrderService.create(vo);
-			responseResult(response, new WebServiceResult().success(order));
+			ChannelOrder order = interfaceOrderService.create(vo);
+			responseResult(response, new WebServiceResult().success(order.getChannelOrderNo()));
 		} catch (ThaiException e) {
 			responseResult(response, new WebServiceResult().fail(e));
 		} catch (JAXBException e) {
@@ -113,8 +112,19 @@ public class WebServiceControllor {
 			QueryOrderVo vo = (QueryOrderVo) unmarshall(requestBody, QueryOrderVo.class);
 			Asserts.notNull(vo.getToken(), new ParameterException("TOKEN不能为空"));
 			Asserts.notNull(vo.getOrderNo(), new ParameterException("单号不能为空"));
-			Order order = interfaceOrderService.query(vo);
-			responseResult(response, new WebServiceResult().success(order));
+			ChannelOrder order = interfaceOrderService.query(vo);
+
+			QueryOrderResult result = new QueryOrderResult();
+			result.setCompleted(true);
+			for (MerchantOrder merchantOrder : order.getMerchantOrders()) {
+				for (MerchantOrderGoods goods : merchantOrder.getGoodses()) {
+					result.getGoodsStatuses().put(goods.getId(), merchantOrder.isCompleted() ? "已完成" : "处理中");
+					if (!merchantOrder.isCompleted()) {
+						result.setCompleted(false);
+					}
+				}
+			}
+			responseResult(response, new WebServiceResult().success(result));
 		} catch (ThaiException e) {
 			responseResult(response, new WebServiceResult().fail(e));
 		} catch (JAXBException e) {
@@ -132,6 +142,7 @@ public class WebServiceControllor {
 			RefundOrderVo vo = (RefundOrderVo) unmarshall(requestBody, RefundOrderVo.class);
 			Asserts.notNull(vo.getToken(), new ParameterException("TOKEN不能为空"));
 			Asserts.notNull(vo.getOrderNo(), new ParameterException("单号不能为空"));
+			Asserts.isFalse(vo.getGoodsVo().size() == 0, new ParameterException("商品ID为空"));
 			interfaceOrderService.refund(vo);
 			responseResult(response, new WebServiceResult().success("退单申请成功"));
 		} catch (ThaiException e) {

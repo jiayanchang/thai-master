@@ -2,20 +2,20 @@ package com.magic.thai.web.ws.vo;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.magic.thai.db.domain.OrderTraveler;
+import com.magic.thai.db.domain.ChannelOrderTraveler;
 
 @XmlRootElement(name = "traveler")
 public class TravelerVo {
 
 	private String name;
-	private Integer idType = OrderTraveler.IdType.IDCARD;
-	private Integer gender = OrderTraveler.Gender.MALE;
+	private Integer idType = ChannelOrderTraveler.IdType.IDCARD;
+	private Integer gender = ChannelOrderTraveler.Gender.MALE;
 	private String birth;
 	private String effectiveDate;// 证件有效期
 	private String idNo;
 	private String nationality;
 	private String mobile;
-	private Integer type = OrderTraveler.Type.ADULT;// 乘客类型 默认成人
+	private Integer type = ChannelOrderTraveler.Type.ADULT;// 乘客类型 默认成人
 
 	public String getName() {
 		return name;

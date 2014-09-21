@@ -27,7 +27,7 @@ import com.magic.thai.db.dao.HotelDao;
 import com.magic.thai.db.domain.Goods;
 import com.magic.thai.db.domain.Hotel;
 import com.magic.thai.db.domain.Merchant;
-import com.magic.thai.db.domain.Order;
+import com.magic.thai.db.domain.MerchantOrder;
 import com.magic.thai.db.domain.User;
 import com.magic.thai.db.service.GoodsService;
 import com.magic.thai.db.service.MerchantService;
@@ -115,11 +115,10 @@ public class JsonController {
 
 	@RequestMapping(value = "/merchant/{id}", method = RequestMethod.GET)
 	@ResponseBody
-	public String getmerchant(@PathVariable int id) {
-		Gson gson = new Gson();
+	public ModelMap getmerchant(@PathVariable int id, ModelMap model) {
 		Merchant merchant = merchantService.load(id);
-		System.out.println(gson.toJson(merchant));
-		return gson.toJson(merchant);
+		model.put("data", DataVo.success(merchant).setMessage("获取成功"));
+		return model;
 	}
 
 	@RequestMapping(value = "/goods/{id}", method = RequestMethod.GET)
@@ -178,7 +177,7 @@ public class JsonController {
 	@RequestMapping(value = "/orderproc", method = RequestMethod.POST)
 	public ModelMap procPost(@RequestParam int orderId, @RequestParam String reason, HttpSession session, ModelMap model) {
 		UserProfile userprofile = (UserProfile) session.getAttribute("userprofile");
-		Order order = orderService.load(orderId);
+		MerchantOrder order = orderService.load(orderId);
 		try {
 			if (!LockManager.hasLock(order.getOrderNo()) || LockManager.isOwnLock(order.getOrderNo(), userprofile)
 					|| LockManager.isInvalidLock(order.getOrderNo())) {

@@ -1,22 +1,31 @@
 package com.magic.thai.db.service.impl;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
+import org.apache.commons.lang.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.magic.thai.db.dao.ChannelDao;
+import com.magic.thai.db.dao.ChannelMerchantInvDao;
+import com.magic.thai.db.dao.ChannelOrderDao;
+import com.magic.thai.db.dao.ChannelOrderTravelerDao;
 import com.magic.thai.db.dao.GoodsDao;
-import com.magic.thai.db.dao.OrderDao;
-import com.magic.thai.db.dao.OrderLogDao;
-import com.magic.thai.db.dao.OrderTravelerDao;
+import com.magic.thai.db.dao.MerchantOrderDao;
+import com.magic.thai.db.dao.MerchantOrderGoodsDao;
+import com.magic.thai.db.dao.MerchantOrderNotesDao;
 import com.magic.thai.db.domain.Channel;
+import com.magic.thai.db.domain.ChannelOrder;
+import com.magic.thai.db.domain.ChannelOrderTraveler;
 import com.magic.thai.db.domain.Goods;
-import com.magic.thai.db.domain.Order;
-import com.magic.thai.db.domain.OrderLog;
-import com.magic.thai.db.domain.OrderTraveler;
+import com.magic.thai.db.domain.MerchantOrder;
+import com.magic.thai.db.domain.MerchantOrderGoods;
+import com.magic.thai.db.domain.MerchantOrderNotes;
 import com.magic.thai.db.service.ChannelService;
 import com.magic.thai.db.service.GoodsService;
 import com.magic.thai.db.service.InterfaceOrderService;
@@ -27,26 +36,27 @@ import com.magic.thai.exception.GoodsCheckedException;
 import com.magic.thai.exception.OrderStatusException;
 import com.magic.thai.exception.ThaiException;
 import com.magic.thai.exception.webservice.ParameterException;
+import com.magic.thai.security.UserProfile;
 import com.magic.thai.util.Asserts;
 import com.magic.thai.util.CalendarUtils;
 import com.magic.thai.util.OrderNoGenerator;
+import com.magic.thai.web.ws.vo.BuyGoodsVo;
 import com.magic.thai.web.ws.vo.CheckGoodsVo;
 import com.magic.thai.web.ws.vo.CreateOrderVo;
 import com.magic.thai.web.ws.vo.QueryGoodsesVo;
 import com.magic.thai.web.ws.vo.QueryOrderVo;
+import com.magic.thai.web.ws.vo.RefundGoodsVo;
 import com.magic.thai.web.ws.vo.RefundOrderVo;
 import com.magic.thai.web.ws.vo.TravelerVo;
 
 @Service("interfaceOrderService")
 @Transactional
-public class InterfaceOrderServiceImpl extends ServiceHelperImpl<Order> implements InterfaceOrderService {
+public class InterfaceOrderServiceImpl extends ServiceHelperImpl<MerchantOrder> implements InterfaceOrderService {
 
-	@Autowired
-	private OrderDao orderDao;
 	@Autowired
 	private GoodsDao goodsDao;
 	@Autowired
-	private OrderTravelerDao orderTravelerDao;
+	private ChannelOrderTravelerDao orderTravelerDao;
 	@Autowired
 	private ChannelDao channelDao;
 	@Autowired
@@ -58,52 +68,115 @@ public class InterfaceOrderServiceImpl extends ServiceHelperImpl<Order> implemen
 	@Autowired
 	private OrderService orderService;
 	@Autowired
-	private OrderLogDao orderLogDao;
+	private MerchantOrderNotesDao merchantOrderNotesDao;
+	@Autowired
+	private ChannelOrderDao channelOrderDao;
+	@Autowired
+	private MerchantOrderDao merchantOrderDao;
+	@Autowired
+	MerchantOrderGoodsDao merchantOrderGoodsDao;
+	@Autowired
+	ChannelMerchantInvDao channelMerchantInvDao;
 	@Autowired
 	private GoodsPriceCalculator goodsPriceCalculator;
 
 	@Override
-	@Transactional
-	public Order create(CreateOrderVo vo) throws ThaiException {
-		Channel channel = channelDao.fetchByToken(vo.getToken());
-		Goods goods = goodsService.fetch(vo.getGoodsId());
-		Asserts.isTrue(goodsService.checkGoods(channel, goods, vo.deptDateObj, vo.getTravelers().size()), new GoodsCheckedException(
-				"商品数量不足"));
+	@Transactional(rollbackFor = Exception.class)
+	public ChannelOrder create(CreateOrderVo vo, UserProfile userprofile) throws ThaiException {
 
-		// 没超出20天的商品已售叠加
-		if (!CalendarUtils.large(new Date(), vo.deptDateObj, 20)) {
-			goods.setSoldCount(goods.getSoldCount() + vo.getTravelers().size());
-			goodsDao.update(goods);
+		ChannelOrder channelOrder = new ChannelOrder();
+		channelOrder.setChannelId(userprofile.getMerchant().getId());
+		channelOrder.setChannelName(userprofile.getMerchant().getName());
+		// channelOrder.setChannelOrderNo(channelOrderNo);
+		channelOrder.setContractor(vo.getOrderContactor());
+		channelOrder.setContractorEmail(vo.getOrderContactorEmail());
+		channelOrder.setContractorMobile(vo.getOrderContactorMobile());
+		channelOrder.setCreatedDate(new Date());
+		channelOrder.setType(ChannelOrder.OrderType.OFFLINE_ORDER);
+
+		int channelOrderId = channelOrderDao.create(channelOrder);
+
+		Map<String, MerchantOrder> merchantOrderMap = new HashMap<String, MerchantOrder>();
+		for (BuyGoodsVo goodsVo : vo.getGoodses()) {
+			try {
+				goodsVo.deptDateObj = DateUtils.parseDate(goodsVo.getDeptDate(), new String[] { "yyyy-MM-dd", "yyyy/MM/dd" });
+			} catch (Exception e) {
+				throw new ParameterException("出发日期格式异常");
+			}
+			Goods goods = goodsDao.loadById(goodsVo.getGoodsId());
+			Asserts.notNull(goods, new ParameterException("商品ID有误：" + goodsVo.getGoodsId()));
+
+			MerchantOrderGoods merchantOrderGoods = new MerchantOrderGoods();
+			merchantOrderGoods.setAmount(goodsVo.getPrice());
+			merchantOrderGoods.setChannelId(0);
+			merchantOrderGoods.setDeptDate(goodsVo.deptDateObj);
+			merchantOrderGoods.setGoodsId(goods.getId());
+			merchantOrderGoods.setGoodsName(goods.getTitle());
+			merchantOrderGoods.setMerchantId(goods.getMerchantId());
+
+			merchantOrderGoods.setQuantity(goodsVo.getQty());
+			// mogoods.setTravelerNames(travelerNames);
+
+			if (merchantOrderMap.containsKey(goods.getMerchantId() + "")) {
+				MerchantOrder merchantOrder = merchantOrderMap.get(goods.getMerchantId() + "");
+				merchantOrder.getGoodses().add(merchantOrderGoods);
+				merchantOrder.setAmount(merchantOrder.getAmount() + goodsVo.getPrice());
+				merchantOrderGoods.setMerchantOrder(merchantOrder);
+			} else {
+
+				MerchantOrder merchantOrder = new MerchantOrder();
+				merchantOrder.setChannelId(0);
+				merchantOrder.setChannelName("");
+				merchantOrder.setChannelOrderId(channelOrderId);
+				merchantOrder.setContractor(vo.getOrderContactor());
+				merchantOrder.setContractorEmail(vo.getOrderContactorEmail());
+				merchantOrder.setContractorMobile(vo.getOrderContactorMobile());
+				merchantOrder.setCreatedDate(new Date());
+				merchantOrder.setCreatorName(userprofile.getUser().getName());
+				merchantOrder.setCreatorType(MerchantOrder.UserType.CHANNEL);
+				merchantOrder.setMerchantId(goods.getMerchantId());
+				merchantOrder.setMerchantName(goods.getMerchantName());
+				merchantOrder.setStatus(MerchantOrder.Status.NEW);
+				merchantOrder.setTravelerNum(goodsVo.getQty());
+
+				merchantOrderMap.put(goods.getMerchantId() + "", merchantOrder);
+				merchantOrder.setAmount(merchantOrder.getAmount() + goodsVo.getPrice());
+				merchantOrder.getGoodses().add(merchantOrderGoods);
+			}
+			// Asserts.isTrue(goodsService.checkGoods(channel, goods,
+			// goodsVo.deptDateObj, vo.getTravelers().size()),
+			// new GoodsCheckedException("商品数量不足"));
+			// 没超出20天的商品已售叠加
+			if (!CalendarUtils.large(new Date(), goodsVo.deptDateObj, 20)) {
+				goods.setSoldCount(goods.getSoldCount() + vo.getTravelers().size());
+				goodsDao.update(goods);
+			}
+			channelOrder.setAmount(channelOrder.getAmount() + goodsVo.getPrice());
 		}
 
-		Order order = new Order();
-		order.setChannelId(channel.getId());
-		order.setChannelName(channel.getName());
-		order.setGoodsId(goods.getId());
-		order.setGoodsName(goods.getTitle());
+		channelOrderDao.create(channelOrder);
+		for (Entry<String, MerchantOrder> entry : merchantOrderMap.entrySet()) {
+			MerchantOrder merchantOrder = entry.getValue();
+			merchantOrder.setOrderType(1);
+			merchantOrderDao.create(merchantOrder);
+			for (MerchantOrderGoods merchantOrderGoods : merchantOrder.getGoodses()) {
+				merchantOrderGoods.setMerchantOrder(merchantOrder);
+				merchantOrderGoodsDao.create(merchantOrderGoods);
+				// 生成商品快照
+				snapshotGoodsService.create(merchantOrderGoods);
+			}
+			merchantOrder.setOrderNo(OrderNoGenerator.generateMerchantOrderNo(merchantOrder));
+			merchantOrderDao.update(merchantOrder);
 
-		order.setContractor(vo.getOrderContactor());
-		order.setContractorMobile(vo.getOrderContactorMobile());
-		// order.setContractorTel();
-		order.setCreatedDate(new Date());
-		order.setCreatorId(channel.getId());
-		order.setCreatorType(Order.UserType.CHANNEL);
-		order.setCreatorName(channel.getName());
+			channelMerchantInvDao.updateStat(merchantOrder);
+		}
+		// 生成单号
+		channelOrder.setChannelOrderNo(OrderNoGenerator.generateChannelOrderNo(channelOrder));
+		channelOrderDao.update(channelOrder);
 
-		order.setDeptDate(vo.deptDateObj);
-
-		// order.setLastOperatorDate(lastOperatorDate);
-		// order.setLastOperatorId(lastOperatorId);
-		// order.setLastOperatorName(lastOperatorName);
-		order.setMerchantId(goods.getMerchantId());
-		order.setMerchantName(goods.getMerchantName());
-		// order.setStatus(status);
-		order.setTravelerNum(vo.getTravelers().size());
-
-		double sum = 0d;
 		for (TravelerVo travelerVo : vo.getTravelers()) {
-			OrderTraveler orderTraveler = new OrderTraveler();
-			orderTraveler.setOrder(order);
+			ChannelOrderTraveler orderTraveler = new ChannelOrderTraveler();
+			orderTraveler.setOrder(channelOrder);
 			orderTraveler.setBirth(travelerVo.getBirth());
 			orderTraveler.setEffectiveDate(travelerVo.getEffectiveDate());
 			orderTraveler.setGender(travelerVo.getGender());
@@ -114,30 +187,128 @@ public class InterfaceOrderServiceImpl extends ServiceHelperImpl<Order> implemen
 			orderTraveler.setName(travelerVo.getName());
 			orderTraveler.setType(travelerVo.getType());
 			orderTraveler.setNationality(travelerVo.getNationality());
-			orderTraveler.setPrice(goodsPriceCalculator.price(goods, orderTraveler));
-			order.getTravelers().add(orderTraveler);
-			sum += orderTraveler.getPrice();
-		}
-		order.setTotalPrice(sum);
-		orderDao.create(order);
-		for (OrderTraveler t : order.getTravelers()) {
-			orderTravelerDao.create(t);
+			orderTravelerDao.create(orderTraveler);
 		}
 
-		// 生成商品快照
-		snapshotGoodsService.create(goods, order);
+		return channelOrder;
+	}
 
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public ChannelOrder create(CreateOrderVo vo) throws ThaiException {
+		Channel channel = channelDao.fetchByToken(vo.getToken());
+
+		Asserts.notNull(channel, new ParameterException("TOKEN有误"));
+
+		ChannelOrder channelOrder = new ChannelOrder();
+		channelOrder.setChannelId(channel.getId());
+		channelOrder.setChannelName(channel.getName());
+		// channelOrder.setChannelOrderNo(channelOrderNo);
+		channelOrder.setContractor(vo.getOrderContactor());
+		channelOrder.setContractorEmail(vo.getOrderContactorEmail());
+		channelOrder.setContractorMobile(vo.getOrderContactorMobile());
+		channelOrder.setCreatedDate(new Date());
+
+		int channelOrderId = channelOrderDao.create(channelOrder);
+
+		Map<String, MerchantOrder> merchantOrderMap = new HashMap<String, MerchantOrder>();
+		for (BuyGoodsVo goodsVo : vo.getGoodses()) {
+			try {
+				goodsVo.deptDateObj = DateUtils.parseDate(goodsVo.getDeptDate(), new String[] { "yyyy-MM-dd", "yyyy/MM/dd" });
+			} catch (Exception e) {
+				throw new ParameterException("出发日期格式异常");
+			}
+			Goods goods = goodsDao.loadById(goodsVo.getGoodsId());
+			Asserts.notNull(goods, new ParameterException("商品ID有误：" + goodsVo.getGoodsId()));
+
+			MerchantOrderGoods merchantOrderGoods = new MerchantOrderGoods();
+			merchantOrderGoods.setAmount(goodsVo.getPrice());
+			merchantOrderGoods.setChannelId(channel.getId());
+			merchantOrderGoods.setDeptDate(goodsVo.deptDateObj);
+			merchantOrderGoods.setGoodsId(goods.getId());
+			merchantOrderGoods.setGoodsName(goods.getTitle());
+			merchantOrderGoods.setMerchantId(goods.getMerchantId());
+
+			merchantOrderGoods.setQuantity(goodsVo.getQty());
+			// mogoods.setTravelerNames(travelerNames);
+
+			if (merchantOrderMap.containsKey(goods.getMerchantId() + "")) {
+				MerchantOrder merchantOrder = merchantOrderMap.get(goods.getMerchantId() + "");
+				merchantOrder.getGoodses().add(merchantOrderGoods);
+				merchantOrder.setAmount(merchantOrder.getAmount() + goodsVo.getPrice());
+				merchantOrderGoods.setMerchantOrder(merchantOrder);
+			} else {
+
+				MerchantOrder merchantOrder = new MerchantOrder();
+				merchantOrder.setChannelId(channel.getId());
+				merchantOrder.setChannelName(channel.getName());
+				merchantOrder.setChannelOrderId(channelOrderId);
+				merchantOrder.setContractor(vo.getOrderContactor());
+				merchantOrder.setContractorEmail(vo.getOrderContactorEmail());
+				merchantOrder.setContractorMobile(vo.getOrderContactorMobile());
+				merchantOrder.setCreatedDate(new Date());
+				merchantOrder.setCreatorName(channel.getName());
+				merchantOrder.setCreatorType(MerchantOrder.UserType.CHANNEL);
+				merchantOrder.setMerchantId(goods.getMerchantId());
+				merchantOrder.setMerchantName(goods.getMerchantName());
+				merchantOrder.setStatus(MerchantOrder.Status.NEW);
+				merchantOrder.setTravelerNum(goodsVo.getQty());
+
+				merchantOrderMap.put(goods.getMerchantId() + "", merchantOrder);
+				merchantOrder.setAmount(merchantOrder.getAmount() + goodsVo.getPrice());
+				merchantOrder.getGoodses().add(merchantOrderGoods);
+			}
+			Asserts.isTrue(goodsService.checkGoods(channel, goods, goodsVo.deptDateObj, vo.getTravelers().size()),
+					new GoodsCheckedException("商品数量不足"));
+			// 没超出20天的商品已售叠加
+			if (!CalendarUtils.large(new Date(), goodsVo.deptDateObj, 20)) {
+				goods.setSoldCount(goods.getSoldCount() + vo.getTravelers().size());
+				goodsDao.update(goods);
+			}
+			channelOrder.setAmount(channelOrder.getAmount() + goodsVo.getPrice());
+		}
+
+		channelOrderDao.create(channelOrder);
+		for (Entry<String, MerchantOrder> entry : merchantOrderMap.entrySet()) {
+			MerchantOrder merchantOrder = entry.getValue();
+			merchantOrderDao.create(merchantOrder);
+			for (MerchantOrderGoods merchantOrderGoods : merchantOrder.getGoodses()) {
+				merchantOrderGoods.setMerchantOrder(merchantOrder);
+				merchantOrderGoodsDao.create(merchantOrderGoods);
+				// 生成商品快照
+				snapshotGoodsService.create(merchantOrderGoods);
+			}
+			merchantOrder.setOrderNo(OrderNoGenerator.generateMerchantOrderNo(merchantOrder));
+			merchantOrderDao.update(merchantOrder);
+
+			channelMerchantInvDao.updateStat(merchantOrder);
+		}
 		// 生成单号
-		order.setOrderNo(OrderNoGenerator.no(order));
-		orderDao.update(order);
+		channelOrder.setChannelOrderNo(OrderNoGenerator.generateChannelOrderNo(channelOrder));
+		channelOrderDao.update(channelOrder);
+
+		for (TravelerVo travelerVo : vo.getTravelers()) {
+			ChannelOrderTraveler orderTraveler = new ChannelOrderTraveler();
+			orderTraveler.setOrder(channelOrder);
+			orderTraveler.setBirth(travelerVo.getBirth());
+			orderTraveler.setEffectiveDate(travelerVo.getEffectiveDate());
+			orderTraveler.setGender(travelerVo.getGender());
+			// orderTraveler.setId(travelerVo.get);
+			orderTraveler.setIdNo(travelerVo.getIdNo());
+			orderTraveler.setIdType(travelerVo.getIdType());
+			orderTraveler.setMobile(travelerVo.getMobile());
+			orderTraveler.setName(travelerVo.getName());
+			orderTraveler.setType(travelerVo.getType());
+			orderTraveler.setNationality(travelerVo.getNationality());
+			orderTravelerDao.create(orderTraveler);
+		}
 
 		// 更新渠道信息
 		channel.setOrderCount(channel.getOrderCount() + 1);
-		channel.setAmount(order.getTotalPrice() + channel.getAmount());
-		channel.setGoodsCount(channel.getGoodsCount() + order.getTravelerNum());
+		channel.setAmount(channel.getAmount());
 		channelDao.update(channel);
 
-		return order;
+		return channelOrder;
 	}
 
 	@Override
@@ -150,10 +321,10 @@ public class InterfaceOrderServiceImpl extends ServiceHelperImpl<Order> implemen
 	}
 
 	@Override
-	public Order query(QueryOrderVo vo) throws ThaiException {
+	public ChannelOrder query(QueryOrderVo vo) throws ThaiException {
 		Channel channel = channelDao.fetchByToken(vo.getToken());
 		Asserts.notNull(channel, new ParameterException("TOKEN有误"));
-		Order order = orderDao.fetchByNo(vo.getOrderNo());
+		ChannelOrder order = channelOrderDao.fetchByNo(vo.getOrderNo());
 		Asserts.notNull(order, new ParameterException("订单号有误"));
 		return order;
 	}
@@ -177,18 +348,59 @@ public class InterfaceOrderServiceImpl extends ServiceHelperImpl<Order> implemen
 	public void refund(RefundOrderVo vo) throws ThaiException {
 		Channel channel = channelDao.fetchByToken(vo.getToken());
 		Asserts.notNull(channel, new ParameterException("TOKEN有误"));
-		Order order = orderDao.fetchByNo(vo.getOrderNo());
-		Asserts.notNull(order, new ParameterException("订单号有误"));
-		Asserts.isTrue(order.getChannelId() == channel.getId(), new OrderStatusException("没有权限操作此订单"));
-		Asserts.isTrue(order.isCompleted(), new OrderStatusException("订单在" + order.getStatusDesc() + "状态下不能申请退单"));
+		// MerchantOrder order = orderDao.fetchByNo(vo.getOrderNo());
 
-		// 清空最后操作者，列表页面客服可直接区分哪些订单没有处理
-		order.setLastOperatorDate(null);
-		order.setLastOperatorName(null);
-		order.setLastOperatorId(0);
+		ChannelOrder channelOrder = channelOrderDao.fetchByNo(vo.getOrderNo());
+		Asserts.notNull(channelOrder, new ParameterException("订单号有误"));
+		Asserts.isTrue(channelOrder.getChannelId() == channel.getId(), new OrderStatusException("没有权限操作此订单"));
+		Asserts.isTrue(channelOrder.isCompleted(), new OrderStatusException("订单在" + channelOrder.getStatusDesc() + "状态下不能申请退单"));
 
-		order.setStatus(Order.Status.NEW);// 恢复为待确认
-		orderDao.update(order);
-		orderLogDao.create(new OrderLog(order, channel, "退单申请：" + vo.getReason()));
+		boolean changed = false;
+		for (int i = vo.getGoodsVo().size() - 1; i >= 0; i--) {
+			RefundGoodsVo refundGoods = vo.getGoodsVo().get(i);
+			for (MerchantOrder merchantOrder : channelOrder.getMerchantOrders()) {
+				boolean contains = false;
+				String reason = "";
+				for (MerchantOrderGoods merchantOrderGoods : merchantOrder.getGoodses()) {
+					if (merchantOrderGoods.getGoodsId() == refundGoods.getGoodsId()) {
+						// 一天内 一天内不许退单
+						reason = "申请商品" + merchantOrderGoods.getGoodsName()
+								+ (refundGoods.getType() == RefundGoodsVo.Type.REFUND ? "退款" : ("改期,时间改为" + refundGoods.getDeptDate()));
+						if (CalendarUtils.isIn24hour(merchantOrderGoods.getDeptDate())) {
+							throw new ParameterException("商品ID" + refundGoods.getGoodsId() + "出行时间在二十四小时内，不能退改");
+						} else if (CalendarUtils.isInHalfMonth(merchantOrderGoods.getDeptDate())) {
+							// 2-15天扣2%
+							reason += ",2-15天扣2%手续费;";
+						} else {
+							reason += ";";
+						}
+						vo.getGoodsVo().remove(i);
+						contains = true;
+					}
+				}
+
+				if (contains) {
+					// 清空最后操作者，列表页面客服可直接区分哪些订单没有处理
+					merchantOrder.setLastOperatorDate(null);
+					merchantOrder.setLastOperatorName(null);
+					merchantOrder.setLastOperatorId(0);
+					merchantOrder.setStatus(MerchantOrder.Status.NEW);// 恢复为待确认
+					merchantOrderDao.update(merchantOrder);
+					merchantOrderNotesDao
+							.create(new MerchantOrderNotes(merchantOrder, channel, "退单申请：" + vo.getReason() + ",明细：" + reason));
+					changed = true;
+				}
+			}
+		}
+
+		if (vo.getGoodsVo().size() > 0) {
+			throw new ParameterException("商品ID" + vo.getGoodsVo().get(0).getGoodsId() + "不存在");
+		}
+
+		if (changed) {
+			channelOrder.setStatus(ChannelOrder.Status.NEW);
+			channelOrderDao.update(channelOrder);
+		}
+
 	}
 }

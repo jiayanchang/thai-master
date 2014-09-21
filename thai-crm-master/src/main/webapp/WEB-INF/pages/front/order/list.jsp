@@ -3,10 +3,7 @@
 <%@ page language="java" pageEncoding="UTF-8"%>  
     
 <h1>订单列表</h1>
-<p>Here you can see the list of the order, add them, remove or update.</p>
 <p>${message}</p>
-
-
 <br/>
 <div class="data">
 <c:url var="submitUrl" value="/f/order/list"/>
@@ -16,9 +13,9 @@
 	<td>订单号：</td>
 	<td><form:input path="orderNo" /></td>
 	<td>下单时间：</td>
-	<td><form:input path="startDate" /></td>
+	<td><form:input path="startDate" tag="date"/></td>
 	<td>--</td>
-	<td><form:input path="endDate" /></td>
+	<td><form:input path="endDate" tag="date"/></td>
 	<td>状态</td>
 	<td>
 		<form:select path="status">
@@ -27,14 +24,15 @@
 			<form:option value="1">已确认</form:option>
 		</form:select>
 	</td>
+	<td><input type="submit" value="submit" class="button2" /></td>
 </tr>
-<tr> 	
+<%-- <tr> 	
 	<td>出发地：</td>
 	<td><form:input path="dept" /></td>
 	<td>目的地：</td>
 	<td><form:input path="arr" /></td>
 	<td><input type="submit" value="submit" class="button2" /></td>
-</tr>
+</tr> --%>
 </table>
 <table border="1px" cellpadding="0" cellspacing="0" width="100%">
 <thead>
@@ -72,3 +70,8 @@
 <div id="dialog-form" title="Basic dialog" style="display:none;">
 	<textarea id="reason" rows="7" cols="32"></textarea>
 </div>
+<script>
+$(function() {
+	$("form [tag=date]").datepicker({dateFormat:'yy/mm/dd'});
+});
+</script>

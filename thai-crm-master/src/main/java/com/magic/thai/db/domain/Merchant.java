@@ -26,7 +26,7 @@ public class Merchant {
 	@Expose
 	private String name;
 
-	@Column(name = "name_en", nullable = false)
+	@Column(name = "name_en")
 	@Expose
 	private String nameEn;
 
@@ -97,6 +97,14 @@ public class Merchant {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getNameEn() {
+		return nameEn;
+	}
+
+	public void setNameEn(String nameEn) {
+		this.nameEn = nameEn;
 	}
 
 	public String getTel() {

@@ -27,7 +27,7 @@
 		<tr> 
 			<th width="10%">ID</th>
 			<th width="30%">商家</th>
-			<th width="20%">商家编号</th>
+			<th width="20%">英文名</th>
 			<th width="20%">状态</th>
 			<th>Action</th>
 		</tr>
@@ -37,7 +37,7 @@
 		<tr>
 			<td>${merchant.id}</td>
 			<td>${merchant.name}</td>
-			<td>${merchant.codeName}</td>
+			<td>${merchant.nameEn}</td>
 			<td>${merchant.statusDesc}</td>
 			<td>
 			<a href="${pageContext.request.contextPath}/a/merchant/edit/${merchant.id} ">修改</a><br/>

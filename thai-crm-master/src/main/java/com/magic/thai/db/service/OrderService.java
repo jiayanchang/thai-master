@@ -1,6 +1,6 @@
 package com.magic.thai.db.service;
 
-import com.magic.thai.db.domain.Order;
+import com.magic.thai.db.domain.MerchantOrder;
 import com.magic.thai.db.domain.User;
 import com.magic.thai.db.vo.OrderVo;
 import com.magic.thai.exception.OrderStatusException;
@@ -10,9 +10,9 @@ import com.magic.thai.util.PaginationSupport;
 
 public interface OrderService {
 
-	public Order load(int id);
+	public MerchantOrder load(int id);
 
-	public Order fetch(int id);
+	public MerchantOrder fetch(int id);
 
 	/**
 	 * 商家确认订单
@@ -20,7 +20,7 @@ public interface OrderService {
 	 * @param order
 	 * @param userprofile
 	 */
-	public void confirm(int orderId, String reason, UserProfile userprofile) throws ThaiException;
+	public void confirm(int orderId, UserProfile userprofile) throws ThaiException;
 
 	/**
 	 * 变更
@@ -42,7 +42,7 @@ public interface OrderService {
 
 	public void delete(int orderId, UserProfile userprofile) throws OrderStatusException;
 
-	public void update(Order orderbean, UserProfile userprofile) throws OrderStatusException;
+	public void update(MerchantOrder orderbean, UserProfile userprofile) throws OrderStatusException;
 
 	public PaginationSupport getOrderesPage(OrderVo vo, int merchantId);
 

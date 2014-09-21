@@ -32,6 +32,7 @@ import com.magic.thai.exception.GoodsCheckedException;
 import com.magic.thai.exception.GoodsStatusException;
 import com.magic.thai.exception.NoPermissionsException;
 import com.magic.thai.exception.ThaiException;
+import com.magic.thai.exception.webservice.ParameterException;
 import com.magic.thai.security.UserProfile;
 import com.magic.thai.util.Asserts;
 import com.magic.thai.util.CalendarUtils;
@@ -143,8 +144,6 @@ public class GoodsServiceImpl extends ServiceHelperImpl<Goods> implements GoodsS
 		if (goods.getStatus() != Goods.Status.AUDITING) {
 			throw new GoodsStatusException(goods.getStatusDesc() + "状态的订单不能修改");
 		}
-		create(goodsbean, userprofile);
-
 		goods.setTitle(goodsbean.getTitle());
 		goods.setDept(goodsbean.getDept());
 		goods.setArrived(goodsbean.getArrived());
@@ -264,9 +263,9 @@ public class GoodsServiceImpl extends ServiceHelperImpl<Goods> implements GoodsS
 			} else {
 				logger.info("TOKEN={},出发时间={},商品={},库存={}，已售={}  没有匹配条件",
 						new Object[] { channel.getToken(), deptDate, goods.getId(), goods.getGoodsCount(), goods.getSoldCount() });
+				throw new ParameterException("当前商品不可售,ID：" + goods.getId());
 			}
 		}
-		return false;
 	}
 
 	@Override

@@ -17,14 +17,6 @@
 			<td>${order.statusDesc }</td>
 		</tr>
 		<tr>
-			<td>购买商品编号：</td>
-			<td>${order.goodsId }</td>
-		</tr>
-		<tr>
-			<td>购买商品名称：</td>
-			<td><a href="javascript:window.open('${pageContext.request.contextPath}/f/goods/snapshot/${order.id }')">${order.goodsName }</a></td>
-		</tr>
-		<tr>
 			<td>联系人：</td>
 			<td>${order.contractor }</td>
 		</tr>
@@ -32,6 +24,20 @@
 			<td>联系电话：</td>
 			<td>${order.contractorMobile }</td>
 		</tr>
+		<tr>
+			<td>联系邮箱：</td>
+			<td>${order.contractorEmail }</td>
+		</tr>
+		<c:forEach var="mgoods" items="${order.goodses }">
+			<tr>
+				<td>购买商品编号：</td>
+				<td>${mgoods.id }</td>
+				<td>购买商品名称：</td>
+				<td><a href="javascript:window.open('${pageContext.request.contextPath}/f/goods/snapshot/${mgoods.id }')">${mgoods.goodsName }</a></td>
+				<td>购买商品数量：</td>
+				<td>${mgoods.quantity }</td>
+			</tr>
+		</c:forEach>
 	</table>
 	
 	旅客详情：
@@ -70,14 +76,16 @@
 		</tr>
 		<c:forEach var="log" items="${logs }">
 			<tr>
-				<td>${log.content }</td>
 				<td>${log.creatorName }</td>
+				<td>${log.content }</td>
 				<td>${log.lockedDate }</td>
 				<td>${log.createdDate }</td>
 			</tr>
 		</c:forEach>
 	</table>
-	<input type="button" value="确认订单"/>
+	<c:if test="${!order.completed }">
+		<input type="button" value="确认订单" onclick="complete();"/>
+	</c:if>
 </form:form>
 <div id="dialog-form" title="Basic dialog" style="display:none;">
 	<textarea id="reason" rows="7" cols="32"></textarea>
@@ -87,4 +95,21 @@
 		$("form").action = '${pageContext.request.contextPath}/f/order/list';
 		$("form").submit();
 	}
+	
+	function complete() {
+		if(!confirm("是否确定？")) return false;
+		jQuery.ajax({
+		    type: 'POST',
+			encoding:"UTF-8",
+		    dataType:"json", 
+		    data : 'id=${order.id}',
+		    contentType: "application/x-www-form-urlencoded;  charset=UTF-8",
+		    url: "${pageContext.request.contextPath}/f/order/confirm.json",
+			success: function(result) {
+				alert(result.data.message);
+				window.location.reload();
+			}
+		});
+	}
+	
 </script>

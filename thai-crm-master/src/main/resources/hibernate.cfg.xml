@@ -19,8 +19,12 @@
 	    <mapping class="com.magic.thai.db.domain.ChannelMerchantInv" />
 	    <mapping class="com.magic.thai.db.domain.ChannelGoodsInv" />
 	    <mapping class="com.magic.thai.db.domain.ChannelLog" />
-	    <mapping class="com.magic.thai.db.domain.Order" />
-	    <mapping class="com.magic.thai.db.domain.OrderLog" />
-	    <mapping class="com.magic.thai.db.domain.OrderTraveler" />
+	    <mapping class="com.magic.thai.db.domain.ChannelOrder" />
+	    <mapping class="com.magic.thai.db.domain.ChannelOrderLog" />
+	    <mapping class="com.magic.thai.db.domain.MerchantOrder" />
+	    <mapping class="com.magic.thai.db.domain.MerchantOrderLog" />
+	    <mapping class="com.magic.thai.db.domain.MerchantOrderNotes" />
+	    <mapping class="com.magic.thai.db.domain.MerchantOrderGoods" />
+	    <mapping class="com.magic.thai.db.domain.ChannelOrderTraveler" />
     </session-factory>
 </hibernate-configuration>

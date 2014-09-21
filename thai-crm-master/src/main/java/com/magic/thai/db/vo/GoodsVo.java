@@ -9,6 +9,11 @@ public class GoodsVo {
 		this.statuses = statuses;
 	}
 
+	public GoodsVo(Integer[] statuses, int merchantId) {
+		this.statuses = statuses;
+		this.merchantId = merchantId + "";
+	}
+
 	public String titleKeyword;
 	public int limitF4list = -1;
 	public Integer[] statuses;

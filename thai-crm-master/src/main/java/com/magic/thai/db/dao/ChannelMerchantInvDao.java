@@ -3,6 +3,7 @@ package com.magic.thai.db.dao;
 import java.util.List;
 
 import com.magic.thai.db.domain.ChannelMerchantInv;
+import com.magic.thai.db.domain.MerchantOrder;
 
 public interface ChannelMerchantInvDao {
 
@@ -15,5 +16,7 @@ public interface ChannelMerchantInvDao {
 	public List<ChannelMerchantInv> getInvs(int id);
 
 	public void delete(ChannelMerchantInv entity);
+
+	public void updateStat(MerchantOrder merchantOrder);
 
 }

@@ -4,7 +4,7 @@
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/js/lock.js">
 <h1>订单详情</h1>
 <c:url var="addUrl" value="/a/order/${order.id }"/>
-<form:form action="${addUrl}" method="POST" commandName="order">
+<form:form action="${addUrl}" method="GET" commandName="order">
 	<form:hidden path="id"/>
 	订单详情:
 	<table>
@@ -17,14 +17,6 @@
 			<td>${order.statusDesc }</td>
 		</tr>
 		<tr>
-			<td>购买商品编号：</td>
-			<td>${order.goodsId }</td>
-		</tr>
-		<tr>
-			<td>购买商品名称：</td>
-			<td><a href="javascript:window.open('${pageContext.request.contextPath}/a/goods/snapshot/${order.id }')">${order.goodsName }</a></td>
-		</tr>
-		<tr>
 			<td>联系人：</td>
 			<td>${order.contractor }</td>
 		</tr>
@@ -32,6 +24,20 @@
 			<td>联系电话：</td>
 			<td>${order.contractorMobile }</td>
 		</tr>
+		<tr>
+			<td>联系邮箱：</td>
+			<td>${order.contractorEmail }</td>
+		</tr>
+		<c:forEach var="mgoods" items="${order.goodses }">
+			<tr>
+				<td>购买商品编号：</td>
+				<td>${mgoods.id }</td>
+				<td>购买商品名称：</td>
+				<td><a href="javascript:window.open('${pageContext.request.contextPath}/a/goods/snapshot/${mgoods.id }')">${mgoods.goodsName }</a></td>
+				<td>购买商品数量：</td>
+				<td>${mgoods.quantity }</td>
+			</tr>
+		</c:forEach>
 	</table>
 	
 	旅客详情：

@@ -1,6 +1,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%> 
+<script type="text/javascript" src="${pageContext.request.contextPath}/fckeditor/fckeditor.js"></script>  
 
 <div class="content">
 	<h1>新建商品</h1>
@@ -36,8 +37,14 @@
 			<tr>
 				<td><font color="red">*</font>推荐理由：</td>
 				<td><form:textarea path="summary" /></td>
-				<td><form:errors path="summary" cssClass="error" /></td>
+				<td><form:errors path="summary" cssClass="error" />
+				</td>
 			</tr>
+			<script>
+                var oFCKeditor1 = new FCKeditor( 'summary', 800, 200, 'Default', '${goods.summary}') ;  
+                oFCKeditor1.BasePath = "/crm/fckeditor/" ;  
+                oFCKeditor1.ReplaceTextarea() ;  
+			</script>
 			<tr>
 				<td><font color="red">*</font>宣传图片：</td>
 				<td><input type="file" name="picPathFile" /></td>
@@ -77,29 +84,46 @@
 				<td><form:textarea path="details.travelPlan" /></td>
 				<td><form:errors path="details.travelPlan" cssClass="error" /></td>
 			</tr>
+			<script>
+                var oFCKeditor2 = new FCKeditor( 'details.travelPlan', 800, 200, 'Default', '${goods.details.travelPlan}') ;  
+                oFCKeditor2.BasePath = "/crm/fckeditor/" ;  
+                oFCKeditor2.ReplaceTextarea() ;  
+			</script>
 			<tr>
 				<td><font color="red">*</font>费用说明：</td>
 				<td><form:textarea path="details.costDesc" /></td>
 				<td><form:errors path="details.costDesc" cssClass="error" /></td>
 			</tr>
+			<script>
+                var oFCKeditor3 = new FCKeditor( 'details.costDesc', 800, 200, 'Default', '${goods.details.costDesc}') ;  
+                oFCKeditor3.BasePath = "/crm/fckeditor/" ;  
+                oFCKeditor3.ReplaceTextarea() ;  
+			</script>
 			<tr>
 				<td><font color="red">*</font>预定须知：</td>
 				<td><form:textarea path="details.bookNotes" /></td>
 				<td><form:errors path="details.bookNotes" cssClass="error" /></td>
 			</tr>
+			<script>
+                var oFCKeditor4 = new FCKeditor( 'details.bookNotes', 800, 200, 'Default', '${goods.details.bookNotes}') ;  
+                oFCKeditor4.BasePath = "/crm/fckeditor/" ;  
+                oFCKeditor4.ReplaceTextarea() ;  
+			</script>
 			<tr>
 				<td><font color="red">*</font>备注：</td>
 				<td><form:textarea path="details.notes" /></td>
 				<td><form:errors path="details.notes" cssClass="error" /></td>
 			</tr>
+			<script>
+                var oFCKeditor5 = new FCKeditor( 'details.notes', 800, 200, 'Default', '${goods.details.notes}') ;  
+                oFCKeditor5.BasePath = "/crm/fckeditor/" ;  
+                oFCKeditor5.ReplaceTextarea() ;  
+			</script>
 			<tr>
 				<td colspan="3"><input type="submit" value="submit" class="button2" /></td>
 			</tr>
 		</table>
 	</form:form>
-	<p>
-		<a href="${pageContext.request.contextPath}/"><button class="button2">Back</button></a>
-	</p>
 </div>
 <script>
 function addPriceSegment() {

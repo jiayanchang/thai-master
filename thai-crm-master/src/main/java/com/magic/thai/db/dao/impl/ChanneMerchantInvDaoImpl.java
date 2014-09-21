@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.magic.thai.db.dao.ChannelMerchantInvDao;
 import com.magic.thai.db.dao.HibernateCommonDAO;
 import com.magic.thai.db.domain.ChannelMerchantInv;
+import com.magic.thai.db.domain.MerchantOrder;
 
 @Repository(value = "channelMerchantInvDao")
 public class ChanneMerchantInvDaoImpl extends HibernateCommonDAO<ChannelMerchantInv> implements ChannelMerchantInvDao {
@@ -35,4 +36,11 @@ public class ChanneMerchantInvDaoImpl extends HibernateCommonDAO<ChannelMerchant
 		return super.find("from ChannelMerchantInv where channelId = " + id);
 	}
 
+	@Override
+	public void updateStat(MerchantOrder merchantOrder) {
+		super.getSession().createQuery(
+				"update ChannelMerchantInv set amount=(amount+" + merchantOrder.getAmount()
+						+ "), orderCount=(orderCount + 1) where channelId = " + merchantOrder.getChannelId() + " and merchantId = "
+						+ merchantOrder.getMerchantId());
+	}
 }

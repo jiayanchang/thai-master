@@ -6,7 +6,7 @@ public interface SnapshotGoodsDao {
 
 	public SnapshotGoods loadById(int id);
 
-	public SnapshotGoods loadByOrderId(int id);
+	public SnapshotGoods loadByMerchanOrderGoodsId(int id);
 
 	public Integer create(SnapshotGoods entity);
 
