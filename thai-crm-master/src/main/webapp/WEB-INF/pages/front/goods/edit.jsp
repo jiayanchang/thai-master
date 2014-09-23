@@ -50,23 +50,25 @@
 			</script>
 			<tr>
 				<td><font color="red">*</font>宣传图片：</td>
-				<td><input type="file" name="picPathFile" /></td>
-				<td><img alt="" src="${pageContext.request.contextPath}${goods.details.picPath }"></td>
+				<td>
+					<input type="file" name="picPathFile" />
+					<img alt="" src="${pageContext.request.contextPath}${goods.details.picPath }">
+				</td>
 			</tr>
 			
 			<tr>
 				<td><font color="red">*</font>线路图片：</td>
 				<td>
 					<input type="file" name="linePicPathAFile" />
+					<img alt="" src="${pageContext.request.contextPath}${goods.details.linePicPathA }">
 					<input type="file" name="linePicPathBFile" />
+					<img alt="" src="${pageContext.request.contextPath}${goods.details.linePicPathB }">
 					<input type="file" name="linePicPathCFile" />
+					<img alt="" src="${pageContext.request.contextPath}${goods.details.linePicPathC }">
 					<input type="file" name="linePicPathDFile" />
+					<img alt="" src="${pageContext.request.contextPath}${goods.details.linePicPathD }">
 				</td>
 				<td>
-					<img alt="" src="${pageContext.request.contextPath}${goods.details.linePicPathA }">
-					<img alt="" src="${pageContext.request.contextPath}${goods.details.linePicPathB }">
-					<img alt="" src="${pageContext.request.contextPath}${goods.details.linePicPathC }">
-					<img alt="" src="${pageContext.request.contextPath}${goods.details.linePicPathD }">
 				</td>
 			</tr>
 			
@@ -104,41 +106,41 @@
 			
 			<tr>
 				<td><font color="red">*</font>行程安排：</td>
-				<td><form:textarea path="details.travelPlan" /></td>
+				<td><textarea name="details.travelPlan" >${goods.details.travelPlan}</textarea></td>
 				<td><form:errors path="details.travelPlan" cssClass="error" /></td>
 			</tr>
 			<script>
-                var oFCKeditor2 = new FCKeditor( 'details.travelPlan', 800, 200, 'Default', '${goods.details.travelPlan}') ;  
+                var oFCKeditor2 = new FCKeditor( 'details.travelPlan', 800, 200, 'Default') ;  
                 oFCKeditor2.BasePath = "/crm/fckeditor/" ;  
                 oFCKeditor2.ReplaceTextarea() ;  
 			</script>
 			<tr>
 				<td><font color="red">*</font>费用说明：</td>
-				<td><form:textarea path="details.costDesc" /></td>
+				<td><textarea name="details.costDesc">${goods.details.costDesc}</textarea></td>
 				<td><form:errors path="details.costDesc" cssClass="error" /></td>
 			</tr>
 			<script>
-                var oFCKeditor3 = new FCKeditor( 'details.costDesc', 800, 200, 'Default', '${goods.details.costDesc}') ;  
+                var oFCKeditor3 = new FCKeditor( 'details.costDesc', 800, 200, 'Default') ;  
                 oFCKeditor3.BasePath = "/crm/fckeditor/" ;  
                 oFCKeditor3.ReplaceTextarea(); 
 			</script>
 			<tr>
 				<td><font color="red">*</font>预定须知：</td>
-				<td><form:textarea path="details.bookNotes" /></td>
+				<td><textarea name="details.bookNotes" >${goods.details.bookNotes}</textarea></td>
 				<td><form:errors path="details.bookNotes" cssClass="error" /></td>
 			</tr>
 			<script>
-                var oFCKeditor4 = new FCKeditor( 'details.bookNotes', 800, 200, 'Default', '${goods.details.bookNotes}') ;  
+                var oFCKeditor4 = new FCKeditor( 'details.bookNotes', 800, 200, 'Default') ;  
                 oFCKeditor4.BasePath = "/crm/fckeditor/" ;  
                 oFCKeditor4.ReplaceTextarea(); 
 			</script>
 			<tr>
 				<td><font color="red">*</font>备注：</td>
-				<td><form:textarea path="details.notes" /></td>
+				<td><textarea name="details.notes">${goods.details.notes}</textarea></td>
 				<td><form:errors path="details.notes" cssClass="error" /></td>
 			</tr>
 			<script>
-                var oFCKeditor5 = new FCKeditor( 'details.notes', 800, 200, 'Default', '${goods.details.notes}') ;  
+                var oFCKeditor5 = new FCKeditor( 'details.notes', 800, 200, 'Default') ;  
                 oFCKeditor5.BasePath = "/crm/fckeditor/" ;  
                 oFCKeditor5.ReplaceTextarea(); 
 			</script>

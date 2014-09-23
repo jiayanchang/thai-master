@@ -44,30 +44,31 @@ public class WebServiceControllorTest {
 
 	@Test
 	public void testCreatOrder() throws Exception {
-		String url = "http://localhost:8080/crm/ws/createOrder";
+		String url = "http://198.74.119.194:8080/crm/ws/createOrder";
+		// String url = "http://localhost:8080/crm/ws/createOrder";
 
 		CreateOrderVo createOrderVo = new CreateOrderVo();
-		createOrderVo.setOrderContactorEmail("jiayanchang@yeah.net");
-		createOrderVo.setOrderContactorMobile("13900987766");
-		createOrderVo.setOrderContactor("贾彦昌");
+		createOrderVo.setOrderContactorEmail("xiaoxin@yeah.net");
+		createOrderVo.setOrderContactorMobile("13900932766");
+		createOrderVo.setOrderContactor("大黑");
 		createOrderVo.setToken(token);
 
-		for (int i = 0; i < 1; i++) {
+		for (int i = 0; i < 3; i++) {
 			TravelerVo vo = new TravelerVo();
 			// vo.setBirth(birth);
 			// vo.setEffectiveDate(effectiveDate);
 			// vo.setGender(gender);
-			vo.setIdNo("2929384747473939922");
-			vo.setMobile("13900987766");
-			vo.setName("贾彦昌" + i);
+			vo.setIdNo("2929384545473939922");
+			vo.setMobile("13905447766");
+			vo.setName("大黑" + i);
 			vo.setNationality("中国");
 			// vo.setType(type);
 			createOrderVo.getTravelers().add(vo);
 		}
 
-		for (int i = 0; i < 1; i++) {
+		for (int i = 0; i < 5; i++) {
 			BuyGoodsVo vo = new BuyGoodsVo();
-			vo.setDeptDate("2014-09-30");
+			vo.setDeptDate("2014-09-29");
 			vo.setGoodsId(i + 1);
 			vo.setQty(1);
 			vo.setPrice(100 + i * 5);
@@ -82,8 +83,8 @@ public class WebServiceControllorTest {
 
 	@Test
 	public void testQueryGoodses() throws Exception {
-		String url = "http://localhost:8080/crm/ws/queryGoodses";
-
+		// String url = "http://localhost:8080/crm/ws/queryGoodses";
+		String url = "http://198.74.119.194:8080/crm/ws/queryGoodses";
 		QueryGoodsesVo vo = new QueryGoodsesVo();
 		vo.setToken(token);
 		String xmlData = marshall(vo);
@@ -91,9 +92,10 @@ public class WebServiceControllorTest {
 		System.out.println(html);
 	}
 
-	@Test
+	// @Test
 	public void testCheckGoods() throws Exception {
-		String url = "http://localhost:8080/crm/ws/checkGoods";
+		// String url = "http://localhost:8080/crm/ws/checkGoods";
+		String url = "http://198.74.119.194:8080/crm/ws/checkGoods";
 
 		CheckGoodsVo vo = new CheckGoodsVo();
 		vo.setToken(token);
@@ -104,7 +106,7 @@ public class WebServiceControllorTest {
 		System.out.println(html);
 	}
 
-	@Test
+	// @Test
 	public void testQueryOrder() throws Exception {
 		String url = "http://localhost:8080/crm/ws/queryOrder";
 		QueryOrderVo vo = new QueryOrderVo();
@@ -118,11 +120,12 @@ public class WebServiceControllorTest {
 
 	@Test
 	public void testRefund() throws Exception {
-		String url = "http://localhost:8080/crm/ws/refundOrder";
+		String url = "http://198.74.119.194:8080/crm/ws/refundOrder";
+		// String url = "http://localhost:8080/crm/ws/refundOrder";
 		RefundOrderVo vo = new RefundOrderVo();
 		vo.setToken(token);
-		vo.setOrderNo("C0114092300000021");
-		vo.setReason("死了，去不了了");
+		vo.setOrderNo("C0114092400000002");
+		vo.setReason("要死了，去不了了");
 
 		vo.getGoodsVo().add(new RefundGoodsVo(1, RefundGoodsVo.Type.REFUND, 1, null));
 

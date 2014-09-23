@@ -2,7 +2,9 @@ package com.magic.thai.web.json;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -123,9 +125,18 @@ public class JsonController {
 
 	@RequestMapping(value = "/goods/{id}", method = RequestMethod.GET)
 	@ResponseBody
-	public String getgoods(@PathVariable int id) {
-		Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-		return gson.toJson(goodsService.load(id));
+	public ModelMap getgoods(@PathVariable int id, ModelMap model) {
+		Goods goods = goodsService.load(id);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", goods.getId());
+		map.put("name", goods.getTitle());
+		map.put("goodsCount", goods.getGoodsCount());
+		map.put("soldCount", goods.getSoldCount());
+		model.put("data", DataVo.success(map).setMessage("获取成功"));
+		return model;
+		// Gson gson = new
+		// GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+		// return gson.toJson(goods);
 	}
 
 	@RequestMapping("/validateUser")

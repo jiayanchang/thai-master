@@ -6,11 +6,10 @@ import java.io.IOException;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.junit.Test;
 
 public class MerchantManageAjaxControllerTest {
 
-	@Test
+	// @Test
 	public void test() {
 		try {
 			Document doc = Jsoup.connect("http://localhost:8080/mchts/listData").timeout(300000).post();

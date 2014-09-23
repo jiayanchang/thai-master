@@ -2,6 +2,7 @@ package com.magic.thai.db.service.impl;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -14,7 +15,7 @@ import com.magic.thai.db.domain.Merchant;
 import com.magic.thai.db.domain.User;
 import com.magic.thai.security.UserProfile;
 
-//@Ignore
+@Ignore
 @ContextConfiguration(locations = "/spring-ctx.xml")
 @TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = false)
 @Transactional

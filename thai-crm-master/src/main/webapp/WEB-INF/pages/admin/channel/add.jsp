@@ -31,7 +31,6 @@
 			<td>运营人 :</td>
 			<td>
 				<form:select path="operatorId">
-					<option value="0"></option>
 					<c:forEach var="user" items="${users }">
 						<form:option value="${user.id}">${user.name }</form:option>
 					</c:forEach>
@@ -102,21 +101,21 @@ function addGoods(){
 	}
 	
 	jQuery.ajax({
-	    type: 'POST',
+	    type: 'GET',
 		encoding:"UTF-8",
 	    dataType:"json", 
 	    contentType: "application/x-www-form-urlencoded;  charset=UTF-8",
-	    url: "${pageContext.request.contextPath}/a/goods/" + id + ".json",
+	    url: "${pageContext.request.contextPath}/json/goods/" + id + ".json",
 		success: function(result) {
 			var last_tr = $("#goodsInvsTbl tbody tr:last");
 			var index = last_tr.length > 0 ? last_tr.attr("index") : 0;
 			var html = '<tr index="' + index + '">'
-				+ '<td>' + result.goods.title + '</td>'
-				+ '<td>' + result.goods.goodsCount + '</td>'
-				+ '<td><input type="hidden" name="goodsInvs[' + index + '].goodsId" value="' + result.goods.id + '"/>'
+				+ '<td>' + result.data.data.name + '</td>'
+				+ '<td>' + result.data.data.goodsCount + '</td>'
+				+ '<td><input type="hidden" name="goodsInvs[' + index + '].goodsId" value="' + result.data.data.id + '"/>'
 				+ '<input name="goodsInvs[' + index + '].allocatedAmount"/></td>'
-				+ '<td>' + result.goods.soldCount + '</td>'
-				+ '<td>' + (result.goods.goodsCount - result.goods.soldCount) + '</td>'
+				+ '<td>' + result.data.data.soldCount + '</td>'
+				+ '<td>' + (result.data.data.goodsCount - result.data.data.soldCount) + '</td>'
 				+ '<td><a href="javascript:removeGoods(' + index + ');">删除</a></td>'
 				+ '</tr>';	
 				
@@ -137,8 +136,8 @@ function addMerchant(){
 	    contentType: "application/x-www-form-urlencoded;  charset=UTF-8",
 	    url: "${pageContext.request.contextPath}/a/merchant/" + id + ".json",
 		success: function(result) {
-			var last_tr = $("#merchantInvsTbl tbody tr:last");
-			var index = last_tr.length > 0 ? last_tr.attr("index") : 0;
+			var last_tr = $("#merchantInvsTbl tbody tr");
+			var index = $("#merchantInvsTbl tbody tr").length;
 			var html = '<tr index="' + index + '">'
 					+ '<td>' + result.merchant.name + '</td>'
 					+ '<td><input type="hidden" name="merchantInvs[' + index + '].merchantId" value="' + result.merchant.id + '"/>'

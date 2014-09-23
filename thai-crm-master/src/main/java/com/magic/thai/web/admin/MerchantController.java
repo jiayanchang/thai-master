@@ -86,7 +86,11 @@ public class MerchantController {
 
 	private void uploadLogo(Merchant merchant, CommonsMultipartFile file, HttpSession session) {
 		if (file != null) {
-			File imageFile = new File(session.getServletContext().getRealPath("/") + "upload/logo/" + merchant.getId() + ".jpg");
+			String host = session.getServletContext().getRealPath("/");
+			if (!host.endsWith("/")) {
+				host += "/";
+			}
+			File imageFile = new File(host + "upload/logo/" + merchant.getId() + ".jpg");
 			try {
 				file.transferTo(imageFile);
 				merchant.getDetails().setLogoPath(imageFile.getPath());

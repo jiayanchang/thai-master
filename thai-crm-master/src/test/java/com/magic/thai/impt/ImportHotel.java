@@ -9,7 +9,6 @@ import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,7 +21,7 @@ public class ImportHotel extends BaseTest {
 	@Autowired
 	HotelDao dao;
 
-	@Test
+	// @Test
 	@Transactional
 	public void testHo() throws Exception {
 		InputStream is = new FileInputStream("d:/downloads/1.xlsx");
