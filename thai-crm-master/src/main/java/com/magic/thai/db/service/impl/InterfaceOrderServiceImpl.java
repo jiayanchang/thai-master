@@ -138,6 +138,10 @@ public class InterfaceOrderServiceImpl extends ServiceHelperImpl<MerchantOrder> 
 				merchantOrder.setMerchantName(goods.getMerchantName());
 				merchantOrder.setStatus(MerchantOrder.Status.NEW);
 				merchantOrder.setTravelerNum(goodsVo.getQty());
+				merchantOrder.setHotelAddress(vo.getHotelAddress());
+				merchantOrder.setHotelName(vo.getHotelName());
+				merchantOrder.setHotelRoom(vo.getHotelRoom());
+				merchantOrder.setHotelRoomTel(vo.getHotelRoomTel());
 
 				merchantOrderMap.put(goods.getMerchantId() + "", merchantOrder);
 				merchantOrder.setAmount(merchantOrder.getAmount() + goodsVo.getPrice());
@@ -253,6 +257,10 @@ public class InterfaceOrderServiceImpl extends ServiceHelperImpl<MerchantOrder> 
 				merchantOrder.setMerchantName(goods.getMerchantName());
 				merchantOrder.setStatus(MerchantOrder.Status.NEW);
 				merchantOrder.setTravelerNum(goodsVo.getQty());
+				merchantOrder.setHotelAddress(vo.getHotelAddress());
+				merchantOrder.setHotelName(vo.getHotelName());
+				merchantOrder.setHotelRoom(vo.getHotelRoom());
+				merchantOrder.setHotelRoomTel(vo.getHotelRoomTel());
 
 				merchantOrderMap.put(goods.getMerchantId() + "", merchantOrder);
 				merchantOrder.setAmount(merchantOrder.getAmount() + goodsVo.getPrice());

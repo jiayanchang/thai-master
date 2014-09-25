@@ -14,6 +14,10 @@ public class CreateOrderVo {
 	private String orderContactor;
 	private String orderContactorMobile;
 	private String orderContactorEmail;
+	private String hotelName;
+	private String hotelAddress;
+	private String hotelRoom;
+	private String hotelRoomTel;
 
 	private List<TravelerVo> travelers = new ArrayList<TravelerVo>();
 
@@ -72,6 +76,38 @@ public class CreateOrderVo {
 
 	public void setOrderContactorEmail(String orderContactorEmail) {
 		this.orderContactorEmail = orderContactorEmail;
+	}
+
+	public String getHotelName() {
+		return hotelName;
+	}
+
+	public void setHotelName(String hotelName) {
+		this.hotelName = hotelName;
+	}
+
+	public String getHotelAddress() {
+		return hotelAddress;
+	}
+
+	public void setHotelAddress(String hotelAddress) {
+		this.hotelAddress = hotelAddress;
+	}
+
+	public String getHotelRoom() {
+		return hotelRoom;
+	}
+
+	public void setHotelRoom(String hotelRoom) {
+		this.hotelRoom = hotelRoom;
+	}
+
+	public String getHotelRoomTel() {
+		return hotelRoomTel;
+	}
+
+	public void setHotelRoomTel(String hotelRoomTel) {
+		this.hotelRoomTel = hotelRoomTel;
 	}
 
 }

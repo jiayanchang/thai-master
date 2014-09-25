@@ -1,62 +1,108 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%> 
-
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <html>
 <head>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery/jquery-1.10.2.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.2.0/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/base.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/frame.css">
+<style>
+body, button, input, select, textarea, table, div, a {
+	font-size: 15px;
+}
 
+body {
+	padding-top: 40px;
+	padding-bottom: 40px;
+	background-color: #eee;
+}
+
+.form-signin {
+	max-width: 330px;
+	padding: 15px;
+	margin: 0 auto;
+}
+
+.form-signin .form-signin-heading, .form-signin .checkbox {
+	margin-bottom: 10px;
+}
+
+.form-signin .checkbox {
+	font-weight: normal;
+}
+
+.form-signin .form-control {
+	position: relative;
+	height: auto;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	padding: 10px;
+	font-size: 16px;
+}
+
+.form-signin .form-control:focus {
+	z-index: 2;
+}
+
+.form-signin input[type="email"] {
+	margin-bottom: -1px;
+	border-bottom-right-radius: 0;
+	border-bottom-left-radius: 0;
+}
+
+.form-signin input[type="password"] {
+	margin-bottom: 10px;
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+}
+.verify-code-input {
+	width: 90px !important;
+}
+</style>
 <%-- <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet" type="text/css" /> --%>
-<title>User Edit</title>
+<title>Magic Thai</title>
 </head>
 
 <body>
-	<div class="content">
-	<h1>login</h1>
-		<form method="POST" action="${pageContext.request.contextPath}/" enctype="multipart/form-data">
-			<font color="red">${message }</font>
-			<table>
-				<tr>
-					<td>UserName :</td>
-					<td><input name="loginName" type="text" /></td>
-				</tr>
-				<tr>
-					<td>Password :</td>
-					<td><input name="password" type="password" /></td>
-				</tr>
-				<tr>
-					<td>Captcha :</td>
-					<td>
-						<input name="captcha" type="text" />
-						<img id="image" border="0"  onclick="refresh()" src="${pageContext.request.contextPath}/captcha" title="点图刷新">
-					</td>
-					<td><form:errors path="password" cssClass="error" /></td>
-				</tr>
-				<tr>
-					<td colspan="3">
-					<input type="submit" value="submit" class="button2" /></td>
-				</tr>
-			</table>
+	<div class="container" style="border:1px solid #999999; width:400px;padding:30px 10px;border-radius:8px;background-color:#FFF;">
+		<div style="padding:10px 4px;text-align:center;margin:-30px -10px 0 -10px; border-bottom:1px solid #999999;">用户登录</div>
+		<form class="form-signin" role="form" method="POST" action="${pageContext.request.contextPath}/" enctype="multipart/form-data">
+			<p>${message }</p>
+			<div class="form-group">
+				<label for="loginName">用户名</label> <input name="loginName" type="text" class="form-control" id="loginName" placeholder="username">
+			</div>
+			<div class="form-group">
+				<label for="password">密码</label> <input name="password" type="password" class="form-control" id="password" placeholder="password">
+			</div>
+			<div class="form-group" style="margin-bottom:10px;">
+				<label for="captcha">验证码</label>
+				<br>
+				<input style="margin:0 10px 10px 0;float:left;" name="captcha" type="input" style="width:50px;" id="captcha" placeholder="captcha"  class="form-control verify-code-input">
+				<img style="float:left;width:90px;height:40px;" id="image" border="0" onclick="refresh()" src="${pageContext.request.contextPath}/captcha" title="点图刷新"> 
+			</div>
+			<input type="submit" value="登陆" class="btn btn-info btn-lg btn-block" />
 		</form>
 	</div>
 </body>
-<script type="text/javascript">  
-    function refresh() {  
-        document.getElementById("image").src="/captcha?"+new Date();  
-    }  
-    function ajaxreq(){
+<script type="text/javascript">
+	function refresh() {
+		document.getElementById("image").src = "/captcha?" + new Date();
+	}
+	function ajaxreq() {
 		jQuery.ajax({
-		    type: 'POST',
-    		encoding:"UTF-8",
-		    dataType:"json", 
-		    data: 'loginName=admin&userId=1',
-		    contentType: "application/x-www-form-urlencoded;  charset=UTF-8",
-		    url: '/crm/json/validateLoginName.json',
-			success: function(result) {
+			type : 'POST',
+			encoding : "UTF-8",
+			dataType : "json",
+			data : 'loginName=admin&userId=1',
+			contentType : "application/x-www-form-urlencoded;  charset=UTF-8",
+			url : '/crm/json/validateLoginName.json',
+			success : function(result) {
 				alert(result.data.success);
 			}
 		});
 	}
-</script>  
+</script>
 </html>

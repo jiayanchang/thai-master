@@ -8,10 +8,14 @@
 		<c:url var="addUrl" value="/a/user/edit/proccess"/>
 		<form:form action="${addUrl}" method="POST" commandName="user" >
 			<form:hidden path="id"/>
-			<table>
+			<table class="table table-striped" >
+				<colgroup>
+					<col class="col-xs-1">
+					<col class="col-xs-7">
+				</colgroup>
 				<tr>
 					<td>员工名称 :</td>
-					<td><form:input path="name" /></td>
+					<td><form:input path="name"  class="form-control" /></td>
 					<td><form:errors path="name" cssClass="error" /></td>
 				</tr>
 				<tr>
@@ -26,25 +30,24 @@
 				</tr>
 				<tr>
 					<td>密码 :</td>
-					<td><form:password path="password" /></td>
+					<td><form:password path="password"  class="form-control" /></td>
 					<td><form:errors path="password" cssClass="error" /></td>
 				</tr>
 				<tr>
 					<td>密码确认 :</td>
-					<td><input type="password" name="passwordconfirm" /></td>
+					<td><input type="password"  class="form-control" name="passwordconfirm" /></td>
 					<td></td>
 				</tr>
 				<tr>
 					<td>手机:</td>
-					<td><form:input path="mobile" /></td>
+					<td><form:input path="mobile"  class="form-control" /></td>
 					<td><form:errors path="mobile" cssClass="error" /></td>
 				</tr>
 				<tr>
-					<td colspan="3"><input type="submit" value="submit" class="button2" /></td>
+					<td></td>
+					<td><input type="submit" value="保存" class="btn btn-primary btn-lg btn-block" /></td>
+					<td></td>
 				</tr>
 			</table>
 		</form:form>
-		<p>
-			<a href="${pageContext.request.contextPath}/"><button class="button2">Back</button></a>
-		</p>
 	</div>

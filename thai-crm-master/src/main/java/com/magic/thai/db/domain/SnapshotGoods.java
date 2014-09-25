@@ -47,7 +47,7 @@ public class SnapshotGoods {
 	private String dept;
 	@Column
 	private String arrived;
-	@Column
+	@Column(columnDefinition = "TEXT")
 	private String summary;
 	@Column
 	private int status;

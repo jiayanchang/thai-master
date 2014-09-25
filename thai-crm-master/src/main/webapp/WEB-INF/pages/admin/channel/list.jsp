@@ -7,7 +7,7 @@
 <br/>
 <c:url var="submitUrl" value="/a/channel/list"/>
 <form:form action="${submitUrl}" method="POST">
-<table border="1px" cellpadding="0" cellspacing="0" width="100%">
+<table class="table table-striped table-hover ">
 <thead>
 <tr> 
 	<th width="10%">渠道编号</th>
@@ -22,7 +22,7 @@
 </thead>
 <tbody>
 <c:forEach items="${ps.items}" var="channel" >
-<tr>
+<tr <c:if test="${channel.enabled}"> class="success" </c:if> >
 	<td>${channel.id}</td>
 	<td>${channel.name}</td>
 	<td>${channel.orderCount}</td>
@@ -31,14 +31,14 @@
 	<td>${channel.operatorName}</td>
 	<td>${channel.statusDesc}</td>
 	<td>
-	<a href="${pageContext.request.contextPath}/a/channel/edit/${channel.id} ">库存管理</a><br/>
+	<a class="btn btn-info" href="${pageContext.request.contextPath}/a/channel/edit/${channel.id} ">库存管理</a>
 	<c:if test="${channel.enabled}">
-		<a href="${pageContext.request.contextPath}/a/channel/close/${channel.id} ">关闭</a><br/>
+		<a class="btn btn-primary"  href="${pageContext.request.contextPath}/a/channel/close/${channel.id} ">关闭</a>
 	</c:if>
 	<c:if test="${channel.disabled}">
-		<a href="${pageContext.request.contextPath}/a/channel/open/${channel.id} ">开启</a><br/>
+		<a class="btn btn-success" href="${pageContext.request.contextPath}/a/channel/open/${channel.id} ">开启</a>
 	</c:if>
-	<a href="${pageContext.request.contextPath}/a/channel/delete/${channel.id} ">删除</a><br/>
+	<a class="btn btn-warning" href="${pageContext.request.contextPath}/a/channel/delete/${channel.id} ">删除</a>
 	</td>
 </tr>
 </c:forEach>

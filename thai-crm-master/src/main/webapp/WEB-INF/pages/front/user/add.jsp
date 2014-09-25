@@ -8,7 +8,11 @@
 		<c:url var="addUrl" value="/f/user/add"/>
 		<form:form action="${addUrl}" method="POST" commandName="user" >
 			<form:hidden path="id"/>
-			<table>
+			<table class="table" >
+				<colgroup>
+					<col class="col-xs-1">
+					<col class="col-xs-7">
+				</colgroup>
 				<tr>
 					<td>员工名称 :</td>
 					<td><form:input path="name" /></td>
@@ -40,7 +44,7 @@
 					<td><form:errors path="mobile" cssClass="error" /></td>
 				</tr>
 				<tr>
-					<td colspan="3"><input type="button" value="提交" class="button2"  onclick="submitForm();"/></td>
+					<td colspan="3"><input type="button" value="提交" class="btn btn-primary btn-group btn-group-lg"  onclick="submitForm();"/></td>
 				</tr>
 			</table>
 		</form:form>

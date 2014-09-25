@@ -3,45 +3,55 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%> 
 
 <style>
-	.custom-combobox {
-		position: relative;
-		display: inline-block;
-	}
-	.custom-combobox-toggle {
-		position: absolute;
-		top: 0;
-		bottom: 0;
-		margin-left: -1px;
-		padding: 0;
-	}
-	.custom-combobox-input {
-		margin: 0;
-		padding: 5px 10px;
-	}
-	</style>
+.custom-combobox {
+	position: relative;
+	display: inline-block;
+}
+.custom-combobox-toggle {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	margin-left: -1px;
+	padding: 0;
+}
+.custom-combobox-input {
+	margin: 0;
+	padding: 5px 10px;
+}
+</style>
 
 <h1>渠道库存管理</h1>
 <c:url var="addUrl" value="/a/channel/edit/process"/>
+<div style="width:600px;">
 <form:form action="${addUrl}" method="POST" commandName="channel">
 	<form:hidden path="id"/>
-	<table>
+	<table class="table">
+		<colgroup>
+			<col class="col-xs-1">
+			<col class="col-xs-7">
+		</colgroup>
 		<tr>
 			<td>渠道名称 :</td>
 			<td>${channel.name}</td>
-			<td>渠道TOKEN :</td>
+		</tr>
+		<tr>
+			<td>TOKEN :</td>
 			<td>${channel.token}</td>
+		</tr>
+		<tr>
 			<td>运营人 :</td>
 			<td>
-				<form:select path="operatorId">
+				<form:select path="operatorId" class="form-control">
 					<option value="0"></option>
 					<c:forEach var="user" items="${users }">
 						<form:option value="${user.id}">${user.name }</form:option>
 					</c:forEach>
 				</form:select>
 			</td>
-			<td><form:errors path="operatorId" cssClass="error" /></td>
 		</tr>
 	</table>
+	<h4><strong>库存分配</strong></h4>
+	
 	按商品匹配：
 	<select id="goods" name="goods">
 		<option value="0"></option>
@@ -50,8 +60,8 @@
 		</c:forEach>
 	</select>
 	<br>
-	<a href="javascript:addGoods();">添加</a>
-	<table id="goodsInvsTbl">
+	<a class="btn btn-success" href="javascript:addGoods();">添加</a>
+	<table id="goodsInvsTbl" class="table">
 		<thead>
 		<tr>
 			<th>商品名称</th>
@@ -79,16 +89,17 @@
 			</c:forEach>
 		</tbody>
 	</table>
+
 	按商家匹配：
-	<select id="merchant" name="merchant">
+	<select id="merchant" name="merchant" class="form-control">
 		<option value="0"></option>
 		<c:forEach var="merchant" items="${merchants }">
 			<option value="${merchant.id}">${merchant.name }</option>
 		</c:forEach>
 	</select>
 	<br>
-	<a href="javascript:addMerchant();">添加</a>
-	<table id="merchantInvsTbl">
+	<a class="btn btn-success" href="javascript:addMerchant();">添加</a>
+	<table id="merchantInvsTbl" class="table">
 		<thead>
 			<tr>
 				<th>商家名称</th>
@@ -116,9 +127,10 @@
 	
 	<table>
 		<tr>
-			<td><input type="submit" value="submit" class="button2" /></td>
+			<td><input type="submit" value="提交" class="btn btn-primary" /></td>
 		</tr>
 	</table>
+</div>
 </form:form>
 <script type="text/javascript">
 
@@ -138,12 +150,12 @@ function addGoods(){
 			var last_tr = $("#goodsInvsTbl tbody tr:last");
 			var index = $("#goodsInvsTbl tbody tr").length;
 			var html = '<tr idx="' + goodsId + '">'
-				+ '<td>' + result.data.title + '</td>'
-				+ '<td>' + result.data.goodsCount + '</td>'
+				+ '<td>' + result.data.data.name + '</td>'
+				+ '<td>' + result.data.data.goodsCount + '</td>'
 				+ '<td><input type="hidden" tag="gid" name="goodsInvs[' + index + '].goodsId" value="' + goodsId + '"/>'
 				+ '<input tag="allocatedAmount" name="goodsInvs[' + index + '].allocatedAmount"/></td>'
-				+ '<td>' + result.data.soldCount + '</td>'
-				+ '<td>' + (result.data.goodsCount - result.data.soldCount) + '</td>'
+				+ '<td>' + result.data.data.soldCount + '</td>'
+				+ '<td>' + (result.data.data.goodsCount - result.data.data.soldCount) + '</td>'
 				+ '<td><a href="javascript:removeGoods(' + goodsId + ');">删除</a></td>'
 				+ '</tr>';	
 				

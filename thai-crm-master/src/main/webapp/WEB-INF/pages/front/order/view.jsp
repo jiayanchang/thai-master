@@ -6,8 +6,11 @@
 <c:url var="addUrl" value="/f/order/${order.id }"/>
 <form:form action="${addUrl}" method="POST" commandName="order">
 	<form:hidden path="id"/>
-	订单详情:
-	<table>
+	<table class="table">
+		<colgroup>
+			<col class="col-xs-1">
+			<col class="col-xs-7">
+		</colgroup>
 		<tr>
 			<td>订单号：</td>
 			<td>${order.orderNo }</td>
@@ -28,6 +31,8 @@
 			<td>联系邮箱：</td>
 			<td>${order.contractorEmail }</td>
 		</tr>
+	</table>
+	<table class="table table-bordered table-striped " >
 		<c:forEach var="mgoods" items="${order.goodses }">
 			<tr>
 				<td>购买商品编号：</td>
@@ -40,8 +45,8 @@
 		</c:forEach>
 	</table>
 	
-	旅客详情：
-	<table>
+	<h4>旅客详情：</h4>
+	<table   class="table table-striped table-hover ">
 		<tr>
 			<th>姓名</th>
 			<th>国籍</th>
@@ -66,8 +71,8 @@
 		</c:forEach>
 	</table>
 	
-	订单处理记录：<a href="javascript:openDialog(${order.id}, '${order.orderNo}');">新建备注</a>
-	<table>
+	<h4>订单处理记录：<a class="btn btn-warning" href="javascript:openDialog(${order.id}, '${order.orderNo}');">新建备注</a></h4> 
+	<table  class="table table-striped table-hover ">
 		<tr>
 			<th>处理人员</th>
 			<th>备注</th>
@@ -84,11 +89,11 @@
 		</c:forEach>
 	</table>
 	<c:if test="${!order.completed }">
-		<input type="button" value="确认订单" onclick="complete();"/>
+		<input type="button" value="确认订单" onclick="complete();" class="btn btn-primary"/>
 	</c:if>
 </form:form>
 <div id="dialog-form" title="Basic dialog" style="display:none;">
-	<textarea id="reason" rows="7" cols="32"></textarea>
+	<textarea id="reason" rows="10" cols="40"></textarea>
 </div>
 <script>
 	function back(){

@@ -270,7 +270,8 @@
 				<artifactId>maven-war-plugin</artifactId>
 				<configuration>
 					<!-- In version 2.1-alpha-1, this was incorrectly named warSourceExcludes -->
-
+					<warSourceExcludes>src/main/resources/**</warSourceExcludes>
+					<skip>true</skip>
 					<archive>
 						<manifest>
 							<addClasspath>true</addClasspath>

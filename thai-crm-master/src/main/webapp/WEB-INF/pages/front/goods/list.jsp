@@ -5,29 +5,25 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <div class="content">
 <h1>商品列表</h1>
-<p>Here you can see the list of the goods, add them, remove or update.</p>
-
-<p>${message}</p>
-
+<p >${message}</p>
 <br/>
-<div class="data">
 <c:url var="submitUrl" value="/f/goods/list"/>
 <form:form action="${submitUrl}" method="POST" commandName="vo">
-<table border="1px" cellpadding="0" cellspacing="0" width="100%">
+<table  class="table">
 <tr> 
 	<td>产品名称：</td>
-	<td colspan="3"><form:input path="titleKeyword"/></td>
+	<td colspan="3"><form:input path="titleKeyword" class="form-control"/></td>
 	<td></td>
 	<td></td>
 </tr>
 <tr> 
 	<td>出发地：</td>
-	<td><form:input path="dept"/></td>
+	<td><form:input path="dept"  class="form-control"/></td>
 	<td>目的地：</td>
-	<td><form:input path="arr"/></td>
+	<td><form:input path="arr"  class="form-control"/></td>
 	<td>状态</td>
 	<td>
-		<form:select path="status">
+		<form:select path="status"  class="form-control">
 			<form:option value="-1" >全部</form:option>
 			<form:option value="0">新商品待上架</form:option>
 			<form:option value="1">待审核</form:option>
@@ -36,20 +32,20 @@
 			<form:option value="4">已下架</form:option>
 		</form:select>
 	</td>
-	<td><input type="submit" value="submit" class="button2" /></td>
+	<td><input type="submit" value="查询" class="btn btn-primary" /></td>
 </tr>
 </table>
-<table border="1px" cellpadding="0" cellspacing="0" width="100%">
+<table  class="table table-striped table-hover table-condensed">
 	<thead>
 	<tr> 
-		<th width="10%">ID</th>
-		<th width="30%">商品名称</th>
-		<th width="10%">出发地</th>
-		<th width="20%">抵达地</th>
-		<th width="10%">行程天数</th>
-		<th width="10%">商品库存</th>
-		<th width="10%">状态</th>
-		<th>Action</th>
+		<th>ID</th>
+		<th>商品名称</th>
+		<th>出发地</th>
+		<th>抵达地</th>
+		<th>行程天数</th>
+		<th>商品库存</th>
+		<th>状态</th>
+		<th>操作</th>
 	</tr>
 	</thead>
 	<tbody>
@@ -63,14 +59,13 @@
 			<td>${goods.goodsCount}</td>
 			<td>${goods.statusDesc}</td>
 			<td>
-				<a href="${pageContext.request.contextPath}/f/goods/edit/${goods.id} ">修改</a><br/>
-				<a href="${pageContext.request.contextPath}/f/goods/delete/${goods.id} ">删除</a><br/>
+				<a class="btn btn-success" href="${pageContext.request.contextPath}/f/goods/edit/${goods.id} ">修改</a>
+				<a class="btn btn-warning" href="${pageContext.request.contextPath}/f/goods/delete/${goods.id} ">删除</a>
 			</td>
 		</tr>
 	</c:forEach>
 	</tbody>
 </table>
-</div>
 
 <%@ include file="../../page.jsp"%>
 </form:form>

@@ -6,7 +6,7 @@
 <c:url var="addUrl" value="/a/goods/pass"/>
 <form:form action="${addUrl}" method="POST" commandName="goods">
 	<form:hidden path="id"/>
-	<table>
+	<table class="table">
 		<tr>
 			<td>商品名称：</td>
 			<td>${goods.title }</td>
@@ -45,27 +45,27 @@
 				<img src="${pageContext.request.contextPath}${goods.details.linePicPathD }"/>
 			</td>
 		</tr>
-		
-		<tr>
-			<td>价格管理：</td>
-			<td>
-				<table id="price_tbl">
-					<c:forEach var="segment" items="${goods.segments }">
-						<tr>
-							<td>${segment.startDate }</td>
-							<td>-</td>
-							<td>${segment.endDate }</td>
-							<td>价格：</td>
-							<td>${segment.auditPrice }</td>
-							<td>（成人）</td>
-							<td>${segment.childPrice }</td>
-							<td>（儿童）</td>
-						</tr>
-					</c:forEach>
-				</table>
-			</td>
-			<td></td>
-		</tr>
+	</table>
+	
+	<h4>价格：</h4>
+	<div style="width:600px;">
+		<table class="table">
+			<c:forEach var="segment" items="${goods.segments }">
+				<tr>
+					<td>${segment.startDate }</td>
+					<td>-</td>
+					<td>${segment.endDate }</td>
+					<td>价格：</td>
+					<td>${segment.auditPrice }</td>
+					<td>（成人）</td>
+					<td>${segment.childPrice }</td>
+					<td>（儿童）</td>
+				</tr>
+			</c:forEach>
+		</table>
+	</div>
+	
+	<table class="table">		
 		<tr>
 			<td>行程安排：</td>
 			<td>${goods.details.travelPlan }</td>
@@ -84,13 +84,11 @@
 		</tr>
 	</table>
 </form:form>
-<button id="pass-dialog-confirm">商品确认</button>
-<button id="create-user">未通过</button>
+<button id="pass-dialog-confirm" class="btn btn-success">商品确认</button>
+<button id="create-user" class="btn">未通过</button>
+
 <div id="dialog-form" title="Basic dialog">
-<textarea rows="7" cols="32"></textarea>
-</div>
-<div id="pass-dialog" title="Basic dialog">
-  <p>This is an animated dialog which is useful for displaying information. The dialog window can be moved, resized and closed with the 'x' icon.</p>
+	<textarea rows="10" cols="40"></textarea>
 </div>
 <script>
 	

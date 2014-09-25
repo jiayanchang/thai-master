@@ -11,7 +11,7 @@
 				success: function(result) {
 					if(result.data.success) {
 						//alert(result.data.message);
-						$("#orderMonitorSpan").text("[" + result.data.data + "]");
+						$("#orderMonitorSpan").text(result.data.data);
 					}
 					var order_notify_time_task = setTimeout("orderNotify()", 10 * 60 * 1000);
 				}

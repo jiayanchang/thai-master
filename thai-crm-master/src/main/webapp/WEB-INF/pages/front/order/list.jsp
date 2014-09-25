@@ -8,7 +8,7 @@
 <div class="data">
 <c:url var="submitUrl" value="/f/order/list"/>
 <form:form action="${submitUrl}" method="POST" commandName="vo">
-<table border="1px" cellpadding="0" cellspacing="0" width="100%">
+<table class="table">
 <tr> 
 	<td>订单号：</td>
 	<td><form:input path="orderNo" /></td>
@@ -24,7 +24,7 @@
 			<form:option value="1">已确认</form:option>
 		</form:select>
 	</td>
-	<td><input type="submit" value="submit" class="button2" /></td>
+	<td><input type="submit" value="查询" class="btn btn-primary" /></td>
 </tr>
 <%-- <tr> 	
 	<td>出发地：</td>
@@ -34,17 +34,17 @@
 	<td><input type="submit" value="submit" class="button2" /></td>
 </tr> --%>
 </table>
-<table border="1px" cellpadding="0" cellspacing="0" width="100%">
+<table class="table table-striped table-hover table-condensed">
 <thead>
-<tr> 
-<th width="10%">订单号</th>
-<th width="30%">下单时间</th>
-<th width="10%">联系人</th>
-<th width="20%">联系电话</th>
-<th width="10%">订单状态</th>
-<th width="10%">处理人</th>
-<th>Action</th>
-</tr>
+	<tr> 
+		<th>订单号</th>
+		<th>下单时间</th>
+		<th>联系人</th>
+		<th width="10%">联系电话</th>
+		<th>订单状态</th>
+		<th>处理人</th>
+		<th>操作</th>
+	</tr>
 </thead>
 <tbody>
 <c:forEach items="${ps.items}" var="order" >
@@ -56,8 +56,8 @@
 	<td>${order.statusDesc}</td>
 	<td>${order.lastOperatorName}</td>
 	<td>
-		<a href="javascript:openDialog(${order.id}, '${order.orderNo}'); ">编辑备注</a>
-		<a href="${pageContext.request.contextPath}/f/order/${order.id} ">详情</a>
+		<a class="btn btn-warning" href="javascript:openDialog(${order.id}, '${order.orderNo}'); ">编辑备注</a>
+		<a class="btn btn-info" href="${pageContext.request.contextPath}/f/order/${order.id} ">详情</a>
 	</td>
 </tr>
 </c:forEach>
@@ -68,7 +68,7 @@
 
 </form:form>
 <div id="dialog-form" title="Basic dialog" style="display:none;">
-	<textarea id="reason" rows="7" cols="32"></textarea>
+	<textarea id="reason" rows="10" cols="40"></textarea>
 </div>
 <script>
 $(function() {

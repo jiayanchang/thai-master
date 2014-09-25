@@ -12,7 +12,7 @@
 	<font color="red">${message }</font>
 	
 		<form:hidden path="id"/>
-		<table>
+		<table class="table">
 			<tr>
 				<td><font color="red">*</font>商品名称：</td>
 				<td><form:input path="title" /></td>
@@ -145,7 +145,7 @@
                 oFCKeditor5.ReplaceTextarea(); 
 			</script>
 			<tr>
-				<td colspan="3"><input type="submit" value="submit" class="button2" /></td>
+				<td colspan="3"><input type="submit" value="保存" class="btn btn-primary" /></td>
 			</tr>
 		</table>
 		<form:hidden path="details.id" />

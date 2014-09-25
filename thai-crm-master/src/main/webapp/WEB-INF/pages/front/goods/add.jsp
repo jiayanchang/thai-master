@@ -3,12 +3,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%> 
 <script type="text/javascript" src="${pageContext.request.contextPath}/fckeditor/fckeditor.js"></script>  
 
-<div class="content">
 	<h1>新建商品</h1>
 	<c:url var="addUrl" value="/f/goods/add"/>
 	<form:form action="${addUrl}" method="POST" commandName="goods"   enctype="multipart/form-data">
 		<form:hidden path="id"/>
-		<table>
+		<table class="table">
+			<colgroup>
+				<col class="col-xs-1">
+				<col class="col-xs-7">
+				<col class="col-xs-7">
+			</colgroup>
 			<tr>
 				<td><font color="red">*</font>商品名称：</td>
 				<td><form:input path="title" /></td>
@@ -61,20 +65,10 @@
 				<td></td>
 			</tr>
 			<tr>
-				<td><font color="red">*</font>价格管理：</td>
+				<td><font color="red">*</font>价格管理：<a class="btn btn-success" href="javascript:addPriceSegment();">添加</a></td>
 				<td>
 					<table id="price_tbl">
-						<tr index="0">
-							<td><input name="segments[0].startDate" tag="date"/></td>
-							<td></td>
-							<td><input name="segments[0].endDate" tag="date"/></td>
-							<td><font color="red">*</font>价格：</td>
-							<td><input name="segments[0].auditPrice"/></td>
-							<td>（成人）</td>
-							<td><input name="segments[0].childPrice"/></td>
-							<td>（儿童）</td>
-							<td><a href="javascript:addPriceSegment();">【+】</a></td>
-						</tr>
+					
 					</table>
 				</td>
 				<td></td>
@@ -120,29 +114,29 @@
                 oFCKeditor5.ReplaceTextarea() ;  
 			</script>
 			<tr>
-				<td colspan="3"><input type="submit" value="submit" class="button2" /></td>
+				<td colspan="3"><input type="submit" value="提交" class="btn btn-primary" /></td>
 			</tr>
 		</table>
 	</form:form>
-</div>
 <script>
 function addPriceSegment() {
-	var index = 1 + parseInt($("#price_tbl tr:last").attr("index"));
+	var index = $("#price_tbl tr").length;
 	var html = '<tr index="' + index + '">'
-		+'<td><input name="segments[' + index + '].startDate" tag="date"/></td>'
-		+'<td></td>'
-		+'<td><input name="segments[' + index + '].endDate" tag="date"/></td>'
+		+'<td><input name="segments[' + index + '].startDate" style="width:110px;" class="form-control" tag="date"/></td>'
+		+'<td>-</td>'
+		+'<td><input name="segments[' + index + '].endDate" style="width:110px;" class="form-control" tag="date"/></td>'
 		+'<td><font color="red">*</font>价格：</td>'
-		+'<td><input name="segments[' + index + '].auditPrice"/></td>'
+		+'<td><input name="segments[' + index + '].auditPrice" style="width:70px;" class="form-control"/></td>'
 		+'<td>（成人）</td>'
-		+'<td><input name="segments[' + index + '].childPrice"/></td>'
+		+'<td><input name="segments[' + index + '].childPrice" style="width:70px;" class="form-control"/></td>'
 		+'<td>（儿童）</td>'
-		+'<td><a href="javascript:removePriceSegment(' + index + ');">【-】</a></td>'
+		+'<td><a class="btn btn-warning" href="javascript:removePriceSegment(' + index + ');">移除</a></td>'
 		+'</tr>';	
 	var newtr = $(html);
 	$("#price_tbl").append(newtr);
 	$("#price_tbl [tag=date]").datepicker({dateFormat:'yy/mm/dd'});
 }
+addPriceSegment();
 
 function removePriceSegment(index){
 	$("#price_tbl tr[index=" + index + "]").remove();

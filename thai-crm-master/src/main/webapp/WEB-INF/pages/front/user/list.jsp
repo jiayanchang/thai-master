@@ -13,42 +13,41 @@
 <body>
 <div class="content">
 <h1>员工列表</h1>
-<p>Here you can see the list of the user, add them, remove or update.</p>
 
 <p>${message}</p>
-
 
 <br/>
 <div class="data">
 <c:url var="submitUrl" value="/f/user/list"/>
 <form:form action="${submitUrl}" method="POST">
-<table border="1px" cellpadding="0" cellspacing="0" width="100%">
+<table class="table">
 <tr> 
-	<td>用户</td>
-	<td><input name="name" value="${name }"/></td>
-	<td>登录名</td>
-	<td><input name="loginName" value="${loginName }"/></td>
-	<td>状态</td>
-	<td>
+	<td style="width:60px;">用户</td>
+	<td style="width:70px;"><input name="name" value="${name }"/></td>
+	<td style="width:70px;">登录名</td>
+	<td style="width:70px;"><input name="loginName" value="${loginName }"/></td>
+	<td style="width:70px;">状态</td>
+	<td style="width:70px;">
 		<select name="status">
 			<option value="-1" >全部</option>
 			<option value="0">已启用</option>
 			<option value="1">已停用</option>
 		</select>
 	</td>
-	<td><input type="submit" value="submit" class="button2" /></td>
+	<td><input type="submit" value="查询" class="btn btn-primary" /></td>
+	<td></td>
 </tr>
 </table>
-<table border="1px" cellpadding="0" cellspacing="0" width="100%">
+<table  class="table table-hover table-striped">
 <thead>
 <tr> 
-<th width="10%">ID</th>
-<th width="30%">用户</th>
-<th width="10%">编号</th>
-<th width="20%">登录名</th>
-<th width="10%">手机</th>
-<th width="10%">状态</th>
-<th>Action</th>
+<th>ID</th>
+<th>用户</th>
+<th>编号</th>
+<th>登录名</th>
+<th>手机</th>
+<th>状态</th>
+<th>操作</th>
 </tr>
 </thead>
 <tbody>
@@ -61,8 +60,8 @@
 	<td>${user.mobile}</td>
 	<td>${user.statusDesc}</td>
 	<td>
-		<a href="${pageContext.request.contextPath}/f/user/edit/${user.id} ">修改</a><br/>
-		<a href="${pageContext.request.contextPath}/f/user/delete/${user.id} ">删除</a><br/>
+		<a class="btn btn-success" href="${pageContext.request.contextPath}/f/user/edit/${user.id} ">修改</a>
+		<a class="btn btn-warning" href="${pageContext.request.contextPath}/f/user/delete/${user.id} ">删除</a>
 	</td>
 </tr>
 </c:forEach>

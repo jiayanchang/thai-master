@@ -6,7 +6,11 @@
 <c:url var="addUrl" value="/f/goods/${goods.id }"/>
 <form:form action="${addUrl}" method="GET" commandName="goods">
 	<form:hidden path="id"/>
-	<table>
+	<table class="table">
+		<colgroup>
+			<col class="col-xs-1">
+			<col class="col-xs-7">
+		</colgroup>
 		<tr>
 			<td>商品名称：</td>
 			<td>${goods.title }</td>

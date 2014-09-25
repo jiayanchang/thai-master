@@ -4,25 +4,24 @@
     
 <h1>商户列表</h1>
 <p>${message}</p>
-<br/>
 <c:url var="submitUrl" value="/a/merchant/list"/>
 <form:form action="${submitUrl}" method="POST">
-<table border="1px" cellpadding="0" cellspacing="0" width="100%">
-<tr> 
-	<td>商家</td>
-	<td><input name="name" value="${name }"/></td>
-	<td>状态</td>
-	<td>
-		<select name="status">
-			<option value="-1" >全部</option>
-			<option value="0">已启用</option>
-			<option value="1">已停用</option>
-		</select>
-	</td>
-	<td><input type="submit" value="submit" class="button2" /></td>
-</tr>
+<table class="table">
+	<tr> 
+		<td>商家</td>
+		<td><input name="name" value="${name }" class="form-control"/></td>
+		<td>状态</td>
+		<td>
+			<select name="status" class="form-control">
+				<option value="-1" >全部</option>
+				<option value="0">已启用</option>
+				<option value="1">已停用</option>
+			</select>
+		</td>
+		<td><input type="submit" value="查询" class="btn btn-primary" /></td>
+	</tr>
 </table>
-<table border="1px" cellpadding="0" cellspacing="0" width="100%">
+<table class="table table-striped table-hover">
 	<thead>
 		<tr> 
 			<th width="10%">ID</th>
@@ -40,14 +39,14 @@
 			<td>${merchant.nameEn}</td>
 			<td>${merchant.statusDesc}</td>
 			<td>
-			<a href="${pageContext.request.contextPath}/a/merchant/edit/${merchant.id} ">修改</a><br/>
-			<c:if test="${merchant.enabled }">
-				<a href="${pageContext.request.contextPath}/a/merchant/disable/${merchant.id} ">停用</a><br/>
-			</c:if>
-			<c:if test="${merchant.disabled }">
-				<a href="${pageContext.request.contextPath}/a/merchant/enable/${merchant.id} ">启用</a><br/>
-			</c:if>
-			<a href="${pageContext.request.contextPath}/a/merchant/delete/${merchant.id} ">删除</a><br/>
+				<a class="btn btn-warning" href="${pageContext.request.contextPath}/a/merchant/edit/${merchant.id} ">修改</a>
+				<c:if test="${merchant.enabled }">
+					<a class="btn btn-info" href="${pageContext.request.contextPath}/a/merchant/disable/${merchant.id} ">停用</a>
+				</c:if>
+				<c:if test="${merchant.disabled }">
+					<a class="btn btn-success" href="${pageContext.request.contextPath}/a/merchant/enable/${merchant.id} ">启用</a>
+				</c:if>
+				<a class="btn btn-danger" href="${pageContext.request.contextPath}/a/merchant/delete/${merchant.id} ">删除</a>
 			</td>
 		</tr>
 	</c:forEach>

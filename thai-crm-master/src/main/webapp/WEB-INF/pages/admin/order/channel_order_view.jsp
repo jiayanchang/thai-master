@@ -7,7 +7,11 @@
 <form:form action="${addUrl}" method="GET" commandName="channelOrder">
 	<form:hidden path="id"/>
 	订单详情:
-	<table>
+	<table class="table">
+		<colgroup>
+			<col class="col-xs-1">
+			<col class="col-xs-7">
+		</colgroup>
 		<tr>
 			<td>订单号：</td>
 			<td>${channelOrder.channelOrderNo }</td>
@@ -34,7 +38,7 @@
 		</tr>
 	</table>
 	
-	<table>
+	<table class="table table-striped table-hover">
 		<c:forEach var="merchantOrder" items="${channelOrder.merchantOrders }">
 			<tr>
 				<td>商家：${merchantOrder.merchantName }</td>
@@ -44,7 +48,8 @@
 			</tr>
 			<tr>
 				<td colspan="4">
-					<table>
+				<div style="width:700px;">
+					<table  class="table table-striped">
 					<c:forEach var="mgoods" items="${merchantOrder.goodses }">
 							<tr>
 								<td>购买商品编号：</td>
@@ -58,14 +63,15 @@
 							</tr>
 					</c:forEach>
 					</table>
+				</div>
 				</td>
 			</tr>
 		</c:forEach>
 	</table>
 	
 	
-	旅客详情：
-	<table>
+	<h4><strong>旅客详情</strong></h4>
+	<table class="table table-striped table-hover">
 		<tr>
 			<th>姓名</th>
 			<th>国籍</th>

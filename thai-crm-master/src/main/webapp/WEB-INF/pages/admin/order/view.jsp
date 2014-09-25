@@ -6,28 +6,48 @@
 <c:url var="addUrl" value="/a/order/${order.id }"/>
 <form:form action="${addUrl}" method="GET" commandName="order">
 	<form:hidden path="id"/>
-	订单详情:
-	<table>
-		<tr>
+	<table class="table" >
+		<colgroup>
+			<col class="col-xs-1">
+			<col class="col-xs-7">
+			<col class="col-xs-1">
+			<col class="col-xs-7">
+		</colgroup>
+		<tr width="100px">
 			<td>订单号：</td>
 			<td>${order.orderNo }</td>
+			<td>酒店信息：</td>
+			<td>${order.hotelName }</td>
 		</tr>
 		<tr>
 			<td>订单状态：</td>
 			<td>${order.statusDesc }</td>
+			<td>酒店信息：</td>
+			<td>${order.hotelName }</td>
 		</tr>
 		<tr>
 			<td>联系人：</td>
 			<td>${order.contractor }</td>
+			<td>酒店信息：</td>
+			<td>${order.hotelName }</td>
 		</tr>
 		<tr>
 			<td>联系电话：</td>
 			<td>${order.contractorMobile }</td>
+			<td>酒店信息：</td>
+			<td>${order.hotelName }</td>
 		</tr>
 		<tr>
 			<td>联系邮箱：</td>
 			<td>${order.contractorEmail }</td>
 		</tr>
+	</table>
+	
+	
+	
+	<div style="width:600px;">
+	<h4><strong>商品信息</strong></h4>
+	<table class="table" >
 		<c:forEach var="mgoods" items="${order.goodses }">
 			<tr>
 				<td>购买商品编号：</td>
@@ -39,9 +59,9 @@
 			</tr>
 		</c:forEach>
 	</table>
-	
-	旅客详情：
-	<table>
+	</div>
+	<h4><strong>旅客详情：</strong></h4>
+	<table class="table table-striped">
 		<tr>
 			<th>姓名</th>
 			<th>国籍</th>
@@ -66,8 +86,8 @@
 		</c:forEach>
 	</table>
 	
-	订单处理记录：<a href="javascript:openDialog(${order.id}, '${order.orderNo}');">新建备注</a>
-	<table>
+	<h4><strong>订单处理记录：</strong><a  class="btn btn-success" href="javascript:openDialog(${order.id}, '${order.orderNo}');" ><i class=" icon-plus">新建备注</i></a></h4>
+	<table class="table table-striped table-hover ">
 		<tr>
 			<th>处理人员</th>
 			<th>备注</th>
@@ -85,7 +105,7 @@
 	</table>
 </form:form>
 <div id="dialog-form" title="Basic dialog" style="display:none;">
-	<textarea id="reason" rows="7" cols="32"></textarea>
+	<textarea id="reason" rows="10" cols="40"></textarea>
 </div>
 <script>
 	function back(){

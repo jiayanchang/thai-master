@@ -9,7 +9,7 @@
 <br/>
 <c:url var="submitUrl" value="/f/goods/list"/>
 <form:form action="${submitUrl}" method="POST" commandName="vo">
-<table border="1px" cellpadding="0" cellspacing="0" width="100%">
+<table class="table">
 <tr> 
 	<td>商品名称：</td>
 	<td colspan="3"><input name="title" value="${title }"/></td>
@@ -37,22 +37,21 @@
 	<td><form:input path="merchantId"/></td>
 	<td>商家名称：</td>
 	<td><form:input path="merchantName"/></td>
-	<td></td>
-	<td><input type="submit" value="submit" class="button2" /></td>
+	<td colspan="2"><input type="submit" value="查询" class="btn btn-primary btn-block" /></td>
 </tr>
 </table>
-<table border="1px" cellpadding="0" cellspacing="0" width="100%">
+<table class="table table-striped table-hover">
 	<thead>
 	<tr> 
-		<th width="10%">ID</th>
-		<th width="30%">商家</th>
-		<th width="30%">商品名称</th>
-		<th width="10%">出发地</th>
-		<th width="20%">抵达地</th>
-		<th width="10%">行程天数</th>
-		<th width="10%">商品库存</th>
-		<th width="10%">状态</th>
-		<th>Action</th>
+		<th>ID</th>
+		<th>商家</th>
+		<th>商品名称</th>
+		<th>出发地</th>
+		<th>抵达地</th>
+		<th>行程天数</th>
+		<th>商品库存</th>
+		<th>状态</th>
+		<th>操作</th>
 	</tr>
 	</thead>
 	<tbody>
@@ -68,10 +67,10 @@
 			<td>${goods.statusDesc}</td>
 			<td>
 			<c:if test="${goods.auditing }">
-				<a href="${pageContext.request.contextPath}/a/goods/audit/${goods.id} ">审批</a><br/>
+				<a class="btn btn-success" href="${pageContext.request.contextPath}/a/goods/audit/${goods.id} ">审批</a><br/>
 			</c:if>
 			<c:if test="${goods.deployed }">
-				<a id="cancel-btn" val="${goods.id }" href="javascript:openDialog(${goods.id}); ">下架</a><br/>
+				<a id="cancel-btn" class="btn btn-danger" val="${goods.id }" href="javascript:openDialog(${goods.id}); ">下架</a><br/>
 			</c:if>
 			</td>
 		</tr>

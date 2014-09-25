@@ -6,15 +6,20 @@
 <c:url var="addUrl" value="/a/merchant/edit/proccess"/>
 <form:form action="${addUrl}" method="POST" commandName="merchant"  enctype="multipart/form-data">
 	<form:hidden path="id"/>
-	<table>
+	<table class="table">
+		<colgroup>
+			<col class="col-xs-1">
+			<col class="col-xs-7">
+			<col class="col-xs-7">
+		</colgroup>
 		<tr>
 			<td>商家名称 :</td>
-			<td><form:input path="name" /></td>
+			<td><form:input path="name"  class="form-control"/></td>
 			<td><form:errors path="name" cssClass="error" /></td>
 		</tr>
 		<tr>
 			<td>英文名 :</td>
-			<td><form:input path="nameEn" /></td>
+			<td><form:input path="nameEn"  class="form-control"/></td>
 			<td><form:errors path="nameEn" cssClass="error" /></td>
 		</tr>
 		<%-- <tr>
@@ -24,12 +29,12 @@
 		</tr> --%>
 		<tr>
 			<td>联系电话 :</td>
-			<td><form:input path="tel" /></td>
+			<td><form:input path="tel"  class="form-control"/></td>
 			<td><form:errors path="tel" cssClass="error" /></td>
 		</tr>
 		<tr>
 			<td>手机:</td>
-			<td><form:input path="mobile" /></td>
+			<td><form:input path="mobile"  class="form-control"/></td>
 			<td><form:errors path="mobile" cssClass="error" /></td>
 		</tr>
 		<tr>
@@ -44,7 +49,7 @@
 		</tr>
 		<tr>
 			<td>备注:</td>
-			<td><form:textarea path="details.notes" /></td>
+			<td><form:textarea path="details.notes"  class="form-control"/></td>
 			<td><form:errors path="details.notes" cssClass="error" /></td>
 		</tr>
 		<tr>

@@ -10,7 +10,7 @@
 <p>${message}</p>
 <br/>
 订单号：<form:input path="orderNo"/>
-<table border="1px" cellpadding="0" cellspacing="0" width="100%">
+<table class="table table-striped table-hover">
 	<thead>
 	<tr> 
 		<th width="5%">ID</th>
@@ -38,7 +38,7 @@
 			<td>${order.contractorEmail}</td>
 			<td>${order.statusDesc}</td>
 			<td>
-				<a href="${pageContext.request.contextPath}/a/order/channelorder/${order.id} ">详情</a>
+				<a class="btn btn-default" href="${pageContext.request.contextPath}/a/order/channelorder/${order.id} ">详情</a>
 			</td>
 		</tr>
 	</c:forEach>

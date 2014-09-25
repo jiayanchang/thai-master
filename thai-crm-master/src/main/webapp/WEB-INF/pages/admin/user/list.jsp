@@ -1,48 +1,38 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page language="java" pageEncoding="UTF-8"%>  
-    
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
- <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet" type="text/css" /> 
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>List of User</title>
 
-</head>
-<body>
 <h1>员工列表</h1>
 <p>${message}</p>
-<br/>
 <c:url var="submitUrl" value="/a/user/list"/>
 <form:form action="${submitUrl}" method="POST">
-<table border="1px" cellpadding="0" cellspacing="0" width="100%">
+<table class="table">
 <tr> 
 	<td>用户</td>
-	<td><input name="name" value="${name }"/></td>
+	<td><input name="name" value="${name }" class="form-control"/></td>
 	<td>登录名</td>
-	<td><input name="loginName" value="${loginName }"/></td>
+	<td><input name="loginName" value="${loginName }" class="form-control"/></td>
 	<td>状态</td>
 	<td>
-		<select name="status">
+		<select name="status" class="form-control">
 			<option value="-1" >全部</option>
 			<option value="0">已启用</option>
 			<option value="1">已停用</option>
 		</select>
 	</td>
-	<td><input type="submit" value="submit" class="button2" /></td>
+	<td><input type="submit" value="查询" class="btn btn-primary" /></td>
 </tr>
 </table>
-<table border="1px" cellpadding="0" cellspacing="0" width="100%">
+<table class="table">
 <thead>
 <tr> 
-<th width="10%">ID</th>
-<th width="30%">用户</th>
-<th width="10%">编号</th>
-<th width="20%">登录名</th>
-<th width="10%">手机</th>
-<th width="10%">状态</th>
-<th>Action</th>
+<th>ID</th>
+<th>用户</th>
+<th>编号</th>
+<th>登录名</th>
+<th>手机</th>
+<th>状态</th>
+<th>操作</th>
 </tr>
 </thead>
 <tbody>
@@ -55,15 +45,13 @@
 	<td>${user.mobile}</td>
 	<td>${user.statusDesc}</td>
 	<td>
-	<a href="${pageContext.request.contextPath}/a/user/edit/${user.id} ">修改</a><br/>
-	<a href="${pageContext.request.contextPath}/a/user/delete/${user.id} ">删除</a><br/>
+		<a class="btn btn-warning" href="${pageContext.request.contextPath}/a/user/edit/${user.id} ">修改</a>
+		<a class="btn btn-info" href="${pageContext.request.contextPath}/a/user/delete/${user.id} ">删除</a>
 	</td>
 </tr>
 </c:forEach>
 </tbody>
 </table>
-
 <%@ include file="../../page.jsp"%>
 
 </form:form>
-</body>
