@@ -70,7 +70,9 @@ body {
 	<div class="container" style="border:1px solid #999999; width:400px;padding:30px 10px;border-radius:8px;background-color:#FFF;">
 		<div style="padding:10px 4px;text-align:center;margin:-30px -10px 0 -10px; border-bottom:1px solid #999999;">用户登录</div>
 		<form class="form-signin" role="form" method="POST" action="${pageContext.request.contextPath}/" enctype="multipart/form-data">
-			<p>${message }</p>
+			<c:if test="${not empty message}">
+				<div class="alert alert-warning" role="alert">${message }</div>
+			</c:if>
 			<div class="form-group">
 				<label for="loginName">用户名</label> <input name="loginName" type="text" class="form-control" id="loginName" placeholder="username">
 			</div>
@@ -89,7 +91,7 @@ body {
 </body>
 <script type="text/javascript">
 	function refresh() {
-		document.getElementById("image").src = "/captcha?" + new Date();
+		document.getElementById("image").src = "${pageContext.request.contextPath}/captcha?" + new Date();
 	}
 	function ajaxreq() {
 		jQuery.ajax({

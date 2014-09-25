@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -33,13 +34,12 @@ public class LoginController {
 			HttpSession session, HttpServletRequest request) throws Exception {
 
 		logger.info("{} login! captcha is {}", loginName, session.getAttribute("captcha"));
-		// Assert.isTrue(captcha.equalsIgnoreCase(session.getAttribute("captcha").toString()),
-		// "验证码错误");
 
 		ModelAndView modelAndView = new ModelAndView();
 
 		UserProfile userprofile;
 		try {
+			Assert.isTrue(captcha.equalsIgnoreCase(session.getAttribute("captcha").toString()), "验证码错误");
 			userprofile = userService.login(loginName, password);
 			session.setAttribute("userprofile", userprofile);
 			if (userprofile.isPlatformUser()) {
