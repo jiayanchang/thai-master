@@ -17,13 +17,13 @@
 			<td>联系人：</td>
 			<td><form:input path="orderContactor"/></td>
 			<td>酒店名称：</td>
-			<td><form:input path="hotelName"/></td>
+			<td><form:input id="hotelName" path="hotelName"/></td>
 		</tr>
 		<tr>
 			<td>联系电话：</td>
 			<td><form:input path="orderContactorMobile"/></td>
 			<td>酒店地址：</td>
-			<td><form:input path="hotelAddress"/></td>
+			<td><form:input id="hotelAddress" path="hotelAddress"/></td>
 		</tr>
 		<tr>
 			<td>联系邮箱：</td>
@@ -202,7 +202,62 @@
 			}
 		}); */
 	}
+	
+	
+	function initAutoComplete(json){
+        $("#hotelName").autocomplete(json , {
+            minChars:1,
+            width:260,
+            dataType:"json",
+            matchContains: true,
+            formatItem: function(row, i, max) {
+                 return row.tel + " <" + row.name + "> ["+row.cg_name+"]";
+            },
+            formatMatch: function(row, i, max) {
+                 return row.tel;
+            },
+            formatResult: function(row) {
+                 return row.tel;
+            }
+        });
+    }
+	
 	$(function() {
 		$("form [tag=date]").datepicker({dateFormat:'yy/mm/dd'});
+		
+		$("#hotelName").focus(function(){
+            $.post(url,{},function(data){
+                initAutoComplete(data);
+            },"json");
+        });
+		
+	    $( "#hotelName" ).autocomplete({
+		      source: function( request, response ) {
+		        $.ajax({
+		          url: "${pageContext.request.contextPath}/json/hotels.json",
+		          dataType: "jsonp",
+		          data: {
+		        	  name: request.term
+		          },
+		          success: function( data ) {
+		        	  alert(data);
+		            response( data.data );
+		          }
+		        });
+		      },
+		      minLength: 3,
+		      select: function( event, ui ) {
+		        log( ui.item ?
+		          "Selected: " + ui.item.label :
+		          "Nothing selected, input was " + this.value);
+		      },
+		      open: function() {
+		        $( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
+		      },
+		      close: function() {
+		        $( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
+		      }
+	    });
 	});
+	
 </script>

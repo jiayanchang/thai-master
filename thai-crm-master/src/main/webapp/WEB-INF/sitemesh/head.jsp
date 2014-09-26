@@ -4,6 +4,7 @@
 <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.2.0/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/base.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/frame.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/bootstrap-combobox.css">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
 <style>

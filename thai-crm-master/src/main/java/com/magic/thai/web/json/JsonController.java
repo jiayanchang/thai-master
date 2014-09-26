@@ -2,6 +2,7 @@ package com.magic.thai.web.json;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -101,18 +102,19 @@ public class JsonController {
 
 	}
 
-	@RequestMapping(value = "/hotels", method = RequestMethod.POST)
+	@RequestMapping(value = "/hotels")
 	@ResponseBody
-	public String gethotels(@RequestParam String name, @RequestParam Integer limitF4list) {
+	public ModelMap gethotels(@RequestParam String name, ModelMap model) {
 		HotelVo vo = new HotelVo();
 		vo.nameKeyword = name;
-		if (limitF4list != null)
-			vo.limitF4list = limitF4list;
+		vo.limitF4list = 20;
 		List<Hotel> hotels = hotelDao.list(vo);
-		Gson gson = new Gson();
-		// Gson gson = new
-		// GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-		return gson.toJson(hotels);
+		List<String> hotelNames = new ArrayList<String>();
+		for (Hotel hotel : hotels) {
+			hotelNames.add(hotel.getName());
+		}
+		model.put("data", DataVo.success(hotelNames).setMessage("获取成功"));
+		return model;
 	}
 
 	@RequestMapping(value = "/merchant/{id}", method = RequestMethod.GET)
