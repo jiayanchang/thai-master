@@ -101,7 +101,7 @@ public class GoodsDaoImpl extends HibernateCommonDAO<Goods> implements GoodsDao 
 				criterions.add(Restrictions.ne("status", s));
 			}
 		}
-		criterions.add(Restrictions.ne("status", Merchant.Status.DELETED));
+		criterions.add(Restrictions.ne("status", Goods.Status.DELETED));
 		return super.find(criterions, vo.page, 30);
 	}
 

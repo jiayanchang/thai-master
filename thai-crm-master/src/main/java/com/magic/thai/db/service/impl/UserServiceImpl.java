@@ -16,6 +16,7 @@ import com.magic.thai.db.domain.User;
 import com.magic.thai.db.service.UserService;
 import com.magic.thai.db.vo.UserVo;
 import com.magic.thai.exception.LoginException;
+import com.magic.thai.exception.OrderStatusException;
 import com.magic.thai.security.UserProfile;
 import com.magic.thai.util.Md5CryptoUtils;
 import com.magic.thai.util.PaginationSupport;
@@ -100,6 +101,22 @@ public class UserServiceImpl extends ServiceHelperImpl<User> implements UserServ
 	@Override
 	public List<User> list(UserVo vo) {
 		return userDao.list(vo);
+	}
+
+	@Override
+	public void enable(int userId, UserProfile userprofile) throws OrderStatusException {
+		User user = userDao.loadById(userId);
+		Assert.notNull(user, "用户不存在");
+		user.setStatus(User.Status.ENABLED);
+		userDao.update(user);
+	}
+
+	@Override
+	public void disable(int userId, UserProfile userprofile) throws OrderStatusException {
+		User user = userDao.loadById(userId);
+		Assert.notNull(user, "用户不存在");
+		user.setStatus(User.Status.DISABLED);
+		userDao.update(user);
 	}
 
 }

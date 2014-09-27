@@ -108,10 +108,6 @@ public class MerchantController {
 		return modelAndView;
 	}
 
-	/*
-	 * @ModelAttribute untuk model form dan ("ucd") untuk validator
-	 * BindingResult result
-	 */
 	@RequestMapping(value = "/edit/proccess", method = RequestMethod.POST)
 	public ModelAndView editUserprosses(@ModelAttribute("merchant") Merchant merchantbean, @RequestParam CommonsMultipartFile file,
 			SessionStatus status, HttpSession session) {
@@ -149,7 +145,8 @@ public class MerchantController {
 	}
 
 	@RequestMapping(value = "/list", method = RequestMethod.POST)
-	public ModelAndView searchMerchants(@RequestParam String name, @RequestParam int status, @RequestParam int page, HttpSession session) {
+	public ModelAndView searchMerchants(@RequestParam String name, @RequestParam int status, @RequestParam("vo.page") int page,
+			HttpSession session) {
 		UserProfile userprofile = (UserProfile) session.getAttribute("userprofile");
 		logger.info("status : {}, currPage : {}", status, page);
 		ModelAndView modelandView = new ModelAndView("/admin/merchant/list");
@@ -158,6 +155,24 @@ public class MerchantController {
 		modelandView.addObject("page", page);
 		modelandView.addObject("status", status);
 		return modelandView;
+	}
+
+	@RequestMapping(value = "/enable/{id}")
+	public ModelAndView enable(@PathVariable int id, HttpSession session) {
+		UserProfile userprofile = (UserProfile) session.getAttribute("userprofile");
+		ModelAndView modelAndView = new ModelAndView("redirect:/a/merchant/list");
+		merchantService.enable(id, userprofile);
+		message = "商家启用成功";
+		return modelAndView;
+	}
+
+	@RequestMapping(value = "/disable/{id}")
+	public ModelAndView disable(@PathVariable int id, HttpSession session) {
+		UserProfile userprofile = (UserProfile) session.getAttribute("userprofile");
+		ModelAndView modelAndView = new ModelAndView("redirect:/a/merchant/list");
+		merchantService.disable(id, userprofile);
+		message = "商家停用成功";
+		return modelAndView;
 	}
 
 }

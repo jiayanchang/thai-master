@@ -5,7 +5,7 @@
 <body>
 	<div class="content">
 		<h1>编辑员工</h1>
-		<c:url var="addUrl" value="/a/user/edit/proccess"/>
+		<c:url var="addUrl" value="/f/user/edit/proccess"/>
 		<form:form action="${addUrl}" method="POST" commandName="user" >
 			<form:hidden path="id"/>
 			<table class="table table-striped" >
@@ -19,13 +19,16 @@
 					<td><form:errors path="name" cssClass="error" /></td>
 				</tr>
 				<tr>
-					<td>代码 :</td>
-					<td>${user.codeName }</td>
+					<td>英文名 :</td>
+					<td>${user.codeName }
+						<form:hidden path="codeName"/>
+					</td>
 					<td></td>
 				</tr>
 				<tr>
 					<td>登录名 :</td>
 					<td>${user.loginName }</td>
+					<form:hidden path="loginName"/>
 					<td></td>
 				</tr>
 				<tr>

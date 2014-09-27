@@ -64,6 +64,8 @@ public class SnapshotGoodsServiceImpl implements SnapshotGoodsService {
 		snapshotGoods.setGoodsCount(goods.getGoodsCount());
 		snapshotGoods.setSummary(goods.getSummary());
 		snapshotGoods.setChannelId(merchantOrderGoods.getChannelId());
+		snapshotGoods.setTitleCn(goods.getTitleCn());
+		snapshotGoods.setTitleEn(goods.getTitleEn());
 
 		snapshotGoods.setMerchantOrderGoodsId(merchantOrderGoods.getId());
 

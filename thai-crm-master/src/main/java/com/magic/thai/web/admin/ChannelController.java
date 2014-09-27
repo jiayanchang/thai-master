@@ -56,7 +56,7 @@ public class ChannelController {
 	}
 
 	@RequestMapping(value = "/list", method = RequestMethod.POST)
-	public ModelAndView listPost(@RequestParam Integer page) {
+	public ModelAndView listPost(@RequestParam("vo.page") Integer page) {
 		ModelAndView modelandView = new ModelAndView("/admin/channel/list");
 		modelandView.addObject("ps", channelService.getChannelesPage(page == null ? 1 : page));
 		return modelandView;
@@ -115,6 +115,14 @@ public class ChannelController {
 		ModelAndView modelAndView = new ModelAndView("redirect:/a/channel/list");
 		UserProfile userprofile = (UserProfile) session.getAttribute("userprofile");
 		channelService.open(id, userprofile);
+		return modelAndView;
+	}
+
+	@RequestMapping(value = "/delete/{id}")
+	public ModelAndView delete(@PathVariable int id, HttpSession session) {
+		ModelAndView modelAndView = new ModelAndView("redirect:/a/channel/list");
+		UserProfile userprofile = (UserProfile) session.getAttribute("userprofile");
+		channelService.delete(id, userprofile);
 		return modelAndView;
 	}
 

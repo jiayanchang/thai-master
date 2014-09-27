@@ -1,3 +1,4 @@
+<%@page import="com.magic.thai.security.UserProfile"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
@@ -67,21 +68,23 @@ body {
 </head>
 
 <body>
-	<div class="container" style="border:1px solid #999999; width:400px;padding:30px 10px;border-radius:8px;background-color:#FFF;">
-		<div style="padding:10px 4px;text-align:center;margin:-30px -10px 0 -10px; border-bottom:1px solid #999999;">用户登录</div>
+	<div class="container" style="border:1px solid #999999; width:500px;padding:30px 10px;border-radius:8px;background-color:#FFF;">
 		<form class="form-signin" role="form" method="POST" action="${pageContext.request.contextPath}/" enctype="multipart/form-data">
+			<img height="230" src="${pageContext.request.contextPath}/css/logo.jpg"/>
 			<c:if test="${not empty message}">
 				<div class="alert alert-warning" role="alert">${message }</div>
 			</c:if>
 			<div class="form-group">
-				<label for="loginName">用户名</label> <input name="loginName" type="text" class="form-control" id="loginName" placeholder="username">
+				<!-- <label for="loginName">用户名</label>  -->
+				<input name="loginName" type="text" class="form-control" id="loginName" placeholder="username">
 			</div>
 			<div class="form-group">
-				<label for="password">密码</label> <input name="password" type="password" class="form-control" id="password" placeholder="password">
+				<!-- <label for="password">密码</label>  -->
+				<input name="password" type="password" class="form-control" id="password" placeholder="password">
 			</div>
 			<div class="form-group" style="margin-bottom:10px;">
-				<label for="captcha">验证码</label>
-				<br>
+				<!-- <label for="captcha">验证码</label>
+				<br> -->
 				<input style="margin:0 10px 10px 0;float:left;" name="captcha" type="input" style="width:50px;" id="captcha" placeholder="captcha"  class="form-control verify-code-input">
 				<img style="float:left;width:90px;height:40px;" id="image" border="0" onclick="refresh()" src="${pageContext.request.contextPath}/captcha" title="点图刷新"> 
 			</div>

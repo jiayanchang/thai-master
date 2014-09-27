@@ -43,6 +43,15 @@ public class SnapshotGoods {
 	@Column
 	@Expose
 	private String title;
+
+	@Column(name = "title_en")
+	@Expose
+	private String titleEn;
+
+	@Column(name = "title_cn")
+	@Expose
+	private String titleCn;
+
 	@Column
 	private String dept;
 	@Column
@@ -216,6 +225,22 @@ public class SnapshotGoods {
 
 	public void setSoldCount(int soldCount) {
 		this.soldCount = soldCount;
+	}
+
+	public String getTitleEn() {
+		return titleEn;
+	}
+
+	public void setTitleEn(String titleEn) {
+		this.titleEn = titleEn;
+	}
+
+	public String getTitleCn() {
+		return titleCn;
+	}
+
+	public void setTitleCn(String titleCn) {
+		this.titleCn = titleCn;
 	}
 
 	@Override

@@ -22,7 +22,7 @@
 </thead>
 <tbody>
 <c:forEach items="${ps.items}" var="channel" >
-<tr <c:if test="${channel.enabled}"> class="success" </c:if> >
+<tr>
 	<td>${channel.id}</td>
 	<td>${channel.name}</td>
 	<td>${channel.orderCount}</td>

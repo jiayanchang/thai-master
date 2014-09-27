@@ -120,7 +120,7 @@ public class GoodsServiceImpl extends ServiceHelperImpl<Goods> implements GoodsS
 	}
 
 	@Override
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	public void cancel(int goodsId, String reason, UserProfile userprofile) throws GoodsStatusException {
 		// TODO Auto-generated method stub
 		Goods goods = goodsDao.loadById(goodsId);
@@ -133,18 +133,29 @@ public class GoodsServiceImpl extends ServiceHelperImpl<Goods> implements GoodsS
 	}
 
 	@Override
-	public void delete(int goodsId, UserProfile userprofile) {
+	@Transactional(rollbackFor = Exception.class)
+	public void delete(int goodsId, UserProfile userprofile) throws GoodsStatusException {
+		Goods goods = goodsDao.loadById(goodsId);
 
+		if (goods.getStatus() == Goods.Status.DEPLOYED) {
+			throw new GoodsStatusException(goods.getStatusDesc() + "状态的订单不能删除");
+		}
+
+		goods.setStatus(Goods.Status.DELETED);
+		goodsDao.update(goods);
+		goodsLogDao.create(new GoodsLog(goods, userprofile.getUser(), "商品删除"));
 	}
 
 	@Override
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	public void update(Goods goodsbean, UserProfile userprofile) throws GoodsStatusException {
 		Goods goods = fetch(goodsbean.getId());
-		if (goods.getStatus() != Goods.Status.AUDITING) {
+		if (goods.getStatus() == Goods.Status.DEPLOYED || goods.getStatus() == Goods.Status.DELETED) {
 			throw new GoodsStatusException(goods.getStatusDesc() + "状态的订单不能修改");
 		}
 		goods.setTitle(goodsbean.getTitle());
+		// goods.setTitleCn(titleCn);
+		goods.setTitleEn(goodsbean.getTitleEn());
 		goods.setDept(goodsbean.getDept());
 		goods.setArrived(goodsbean.getArrived());
 		goods.setTravelDays(goodsbean.getTravelDays());

@@ -5,7 +5,7 @@
 <h1>审核商品</h1>
 <c:url var="addUrl" value="/a/goods/pass"/>
 <form:form action="${addUrl}" method="POST" commandName="goods">
-	<form:hidden path="id"/>
+	<form:hidden id="goodsId" path="id"/>
 	<table class="table">
 		<tr>
 			<td>商品名称：</td>
@@ -126,7 +126,23 @@
 	      modal: true,
 	      buttons: {
 	        "确认拒绝": function(){
-	        	
+	        	jQuery.ajax({
+		  		    type: 'POST',
+		  			encoding:"UTF-8",
+		  		    dataType:"json", 
+		  		    data:'id=' + $("#goodsId").val() + '&reason=' + $("#reason").val(),
+		  		    contentType: "application/x-www-form-urlencoded;  charset=UTF-8",
+		  		    url: "${pageContext.request.contextPath}/a/goods/reject.json",
+		  			success: function(result) {//TODO 没执行success方法
+		  				dialog.dialog( "close" );
+		  				if(result.data.success) {
+		  					alert("下架成功");
+		  					window.location = '${pageContext.request.contextPath}/a/goods/list';
+		  				} else {
+		  					alert(result.data.message);
+		  				}
+		  			}
+		  		});
 	        	
 	        },
 	        "取消" : function() {

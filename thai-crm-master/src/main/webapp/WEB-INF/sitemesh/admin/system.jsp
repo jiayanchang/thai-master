@@ -41,8 +41,8 @@
 	<div class="row">
 		<div class="col-sm-3 col-md-2 sidebar">
 			<ul class="nav nav-sidebar">
-				<li><a href="${pageContext.request.contextPath}/a/merchant/list">商户查询</a></li>
-				<li><a href="${pageContext.request.contextPath}/a/merchant/add">新建商户</a></li>
+				<li><a href="${pageContext.request.contextPath}/a/merchant/list">商家查询</a></li>
+				<li><a href="${pageContext.request.contextPath}/a/merchant/add">新建商家</a></li>
 				<li><a href="${pageContext.request.contextPath}/a/user/list">用户查询</a></li>
 				<li><a href="${pageContext.request.contextPath}/a/user/add">新建用户</a></li>
 			</ul>

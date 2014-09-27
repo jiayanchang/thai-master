@@ -212,4 +212,12 @@ public class User {
 	public void setAdministrator() {
 		this.groupType = 1;
 	}
+
+	public boolean isEnabled() {
+		return this.status == User.Status.ENABLED;
+	}
+
+	public boolean isDisabled() {
+		return this.status == User.Status.DISABLED;
+	}
 }

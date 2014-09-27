@@ -77,7 +77,7 @@ public class OrderController {
 		return listPost(vo);
 	}
 
-	@RequestMapping(value = "/channelorders", method = RequestMethod.GET)
+	@RequestMapping(value = "/channelorders")
 	public ModelAndView channelorders(@ModelAttribute OrderVo vo) {
 		ModelAndView modelandView = new ModelAndView("/admin/order/channelorders");
 		modelandView.addObject("vo", vo);

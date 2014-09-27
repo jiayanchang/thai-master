@@ -13,31 +13,44 @@
 	
 		<form:hidden path="id"/>
 		<table class="table">
+			<colgroup>
+				<col class="col-xs-1">
+				<col class="col-xs-3">
+				<col class="col-xs-1">
+				<col class="col-xs-3">
+				<col class="col-xs-1">
+			</colgroup>
 			<tr>
 				<td><font color="red">*</font>商品名称：</td>
-				<td><form:input path="title" /></td>
-				<td><form:errors path="title" cssClass="error" /></td>
+				<td colspan="3"><form:input path="title" class="form-control"/></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td><font color="red">*</font>英文名称：</td>
+				<td colspan="3"><form:input path="titleEn" class="form-control"/></td>
+				<td></td>
 			</tr>
 			<tr>
 				<td><font color="red">*</font>出发地：</td>
-				<td><form:input path="dept" /></td>
-				<td><form:errors path="dept" cssClass="error" /></td>
-			</tr>
-			<tr>
+				<td><form:input path="dept"  class="form-control"/></td>
 				<td><font color="red">*</font>目的地：</td>
-				<td><form:input path="arrived" /></td>
-				<td><form:errors path="arrived" cssClass="error" /></td>
+				<td><form:input path="arrived"  class="form-control"/></td>
+				<td></td>
 			</tr>
 			<tr>
 				<td><font color="red">*</font>行程天数：</td>
-				<td><form:input path="travelDays" /></td>
-				<td><form:errors path="travelDays" cssClass="error" /></td>
-			</tr>
-			<tr>
+				<td><form:input path="travelDays"  class="form-control"/></td>
 				<td><font color="red">*</font>库存数量：</td>
-				<td><form:input path="goodsCount" /></td>
-				<td><form:errors path="goodsCount" cssClass="error" /></td>
+				<td><form:input path="goodsCount"  class="form-control"/></td>
+				<td></td>
 			</tr>
+		</table>
+		<table class="table">
+			<colgroup>
+				<col class="col-xs-1">
+				<col class="col-xs-7">
+				<col class="col-xs-1">
+			</colgroup>
 			<tr>
 				<td><font color="red">*</font>推荐理由：</td>
 				<td><form:textarea path="summary" /></td>
@@ -73,29 +86,24 @@
 			</tr>
 			
 			<tr>
-				<td><font color="red">*</font>价格管理：</td>
+				<td><font color="red">*</font>价格管理：<a class="btn btn-success" href="javascript:addPriceSegment();">添加</a></td>
 				<td>
 					<table id="price_tbl">
 						<c:forEach var="segment" items="${goods.segments }" varStatus="status">
 						<tr index="${status.index }">
 							<td>
 								<input type="hidden" tag="id" name="segments[${status.index }].id" value="${segment.id }"/>
-								<input name="segments[${status.index }].startDate" tag="date" value="<fmt:formatDate value="${segment.startDate }" type="date" pattern="yyyy/MM/dd"/>"/>
+								<input name="segments[${status.index }].startDate" tag="date" class="form-control" value="<fmt:formatDate value="${segment.startDate }" type="date" pattern="yyyy/MM/dd"/>"/>
 							</td>
 							<td></td>
-							<td><input name="segments[${status.index }].endDate" tag="date" value="<fmt:formatDate value="${segment.endDate }" type="date" pattern="yyyy/MM/dd"/>"/></td>
+							<td><input name="segments[${status.index }].endDate" tag="date" class="form-control" value="<fmt:formatDate value="${segment.endDate }" type="date" pattern="yyyy/MM/dd"/>"/></td>
 							<td><font color="red">*</font>价格：</td>
-							<td><input name="segments[${status.index }].auditPrice" value="${segment.auditPrice }"/></td>
+							<td><input name="segments[${status.index }].auditPrice" class="form-control" value="${segment.auditPrice }"/></td>
 							<td>（成人）</td>
-							<td><input name="segments[${status.index }].childPrice" value="${segment.childPrice }"/></td>
+							<td><input name="segments[${status.index }].childPrice" class="form-control" value="${segment.childPrice }"/></td>
 							<td>（儿童）</td>
 							<td>
-								<c:if test="${status.index eq 0 }">
-									<a href="javascript:addPriceSegment();">【+】</a>
-								</c:if>
-								<c:if test="${status.index ne 0 }">
-									<a href="javascript:removePriceSegment(${status.index });">【-】</a>
-								</c:if>
+								<a class="btn btn-warning" href="javascript:removePriceSegment( ${status.index });">移除</a>
 							</td>
 						</tr>
 						</c:forEach>
@@ -155,21 +163,23 @@
 	function addPriceSegment(){
 		var index = 1 + parseInt($("#price_tbl tr:last").attr("index"));
 		var html = '<tr index="' + index + '">'
-			+'<td><input name="segments[' + index + '].startDate" tag="date"/></td>'
+			+'<td><input name="segments[' + index + '].startDate" tag="date" class="form-control"/></td>'
 			+'<td></td>'
-			+'<td><input name="segments[' + index + '].endDate" tag="date"/></td>'
+			+'<td><input name="segments[' + index + '].endDate" tag="date" class="form-control"/></td>'
 			+'<td><font color="red">*</font>价格：</td>'
-			+'<td><input name="segments[' + index + '].auditPrice"/></td>'
+			+'<td><input name="segments[' + index + '].auditPrice" class="form-control"/></td>'
 			+'<td>（成人）</td>'
-			+'<td><input name="segments[' + index + '].childPrice"/></td>'
+			+'<td><input name="segments[' + index + '].childPrice" class="form-control"/></td>'
 			+'<td>（儿童）</td>'
-			+'<td><a href="javascript:removePriceSegment(' + index + ');">【-】</a></td>'
+			+'<td><a class="btn btn-warning" href="javascript:removePriceSegment(' + index + ');">移除</a></td>'
 			+'</tr>';	
 		var newtr = $(html);
 		$("#price_tbl").append(newtr);
 		$("#price_tbl [tag=date]").datepicker({dateFormat:'yy/mm/dd'});
 	}
 
+	
+	
 	function removePriceSegment(index){
 		$("#price_tbl tr[index=" + index + "]").remove();
 	}

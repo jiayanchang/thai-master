@@ -2,7 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page language="java" pageEncoding="UTF-8"%>  
     
-<h1>商户列表</h1>
+<h1>商家列表</h1>
 <p>${message}</p>
 <c:url var="submitUrl" value="/a/merchant/list"/>
 <form:form action="${submitUrl}" method="POST">

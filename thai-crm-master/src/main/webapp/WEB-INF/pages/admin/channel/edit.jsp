@@ -80,7 +80,7 @@
 					<td>
 						<input type="hidden" tag="id" name="goodsInvs[${status.index }].id" value="${goodsInv.id}"/>
 						<input type="hidden" tag="gid" name="goodsInvs[${status.index }].goodsId" value="${goodsInv.goodsId}"/>
-						<input tag="allocatedAmount" name="goodsInvs[${status.index }].allocatedAmount" value="${goodsInv.allocatedAmount}"/>
+						<input tag="allocatedAmount" name="goodsInvs[${status.index }].allocatedAmount" class="form-control" value="${goodsInv.allocatedAmount}"/>
 					</td>
 					<td>${goodsInv.goods.soldCount}</td>
 					<td>${goodsInv.goods.goodsCount - goodsInv.goods.soldCount}</td>
@@ -100,6 +100,13 @@
 	<br>
 	<a class="btn btn-success" href="javascript:addMerchant();">添加</a>
 	<table id="merchantInvsTbl" class="table">
+		<colgroup>
+			<col class="col-xs-1">
+			<col class="col-xs-2">
+			<col class="col-xs-1">
+			<col class="col-xs-1">
+			<col class="col-xs-1">
+		</colgroup>
 		<thead>
 			<tr>
 				<th>商家名称</th>
@@ -114,9 +121,13 @@
 				<tr idx="${merchantInv.id }">
 					<td>${merchantInv.merchant.name }</td>
 					<td>
-					<input type="hidden" tag="id" name="merchantInvs[${status.index }].id" value="${merchantInv.id }"/>
-					<input type="hidden" tag="mid" name="merchantInvs[${status.index }].merchantId" value="${merchantInv.merchantId }"/>
-					<input type="type" tag="allocatedAmount" name="merchantInvs[${status.index }].allocatedAmount" value="${merchantInv.allocatedAmount }"/></td>
+						<input type="hidden" tag="id" name="merchantInvs[${status.index }].id" value="${merchantInv.id }"/>
+						<input type="hidden" tag="mid" name="merchantInvs[${status.index }].merchantId" value="${merchantInv.merchantId }"/>
+						<div class="input-group">
+							<input type="type" tag="allocatedAmount" name="merchantInvs[${status.index }].allocatedAmount" class="form-control" value="${merchantInv.allocatedAmount }"/>
+							<span class="input-group-addon">%</span>
+						</div>
+					</td>	
 					<td>${merchantInv.orderCount }</td>
 					<td>${merchantInv.amount }</td>
 					<td><a href="javascript:removeMerchant(${merchantInv.id });">删除</a></td>
@@ -153,7 +164,7 @@ function addGoods(){
 				+ '<td>' + result.data.data.name + '</td>'
 				+ '<td>' + result.data.data.goodsCount + '</td>'
 				+ '<td><input type="hidden" tag="gid" name="goodsInvs[' + index + '].goodsId" value="' + goodsId + '"/>'
-				+ '<input tag="allocatedAmount" name="goodsInvs[' + index + '].allocatedAmount"/></td>'
+				+ '<input tag="allocatedAmount" class="form-control" name="goodsInvs[' + index + '].allocatedAmount" value="0.0"/></td>'
 				+ '<td>' + result.data.data.soldCount + '</td>'
 				+ '<td>' + (result.data.data.goodsCount - result.data.data.soldCount) + '</td>'
 				+ '<td><a href="javascript:removeGoods(' + goodsId + ');">删除</a></td>'
@@ -182,7 +193,13 @@ function addMerchant(){
 			var html = '<tr idx="' + merchantId + '">'
 					+ '<td>' + result.data.data.name + '</td>'
 					+ '<td><input type="hidden" tag="mid" name="merchantInvs[' + index + '].merchantId" value="' + merchantId + '"/>'
-					+ '<input tag="allocatedAmount" name="merchantInvs[' + index + '].allocatedAmount" value="0.0"/></td>'
+					
+					+ '<div class="input-group">'
+					+ '	<input tag="allocatedAmount" class="form-control" name="merchantInvs[' + index + '].allocatedAmount" value="0.0"/>'
+					+ '	<span class="input-group-addon">%</span>'
+					+ '</div>'
+					
+					+ '</td>'
 					+ '<td>0</td>'
 					+ '<td>0.0</td>'
 					+ '<td><a href="javascript:removeMerchant(' + merchantId + ');">删除</a></td>'

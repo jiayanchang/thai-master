@@ -6,6 +6,7 @@ import com.magic.thai.db.domain.Merchant;
 import com.magic.thai.db.domain.User;
 import com.magic.thai.db.vo.UserVo;
 import com.magic.thai.exception.LoginException;
+import com.magic.thai.exception.OrderStatusException;
 import com.magic.thai.security.UserProfile;
 import com.magic.thai.util.PaginationSupport;
 
@@ -24,6 +25,10 @@ public interface UserService {
 	void delete(User user, UserProfile userprofile);
 
 	void delete(int userId, UserProfile userprofile);
+
+	void enable(int userId, UserProfile userprofile) throws OrderStatusException;
+
+	void disable(int userId, UserProfile userprofile) throws OrderStatusException;
 
 	UserProfile login(String username, String password) throws LoginException;
 

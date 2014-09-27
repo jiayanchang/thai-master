@@ -1,8 +1,9 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page language="java" pageEncoding="UTF-8"%>  
-    
-<h1>订单列表</h1>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<h1>รายชื่อการสั่งซื้อ</h1><!-- 订单列表 -->
 <p>${message}</p>
 <br/>
 <div class="data">
@@ -10,21 +11,23 @@
 <form:form action="${submitUrl}" method="POST" commandName="vo">
 <table class="table">
 <tr> 
-	<td>订单号：</td>
-	<td><form:input path="orderNo" /></td>
-	<td>下单时间：</td>
-	<td><form:input path="startDate" tag="date"/></td>
-	<td>--</td>
-	<td><form:input path="endDate" tag="date"/></td>
-	<td>状态</td>
-	<td>
-		<form:select path="status">
+	<td style="width:150px;">หมายเลขการสั่งซื้อ:</td><!-- 订单号 -->
+	<td  style="width:200px;"><form:input path="orderNo" class="form-control"/></td>
+	
+	<td style="width:100px;">เวลาสั่งซื้อ:</td><!-- 下单时间 -->
+	<td style="width:100px;"><form:input path="startDate" tag="date" class="form-control"/></td>
+	<td style="width:20px;">-</td>
+	<td style="width:100px;"><form:input path="endDate" tag="date" class="form-control"/></td>
+	<td style="width:80px;">สถานะ</td><!-- 状态 -->
+	<td style="width:100px;">
+		<form:select path="status" class="form-control">
 			<form:option value="-1" >全部</form:option>
 			<form:option value="0">待确认</form:option>
 			<form:option value="1">已确认</form:option>
 		</form:select>
 	</td>
-	<td><input type="submit" value="查询" class="btn btn-primary" /></td>
+	<td  style="width:120px;"><input type="submit" value="การสอบถาม" class="btn btn-primary" /></td>
+	<td>&nbsp;</td>
 </tr>
 <%-- <tr> 	
 	<td>出发地：</td>
@@ -50,7 +53,7 @@
 <c:forEach items="${ps.items}" var="order" >
 <tr>
 	<td>${order.orderNo}</td>
-	<td>${order.createdDate}</td>
+	<td><fmt:formatDate value="${order.createdDate}" type="date" pattern="yyyy/MM/dd HH:mm"/></td>
 	<td>${order.contractor}</td>
 	<td>${order.contractorMobile}</td>
 	<td>${order.statusDesc}</td>

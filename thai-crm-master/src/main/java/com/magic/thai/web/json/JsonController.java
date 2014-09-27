@@ -2,7 +2,6 @@ package com.magic.thai.web.json;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -109,11 +108,7 @@ public class JsonController {
 		vo.nameKeyword = name;
 		vo.limitF4list = 20;
 		List<Hotel> hotels = hotelDao.list(vo);
-		List<String> hotelNames = new ArrayList<String>();
-		for (Hotel hotel : hotels) {
-			hotelNames.add(hotel.getName());
-		}
-		model.put("data", DataVo.success(hotelNames).setMessage("获取成功"));
+		model.put("data", DataVo.success(hotels).setMessage("获取成功"));
 		return model;
 	}
 
@@ -196,14 +191,14 @@ public class JsonController {
 					|| LockManager.isInvalidLock(order.getOrderNo())) {
 				LockManager.lock(order.getOrderNo(), userprofile, false);
 				orderService.proc(orderId, reason, userprofile);
-				model.put("data", DataVo.success("操作成功"));
+				model.put("data", DataVo.success("success"));
 				LockManager.unlock(order.getOrderNo());
 			} else {
-				model.put("data", DataVo.fail("操作失败:" + LockManager.getLock(order.getOrderNo())));
+				model.put("data", DataVo.fail("failed:" + LockManager.getLock(order.getOrderNo())));
 			}
 		} catch (ThaiException e) {
 			e.printStackTrace();
-			model.put("data", DataVo.fail("操作失败:" + e.getMessage()));
+			model.put("data", DataVo.fail("failed:" + e.getMessage()));
 		}
 
 		return model;

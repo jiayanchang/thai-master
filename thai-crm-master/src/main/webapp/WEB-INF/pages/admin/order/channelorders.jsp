@@ -9,7 +9,14 @@
 <h1>渠道总单列表</h1>
 <p>${message}</p>
 <br/>
-订单号：<form:input path="orderNo"/>
+<table>
+	<tr>
+		<td>订单号：</td>
+		<td><form:input path="orderNo" class="form-control"/></td>
+		<td><input type="submit" value="查询"  class="btn btn-primary"/></td>
+	</tr>
+</table>
+
 <table class="table table-striped table-hover">
 	<thead>
 	<tr> 

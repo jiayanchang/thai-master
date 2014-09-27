@@ -12,14 +12,14 @@
 <table class="table">
 <tr> 
 	<td>订单号：</td>
-	<td><form:input path="orderNo" /></td>
+	<td><form:input path="orderNo" class="form-control"/></td>
 	<td>下单时间：</td>
-	<td><form:input path="startDate" tag="date"/></td>
+	<td><form:input path="startDate" tag="date" class="form-control"/></td>
 	<td>--</td>
-	<td><form:input path="endDate" tag="date"/></td>
+	<td><form:input path="endDate" tag="date" class="form-control"/></td>
 	<td>状态</td>
 	<td>
-		<form:select path="status">
+		<form:select path="status" class="form-control">
 			<form:option value="-1" >全部</form:option>
 			<form:option value="0">待确认</form:option>
 			<form:option value="1">已确认</form:option>
@@ -28,9 +28,9 @@
 </tr>
 <tr> 
 	<td>渠道名称：</td>
-	<td><form:input path="channelName" /></td>
+	<td><form:input path="channelName" class="form-control" /></td>
 	<td>商家名称：</td>
-	<td><form:input path="merchantName"/></td>
+	<td><form:input path="merchantName" class="form-control"/></td>
 	<td></td>
 	<td></td>
 	<td></td>
@@ -77,3 +77,8 @@
 <div id="dialog-form" title="Basic dialog" style="display:none;">
 	<textarea id="reason" rows="10" cols="41"></textarea>
 </div>
+<script>
+$(function() {
+	$("form [tag=date]").datepicker({dateFormat:'yy/mm/dd'});
+});
+</script>

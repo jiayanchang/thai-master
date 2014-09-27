@@ -2,6 +2,26 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%> 
 
+<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+<script src="http://cdn.bootcss.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/crm/js/bootstrap-combobox-ajax.js"></script>
+<style>
+  .custom-combobox {
+    position: relative;
+    display: inline-block;
+  }
+  .custom-combobox-toggle {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin-left: -1px;
+    padding: 0;
+  }
+  .custom-combobox-input {
+    margin: 0;
+    padding: 5px 10px;
+  }
+  </style>
 <h1>新增订单</h1>
 <c:url var="addUrl" value="/f/order/add/process"/>
 <form:form action="${addUrl}" method="POST" modelAttribute="createOrderVo">
@@ -9,56 +29,60 @@
 	<table class="table">
 		<colgroup>
 			<col class="col-xs-1">
-			<col class="col-xs-7">
-			<col class="col-xs-2">
-			<col class="col-xs-7">
+			<col class="col-xs-3">
+			<col class="col-xs-1">
+			<col class="col-xs-6">
 		</colgroup>
 		<tr>
 			<td>联系人：</td>
-			<td><form:input path="orderContactor"/></td>
+			<td><form:input path="orderContactor" class="form-control"/></td>
 			<td>酒店名称：</td>
-			<td><form:input id="hotelName" path="hotelName"/></td>
+			<td>
+				<select class="combobox form-control" id="hotelName" name="hotelName" onBlur="">
+					
+	            </select>
+			</td>
 		</tr>
 		<tr>
 			<td>联系电话：</td>
-			<td><form:input path="orderContactorMobile"/></td>
+			<td><form:input path="orderContactorMobile" class="form-control"/></td>
 			<td>酒店地址：</td>
-			<td><form:input id="hotelAddress" path="hotelAddress"/></td>
+			<td><form:input id="hotelAddress" path="hotelAddress" class="form-control"/></td>
 		</tr>
 		<tr>
 			<td>联系邮箱：</td>
-			<td><form:input path="orderContactorEmail"/></td>
+			<td><form:input path="orderContactorEmail" class="form-control"/></td>
 			<td>酒店房间号：</td>
-			<td><form:input path="hotelRoom"/></td>
+			<td><form:input path="hotelRoom" class="form-control"/></td>
 		</tr>
 		<tr>
 			<td>商品：</td>
 			<td>
-				<select name="goodses[0].goodsId">
+				<select name="goodses[0].goodsId" class=" form-control">
 					<option value="0"></option>
 					<c:forEach var="goods" items="${goodses }">
 						<option value="${goods.id}">${goods.title }</option>
 					</c:forEach>
 				</select>
 			</td>
-			<td>酒店房间电话：</td>
-			<td><form:input path="hotelRoomTel"/></td>
+			<td></td>
+			<td></td>
 		</tr>
 		<tr>
 			<td>总价：</td>
-			<td><input name="goodses[0].price"/></td>
+			<td><input name="goodses[0].price" class="form-control"/></td>
 			<td></td>
 			<td></td>
 		</tr>
 		<tr>
 			<td>数量：</td>
-			<td><input name="goodses[0].qty"/></td>
+			<td><input name="goodses[0].qty" class="form-control"/></td>
 			<td></td>
 			<td></td>
 		</tr>
 		<tr>
 			<td>执行时间：</td>
-			<td><input name="goodses[0].deptDate" tag="date"/></td>
+			<td><input name="goodses[0].deptDate" tag="date" class="form-control"/></td>
 			<td></td>
 			<td></td>
 		</tr>
@@ -100,10 +124,10 @@
 			<th>姓名</th>
 			<th>国籍</th>
 			<th>性别</th>
-			<th>证件类型</th>
+			<!-- <th>证件类型</th>
 			<th>证件号码</th>
 			<th>证件有效期</th>
-			<th>出生日期</th>
+			<th>出生日期</th> -->
 			<th>乘客类型</th>
 			<th>手机号码</th>
 			<th>操作</th>
@@ -125,16 +149,16 @@
 		var index = $("#traveler_table tbody tr").length;
 		log(index);
 		var html = '<tr tg="tr'+index+'">'
-			+ '<td><input tg=name name="travelers['+index+'].name" style="width:100px;"/></td>'
-			+ '<td><input tg=nationality name="travelers['+index+'].nationality" style="width:100px;"/></td>'
+			+ '<td><input tg=name name="travelers['+index+'].name" class="form-control"/></td>'
+			+ '<td><input tg=nationality name="travelers['+index+'].nationality" class="form-control"/></td>'
 			+ '<td>'
-			+ '	<select tg=gender name="travelers['+index+'].gender">'
+			+ '	<select tg=gender name="travelers['+index+'].gender"  class="form-control">'
 			+ '		<option value="0">男</option>'
 			+ '		<option value="1">女</option>'
 			+ '		<option value="2">未知</option>'
 			+ '	</select>'
 			+ '</td>'
-			+ '<td>'
+			/* + '<td>'
 			+ '	<select tg=idType name="travelers['+index+'].idType">'
 			+ '		<option value="0">身份证</option>'
 			+ '		<option value="1">护照</option>'
@@ -143,14 +167,14 @@
 			+ '</td>'
 			+ '<td><input tg=idNo name="travelers['+index+'].idNo"  style="width:120px;"/></td>'
 			+ '<td><input tg=effectiveDate name="travelers['+index+'].effectiveDate"  style="width:100px;" tag="date"/></td>'
-			+ '<td><input tg=birth name="travelers['+index+'].birth" style="width:100px;"  tag="date"/></td>'
+			+ '<td><input tg=birth name="travelers['+index+'].birth" style="width:100px;"  tag="date"/></td>' */
 			+ '<td>'
-			+ '	<select tg=type name="travelers['+index+'].type">'
+			+ '	<select tg=type name="travelers['+index+'].type"  class="form-control">'
 			+ '		<option value="'+index+'">成人</option>'
 			+ '		<option value="1">儿童</option>'
 			+ '	</select>'
 			+ '</td>'
-			+ '<td><input tg=mobile name="travelers['+index+'].mobile"  style="width:100px;"/></td>'
+			+ '<td><input tg=mobile name="travelers['+index+'].mobile"  class="form-control"/></td>'
 			+ '<td><a href="javascript:removeTraveler('+index+');" class="btn btn-danger">删除</a></td>'
 			+ '</tr>';
 		$("#traveler_table tbody").append($(html));
@@ -186,7 +210,7 @@
 		$("form").submit();
 	}
 	
-	function complete() {
+	function save() {
 		if(!confirm("是否确定？")) return false;
 		$("form").submit();
 		/* jQuery.ajax({
@@ -202,62 +226,10 @@
 			}
 		}); */
 	}
-	
-	
-	function initAutoComplete(json){
-        $("#hotelName").autocomplete(json , {
-            minChars:1,
-            width:260,
-            dataType:"json",
-            matchContains: true,
-            formatItem: function(row, i, max) {
-                 return row.tel + " <" + row.name + "> ["+row.cg_name+"]";
-            },
-            formatMatch: function(row, i, max) {
-                 return row.tel;
-            },
-            formatResult: function(row) {
-                 return row.tel;
-            }
-        });
-    }
-	
+
+	var combobox = $('.combobox').combobox();
 	$(function() {
 		$("form [tag=date]").datepicker({dateFormat:'yy/mm/dd'});
-		
-		$("#hotelName").focus(function(){
-            $.post(url,{},function(data){
-                initAutoComplete(data);
-            },"json");
-        });
-		
-	    $( "#hotelName" ).autocomplete({
-		      source: function( request, response ) {
-		        $.ajax({
-		          url: "${pageContext.request.contextPath}/json/hotels.json",
-		          dataType: "jsonp",
-		          data: {
-		        	  name: request.term
-		          },
-		          success: function( data ) {
-		        	  alert(data);
-		            response( data.data );
-		          }
-		        });
-		      },
-		      minLength: 3,
-		      select: function( event, ui ) {
-		        log( ui.item ?
-		          "Selected: " + ui.item.label :
-		          "Nothing selected, input was " + this.value);
-		      },
-		      open: function() {
-		        $( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
-		      },
-		      close: function() {
-		        $( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
-		      }
-	    });
 	});
 	
 </script>

@@ -46,6 +46,12 @@
 	<td>${user.statusDesc}</td>
 	<td>
 		<a class="btn btn-warning" href="${pageContext.request.contextPath}/a/user/edit/${user.id} ">修改</a>
+		<c:if test="${user.enabled }">
+			<a class="btn btn-info" href="${pageContext.request.contextPath}/a/user/disable/${user.id} ">停用</a>
+		</c:if>
+		<c:if test="${user.disabled }">
+			<a class="btn btn-success" href="${pageContext.request.contextPath}/a/user/enable/${user.id} ">启用</a>
+		</c:if>
 		<a class="btn btn-info" href="${pageContext.request.contextPath}/a/user/delete/${user.id} ">删除</a>
 	</td>
 </tr>

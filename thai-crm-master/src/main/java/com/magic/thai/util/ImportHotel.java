@@ -9,6 +9,7 @@ import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,7 +21,7 @@ public class ImportHotel extends BaseTest {
 	@Autowired
 	HotelDao dao;
 
-	// @Test
+	@Test
 	@Transactional
 	public void testHo() throws Exception {
 		InputStream is = new FileInputStream("d:/downloads/1.xlsx");
@@ -108,7 +109,8 @@ public class ImportHotel extends BaseTest {
 	/**
 	 * 得到Excel表中的值
 	 *
-	 * @param hssfCell Excel中的每一个格子
+	 * @param hssfCell
+	 *            Excel中的每一个格子
 	 * @return Excel中每一个格子中的值
 	 */
 	@SuppressWarnings("static-access")

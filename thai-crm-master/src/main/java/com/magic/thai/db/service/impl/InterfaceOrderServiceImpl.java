@@ -93,6 +93,7 @@ public class InterfaceOrderServiceImpl extends ServiceHelperImpl<MerchantOrder> 
 		channelOrder.setContractorMobile(vo.getOrderContactorMobile());
 		channelOrder.setCreatedDate(new Date());
 		channelOrder.setType(ChannelOrder.OrderType.OFFLINE_ORDER);
+		channelOrder.setStatus(ChannelOrder.Status.COMPELED);
 
 		int channelOrderId = channelOrderDao.create(channelOrder);
 
@@ -142,6 +143,7 @@ public class InterfaceOrderServiceImpl extends ServiceHelperImpl<MerchantOrder> 
 				merchantOrder.setHotelName(vo.getHotelName());
 				merchantOrder.setHotelRoom(vo.getHotelRoom());
 				merchantOrder.setHotelRoomTel(vo.getHotelRoomTel());
+				merchantOrder.setStatus(MerchantOrder.Status.COMPLETED);
 
 				merchantOrderMap.put(goods.getMerchantId() + "", merchantOrder);
 				merchantOrder.setAmount(merchantOrder.getAmount() + goodsVo.getPrice());
@@ -203,6 +205,7 @@ public class InterfaceOrderServiceImpl extends ServiceHelperImpl<MerchantOrder> 
 		Channel channel = channelDao.fetchByToken(vo.getToken());
 
 		Asserts.notNull(channel, new ParameterException("TOKEN有误"));
+		Asserts.isTrue(channel.isDisabled(), new ParameterException("TOKEN无效"));
 
 		ChannelOrder channelOrder = new ChannelOrder();
 		channelOrder.setChannelId(channel.getId());
@@ -323,6 +326,7 @@ public class InterfaceOrderServiceImpl extends ServiceHelperImpl<MerchantOrder> 
 	public List<Goods> queryGoodses(QueryGoodsesVo vo) throws ThaiException {
 		Channel channel = channelDao.fetchByToken(vo.getToken());
 		Asserts.notNull(channel, new ParameterException("TOKEN有误"));
+		Asserts.isTrue(channel.isDisabled(), new ParameterException("TOKEN无效"));
 		List<Goods> goodses = goodsService.fetchList(vo, channel);
 		channelService.refreshSoldGoodsCount(channel, goodses.size());
 		return goodses;
@@ -332,6 +336,7 @@ public class InterfaceOrderServiceImpl extends ServiceHelperImpl<MerchantOrder> 
 	public ChannelOrder query(QueryOrderVo vo) throws ThaiException {
 		Channel channel = channelDao.fetchByToken(vo.getToken());
 		Asserts.notNull(channel, new ParameterException("TOKEN有误"));
+		Asserts.isTrue(channel.isDisabled(), new ParameterException("TOKEN无效"));
 		ChannelOrder order = channelOrderDao.fetchByNo(vo.getOrderNo());
 		Asserts.notNull(order, new ParameterException("订单号有误"));
 		return order;
@@ -340,6 +345,8 @@ public class InterfaceOrderServiceImpl extends ServiceHelperImpl<MerchantOrder> 
 	@Override
 	public boolean checkGoods(CheckGoodsVo vo) throws ThaiException {
 		Channel channel = channelDao.fetchByToken(vo.getToken());
+		Asserts.notNull(channel, new ParameterException("TOKEN有误"));
+		Asserts.isTrue(channel.isDisabled(), new ParameterException("TOKEN无效"));
 		Goods goods = goodsService.load(vo.getGoodsId());
 		return goodsService.checkGoods(channel, goods, vo.deptDateObj, vo.getTravelerNum());
 	}
@@ -356,6 +363,8 @@ public class InterfaceOrderServiceImpl extends ServiceHelperImpl<MerchantOrder> 
 	public void refund(RefundOrderVo vo) throws ThaiException {
 		Channel channel = channelDao.fetchByToken(vo.getToken());
 		Asserts.notNull(channel, new ParameterException("TOKEN有误"));
+		Asserts.isTrue(channel.isDisabled(), new ParameterException("TOKEN无效"));
+
 		// MerchantOrder order = orderDao.fetchByNo(vo.getOrderNo());
 
 		ChannelOrder channelOrder = channelOrderDao.fetchByNo(vo.getOrderNo());

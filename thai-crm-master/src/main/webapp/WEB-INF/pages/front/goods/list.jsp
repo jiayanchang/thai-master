@@ -11,17 +11,17 @@
 <form:form action="${submitUrl}" method="POST" commandName="vo">
 <table  class="table">
 <tr> 
-	<td>产品名称：</td>
+	<td>ชื่อสินค้า：</td><!-- 商品名称 -->
 	<td colspan="3"><form:input path="titleKeyword" class="form-control"/></td>
 	<td></td>
 	<td></td>
 </tr>
 <tr> 
-	<td>出发地：</td>
+	<td>ออกเดินทาง：</td><!-- 出发地 -->
 	<td><form:input path="dept"  class="form-control"/></td>
-	<td>目的地：</td>
+	<td>ปลายทาง：</td><!-- 目的地 -->
 	<td><form:input path="arr"  class="form-control"/></td>
-	<td>状态</td>
+	<td>สถานะ</td><!-- 状态 -->
 	<td>
 		<form:select path="status"  class="form-control">
 			<form:option value="-1" >全部</form:option>
@@ -60,13 +60,20 @@
 			<td>${goods.statusDesc}</td>
 			<td>
 				<a class="btn btn-success" href="${pageContext.request.contextPath}/f/goods/edit/${goods.id} ">修改</a>
-				<a class="btn btn-warning" href="${pageContext.request.contextPath}/f/goods/delete/${goods.id} ">删除</a>
+				<a class="btn btn-warning" href="javascript:del(${goods.id })">删除</a>
 			</td>
 		</tr>
 	</c:forEach>
 	</tbody>
 </table>
-
+<script type="text/javascript">
+function del(id){
+	if(confirm("确定删除？")) {
+		window.location = '${pageContext.request.contextPath}/f/goods/delete/' + id;
+	}
+	
+}
+</script>
 <%@ include file="../../page.jsp"%>
 </form:form>
 </div>

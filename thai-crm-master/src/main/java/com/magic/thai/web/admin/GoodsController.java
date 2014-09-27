@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -102,30 +103,28 @@ public class GoodsController {
 	}
 
 	@RequestMapping(value = "/reject", method = RequestMethod.POST)
-	public ModelAndView reject(@RequestParam int id, @RequestParam String reason, HttpSession session) {
-		ModelAndView modelandView = new ModelAndView("redirect:/a/goods/list");
+	public ModelMap reject(@RequestParam int id, @RequestParam String reason, HttpSession session, ModelMap model) {
 		UserProfile userprofile = (UserProfile) session.getAttribute("userprofile");
 		try {
 			goodsService.reject(id, reason, userprofile);
 		} catch (GoodsStatusException e) {
 			e.printStackTrace();
-			modelandView.addObject("message", e.getMessage());
+			model.put("message", e.getMessage());
 		}
-		return modelandView;
+		return model;
 	}
 
 	@RequestMapping(value = "/cancel", method = RequestMethod.POST)
-	public ModelAndView cancel(@RequestParam int id, @RequestParam String reason, HttpSession session) {
-		ModelAndView modelandView = new ModelAndView("redirect:/a/goods/list");
+	public ModelMap cancel(@RequestParam int id, @RequestParam String reason, HttpSession session, ModelMap model) {
 		UserProfile userprofile = (UserProfile) session.getAttribute("userprofile");
 		try {
 			goodsService.cancel(id, reason, userprofile);
-			modelandView.addObject("data", DataVo.success(id));
+			model.put("data", DataVo.success(id));
 		} catch (GoodsStatusException e) {
 			e.printStackTrace();
-			modelandView.addObject("data", DataVo.fail(e.getMessage()));
-			modelandView.addObject("message", e.getMessage());
+			model.put("data", DataVo.fail(e.getMessage()));
+			model.put("message", e.getMessage());
 		}
-		return modelandView;
+		return model;
 	}
 }

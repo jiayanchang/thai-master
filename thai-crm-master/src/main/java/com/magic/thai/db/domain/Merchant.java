@@ -54,7 +54,7 @@ public class Merchant {
 	private MerchantDetails details; // 非hibnate关联
 
 	/**
-	 * 0=普通商户,2=平台
+	 * 0=普通商家,2=平台
 	 * 
 	 * @author yanchang
 	 *

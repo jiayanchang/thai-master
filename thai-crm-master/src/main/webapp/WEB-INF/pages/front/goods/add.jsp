@@ -10,43 +10,50 @@
 		<table class="table">
 			<colgroup>
 				<col class="col-xs-1">
-				<col class="col-xs-7">
-				<col class="col-xs-7">
+				<col class="col-xs-3">
+				<col class="col-xs-1">
+				<col class="col-xs-3">
+				<col class="col-xs-3">
 			</colgroup>
 			<tr>
 				<td><font color="red">*</font>商品名称：</td>
-				<td><form:input path="title" /></td>
-				<td><form:errors path="title" cssClass="error" /></td>
+				<td colspan="3"><form:input path="title" class="form-control"/></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td><font color="red">*</font>英文名称：</td>
+				<td colspan="3"><form:input path="titleEn" class="form-control"/></td>
+				<td></td>
 			</tr>
 			<tr>
 				<td><font color="red">*</font>出发地：</td>
-				<td><form:input path="dept" /></td>
-				<td><form:errors path="dept" cssClass="error" /></td>
-			</tr>
-			<tr>
+				<td><form:input path="dept"  class="form-control"/></td>
 				<td><font color="red">*</font>目的地：</td>
-				<td><form:input path="arrived" /></td>
-				<td><form:errors path="arrived" cssClass="error" /></td>
+				<td><form:input path="arrived"  class="form-control"/></td>
+				<td></td>
 			</tr>
 			<tr>
 				<td><font color="red">*</font>行程天数：</td>
-				<td><form:input path="travelDays" /></td>
-				<td><form:errors path="travelDays" cssClass="error" /></td>
-			</tr>
-			<tr>
+				<td><form:input path="travelDays"  class="form-control"/></td>
 				<td><font color="red">*</font>库存数量：</td>
-				<td><form:input path="goodsCount" /></td>
-				<td><form:errors path="goodsCount" cssClass="error" /></td>
+				<td><form:input path="goodsCount"  class="form-control"/></td>
+				<td></td>
 			</tr>
+		</table>
+		<table class="table">
+			<colgroup>
+				<col class="col-xs-1">
+				<col class="col-xs-5">
+				<col class="col-xs-1">
+			</colgroup>
 			<tr>
 				<td><font color="red">*</font>推荐理由：</td>
 				<td><form:textarea path="summary" /></td>
-				<td><form:errors path="summary" cssClass="error" />
-				</td>
+				<td><form:errors path="summary" cssClass="error" /></td>
 			</tr>
 			<script>
                 var oFCKeditor1 = new FCKeditor( 'summary', 800, 200, 'Default', '${goods.summary}') ;  
-                oFCKeditor1.BasePath = "/crm/fckeditor/" ;  
+                oFCKeditor1.BasePath = "${pageContext.request.contextPath}/fckeditor/" ;  
                 oFCKeditor1.ReplaceTextarea() ;  
 			</script>
 			<tr>
@@ -80,7 +87,7 @@
 			</tr>
 			<script>
                 var oFCKeditor2 = new FCKeditor( 'details.travelPlan', 800, 200, 'Default', '${goods.details.travelPlan}') ;  
-                oFCKeditor2.BasePath = "/crm/fckeditor/" ;  
+                oFCKeditor2.BasePath = "${pageContext.request.contextPath}/fckeditor/" ;  
                 oFCKeditor2.ReplaceTextarea() ;  
 			</script>
 			<tr>
@@ -90,7 +97,7 @@
 			</tr>
 			<script>
                 var oFCKeditor3 = new FCKeditor( 'details.costDesc', 800, 200, 'Default', '${goods.details.costDesc}') ;  
-                oFCKeditor3.BasePath = "/crm/fckeditor/" ;  
+                oFCKeditor3.BasePath = "${pageContext.request.contextPath}/fckeditor/" ;  
                 oFCKeditor3.ReplaceTextarea() ;  
 			</script>
 			<tr>
@@ -100,7 +107,7 @@
 			</tr>
 			<script>
                 var oFCKeditor4 = new FCKeditor( 'details.bookNotes', 800, 200, 'Default', '${goods.details.bookNotes}') ;  
-                oFCKeditor4.BasePath = "/crm/fckeditor/" ;  
+                oFCKeditor4.BasePath = "${pageContext.request.contextPath}/fckeditor/" ;  
                 oFCKeditor4.ReplaceTextarea() ;  
 			</script>
 			<tr>
@@ -110,7 +117,7 @@
 			</tr>
 			<script>
                 var oFCKeditor5 = new FCKeditor( 'details.notes', 800, 200, 'Default', '${goods.details.notes}') ;  
-                oFCKeditor5.BasePath = "/crm/fckeditor/" ;  
+                oFCKeditor5.BasePath = "${pageContext.request.contextPath}/fckeditor/" ;  
                 oFCKeditor5.ReplaceTextarea() ;  
 			</script>
 			<tr>

@@ -15,32 +15,32 @@
 				</colgroup>
 				<tr>
 					<td>员工名称 :</td>
-					<td><form:input path="name" /></td>
+					<td><form:input path="name"  class="form-control"/></td>
 					<td><form:errors path="name" cssClass="error" /></td>
 				</tr>
 				<tr>
-					<td>代码 :</td>
-					<td><form:input path="codeName" /></td>
+					<td>英文名 :</td>
+					<td><form:input path="codeName"  class="form-control"/></td>
 					<td><form:errors path="codeName" cssClass="error" /></td>
 				</tr>
 				<tr>
 					<td>登录名 :</td>
-					<td><form:input id="loginName" path="loginName" /></td>
+					<td><form:input id="loginName" path="loginName"  class="form-control"/></td>
 					<td><form:errors path="loginName" cssClass="error" /></td>
 				</tr>
 				<tr>
 					<td>密码 :</td>
-					<td><form:password path="password" /></td>
+					<td><form:password path="password"  class="form-control"/></td>
 					<td><form:errors path="password" cssClass="error" /></td>
 				</tr>
 				<tr>
 					<td>密码确认 :</td>
-					<td><input name="passwordconfirm" type="password"/></td>
+					<td><input name="passwordconfirm" type="password" class="form-control"/></td>
 					<td></td>
 				</tr>
 				<tr>
 					<td>手机:</td>
-					<td><form:input path="mobile" /></td>
+					<td><form:input path="mobile"  class="form-control"/></td>
 					<td><form:errors path="mobile" cssClass="error" /></td>
 				</tr>
 				<tr>

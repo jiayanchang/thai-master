@@ -7,24 +7,15 @@
 <h1>商品列表</h1>
 <p>${message}</p>
 <br/>
-<c:url var="submitUrl" value="/f/goods/list"/>
+<c:url var="submitUrl" value="/a/goods/list"/>
 <form:form action="${submitUrl}" method="POST" commandName="vo">
-<table class="table">
+<table class="table table-condensed">
 <tr> 
 	<td>商品名称：</td>
-	<td colspan="3"><input name="title" value="${title }"/></td>
-	<td></td>
-	<td></td>
-</tr>
-<tr> 
-	<td>产品编号：</td>
-	<td><form:input path="goodsId"/></td>
-	<td>产品名称：</td>
-	<td><form:input path="goodsName"/></td>
+	<td colspan="3"><form:input path="titleKeyword" class="form-control"/></td>
 	<td>状态</td>
 	<td>
-	
-		<select name="status">
+		<select name="status" class="form-control">
 			<option value="-1" >全部</option>
 			<option value="1">待审核</option>
 			<option value="3">已上架</option>
@@ -34,9 +25,9 @@
 </tr>
 <tr> 
 	<td>商家编号：</td>
-	<td><form:input path="merchantId"/></td>
+	<td><form:input path="merchantId" class="form-control"/></td>
 	<td>商家名称：</td>
-	<td><form:input path="merchantName"/></td>
+	<td><form:input path="merchantName" class="form-control"/></td>
 	<td colspan="2"><input type="submit" value="查询" class="btn btn-primary btn-block" /></td>
 </tr>
 </table>
@@ -83,7 +74,7 @@
 </form:form>
 <div id="dialog-form" title="Basic dialog">
 	<input type="hidden" id="goodsId"/>
-	<textarea id="reason" rows="7" cols="32"></textarea>
+	<textarea id="reason" rows="10" cols="40"></textarea>
 </div>
 <script type="text/javascript">
 	var dialog = $( "#dialog-form" ).dialog({
@@ -93,25 +84,24 @@
 	    title:'原因',
 	    modal: true,
 	    buttons: {
-	      "确认拒绝": function(){
+	      "确认下架": function(){
 	    	  jQuery.ajax({
-	  		    type: 'POST',
-	  			encoding:"UTF-8",
-	  		    dataType:"json", 
-	  		    data:'id=' + $("#goodsId").val() + '&reason=' + $("#reason").val(),
-	  		    contentType: "application/x-www-form-urlencoded;  charset=UTF-8",
-	  		    url: "${pageContext.request.contextPath}/a/goods/cancel.json",
-	  			success: function(result) {//TODO 没执行success方法
-	  				dialog.dialog( "close" );
-	  				alert(result);
-	  				if(result.data.success) {
-	  					alert("下架成功");
-	  					$("form").submit();
-	  				} else {
-	  					alert(result.data.message);
-	  				}
-	  			}
-	  		});
+		  		    type: 'POST',
+		  			encoding:"UTF-8",
+		  		    dataType:"json", 
+		  		    data:'id=' + $("#goodsId").val() + '&reason=' + $("#reason").val(),
+		  		    contentType: "application/x-www-form-urlencoded;  charset=UTF-8",
+		  		    url: "${pageContext.request.contextPath}/a/goods/cancel.json",
+		  			success: function(result) {//TODO 没执行success方法
+		  				dialog.dialog( "close" );
+		  				if(result.data.success) {
+		  					alert("下架成功");
+		  					window.location.reload();
+		  				} else {
+		  					alert(result.data.message);
+		  				}
+		  			}
+		  		});
 	      	
 	      },
 	      "取消" : function() {

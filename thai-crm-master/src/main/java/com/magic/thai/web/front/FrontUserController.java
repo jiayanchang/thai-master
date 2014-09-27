@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
@@ -21,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.magic.thai.db.domain.User;
 import com.magic.thai.db.service.UserService;
+import com.magic.thai.exception.OrderStatusException;
 import com.magic.thai.security.UserProfile;
 
 @Controller
@@ -89,7 +91,6 @@ public class FrontUserController {
 
 		ModelAndView modelAndView = new ModelAndView("redirect:/f/user/list");
 		ModelAndView modelAndViewError = new ModelAndView("/front/user/edit");
-		System.out.println(userbean.getId() + " id");
 		if (result.hasErrors()) {
 			modelAndViewError.addObject("action", "/f/user/edit/proccess");
 			modelAndViewError.addObject("url", "/f/user/edit/" + userbean.getId());
@@ -101,42 +102,14 @@ public class FrontUserController {
 			user.setName(userbean.getName());
 			user.setLoginName(userbean.getLoginName());
 			user.setMobile(userbean.getMobile());
-			user.setPassword(userbean.getPassword());
+			if (StringUtils.isNotBlank(userbean.getPassword())) {
+				user.setPassword(userbean.getPassword());
+			}
 			userService.update(user, userprofile);
 			message = "User successfull updated";
 			return modelAndView;
 		}
 	}
-
-	// /*
-	// * @ModelAttribute untuk model form dan ("ucd") untuk validator
-	// * BindingResult result
-	// */
-	// @RequestMapping(value = "/edit/proccess", method = RequestMethod.POST)
-	// public ModelAndView editUserprosses(@ModelAttribute("user") User user,
-	// BindingResult result, SessionStatus status) {
-	// ModelAndView modelAndView = new ModelAndView("redirect:/user/list");
-	// ModelAndView modelAndViewError = new ModelAndView("useredit");
-	// System.out.println(user.getId() + " id");
-	// userValidator.validate(ucd, result);
-	// if (result.hasErrors()) {
-	// modelAndViewError.addObject("action", "/user/edit/proccess");
-	// modelAndViewError.addObject("url", "/user");
-	// modelAndViewError.addObject("ucd", ucd);
-	// return modelAndViewError;
-	// } else {
-	//
-	// User user1 = userService.findUserbyId(ucd.getId());
-	// // user1.setUsername(ucd.getUsername());
-	// // user1.setPassword(ucd.getPassword());
-	// // user1.setUserInfo(usi);
-	// //
-	//
-	// // userService.update(user1);
-	// message = "User successfull updated";
-	// return modelAndView;
-	// }
-	// }
 
 	@RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
 	public ModelAndView deleteUserPage(@PathVariable int id, HttpSession session) {
@@ -145,6 +118,34 @@ public class FrontUserController {
 		ModelAndView modelAndView = new ModelAndView("redirect:/f/user/list");
 		userService.delete(id, userprofile);
 		message = "User successfull deleted";
+		return modelAndView;
+	}
+
+	@RequestMapping(value = "/enable/{id}")
+	public ModelAndView enable(@PathVariable int id, HttpSession session) {
+		UserProfile userprofile = (UserProfile) session.getAttribute("userprofile");
+		ModelAndView modelAndView = new ModelAndView("redirect:/f/user/list");
+		try {
+			userService.enable(id, userprofile);
+			message = "用户启用成功";
+		} catch (OrderStatusException e) {
+			e.printStackTrace();
+			message = e.getMessage();
+		}
+		return modelAndView;
+	}
+
+	@RequestMapping(value = "/disable/{id}")
+	public ModelAndView disable(@PathVariable int id, HttpSession session) {
+		UserProfile userprofile = (UserProfile) session.getAttribute("userprofile");
+		ModelAndView modelAndView = new ModelAndView("redirect:/f/user/list");
+		try {
+			userService.disable(id, userprofile);
+			message = "用户停用成功";
+		} catch (OrderStatusException e) {
+			e.printStackTrace();
+			message = e.getMessage();
+		}
 		return modelAndView;
 	}
 
@@ -157,9 +158,9 @@ public class FrontUserController {
 		return modelandView;
 	}
 
-	@RequestMapping(value = "/front", method = RequestMethod.POST)
+	@RequestMapping(value = "/list", method = RequestMethod.POST)
 	public ModelAndView listUserPage(@RequestParam String name, @RequestParam String loginName, @RequestParam int status,
-			@RequestParam int page, HttpSession session) {
+			@RequestParam("vo.page") int page, HttpSession session) {
 		UserProfile userprofile = (UserProfile) session.getAttribute("userprofile");
 
 		ModelAndView modelandView = new ModelAndView("/front/user/list");

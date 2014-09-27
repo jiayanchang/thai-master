@@ -71,7 +71,6 @@ public class FrontGoodsController {
 	public ModelAndView listPost(@ModelAttribute GoodsVo vo, HttpSession session) {
 		UserProfile userprofile = (UserProfile) session.getAttribute("userprofile");
 		vo.merchantId = userprofile.getUser().getMerchantId() + "";
-
 		ModelAndView modelandView = new ModelAndView("/front/goods/list");
 		PaginationSupport ps = goodsService.getGoodsesPage(vo);
 		modelandView.addObject("ps", ps);
@@ -95,6 +94,19 @@ public class FrontGoodsController {
 		return modelAndView;
 	}
 
+	@RequestMapping(value = "/delete/{id}")
+	public ModelAndView delete(@PathVariable int id, HttpSession session) {
+		UserProfile userprofile = (UserProfile) session.getAttribute("userprofile");
+		ModelAndView modelAndView = new ModelAndView("redirect:/f/goods/list");
+		try {
+			goodsService.delete(id, userprofile);
+		} catch (GoodsStatusException e) {
+			e.printStackTrace();
+			modelAndView.addObject("message", e.getMessage());
+		}
+		return modelAndView;
+	}
+
 	@RequestMapping(value = "/edit/proccess", method = RequestMethod.POST)
 	public ModelAndView editProccess(@ModelAttribute Goods goods, @RequestParam CommonsMultipartFile picPathFile,
 			@RequestParam CommonsMultipartFile linePicPathAFile, @RequestParam CommonsMultipartFile linePicPathBFile,
@@ -104,7 +116,7 @@ public class FrontGoodsController {
 		try {
 			updateFile(goods, picPathFile, linePicPathAFile, linePicPathBFile, linePicPathCFile, linePicPathDFile, session);
 			goodsService.update(goods, userprofile);
-			modelAndView.addObject("message", "编辑成功");
+			modelAndView.addObject("message", "success");
 		} catch (GoodsStatusException e) {
 			e.printStackTrace();
 			modelAndView.setViewName("/front/goods/edit");
