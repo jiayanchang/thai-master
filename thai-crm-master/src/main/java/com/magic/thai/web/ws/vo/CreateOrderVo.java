@@ -18,6 +18,9 @@ public class CreateOrderVo {
 	private String hotelAddress;
 	private String hotelRoom;
 	private String hotelRoomTel;
+	private String hotelTel;
+	private String driverName;
+	private String driverMobile;
 
 	private List<TravelerVo> travelers = new ArrayList<TravelerVo>();
 
@@ -108,6 +111,30 @@ public class CreateOrderVo {
 
 	public void setHotelRoomTel(String hotelRoomTel) {
 		this.hotelRoomTel = hotelRoomTel;
+	}
+
+	public String getHotelTel() {
+		return hotelTel;
+	}
+
+	public void setHotelTel(String hotelTel) {
+		this.hotelTel = hotelTel;
+	}
+
+	public String getDriverName() {
+		return driverName;
+	}
+
+	public void setDriverName(String driverName) {
+		this.driverName = driverName;
+	}
+
+	public String getDriverMobile() {
+		return driverMobile;
+	}
+
+	public void setDriverMobile(String driverMobile) {
+		this.driverMobile = driverMobile;
 	}
 
 }

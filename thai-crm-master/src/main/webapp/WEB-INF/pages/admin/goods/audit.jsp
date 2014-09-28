@@ -1,12 +1,17 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%> 
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <h1>审核商品</h1>
 <c:url var="addUrl" value="/a/goods/pass"/>
 <form:form action="${addUrl}" method="POST" commandName="goods">
 	<form:hidden id="goodsId" path="id"/>
 	<table class="table">
+		<colgroup>
+			<col class="col-xs-1">
+			<col class="col-xs-7">
+		</colgroup>
 		<tr>
 			<td>商品名称：</td>
 			<td>${goods.title }</td>
@@ -48,24 +53,29 @@
 	</table>
 	
 	<h4>价格：</h4>
-	<div style="width:600px;">
+	<div style="width:700px;">
+	
 		<table class="table">
 			<c:forEach var="segment" items="${goods.segments }">
 				<tr>
-					<td>${segment.startDate }</td>
-					<td>-</td>
-					<td>${segment.endDate }</td>
-					<td>价格：</td>
-					<td>${segment.auditPrice }</td>
-					<td>（成人）</td>
-					<td>${segment.childPrice }</td>
-					<td>（儿童）</td>
+					<td>
+						<fmt:formatDate value="${segment.startDate }" type="date" pattern="yyyy/MM/dd"/>
+						至
+						<fmt:formatDate value="${segment.endDate }" type="date" pattern="yyyy/MM/dd"/>
+					</td>
+					<td>成人价格：${segment.auditPrice }</td>
+					<td>儿童价格:${segment.childPrice }</td>
+					<td></td>
 				</tr>
 			</c:forEach>
 		</table>
 	</div>
 	
-	<table class="table">		
+	<table class="table">	
+		<colgroup>
+			<col class="col-xs-1">
+			<col class="col-xs-7">
+		</colgroup>	
 		<tr>
 			<td>行程安排：</td>
 			<td>${goods.details.travelPlan }</td>

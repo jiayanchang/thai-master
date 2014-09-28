@@ -147,6 +147,10 @@ public class InterfaceOrderServiceImpl extends ServiceHelperImpl<MerchantOrder> 
 
 				merchantOrderMap.put(goods.getMerchantId() + "", merchantOrder);
 				merchantOrder.setAmount(merchantOrder.getAmount() + goodsVo.getPrice());
+				merchantOrder.setDriverMobile(vo.getDriverMobile());
+				merchantOrder.setDriverName(vo.getDriverName());
+				merchantOrder.setHotelTel(vo.getHotelTel());
+
 				merchantOrder.getGoodses().add(merchantOrderGoods);
 			}
 			// Asserts.isTrue(goodsService.checkGoods(channel, goods,

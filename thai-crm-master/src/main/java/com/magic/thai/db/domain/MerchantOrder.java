@@ -97,6 +97,15 @@ public class MerchantOrder {
 	@Column(name = "hotel_room_tel")
 	private String hotelRoomTel;
 
+	@Column(name = "hotel_tel")
+	private String hotelTel;
+
+	@Column(name = "driver_name")
+	private String driverName;
+
+	@Column(name = "driver_mobile")
+	private String driverMobile;
+
 	@OneToMany(mappedBy = "merchantOrder")
 	private List<MerchantOrderGoods> goodses = new ArrayList<MerchantOrderGoods>();
 
@@ -367,6 +376,30 @@ public class MerchantOrder {
 
 	public void setHotelRoomTel(String hotelRoomTel) {
 		this.hotelRoomTel = hotelRoomTel;
+	}
+
+	public String getHotelTel() {
+		return hotelTel;
+	}
+
+	public void setHotelTel(String hotelTel) {
+		this.hotelTel = hotelTel;
+	}
+
+	public String getDriverName() {
+		return driverName;
+	}
+
+	public void setDriverName(String driverName) {
+		this.driverName = driverName;
+	}
+
+	public String getDriverMobile() {
+		return driverMobile;
+	}
+
+	public void setDriverMobile(String driverMobile) {
+		this.driverMobile = driverMobile;
 	}
 
 }

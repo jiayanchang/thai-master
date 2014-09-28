@@ -10,39 +10,48 @@
 	<table class="table">
 		<colgroup>
 			<col class="col-xs-1">
-			<col class="col-xs-7">
+			<col class="col-xs-5">
+			<col class="col-xs-1">
+			<col class="col-xs-5">
 		</colgroup>
 		<tr>
 			<td>订单号：</td>
 			<td>${order.orderNo }</td>
+			<td></td>
+			<td></td>
 		</tr>
 		<tr>
 			<td>订单状态：</td>
 			<td>${order.statusDesc }</td>
-		</tr>
-		<tr>
-			<td>联系人：</td>
-			<td>${order.contractor }</td>
-		</tr>
-		<tr>
-			<td>联系电话：</td>
-			<td>${order.contractorMobile }</td>
-		</tr>
-		<tr>
-			<td>联系邮箱：</td>
-			<td>${order.contractorEmail }</td>
-		</tr>
-		<tr>
 			<td>酒店名称：</td>
 			<td>${order.hotelName }</td>
 		</tr>
 		<tr>
+			<td>联系人：</td>
+			<td>${order.contractor }</td>
 			<td>酒店地址：</td>
 			<td>${order.hotelAddress }</td>
 		</tr>
 		<tr>
-			<td>酒店房间号：</td>
+			<td>联系电话：</td>
+			<td>${order.contractorMobile }</td>
+			<td>房间号：</td>
 			<td>${order.hotelRoom }</td>
+		</tr>
+		<tr>
+			<td>联系邮箱：</td>
+			<td>${order.contractorEmail }</td>
+			<td>酒店电话：</td>
+			<td>${order.hotelTel }</td>
+		</tr>
+		<tr>
+			<td>司机：</td>
+			<td class="form-inline">
+				<input style="width:180px" id="driverName" class="form-control" value="${order.driverName }" placeholder="姓名"/>
+				<input id="driverMobile" style="width:180px" class="form-control" value="${order.driverMobile }"  placeholder="电话"/>
+			</td>
+			<td></td>
+			<td></td>
 		</tr>
 	</table>
 	<table class="table table-bordered table-striped " >
@@ -131,7 +140,7 @@
 		    type: 'POST',
 			encoding:"UTF-8",
 		    dataType:"json", 
-		    data : 'id=${order.id}',
+		    data : 'id=${order.id}&driverName=' + $("#driverName") + '&driverMobile=' + $("#driverMobile"),
 		    contentType: "application/x-www-form-urlencoded;  charset=UTF-8",
 		    url: "${pageContext.request.contextPath}/f/order/confirm.json",
 			success: function(result) {

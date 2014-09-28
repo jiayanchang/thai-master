@@ -109,10 +109,15 @@ public class FrontOrderController {
 	}
 
 	@RequestMapping(value = "/confirm", method = RequestMethod.POST)
-	public ModelMap confirm(@RequestParam int id, HttpSession session, ModelMap model) {
+	public ModelMap confirm(@RequestParam int id, @RequestParam String driverName, @RequestParam String driverMobile, HttpSession session,
+			ModelMap model) {
 		UserProfile userprofile = (UserProfile) session.getAttribute("userprofile");
 		try {
-			orderService.confirm(id, userprofile);
+
+			MerchantOrder merchantOrder = orderService.load(id);
+			merchantOrder.setDriverMobile(driverMobile);
+			merchantOrder.setDriverName(driverName);
+			orderService.confirm(merchantOrder, userprofile);
 			model.put("data", DataVo.success(null).setMessage("订单确认成功"));
 		} catch (ThaiException e) {
 			e.printStackTrace();

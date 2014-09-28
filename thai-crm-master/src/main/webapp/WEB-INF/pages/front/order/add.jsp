@@ -52,8 +52,11 @@
 		<tr>
 			<td>联系邮箱：</td>
 			<td><form:input path="orderContactorEmail" class="form-control"/></td>
-			<td>酒店房间号：</td>
-			<td><form:input path="hotelRoom" class="form-control"/></td>
+			<td></td>
+			<td class="form-inline">
+				<input  style="width:150px" id="hotelTel" name="hotelTel" class="form-control" placeholder="酒店电话"/>
+				<input  style="width:150px" name="hotelRoom" class="form-control" placeholder="酒店房间号"/>
+			</td>
 		</tr>
 		<tr>
 			<td>商品：</td>
@@ -65,8 +68,11 @@
 					</c:forEach>
 				</select>
 			</td>
-			<td></td>
-			<td></td>
+			<td>司机：</td>
+			<td class="form-inline">
+				<input style="width:150px" id="driverName" name="driverName" class="form-control" placeholder="姓名"/>
+				<input style="width:150px" id="driverMobile" name="driverMobile" class="form-control" placeholder="电话"/>
+			</td>
 		</tr>
 		<tr>
 			<td>总价：</td>

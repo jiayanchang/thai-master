@@ -30,12 +30,12 @@
 				</tr>
 				<tr>
 					<td>密码 :</td>
-					<td><form:password path="password"  class="form-control"/></td>
+					<td><form:password id="password" path="password"  class="form-control"/></td>
 					<td><form:errors path="password" cssClass="error" /></td>
 				</tr>
 				<tr>
 					<td>密码确认 :</td>
-					<td><input name="passwordconfirm" type="password" class="form-control"/></td>
+					<td><input id="passwordconfirm" name="passwordconfirm" type="password" class="form-control"/></td>
 					<td></td>
 				</tr>
 				<tr>
@@ -52,6 +52,15 @@
 
 	<script>
 		function submitForm() {
+			if($("#password").val() != $("#passwordconfirm").val()) {
+				alert("");
+				return false;
+			}
+			if($("#loginName").val().length < 6) {
+				alert("");
+				return false;
+			}
+			
 			jQuery.ajax({
 			    type: 'POST',
 				encoding:"UTF-8",

@@ -20,6 +20,14 @@ public interface OrderService {
 	 * @param order
 	 * @param userprofile
 	 */
+	public void confirm(MerchantOrder order, UserProfile userprofile) throws ThaiException;
+
+	/**
+	 * 商家确认订单
+	 * 
+	 * @param order
+	 * @param userprofile
+	 */
 	public void confirm(int orderId, UserProfile userprofile) throws ThaiException;
 
 	/**

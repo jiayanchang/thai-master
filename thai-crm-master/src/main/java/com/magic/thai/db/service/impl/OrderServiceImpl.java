@@ -66,6 +66,11 @@ public class OrderServiceImpl extends ServiceHelperImpl<MerchantOrder> implement
 	@Transactional
 	public void confirm(int orderId, UserProfile userprofile) throws ThaiException {
 		MerchantOrder order = merchantOrderDao.loadById(orderId);
+		confirm(order, userprofile);
+	}
+
+	@Override
+	public void confirm(MerchantOrder order, UserProfile userprofile) throws ThaiException {
 		Asserts.isFalse(order.isCompleted(), new OrderStatusException("订单已经完成"));
 		order.setStatus(MerchantOrder.Status.COMPLETED);
 		merchantOrderDao.update(order);
