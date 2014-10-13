@@ -123,6 +123,11 @@
 	<c:if test="${!order.completed }">
 		<input type="button" value="确认订单" onclick="complete();" class="btn btn-primary"/>
 	</c:if>
+	<c:if test="${order.completed }">
+		<input type="button" value="潜水人员接送凭证打印" onclick="transferCardPrint();" class="btn btn-primary"/>
+		<input type="button" value="接机单打印" onclick="pickCardPrint();" class="btn btn-primary"/>
+		<input type="button" value="发票打印" onclick="invoicePrint();" class="btn btn-primary"/>
+	</c:if>
 	<input type="button" value="返回" onclick="back();" class="btn btn-default"/>
 </form:form>
 <div id="dialog-form" title="Basic dialog" style="display:none;">
@@ -132,6 +137,18 @@
 	function back(){
 		$("form").attr('action', '${pageContext.request.contextPath}/f/order/list');
 		$("form").submit();
+	}
+	
+	function transferCardPrint(){
+		window.open("${pageContext.request.contextPath}/f/order/print/transfer_card/${order.id }");
+	}
+	
+	function pickCardPrint(){
+		window.open("${pageContext.request.contextPath}/f/order/print/pick_card/${order.id }");
+	}
+	
+	function invoicePrint(){
+		window.open("${pageContext.request.contextPath}/f/order/print/invoice_card/${order.id }");
 	}
 	
 	function complete() {

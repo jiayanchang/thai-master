@@ -31,5 +31,6 @@
     <excludes>
     	<pattern>/f/goods/snapshot/*</pattern>
     	<pattern>/a/goods/snapshot/*</pattern>
+    	<pattern>/f/order/print/*</pattern>
     </excludes>
 </decorators>

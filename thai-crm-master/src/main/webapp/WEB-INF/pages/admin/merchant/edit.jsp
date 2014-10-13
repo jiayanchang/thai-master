@@ -33,9 +33,19 @@
 			<td><form:errors path="tel" cssClass="error" /></td>
 		</tr>
 		<tr>
+			<td>FAX :</td>
+			<td><form:input path="fax"  class="form-control"/></td>
+			<td><form:errors path="fax" cssClass="error" /></td>
+		</tr>
+		<tr>
 			<td>手机:</td>
 			<td><form:input path="mobile"  class="form-control"/></td>
 			<td><form:errors path="mobile" cssClass="error" /></td>
+		</tr>
+		<tr>
+			<td>地址:</td>
+			<td><form:input path="address"  class="form-control"/></td>
+			<td><form:errors path="address" cssClass="error" /></td>
 		</tr>
 		<tr>
 			<td>LOGO:</td>

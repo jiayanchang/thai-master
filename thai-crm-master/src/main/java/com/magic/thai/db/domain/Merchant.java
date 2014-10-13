@@ -36,7 +36,11 @@ public class Merchant {
 	@Column
 	private String tel;
 	@Column
+	private String fax;
+	@Column
 	private String mobile;
+	@Column
+	private String address;
 
 	@Column
 	private int type = Type.NORMAL;
@@ -139,6 +143,14 @@ public class Merchant {
 		this.codeName = codeName;
 	}
 
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
 	public int getType() {
 		return type;
 	}
@@ -153,6 +165,14 @@ public class Merchant {
 
 	public void setStatus(int status) {
 		this.status = status;
+	}
+
+	public String getFax() {
+		return fax;
+	}
+
+	public void setFax(String fax) {
+		this.fax = fax;
 	}
 
 	public int getCreatorId() {

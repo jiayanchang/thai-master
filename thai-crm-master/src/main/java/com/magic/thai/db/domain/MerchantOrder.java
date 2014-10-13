@@ -15,6 +15,10 @@ import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import org.apache.commons.lang.time.DateFormatUtils;
+
+import com.magic.thai.util.DoubleUtils;
+
 @Entity
 @Table(name = "merchant_order")
 @XmlRootElement
@@ -402,4 +406,25 @@ public class MerchantOrder {
 		this.driverMobile = driverMobile;
 	}
 
+	/**
+	 * 增值税
+	 * 
+	 * @return
+	 */
+	public double getVatAmount() {
+		return DoubleUtils.mul(getAmount(), 0.07d);
+	}
+
+	/**
+	 * 除增值税 金额
+	 * 
+	 * @return
+	 */
+	public double getIncomeAmount() {
+		return DoubleUtils.sub(getAmount(), getVatAmount());
+	}
+
+	public String getCreatedDateDesc() {
+		return DateFormatUtils.format(this.getCreatedDate(), "MM/dd/yyyy");
+	}
 }

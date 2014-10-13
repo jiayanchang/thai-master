@@ -15,6 +15,8 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import com.magic.thai.util.DoubleUtils;
+
 @Entity
 @Table(name = "merchant_order_goods")
 @XmlRootElement
@@ -135,6 +137,10 @@ public class MerchantOrderGoods {
 
 	public void setMerchantOrder(MerchantOrder merchantOrder) {
 		this.merchantOrder = merchantOrder;
+	}
+
+	public double getTotalAmount() {
+		return DoubleUtils.mul(this.getAmount(), new Double(this.getQuantity()));
 	}
 
 }

@@ -120,6 +120,8 @@ public class MerchantController {
 		merchant.setNameEn(merchantbean.getNameEn());
 		merchant.setMobile(merchantbean.getMobile());
 		merchant.setTel(merchantbean.getTel());
+		merchant.setFax(merchantbean.getFax());
+		merchant.setAddress(merchantbean.getAddress());
 		merchant.getDetails().setNotes(merchantbean.getDetails().getNotes());
 		merchantService.update(merchant, userprofile);
 		uploadLogo(merchant, file, session);
