@@ -21,10 +21,13 @@
 			</div>
 			<div id="navbar" class="collapse navbar-collapse navbar-header-collapse">
 				<ul class="nav navbar-nav">
-					<li role="presentation"  class="dropdown-toggle"><a style='color:#FFF;' href="#">商品管理</a></li>
-					<li ><a href="${pageContext.request.contextPath}/f/order/list">订单管理</a></li>
+					<!-- 商品管理 -->
+					<li role="presentation"  class="dropdown-toggle"><a style='color:#FFF;' href="#">การบริหารจัดการสินค้า</a></li>
+					<!-- 订单管理 -->
+					<li role="presentation"><a href="${pageContext.request.contextPath}/f/order/list">การบริหารจัดการสั่งซื้อสินค้า</a></li>
+					<!-- 系统管理 -->
 					<% if(((UserProfile)session.getAttribute("userprofile")).isAdministrator()) { %>
-						<li role="presentation"><a href="${pageContext.request.contextPath}/f/user/list">系统管理</a></li>
+						<li role="presentation" ><a href="${pageContext.request.contextPath}/f/user/list">การบริหารจัดการระบบ</a></li>
 					<% } %>
 				</ul>
 				
@@ -33,7 +36,8 @@
 						<a href="#" class="navbar-link"><%=((UserProfile)session.getAttribute("userprofile")).getUser().getName()  %></a>
 					</li>
 					<li role="presentation">
-						<a href="${pageContext.request.contextPath}/logout">退出</a>
+						<!-- 退出 -->
+						<a href="${pageContext.request.contextPath}/logout">เลื่อนออก</a>
 					</li>
 				</ul>
 			</div>
@@ -43,8 +47,10 @@
 		<div class="row">
 			<div class="col-sm-3 col-md-2 sidebar">
 				<ul class="nav nav-sidebar">
-					<li><a href="${pageContext.request.contextPath}/f/goods/add">新建商品</a></li>
-					<li><a href="${pageContext.request.contextPath}/f/goods/list">商品查询</a></li>
+					<!-- 新建商品 -->
+					<li><a href="${pageContext.request.contextPath}/f/goods/add">สินค้าผลิตใหม่</a></li>
+					<!-- 商品查询 -->
+					<li><a href="${pageContext.request.contextPath}/f/goods/list">การค้นหาสินค้า</a></li>
 				</ul>
 			</div>
 			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">

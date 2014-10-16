@@ -51,7 +51,7 @@
 		</tr>
 		<tr>
 			<td>联系邮箱：</td>
-			<td><form:input path="orderContactorEmail" class="form-control"/></td>
+			<td><form:input path="orderContactorEmail" class="form-control" placeholder="请输入邮箱..."/></td>
 			<td></td>
 			<td class="form-inline">
 				<input  style="width:150px" id="hotelTel" name="hotelTel" class="form-control" placeholder="酒店电话"/>

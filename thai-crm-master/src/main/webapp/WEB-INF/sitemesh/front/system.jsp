@@ -18,16 +18,20 @@
 			</div>
 			<div id="navbar" class="navbar-collapse collapse">
 				<ul class="nav navbar-nav">
-					<li role="presentation"><a href="${pageContext.request.contextPath}/f/goods/list">商品管理</a></li>
-					<li role="presentation"><a href="${pageContext.request.contextPath}/f/order/list">订单管理</a></li>
-					<li role="presentation"  class="dropdown-toggle"><a style='color:#FFF;' href="#">系统管理</a></li>
+					<!-- 商品管理 -->
+					<li role="presentation"><a href="${pageContext.request.contextPath}/f/goods/list">การบริหารจัดการสินค้า</a></li>
+					<!-- 订单管理 -->
+					<li role="presentation"><a href="${pageContext.request.contextPath}/f/order/list">การบริหารจัดการสั่งซื้อสินค้า</a></li>
+					<!-- 系统管理 -->
+					<li role="presentation"  class="dropdown-toggle"><a style='color:#FFF;' href="#">การบริหารจัดการระบบ</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<li role="presentation">
 						<a href="#" class="navbar-link"><%=((UserProfile)session.getAttribute("userprofile")).getUser().getName()  %></a>
 					</li>
 					<li role="presentation">
-						<a href="${pageContext.request.contextPath}/logout">退出</a>
+						<!-- 退出 -->
+						<a href="${pageContext.request.contextPath}/logout">เลื่อนออก</a>
 					</li>
 				</ul>
 			</div>
@@ -37,8 +41,10 @@
 		<div class="row">
 			<div class="col-sm-3 col-md-2 sidebar">
 				<ul class="nav nav-sidebar">
-					<li><a href="${pageContext.request.contextPath}/f/user/add">新建员工</a></li>
-					<li><a href="${pageContext.request.contextPath}/f/user/list">员工查询</a></li>
+					<!-- 新建员工 -->
+					<li><a href="${pageContext.request.contextPath}/f/user/add">พนักงานใหม่</a></li>
+					<!-- 员工查询 -->
+					<li><a href="${pageContext.request.contextPath}/f/user/list">การหาพนักงาน</a></li>
 				</ul>
 			</div>
 			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">

@@ -4,7 +4,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <div class="content">
-<h1>商品列表</h1>
+<!-- 商品列表 -->
+<h1>รายชื่อสินค้า</h1>
 <p >${message}</p>
 <br/>
 <c:url var="submitUrl" value="/f/goods/list"/>
@@ -24,15 +25,22 @@
 	<td>สถานะ</td><!-- 状态 -->
 	<td>
 		<form:select path="status"  class="form-control">
-			<form:option value="-1" >全部</form:option>
-			<form:option value="0">新商品待上架</form:option>
-			<form:option value="1">待审核</form:option>
-			<form:option value="2">审核失败</form:option>
-			<form:option value="3">已上架</form:option>
-			<form:option value="4">已下架</form:option>
+			<!-- 全部 -->
+			<form:option value="-1" >ทั้งหมด</form:option>
+			<!-- 新商品待上架 -->
+			<form:option value="0">ผลิตภัณฑ์ใหม่ที่พร้อมวางตลาด</form:option>
+			<!-- 待审核 -->
+			<form:option value="1">รอการตรวจสอบ</form:option>
+			<!-- 审核失败 -->
+			<form:option value="2">ไม่ผ่านการดรวจสอบ</form:option>
+			<!-- 已上架 -->
+			<form:option value="3">พร้อมวางตลาด</form:option>
+			<!-- 已下架 -->
+			<form:option value="4">ปลดระวาง</form:option>
 		</form:select>
 	</td>
-	<td><input type="submit" value="查询" class="btn btn-primary" /></td>
+	<!-- 查询 -->
+	<td><input type="submit" value="ค้นหา" class="btn btn-primary" /></td>
 </tr>
 </table>
 <table  class="table table-striped table-hover table-condensed">

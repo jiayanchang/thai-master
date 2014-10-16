@@ -2,6 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%> 
 <script type="text/javascript" src="${pageContext.request.contextPath}/fckeditor/fckeditor.js"></script>  
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/validator.js"></script>  
 
 	<h1>新建商品</h1>
 	<c:url var="addUrl" value="/f/goods/add"/>
@@ -17,26 +18,26 @@
 			</colgroup>
 			<tr>
 				<td><font color="red">*</font>商品名称：</td>
-				<td colspan="3"><form:input path="title" class="form-control"/></td>
+				<td colspan="3"><form:input id="title" path="title" class="form-control" check="notEmpty" placeholder="请输入商品名称..."/></td>
 				<td></td>
 			</tr>
 			<tr>
 				<td><font color="red">*</font>英文名称：</td>
-				<td colspan="3"><form:input path="titleEn" class="form-control"/></td>
+				<td colspan="3"><form:input id="titleEn" path="titleEn" class="form-control" check="notEmpty" placeholder="请输入商品英文名称..."/></td>
 				<td></td>
 			</tr>
 			<tr>
 				<td><font color="red">*</font>出发地：</td>
-				<td><form:input path="dept"  class="form-control"/></td>
+				<td><form:input path="dept"  class="form-control" check="notEmpty" placeholder="请输入出发地..."/></td>
 				<td><font color="red">*</font>目的地：</td>
-				<td><form:input path="arrived"  class="form-control"/></td>
+				<td><form:input path="arrived"  class="form-control" check="notEmpty"  placeholder="请输入目的地..."/></td>
 				<td></td>
 			</tr>
 			<tr>
 				<td><font color="red">*</font>行程天数：</td>
-				<td><form:input path="travelDays"  class="form-control"/></td>
+				<td><form:input path="travelDays"  class="form-control" check="integer" placeholder="请输入一个整数..."/>天</td>
 				<td><font color="red">*</font>库存数量：</td>
-				<td><form:input path="goodsCount"  class="form-control"/></td>
+				<td><form:input path="goodsCount"  class="form-control" check="integer" placeholder="请输入一个整数..."/></td>
 				<td></td>
 			</tr>
 		</table>
@@ -121,7 +122,7 @@
                 oFCKeditor5.ReplaceTextarea() ;  
 			</script>
 			<tr>
-				<td colspan="3"><input type="submit" value="提交" class="btn btn-primary" /></td>
+				<td colspan="3"><input type="button" onclick="validate();" value="提交" class="btn btn-primary" /></td>
 			</tr>
 		</table>
 	</form:form>
@@ -129,13 +130,13 @@
 function addPriceSegment() {
 	var index = $("#price_tbl tr").length;
 	var html = '<tr index="' + index + '">'
-		+'<td><input name="segments[' + index + '].startDate" style="width:110px;" class="form-control" tag="date"/></td>'
+		+'<td><input name="segments[' + index + '].startDate" style="width:110px;" check="notEmpty date" class="form-control" tag="date"  placeholder="请选择日期..."/></td>'
 		+'<td>-</td>'
-		+'<td><input name="segments[' + index + '].endDate" style="width:110px;" class="form-control" tag="date"/></td>'
+		+'<td><input name="segments[' + index + '].endDate" style="width:110px;" check="notEmpty date" class="form-control" tag="date"  placeholder="请选择日期..."/></td>'
 		+'<td><font color="red">*</font>价格：</td>'
-		+'<td><input name="segments[' + index + '].auditPrice" style="width:70px;" class="form-control"/></td>'
+		+'<td><input name="segments[' + index + '].auditPrice" style="width:70px;" check="amount" class="form-control"  placeholder="金额"/></td>'
 		+'<td>（成人）</td>'
-		+'<td><input name="segments[' + index + '].childPrice" style="width:70px;" class="form-control"/></td>'
+		+'<td><input name="segments[' + index + '].childPrice" style="width:70px;" check="amount" class="form-control"  placeholder="金额"/></td>'
 		+'<td>（儿童）</td>'
 		+'<td><a class="btn btn-warning" href="javascript:removePriceSegment(' + index + ');">移除</a></td>'
 		+'</tr>';	
@@ -152,4 +153,40 @@ function removePriceSegment(index){
 $(function() {
 	$("#price_tbl [tag=date]").datepicker({dateFormat:'yy/mm/dd'});
 });
+
+function validate() {
+	$(".has-error").removeClass("has-error");
+	var pass = true;
+	$("form input").each(function() {
+		var check = $(this).attr("check");
+		var val = $(this).val();
+		if(check) {
+			if(check.indexOf('amount') >= 0){
+				if(!isDigital(val)) {
+					pass = false;
+					$(this).parent().addClass("form-group has-error");
+				}
+			}
+			if (check.indexOf('notEmpty') >= 0) {
+				if(isEmpty(val)) {
+					pass = false;
+					$(this).parent().addClass("form-group has-error");
+				}
+			} 
+			if (check.indexOf('integer') >= 0) {
+				if(!isInteger(val)) {
+					pass = false;
+					$(this).parent().addClass("form-group has-error");
+				}
+			} 
+			if (check.indexOf('date') >= 0) {
+				
+			}
+		}
+	});
+	
+	if(pass) {
+		$("from").submit();
+	}
+}
 </script>

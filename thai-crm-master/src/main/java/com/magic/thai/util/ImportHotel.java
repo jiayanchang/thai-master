@@ -24,7 +24,7 @@ public class ImportHotel extends BaseTest {
 	@Test
 	@Transactional
 	public void testHo() throws Exception {
-		InputStream is = new FileInputStream("d:/downloads/1.xlsx");
+		InputStream is = new FileInputStream("d:/1.xlsx");
 		XSSFWorkbook xssfWorkbook = new XSSFWorkbook(is);
 
 		Hotel hotel = null;
@@ -109,8 +109,7 @@ public class ImportHotel extends BaseTest {
 	/**
 	 * 得到Excel表中的值
 	 *
-	 * @param hssfCell
-	 *            Excel中的每一个格子
+	 * @param hssfCell Excel中的每一个格子
 	 * @return Excel中每一个格子中的值
 	 */
 	@SuppressWarnings("static-access")

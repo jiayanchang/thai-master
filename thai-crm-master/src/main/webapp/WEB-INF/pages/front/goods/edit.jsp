@@ -93,14 +93,14 @@
 						<tr index="${status.index }">
 							<td>
 								<input type="hidden" tag="id" name="segments[${status.index }].id" value="${segment.id }"/>
-								<input name="segments[${status.index }].startDate" tag="date" class="form-control" value="<fmt:formatDate value="${segment.startDate }" type="date" pattern="yyyy/MM/dd"/>"/>
+								<input name="segments[${status.index }].startDate" tag="date" class="form-control"  value="<fmt:formatDate value="${segment.startDate }" type="date" pattern="yyyy/MM/dd"/>"/>
 							</td>
 							<td></td>
 							<td><input name="segments[${status.index }].endDate" tag="date" class="form-control" value="<fmt:formatDate value="${segment.endDate }" type="date" pattern="yyyy/MM/dd"/>"/></td>
 							<td><font color="red">*</font>价格：</td>
-							<td><input name="segments[${status.index }].auditPrice" class="form-control" value="${segment.auditPrice }"/></td>
+							<td><input name="segments[${status.index }].auditPrice" class="form-control" value="${segment.auditPrice }"  placeholder="金额"/></td>
 							<td>（成人）</td>
-							<td><input name="segments[${status.index }].childPrice" class="form-control" value="${segment.childPrice }"/></td>
+							<td><input name="segments[${status.index }].childPrice" class="form-control" value="${segment.childPrice }"  placeholder="金额"/></td>
 							<td>（儿童）</td>
 							<td>
 								<a class="btn btn-warning" href="javascript:removePriceSegment( ${status.index });">移除</a>
@@ -153,7 +153,7 @@
                 oFCKeditor5.ReplaceTextarea(); 
 			</script>
 			<tr>
-				<td colspan="3"><input type="submit" value="保存" class="btn btn-primary" /></td>
+				<td colspan="3"><input type="button" onclick="validate();" value="提交" class="btn btn-primary" /></td>
 			</tr>
 		</table>
 		<form:hidden path="details.id" />
@@ -185,4 +185,40 @@
 	}
 	
 	$("#price_tbl [tag=date]").datepicker({dateFormat:'yy/mm/dd'});
+	
+	function validate() {
+		$(".has-error").removeClass("has-error");
+		var pass = true;
+		$("form input").each(function() {
+			var check = $(this).attr("check");
+			var val = $(this).val();
+			if(check) {
+				if(check.indexOf('amount') >= 0){
+					if(!isDigital(val)) {
+						pass = false;
+						$(this).parent().addClass("form-group has-error");
+					}
+				}
+				if (check.indexOf('notEmpty') >= 0) {
+					if(isEmpty(val)) {
+						pass = false;
+						$(this).parent().addClass("form-group has-error");
+					}
+				} 
+				if (check.indexOf('integer') >= 0) {
+					if(!isInteger(val)) {
+						pass = false;
+						$(this).parent().addClass("form-group has-error");
+					}
+				} 
+				if (check.indexOf('date') >= 0) {
+					
+				}
+			}
+		});
+		
+		if(pass) {
+			$("from").submit();
+		}
+	}
 </script>

@@ -21,10 +21,13 @@
 			</div>
 			<div id="navbar" class="navbar-collapse collapse">
 				<ul class="nav navbar-nav">
-					<li role="presentation" ><a href="${pageContext.request.contextPath}/f/goods/list">商品管理</a></li>
-					<li role="presentation"  class="dropdown-toggle"><a style='color:#FFF;' href="#">订单管理</a></li>
+					<!-- 商品管理 -->
+					<li role="presentation"><a href="${pageContext.request.contextPath}/f/goods/list">การบริหารจัดการสินค้า</a></li>
+					<!-- 订单管理 -->
+					<li role="presentation"><a style='color:#FFF;' href="#">การบริหารจัดการสั่งซื้อสินค้า</a></li>
+					<!-- 系统管理 -->
 					<% if(((UserProfile)session.getAttribute("userprofile")).isAdministrator()) { %>
-						<li role="presentation" ><a href="${pageContext.request.contextPath}/f/user/list">系统管理</a></li>
+						<li role="presentation" ><a href="${pageContext.request.contextPath}/f/user/list">การบริหารจัดการระบบ</a></li>
 					<% } %>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
@@ -32,7 +35,8 @@
 						<a href="#" class="navbar-link"><%=((UserProfile)session.getAttribute("userprofile")).getUser().getName()  %></a>
 					</li>
 					<li role="presentation">
-						<a href="${pageContext.request.contextPath}/logout">退出</a>
+						<!-- 退出 -->
+						<a href="${pageContext.request.contextPath}/logout">เลื่อนออก</a>
 					</li>
 				</ul>
 			</div>
@@ -42,9 +46,12 @@
 		<div class="row">
 			<div class="col-sm-3 col-md-2 sidebar">
 				<ul class="nav nav-sidebar">
-					<li><a href="${pageContext.request.contextPath}/f/order/add">新建订单</a></li>
-					<li><a href="${pageContext.request.contextPath}/f/order/list">订单查询</a></li>
-					<li><a href="${pageContext.request.contextPath}/f/order/audits">待确定订单<span id="orderMonitorSpan" class="badge"></span></a></li>
+					<!-- 新建订单 -->
+					<li><a href="${pageContext.request.contextPath}/f/order/add">คำสั่งซื้อใหม่</a></li>
+					<!-- 订单查询 -->
+					<li><a href="${pageContext.request.contextPath}/f/order/list">ติดตามการสั่งซื้อ</a></li>
+					<!-- 待确定订单 -->
+					<li><a href="${pageContext.request.contextPath}/f/order/audits">คำสั่งซื้อที่ได้รับการยืนยัน<span id="orderMonitorSpan" class="badge"></span></a></li>
 				</ul>
 			</div>
 			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
