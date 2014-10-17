@@ -62,11 +62,14 @@ public class Goods {
 	private String hotelName;
 
 	@Column(name = "travel_days")
-	private int travelDays;// 行程天数
+	private int travelDays = 1;// 行程天数
 
 	@Expose
 	@Column(name = "goods_count")
-	private int goodsCount;// 库存
+	private int goodsCount = 200;// 库存
+
+	@Column(name = "base_price")
+	private int basePrice;// 底价
 
 	@Expose
 	@Column(name = "sold_count")
@@ -253,6 +256,14 @@ public class Goods {
 		this.soldCount = soldCount;
 	}
 
+	public int getBasePrice() {
+		return basePrice;
+	}
+
+	public void setBasePrice(int basePrice) {
+		this.basePrice = basePrice;
+	}
+
 	@XmlTransient
 	public boolean isAuditing() {
 		return this.status == Status.AUDITING;
@@ -274,7 +285,8 @@ public class Goods {
 	@Override
 	public String toString() {
 		return "Goods [merchantName=" + merchantName + ", title=" + title + ", dept=" + dept + ", arrived=" + arrived + ", status="
-				+ status + ", hotelName=" + hotelName + ", travelDays=" + travelDays + ", goodsCount=" + goodsCount + "]";
+				+ status + ", hotelName=" + hotelName + ", travelDays=" + travelDays + ", goodsCount=" + goodsCount + ", basePrice="
+				+ basePrice + "]";
 	}
 
 }

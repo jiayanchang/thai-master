@@ -3,6 +3,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%> 
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <script type="text/javascript" src="${pageContext.request.contextPath}/fckeditor/fckeditor.js"></script>  
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/validator.js"></script>  
 
 <div class="content">
 	<h1>编辑商品</h1>
@@ -22,26 +23,48 @@
 			</colgroup>
 			<tr>
 				<td><font color="red">*</font>商品名称：</td>
-				<td colspan="3"><form:input path="title" class="form-control"/></td>
+				<td colspan="3"><form:input path="title" class="form-control" check="notEmpty" placeholder="请输入商品名称..."/></td>
 				<td></td>
 			</tr>
 			<tr>
 				<td><font color="red">*</font>英文名称：</td>
-				<td colspan="3"><form:input path="titleEn" class="form-control"/></td>
+				<td colspan="3"><form:input path="titleEn" class="form-control" check="notEmpty" placeholder="请输入商品英文名称..."/></td>
 				<td></td>
 			</tr>
 			<tr>
 				<td><font color="red">*</font>出发地：</td>
-				<td><form:input path="dept"  class="form-control"/></td>
+				<td><form:input path="dept"  class="form-control"  check="notEmpty" placeholder="请输入出发地..."/></td>
 				<td><font color="red">*</font>目的地：</td>
-				<td><form:input path="arrived"  class="form-control"/></td>
+				<td><form:input path="arrived"  class="form-control" check="notEmpty"  placeholder="请输入目的地..."/></td>
 				<td></td>
 			</tr>
 			<tr>
 				<td><font color="red">*</font>行程天数：</td>
-				<td><form:input path="travelDays"  class="form-control"/></td>
+				<td>
+					<div class="input-group">
+					  <form:input path="travelDays" class="form-control" check="integer" placeholder="请输入一个整数..."/>
+					  <span class="input-group-addon">天</span>
+					</div>
+				</td>
 				<td><font color="red">*</font>库存数量：</td>
-				<td><form:input path="goodsCount"  class="form-control"/></td>
+				<td>
+					<div class="input-group">
+						<form:input path="goodsCount"  class="form-control" check="integer" placeholder="请输入一个整数..."/>
+					  	<span class="input-group-addon">/天</span>
+					</div>
+				</td>
+				<td></td>
+			</tr>
+			<tr>
+				<td><font color="red">*</font>单价：</td>
+				<td>
+					<div class="input-group">
+					  <form:input path="basePrice" class="form-control" check="integer" placeholder="请输入一个整数..."/>
+					  <span class="input-group-addon">.00</span>
+					</div>
+				</td>
+				<td></td>
+				<td></td>
 				<td></td>
 			</tr>
 		</table>
@@ -86,21 +109,22 @@
 			</tr>
 			
 			<tr>
-				<td><font color="red">*</font>价格管理：<a class="btn btn-success" href="javascript:addPriceSegment();">添加</a></td>
+				<td><font color="red">*</font>浮动价格：</td>
 				<td>
+					<a class="btn btn-success" href="javascript:addPriceSegment();">添加</a>
 					<table id="price_tbl">
 						<c:forEach var="segment" items="${goods.segments }" varStatus="status">
 						<tr index="${status.index }">
 							<td>
 								<input type="hidden" tag="id" name="segments[${status.index }].id" value="${segment.id }"/>
-								<input name="segments[${status.index }].startDate" tag="date" class="form-control"  value="<fmt:formatDate value="${segment.startDate }" type="date" pattern="yyyy/MM/dd"/>"/>
+								<input name="segments[${status.index }].startDate" tag="date" check="notEmpty date" class="form-control"  value="<fmt:formatDate value="${segment.startDate }" type="date"  pattern="yyyy/MM/dd"/>" placeholder="请选择日期..." />
 							</td>
 							<td></td>
-							<td><input name="segments[${status.index }].endDate" tag="date" class="form-control" value="<fmt:formatDate value="${segment.endDate }" type="date" pattern="yyyy/MM/dd"/>"/></td>
+							<td><input name="segments[${status.index }].endDate" tag="date" check="notEmpty date" class="form-control" value="<fmt:formatDate value="${segment.endDate }" type="date"  pattern="yyyy/MM/dd"/>" placeholder="请选择日期..." /></td>
 							<td><font color="red">*</font>价格：</td>
-							<td><input name="segments[${status.index }].auditPrice" class="form-control" value="${segment.auditPrice }"  placeholder="金额"/></td>
+							<td><input name="segments[${status.index }].auditPrice" class="form-control" value="${segment.auditPrice }" check="amount"  placeholder="请输入金额..."/></td>
 							<td>（成人）</td>
-							<td><input name="segments[${status.index }].childPrice" class="form-control" value="${segment.childPrice }"  placeholder="金额"/></td>
+							<td><input name="segments[${status.index }].childPrice" class="form-control" value="${segment.childPrice }"  check="amount" placeholder="请输入金额..."/></td>
 							<td>（儿童）</td>
 							<td>
 								<a class="btn btn-warning" href="javascript:removePriceSegment( ${status.index });">移除</a>
@@ -163,13 +187,13 @@
 	function addPriceSegment(){
 		var index = 1 + parseInt($("#price_tbl tr:last").attr("index"));
 		var html = '<tr index="' + index + '">'
-			+'<td><input name="segments[' + index + '].startDate" tag="date" class="form-control"/></td>'
+			+'<td><input name="segments[' + index + '].startDate" tag="date" class="form-control" check="notEmpty date" placeholder="请选择日期..."/></td>'
 			+'<td></td>'
-			+'<td><input name="segments[' + index + '].endDate" tag="date" class="form-control"/></td>'
+			+'<td><input name="segments[' + index + '].endDate" tag="date" class="form-control" check="notEmpty date" placeholder="请选择日期..."/></td>'
 			+'<td><font color="red">*</font>价格：</td>'
-			+'<td><input name="segments[' + index + '].auditPrice" class="form-control"/></td>'
+			+'<td><input name="segments[' + index + '].auditPrice" class="form-control"check="amount"  placeholder="请输入金额..."/></td>'
 			+'<td>（成人）</td>'
-			+'<td><input name="segments[' + index + '].childPrice" class="form-control"/></td>'
+			+'<td><input name="segments[' + index + '].childPrice" class="form-control"check="amount"  placeholder="请输入金额..."/></td>'
 			+'<td>（儿童）</td>'
 			+'<td><a class="btn btn-warning" href="javascript:removePriceSegment(' + index + ');">移除</a></td>'
 			+'</tr>';	
@@ -186,9 +210,11 @@
 	
 	$("#price_tbl [tag=date]").datepicker({dateFormat:'yy/mm/dd'});
 	
+
 	function validate() {
 		$(".has-error").removeClass("has-error");
 		var pass = true;
+		var alerted = false;
 		$("form input").each(function() {
 			var check = $(this).attr("check");
 			var val = $(this).val();
@@ -197,18 +223,33 @@
 					if(!isDigital(val)) {
 						pass = false;
 						$(this).parent().addClass("form-group has-error");
+						if(!alerted) {
+							$(this).focus();
+							alert($(this).attr("placeholder"));
+							alerted = true;
+						}
 					}
 				}
 				if (check.indexOf('notEmpty') >= 0) {
 					if(isEmpty(val)) {
 						pass = false;
 						$(this).parent().addClass("form-group has-error");
+						if(!alerted) {
+							$(this).focus();
+							alert($(this).attr("placeholder"));
+							alerted = true;
+						}
 					}
 				} 
 				if (check.indexOf('integer') >= 0) {
 					if(!isInteger(val)) {
 						pass = false;
 						$(this).parent().addClass("form-group has-error");
+						if(!alerted) {
+							$(this).focus();
+							alert($(this).attr("placeholder"));
+							alerted = true;
+						}
 					}
 				} 
 				if (check.indexOf('date') >= 0) {
@@ -216,9 +257,8 @@
 				}
 			}
 		});
-		
 		if(pass) {
-			$("from").submit();
+			$("form").submit();
 		}
 	}
 </script>

@@ -35,9 +35,31 @@
 			</tr>
 			<tr>
 				<td><font color="red">*</font>行程天数：</td>
-				<td><form:input path="travelDays"  class="form-control" check="integer" placeholder="请输入一个整数..."/>天</td>
+				<td>
+					<div class="input-group">
+					  <form:input path="travelDays" class="form-control" check="integer" placeholder="请输入一个整数..."/>
+					  <span class="input-group-addon">天</span>
+					</div>
+				</td>
 				<td><font color="red">*</font>库存数量：</td>
-				<td><form:input path="goodsCount"  class="form-control" check="integer" placeholder="请输入一个整数..."/></td>
+				<td>
+					<div class="input-group">
+						<form:input path="goodsCount"  class="form-control" check="integer" placeholder="请输入一个整数..."/>
+					  	<span class="input-group-addon">/天</span>
+					</div>
+				</td>
+				<td></td>
+			</tr>
+			<tr>
+				<td><font color="red">*</font>单价：</td>
+				<td>
+					<div class="input-group">
+					  <form:input path="basePrice" class="form-control" check="integer" placeholder="请输入一个整数..."/>
+					  <span class="input-group-addon">.00</span>
+					</div>
+				</td>
+				<td></td>
+				<td></td>
 				<td></td>
 			</tr>
 		</table>
@@ -73,8 +95,9 @@
 				<td></td>
 			</tr>
 			<tr>
-				<td><font color="red">*</font>价格管理：<a class="btn btn-success" href="javascript:addPriceSegment();">添加</a></td>
+				<td><font color="red">*</font>浮动价格：</td>
 				<td>
+					<a class="btn btn-success" href="javascript:addPriceSegment();">添加</a>
 					<table id="price_tbl">
 					
 					</table>
@@ -134,9 +157,9 @@ function addPriceSegment() {
 		+'<td>-</td>'
 		+'<td><input name="segments[' + index + '].endDate" style="width:110px;" check="notEmpty date" class="form-control" tag="date"  placeholder="请选择日期..."/></td>'
 		+'<td><font color="red">*</font>价格：</td>'
-		+'<td><input name="segments[' + index + '].auditPrice" style="width:70px;" check="amount" class="form-control"  placeholder="金额"/></td>'
+		+'<td><input name="segments[' + index + '].auditPrice" style="width:100px;" check="amount" class="form-control"  placeholder="请输入金额..."/></td>'
 		+'<td>（成人）</td>'
-		+'<td><input name="segments[' + index + '].childPrice" style="width:70px;" check="amount" class="form-control"  placeholder="金额"/></td>'
+		+'<td><input name="segments[' + index + '].childPrice" style="width:100px;" check="amount" class="form-control"  placeholder="请输入金额..."/></td>'
 		+'<td>（儿童）</td>'
 		+'<td><a class="btn btn-warning" href="javascript:removePriceSegment(' + index + ');">移除</a></td>'
 		+'</tr>';	
@@ -144,7 +167,7 @@ function addPriceSegment() {
 	$("#price_tbl").append(newtr);
 	$("#price_tbl [tag=date]").datepicker({dateFormat:'yy/mm/dd'});
 }
-addPriceSegment();
+//addPriceSegment();
 
 function removePriceSegment(index){
 	$("#price_tbl tr[index=" + index + "]").remove();
@@ -157,6 +180,7 @@ $(function() {
 function validate() {
 	$(".has-error").removeClass("has-error");
 	var pass = true;
+	var alerted = false;
 	$("form input").each(function() {
 		var check = $(this).attr("check");
 		var val = $(this).val();
@@ -165,18 +189,33 @@ function validate() {
 				if(!isDigital(val)) {
 					pass = false;
 					$(this).parent().addClass("form-group has-error");
+					if(!alerted) {
+						$(this).focus();
+						alert($(this).attr("placeholder"));
+						alerted = true;
+					}
 				}
 			}
 			if (check.indexOf('notEmpty') >= 0) {
 				if(isEmpty(val)) {
 					pass = false;
 					$(this).parent().addClass("form-group has-error");
+					if(!alerted) {
+						$(this).focus();
+						alert($(this).attr("placeholder"));
+						alerted = true;
+					}
 				}
 			} 
 			if (check.indexOf('integer') >= 0) {
 				if(!isInteger(val)) {
 					pass = false;
 					$(this).parent().addClass("form-group has-error");
+					if(!alerted) {
+						$(this).focus();
+						alert($(this).attr("placeholder"));
+						alerted = true;
+					}
 				}
 			} 
 			if (check.indexOf('date') >= 0) {
@@ -186,7 +225,7 @@ function validate() {
 	});
 	
 	if(pass) {
-		$("from").submit();
+		$("form").submit();
 	}
 }
 </script>

@@ -74,6 +74,10 @@ public class SnapshotGoods {
 	private int goodsCount;// 库存
 
 	@Expose
+	@Column(name = "base_price")
+	private int basePrice;// 底价
+
+	@Expose
 	@Column(name = "sold_count")
 	private int soldCount;// 已售
 
@@ -241,6 +245,14 @@ public class SnapshotGoods {
 
 	public void setTitleCn(String titleCn) {
 		this.titleCn = titleCn;
+	}
+
+	public int getBasePrice() {
+		return basePrice;
+	}
+
+	public void setBasePrice(int basePrice) {
+		this.basePrice = basePrice;
 	}
 
 	@Override
