@@ -145,7 +145,7 @@
                 oFCKeditor5.ReplaceTextarea() ;  
 			</script>
 			<tr>
-				<td colspan="3"><input type="button" onclick="validate();" value="提交" class="btn btn-primary" /></td>
+				<td colspan="3"><input type="button" onclick="submitForm();" value="提交" class="btn btn-primary" /></td>
 			</tr>
 		</table>
 	</form:form>
@@ -177,55 +177,10 @@ $(function() {
 	$("#price_tbl [tag=date]").datepicker({dateFormat:'yy/mm/dd'});
 });
 
-function validate() {
-	$(".has-error").removeClass("has-error");
-	var pass = true;
-	var alerted = false;
-	$("form input").each(function() {
-		var check = $(this).attr("check");
-		var val = $(this).val();
-		if(check) {
-			if(check.indexOf('amount') >= 0){
-				if(!isDigital(val)) {
-					pass = false;
-					$(this).parent().addClass("form-group has-error");
-					if(!alerted) {
-						$(this).focus();
-						alert($(this).attr("placeholder"));
-						alerted = true;
-					}
-				}
-			}
-			if (check.indexOf('notEmpty') >= 0) {
-				if(isEmpty(val)) {
-					pass = false;
-					$(this).parent().addClass("form-group has-error");
-					if(!alerted) {
-						$(this).focus();
-						alert($(this).attr("placeholder"));
-						alerted = true;
-					}
-				}
-			} 
-			if (check.indexOf('integer') >= 0) {
-				if(!isInteger(val)) {
-					pass = false;
-					$(this).parent().addClass("form-group has-error");
-					if(!alerted) {
-						$(this).focus();
-						alert($(this).attr("placeholder"));
-						alerted = true;
-					}
-				}
-			} 
-			if (check.indexOf('date') >= 0) {
-				
-			}
-		}
-	});
-	
-	if(pass) {
+function submitForm() {
+	if(!confirm("是否确定？")) return false;
+	validate(function(){
 		$("form").submit();
-	}
+	});
 }
 </script>

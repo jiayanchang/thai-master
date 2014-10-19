@@ -8,6 +8,8 @@ public interface ChannelService {
 
 	public Channel load(int id);
 
+	public Channel load(String token);
+
 	public Channel fetch(int id);
 
 	public void delete(int channelId, UserProfile userprofile);

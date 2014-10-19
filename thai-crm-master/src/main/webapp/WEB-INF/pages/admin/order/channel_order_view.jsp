@@ -43,7 +43,7 @@
 			<tr>
 				<td>商家：${merchantOrder.merchantName }</td>
 				<td>单号：<a href="javascript:window.open('${pageContext.request.contextPath}/a/order/${merchantOrder.id }')">${merchantOrder.orderNo }</a></td>
-				<td>金额：${merchantOrder.amount }</td>
+				<td>订单金额：${merchantOrder.profitAmount } 商家：${merchantOrder.amount }</td>
 				<td>状态：${merchantOrder.statusDesc }</td>
 			</tr>
 			<tr>

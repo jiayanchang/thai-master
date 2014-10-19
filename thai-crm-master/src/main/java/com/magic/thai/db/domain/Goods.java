@@ -1,6 +1,7 @@
 package com.magic.thai.db.domain;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -69,7 +70,7 @@ public class Goods {
 	private int goodsCount = 200;// 库存
 
 	@Column(name = "base_price")
-	private int basePrice;// 底价
+	private double basePrice;// 底价
 
 	@Expose
 	@Column(name = "sold_count")
@@ -256,11 +257,11 @@ public class Goods {
 		this.soldCount = soldCount;
 	}
 
-	public int getBasePrice() {
+	public double getBasePrice() {
 		return basePrice;
 	}
 
-	public void setBasePrice(int basePrice) {
+	public void setBasePrice(double basePrice) {
 		this.basePrice = basePrice;
 	}
 
@@ -274,10 +275,11 @@ public class Goods {
 		return this.status == Status.DEPLOYED;
 	}
 
-	@XmlTransient
-	public GoodsPriceSegment getLastSegment() {
-		if (getSegments().size() > 0) {
-			return getSegments().get(getSegments().size() - 1);
+	public GoodsPriceSegment getSegment(Date date) {
+		for (GoodsPriceSegment goodsPriceSegment : getSegments()) {
+			if (goodsPriceSegment.getStartDate().after(date) && goodsPriceSegment.getEndDate().before(date)) {
+				return goodsPriceSegment;
+			}
 		}
 		return null;
 	}

@@ -20,9 +20,12 @@ import com.magic.thai.db.dao.MerchantOrderDao;
 import com.magic.thai.db.dao.MerchantOrderGoodsDao;
 import com.magic.thai.db.dao.MerchantOrderNotesDao;
 import com.magic.thai.db.domain.Channel;
+import com.magic.thai.db.domain.ChannelGoodsInv;
+import com.magic.thai.db.domain.ChannelMerchantInv;
 import com.magic.thai.db.domain.ChannelOrder;
 import com.magic.thai.db.domain.ChannelOrderTraveler;
 import com.magic.thai.db.domain.Goods;
+import com.magic.thai.db.domain.GoodsPriceSegment;
 import com.magic.thai.db.domain.MerchantOrder;
 import com.magic.thai.db.domain.MerchantOrderGoods;
 import com.magic.thai.db.domain.MerchantOrderNotes;
@@ -39,6 +42,7 @@ import com.magic.thai.exception.webservice.ParameterException;
 import com.magic.thai.security.UserProfile;
 import com.magic.thai.util.Asserts;
 import com.magic.thai.util.CalendarUtils;
+import com.magic.thai.util.DoubleUtils;
 import com.magic.thai.util.OrderNoGenerator;
 import com.magic.thai.web.ws.vo.BuyGoodsVo;
 import com.magic.thai.web.ws.vo.CheckGoodsVo;
@@ -122,6 +126,7 @@ public class InterfaceOrderServiceImpl extends ServiceHelperImpl<MerchantOrder> 
 				MerchantOrder merchantOrder = merchantOrderMap.get(goods.getMerchantId() + "");
 				merchantOrder.getGoodses().add(merchantOrderGoods);
 				merchantOrder.setAmount(merchantOrder.getAmount() + goodsVo.getPrice());
+				merchantOrder.setProfitAmount(merchantOrder.getAmount());
 				merchantOrderGoods.setMerchantOrder(merchantOrder);
 			} else {
 
@@ -147,6 +152,7 @@ public class InterfaceOrderServiceImpl extends ServiceHelperImpl<MerchantOrder> 
 
 				merchantOrderMap.put(goods.getMerchantId() + "", merchantOrder);
 				merchantOrder.setAmount(merchantOrder.getAmount() + goodsVo.getPrice());
+				merchantOrder.setProfitAmount(merchantOrder.getAmount());
 				merchantOrder.setDriverMobile(vo.getDriverMobile());
 				merchantOrder.setDriverName(vo.getDriverName());
 				merchantOrder.setHotelTel(vo.getHotelTel());
@@ -206,10 +212,17 @@ public class InterfaceOrderServiceImpl extends ServiceHelperImpl<MerchantOrder> 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public ChannelOrder create(CreateOrderVo vo) throws ThaiException {
+
+		// 下单逻辑需要重新梳理
+		/*
+		 * 1.传入商品需要传价格来进行验证 因为下单和查询时间差可能很大 期间有可能有调整<br> 2.商品下单时需要保存商品的单价和加价值
+		 * 3.商家的商品数量验证也需要修改为每天200个的逻辑<br> 4.快照也需要存入加价值，供客服查看
+		 */
+
 		Channel channel = channelDao.fetchByToken(vo.getToken());
 
 		Asserts.notNull(channel, new ParameterException("TOKEN有误"));
-		Asserts.isTrue(channel.isDisabled(), new ParameterException("TOKEN无效"));
+		Asserts.isTrue(channel.isEnabled(), new ParameterException("TOKEN无效"));
 
 		ChannelOrder channelOrder = new ChannelOrder();
 		channelOrder.setChannelId(channel.getId());
@@ -229,11 +242,15 @@ public class InterfaceOrderServiceImpl extends ServiceHelperImpl<MerchantOrder> 
 			} catch (Exception e) {
 				throw new ParameterException("出发日期格式异常");
 			}
-			Goods goods = goodsDao.loadById(goodsVo.getGoodsId());
+			Goods goods = goodsService.fetch(goodsVo.getGoodsId());
 			Asserts.notNull(goods, new ParameterException("商品ID有误：" + goodsVo.getGoodsId()));
 
+			// 验证加价价格
+			double profitPrice = CreateOrderValidator.validate(channel, goods, goodsVo);
+			double goodsPrice = CreateOrderValidator.getPirce(goods, goodsVo);
+
 			MerchantOrderGoods merchantOrderGoods = new MerchantOrderGoods();
-			merchantOrderGoods.setAmount(goodsVo.getPrice());
+			merchantOrderGoods.setAmount(profitPrice);
 			merchantOrderGoods.setChannelId(channel.getId());
 			merchantOrderGoods.setDeptDate(goodsVo.deptDateObj);
 			merchantOrderGoods.setGoodsId(goods.getId());
@@ -241,12 +258,12 @@ public class InterfaceOrderServiceImpl extends ServiceHelperImpl<MerchantOrder> 
 			merchantOrderGoods.setMerchantId(goods.getMerchantId());
 
 			merchantOrderGoods.setQuantity(goodsVo.getQty());
-			// mogoods.setTravelerNames(travelerNames);
 
 			if (merchantOrderMap.containsKey(goods.getMerchantId() + "")) {
 				MerchantOrder merchantOrder = merchantOrderMap.get(goods.getMerchantId() + "");
 				merchantOrder.getGoodses().add(merchantOrderGoods);
-				merchantOrder.setAmount(merchantOrder.getAmount() + goodsVo.getPrice());
+				merchantOrder.setAmount(merchantOrder.getAmount() + goodsPrice);
+				merchantOrder.setProfitAmount(merchantOrder.getProfitAmount() + profitPrice);
 				merchantOrderGoods.setMerchantOrder(merchantOrder);
 			} else {
 
@@ -270,9 +287,11 @@ public class InterfaceOrderServiceImpl extends ServiceHelperImpl<MerchantOrder> 
 				merchantOrder.setHotelRoomTel(vo.getHotelRoomTel());
 
 				merchantOrderMap.put(goods.getMerchantId() + "", merchantOrder);
-				merchantOrder.setAmount(merchantOrder.getAmount() + goodsVo.getPrice());
+				merchantOrder.setAmount(merchantOrder.getAmount() + goodsPrice);
+				merchantOrder.setProfitAmount(merchantOrder.getProfitAmount() + profitPrice);
 				merchantOrder.getGoodses().add(merchantOrderGoods);
 			}
+
 			Asserts.isTrue(goodsService.checkGoods(channel, goods, goodsVo.deptDateObj, vo.getTravelers().size()),
 					new GoodsCheckedException("商品数量不足"));
 			// 没超出20天的商品已售叠加
@@ -280,7 +299,7 @@ public class InterfaceOrderServiceImpl extends ServiceHelperImpl<MerchantOrder> 
 				goods.setSoldCount(goods.getSoldCount() + vo.getTravelers().size());
 				goodsDao.update(goods);
 			}
-			channelOrder.setAmount(channelOrder.getAmount() + goodsVo.getPrice());
+			channelOrder.setAmount(channelOrder.getAmount() + profitPrice);
 		}
 
 		channelOrderDao.create(channelOrder);
@@ -327,13 +346,44 @@ public class InterfaceOrderServiceImpl extends ServiceHelperImpl<MerchantOrder> 
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<Goods> queryGoodses(QueryGoodsesVo vo) throws ThaiException {
 		Channel channel = channelDao.fetchByToken(vo.getToken());
 		Asserts.notNull(channel, new ParameterException("TOKEN有误"));
-		Asserts.isTrue(channel.isDisabled(), new ParameterException("TOKEN无效"));
+		Asserts.isTrue(channel.isEnabled(), new ParameterException("TOKEN无效"));
 		List<Goods> goodses = goodsService.fetchList(vo, channel);
-		channelService.refreshSoldGoodsCount(channel, goodses.size());
+		for (Goods goods : goodses) {
+			updatePrice4Profit(channel, goods);
+		}
 		return goodses;
+	}
+
+	private void updatePrice4Profit(Channel channel, Goods goods) {
+		ChannelGoodsInv goodsInv = channel.getGoodsInv(goods.getId());
+		if (goodsInv != null) {
+			goods.setBasePrice(DoubleUtils.add(goods.getBasePrice(), goodsInv.getProfitPrice()));
+			for (GoodsPriceSegment goodsPriceSegment : goods.getSegments()) {
+				goodsPriceSegment.setAuditPrice(DoubleUtils.add(goodsPriceSegment.getAuditPrice(), goodsInv.getProfitPrice()));
+				goodsPriceSegment.setChildPrice(DoubleUtils.add(goodsPriceSegment.getChildPrice(), goodsInv.getProfitPrice()));
+			}
+		} else {
+			ChannelMerchantInv merchantInv = channel.getMerchantInv(goods.getMerchantId());
+			if (merchantInv.getProfitPrice() > 0) {
+				goods.setBasePrice(DoubleUtils.add(goods.getBasePrice(), merchantInv.getProfitPrice()));
+				for (GoodsPriceSegment goodsPriceSegment : goods.getSegments()) {
+					goodsPriceSegment.setAuditPrice(DoubleUtils.add(goodsPriceSegment.getAuditPrice(), merchantInv.getProfitPrice()));
+					goodsPriceSegment.setChildPrice(DoubleUtils.add(goodsPriceSegment.getChildPrice(), merchantInv.getProfitPrice()));
+				}
+			} else {
+				goods.setBasePrice(DoubleUtils.add(goods.getBasePrice(), goods.getBasePrice() * merchantInv.getProfitRate()));
+				for (GoodsPriceSegment goodsPriceSegment : goods.getSegments()) {
+					goodsPriceSegment.setAuditPrice(DoubleUtils.add(goodsPriceSegment.getAuditPrice(), goodsPriceSegment.getAuditPrice()
+							* merchantInv.getProfitRate()));
+					goodsPriceSegment.setChildPrice(DoubleUtils.add(goodsPriceSegment.getChildPrice(), goodsPriceSegment.getChildPrice()
+							* merchantInv.getProfitRate()));
+				}
+			}
+		}
 	}
 
 	@Override

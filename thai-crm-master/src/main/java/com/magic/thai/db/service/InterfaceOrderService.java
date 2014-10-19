@@ -15,7 +15,7 @@ import com.magic.thai.web.ws.vo.RefundOrderVo;
 public interface InterfaceOrderService {
 
 	/**
-	 * 下单
+	 * 接口下单
 	 * 
 	 * @param orderId
 	 * @param userprofile

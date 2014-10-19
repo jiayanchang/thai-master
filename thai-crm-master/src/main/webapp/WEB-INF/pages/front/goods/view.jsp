@@ -33,6 +33,10 @@
 				<td>${goods.goodsCount }</td>
 			</tr>
 			<tr>
+				<td>单价：</td>
+				<td>${goods.basePrice }</td>
+			</tr>
+			<tr>
 				<td>推荐理由：</td>
 				<td>${goods.summary }<</td>
 			</tr>

@@ -122,7 +122,6 @@ public class GoodsServiceImpl extends ServiceHelperImpl<Goods> implements GoodsS
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public void cancel(int goodsId, String reason, UserProfile userprofile) throws GoodsStatusException {
-		// TODO Auto-generated method stub
 		Goods goods = goodsDao.loadById(goodsId);
 		if (goods.getStatus() != Goods.Status.DEPLOYED) {
 			throw new GoodsStatusException(goods.getStatusDesc() + "状态的订单不能下架");
@@ -248,6 +247,7 @@ public class GoodsServiceImpl extends ServiceHelperImpl<Goods> implements GoodsS
 
 	@Override
 	public boolean checkGoods(Channel channel, Goods goods, Date deptDate, int count) throws ThaiException {
+		// 每天极限200人
 		Asserts.notNull(channel, new GoodsCheckedException("当前渠道TOKEN无效"));
 		Asserts.notNull(goods, new GoodsCheckedException("当前商品已变更或不存在"));
 		Asserts.isTrue(goods.isDeployed(), new GoodsCheckedException("当前商品不可用"));

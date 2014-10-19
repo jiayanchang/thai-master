@@ -29,6 +29,12 @@ public class ChannelGoodsInv {
 	@Transient
 	private Goods goods;
 
+	/**
+	 * 分配利润后的价格
+	 */
+	@Column(name = "profit_price")
+	private double profitPrice;
+
 	public int getId() {
 		return id;
 	}
@@ -67,6 +73,14 @@ public class ChannelGoodsInv {
 
 	public void setGoods(Goods goods) {
 		this.goods = goods;
+	}
+
+	public double getProfitPrice() {
+		return profitPrice;
+	}
+
+	public void setProfitPrice(double profitPrice) {
+		this.profitPrice = profitPrice;
 	}
 
 	@Override

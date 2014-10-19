@@ -47,7 +47,13 @@ public class ChannelServiceImpl extends ServiceHelperImpl<Channel> implements Ch
 
 	@Override
 	public Channel load(int id) {
+
 		return channelDao.loadById(id);
+	}
+
+	@Override
+	public Channel load(String token) {
+		return channelDao.loadByToken(token);
 	}
 
 	@Override
@@ -61,6 +67,7 @@ public class ChannelServiceImpl extends ServiceHelperImpl<Channel> implements Ch
 		for (ChannelMerchantInv channelMerchantInv : channel.getMerchantInvs()) {
 			channelMerchantInv.setMerchant(merchantDao.loadById(channelMerchantInv.getMerchantId()));
 		}
+
 		return channel;
 	}
 
@@ -84,6 +91,7 @@ public class ChannelServiceImpl extends ServiceHelperImpl<Channel> implements Ch
 				ChannelGoodsInv bean = channelbean.getGoodsInvs().get(j);
 				if (bean.getId() == record.getId()) {
 					record.setAllocatedAmount(bean.getAllocatedAmount());
+					record.setProfitPrice(bean.getProfitPrice());
 					channelGoodsInvDao.update(record);
 					channel.getGoodsInvs().remove(i);
 					channelbean.getGoodsInvs().remove(j);
@@ -105,6 +113,8 @@ public class ChannelServiceImpl extends ServiceHelperImpl<Channel> implements Ch
 				ChannelMerchantInv bean = channelbean.getMerchantInvs().get(j);
 				if (bean.getId() == record.getId()) {
 					record.setAllocatedAmount(bean.getAllocatedAmount());
+					record.setProfitPrice(bean.getProfitPrice());
+					record.setProfitRate(bean.getProfitRate());
 					channelMerchantInvDao.update(record);
 					channel.getMerchantInvs().remove(i);
 					channelbean.getMerchantInvs().remove(j);

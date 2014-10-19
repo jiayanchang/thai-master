@@ -7,6 +7,8 @@ public interface ChannelDao {
 
 	public Channel loadById(int id);
 
+	public Channel loadByToken(String token);
+
 	public Channel fetchByToken(String token);
 
 	public Integer create(Channel entity);

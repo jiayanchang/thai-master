@@ -75,7 +75,7 @@ public class SnapshotGoods {
 
 	@Expose
 	@Column(name = "base_price")
-	private int basePrice;// 底价
+	private double basePrice;// 底价
 
 	@Expose
 	@Column(name = "sold_count")
@@ -247,11 +247,11 @@ public class SnapshotGoods {
 		this.titleCn = titleCn;
 	}
 
-	public int getBasePrice() {
+	public double getBasePrice() {
 		return basePrice;
 	}
 
-	public void setBasePrice(int basePrice) {
+	public void setBasePrice(double basePrice) {
 		this.basePrice = basePrice;
 	}
 

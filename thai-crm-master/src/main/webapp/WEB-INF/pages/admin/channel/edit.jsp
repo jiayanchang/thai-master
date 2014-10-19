@@ -1,6 +1,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%> 
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/validator.js"></script>  
 
 <style>
 .custom-combobox {
@@ -22,7 +23,7 @@
 
 <h1>渠道库存管理</h1>
 <c:url var="addUrl" value="/a/channel/edit/process"/>
-<div style="width:600px;">
+<div style="width:900px;">
 <form:form action="${addUrl}" method="POST" commandName="channel">
 	<form:hidden path="id"/>
 	<table class="table">
@@ -50,100 +51,145 @@
 			</td>
 		</tr>
 	</table>
-	<h4><strong>库存分配</strong></h4>
 	
-	按商品匹配：
-	<select id="goods" name="goods">
-		<option value="0"></option>
-		<c:forEach var="goods" items="${goodses }">
-			<option value="${goods.id}">${goods.title }</option>
-		</c:forEach>
-	</select>
-	<br>
-	<a class="btn btn-success" href="javascript:addGoods();">添加</a>
-	<table id="goodsInvsTbl" class="table">
-		<thead>
-		<tr>
-			<th>商品名称</th>
-			<th>总库存</th>
-			<th>分配库存</th>
-			<th>已售数量</th>
-			<th>商品剩余数量</th>
-			<th>操作</th>
-		</tr>
-		</thead>
-		<tbody>
-			<c:forEach var="goodsInv" items="${channel.goodsInvs }" varStatus="status">
-				<tr idx="${goodsInv.id}">
-					<td>${goodsInv.goods.title}</td>
-					<td>${goodsInv.goods.goodsCount}</td>
-					<td>
-						<input type="hidden" tag="id" name="goodsInvs[${status.index }].id" value="${goodsInv.id}"/>
-						<input type="hidden" tag="gid" name="goodsInvs[${status.index }].goodsId" value="${goodsInv.goodsId}"/>
-						<input tag="allocatedAmount" name="goodsInvs[${status.index }].allocatedAmount" class="form-control" value="${goodsInv.allocatedAmount}"/>
-					</td>
-					<td>${goodsInv.goods.soldCount}</td>
-					<td>${goodsInv.goods.goodsCount - goodsInv.goods.soldCount}</td>
-					<td><a href="javascript:removeGoods(${goodsInv.id});">删除</a></td>
+	<div class="tab-pane active panel panel-default" id="inv">
+	
+		<div class="panel panel-info">
+		<div class="panel-heading">按商品匹配 
+			<select id="goods" name="goods">
+				<option value="0"></option>
+				<c:forEach var="goods" items="${goodses }">
+					<option value="${goods.id}">${goods.title }</option>
+				</c:forEach>
+			</select>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<a class="btn btn-success" href="javascript:addGoods();">添加</a>
+		</div>
+		<div class="panel-body">
+			<table id="goodsInvsTbl" class="table">
+				<colgroup>
+					<col class="col-xs-3">
+					<col class="col-xs-1">
+					<col class="col-xs-1">
+					<col class="col-xs-1">
+					<col class="col-xs-1">
+					<col class="col-xs-1">
+					<col class="col-xs-1">
+				</colgroup>
+				<thead>
+				<tr>
+					<th>商品名称</th>
+					<th>总库存</th>
+					<th>分配库存</th>
+					<th>加价金额</th>
+					<th>已售数量</th>
+					<th>剩余数量</th>
+					<th>操作</th>
 				</tr>
+				</thead>
+				<tbody>
+					<c:forEach var="goodsInv" items="${channel.goodsInvs }" varStatus="status">
+						<tr idx="${goodsInv.id}">
+							<td>${goodsInv.goods.title}</td>
+							<td>${goodsInv.goods.goodsCount}</td>
+							<td>
+								<input type="hidden" tag="id" name="goodsInvs[${status.index }].id" value="${goodsInv.id}"/>
+								<input type="hidden" tag="gid" name="goodsInvs[${status.index }].goodsId" value="${goodsInv.goodsId}"/>
+								<input tag="allocatedAmount" name="goodsInvs[${status.index }].allocatedAmount" check="notEmpty" placeholder="请输入一个数字..." class="form-control" value="${goodsInv.allocatedAmount}"/>
+							</td>
+							<td><input tag="profitPrice" name="goodsInvs[${status.index }].profitPrice" check="notEmpty" placeholder="请输入一个金额..." class="form-control" value="${goodsInv.profitPrice}"/></td>
+							<td>${goodsInv.goods.soldCount}</td>
+							<td>${goodsInv.goods.goodsCount - goodsInv.goods.soldCount}</td>
+							<td><a href="javascript:removeGoods(${goodsInv.id});">删除</a></td>
+						</tr>
+					</c:forEach>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	
+	
+	<div class="panel panel-info">
+	<div class="panel-heading">按商家匹配
+		<select id="merchant" name="merchant" class="form-control">
+			<option value="0"></option>
+			<c:forEach var="merchant" items="${merchants }">
+				<option value="${merchant.id}">${merchant.name }</option>
 			</c:forEach>
-		</tbody>
-	</table>
-
-	按商家匹配：
-	<select id="merchant" name="merchant" class="form-control">
-		<option value="0"></option>
-		<c:forEach var="merchant" items="${merchants }">
-			<option value="${merchant.id}">${merchant.name }</option>
-		</c:forEach>
-	</select>
-	<br>
-	<a class="btn btn-success" href="javascript:addMerchant();">添加</a>
-	<table id="merchantInvsTbl" class="table">
-		<colgroup>
-			<col class="col-xs-1">
-			<col class="col-xs-2">
-			<col class="col-xs-1">
-			<col class="col-xs-1">
-			<col class="col-xs-1">
-		</colgroup>
-		<thead>
-			<tr>
-				<th>商家名称</th>
-				<th>分配库存</th>
-				<th>订单量</th>
-				<th>交易额</th>
-				<th>操作</th>
-			</tr>
-		</thead>
-		<tbody>
-			<c:forEach var="merchantInv" items="${channel.merchantInvs }" varStatus="status">
-				<tr idx="${merchantInv.id }">
-					<td>${merchantInv.merchant.name }</td>
-					<td>
-						<input type="hidden" tag="id" name="merchantInvs[${status.index }].id" value="${merchantInv.id }"/>
-						<input type="hidden" tag="mid" name="merchantInvs[${status.index }].merchantId" value="${merchantInv.merchantId }"/>
-						<div class="input-group">
-							<input type="type" tag="allocatedAmount" name="merchantInvs[${status.index }].allocatedAmount" class="form-control" value="${merchantInv.allocatedAmount }"/>
-							<span class="input-group-addon">%</span>
-						</div>
-					</td>	
-					<td>${merchantInv.orderCount }</td>
-					<td>${merchantInv.amount }</td>
-					<td><a href="javascript:removeMerchant(${merchantInv.id });">删除</a></td>
+		</select>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<a class="btn btn-success" href="javascript:addMerchant();">添加</a>
+	</div>
+	<div class="panel-body">
+		<table id="merchantInvsTbl" class="table">
+			<colgroup>
+				<col class="col-xs-3">
+				<col class="col-xs-2">
+				<col class="col-xs-2">
+				<col class="col-xs-2">
+				<col class="col-xs-1">
+				<col class="col-xs-1">
+				<col class="col-xs-1">
+			</colgroup>
+			<thead>
+				<tr>
+					<th>商家名称</th>
+					<th>分配库存</th>
+					<th>加价比例</th>
+					<th>加价金额</th>
+					<th>订单量</th>
+					<th>交易额</th>
+					<th>操作</th>
 				</tr>
-			</c:forEach>
-		</tbody>
-	</table>
+			</thead>
+			<tbody>
+				<c:forEach var="merchantInv" items="${channel.merchantInvs }" varStatus="status">
+					<tr idx="${merchantInv.id }">
+						<td>${merchantInv.merchant.name }</td>
+						<td>
+							<input type="hidden" tag="id" name="merchantInvs[${status.index }].id" value="${merchantInv.id }"/>
+							<input type="hidden" tag="mid" name="merchantInvs[${status.index }].merchantId" value="${merchantInv.merchantId }"/>
+							<div class="input-group">
+								<input type="type" tag="allocatedAmount" name="merchantInvs[${status.index }].allocatedAmount" class="form-control" value="${merchantInv.allocatedAmount }"  check="notEmpty amount" placeholder="请输入一个数字..."/>
+								<span class="input-group-addon">%</span>
+							</div>
+						</td>
+						<td>
+							<div class="input-group">
+								<input type="type" tag="profitRate" name="merchantInvs[${status.index }].profitRate" class="form-control" value="${merchantInv.profitRate }"  check="notEmpty amount" placeholder="请输入一个数字..."/>
+								<span class="input-group-addon">%</span>
+							</div>
+						<td>
+							<input type="type" tag="profitPrice" name="merchantInvs[${status.index }].profitPrice" class="form-control" value="${merchantInv.profitPrice }"  check="notEmpty amount" placeholder="请输入一个金额..."/>
+						</td>	
+						<td>${merchantInv.orderCount }</td>
+						<td>${merchantInv.amount }</td>
+						<td><a href="javascript:removeMerchant(${merchantInv.id });">删除</a></td>
+					</tr>
+				</c:forEach>
+			</tbody>
+		</table>
+	</div>
+	</div>
+	</div>
+	
 	
 	<table>
 		<tr>
-			<td><input type="submit" value="提交" class="btn btn-primary" /></td>
+			<td><input type="button" value="提交" onclick="submitForm();" class="btn btn-primary" /></td>
 		</tr>
 	</table>
 </div>
 </form:form>
 <script type="text/javascript">
+
+function submitForm() {
+	if(!confirm("是否确定？")) return false;
+	validate(function(){
+		$("form").submit();
+	});
+}
+
 
 function addGoods(){
 	var goodsId = $("#goods").val();
@@ -164,7 +210,8 @@ function addGoods(){
 				+ '<td>' + result.data.data.name + '</td>'
 				+ '<td>' + result.data.data.goodsCount + '</td>'
 				+ '<td><input type="hidden" tag="gid" name="goodsInvs[' + index + '].goodsId" value="' + goodsId + '"/>'
-				+ '<input tag="allocatedAmount" class="form-control" name="goodsInvs[' + index + '].allocatedAmount" value="0.0"/></td>'
+				+ '<input tag="allocatedAmount" class="form-control" name="goodsInvs[' + index + '].allocatedAmount" check="notEmpty amount" placeholder="请输入一个数字..." value="0.0"/></td>'
+				+ '<td><input name="goodsInvs[' + index + '].profitPrice" value="0.0" class="form-control" check="notEmpty amount" placeholder="请输入一个金额..."/></td>'
 				+ '<td>' + result.data.data.soldCount + '</td>'
 				+ '<td>' + (result.data.data.goodsCount - result.data.data.soldCount) + '</td>'
 				+ '<td><a href="javascript:removeGoods(' + goodsId + ');">删除</a></td>'
@@ -174,6 +221,7 @@ function addGoods(){
 		}
 	});
 }
+
 function addMerchant(){
 	var merchantId = $("#merchant").val();
 	if(merchantId == 0){
@@ -193,13 +241,23 @@ function addMerchant(){
 			var html = '<tr idx="' + merchantId + '">'
 					+ '<td>' + result.data.data.name + '</td>'
 					+ '<td><input type="hidden" tag="mid" name="merchantInvs[' + index + '].merchantId" value="' + merchantId + '"/>'
-					
 					+ '<div class="input-group">'
-					+ '	<input tag="allocatedAmount" class="form-control" name="merchantInvs[' + index + '].allocatedAmount" value="0.0"/>'
+					+ '	<input tag="allocatedAmount" class="form-control" name="merchantInvs[' + index + '].allocatedAmount" value="0.0" check="notEmpty amount" placeholder="请输入一个数字..."/>'
 					+ '	<span class="input-group-addon">%</span>'
 					+ '</div>'
-					
 					+ '</td>'
+					
+					+ '<td>'
+					+ '<div class="input-group">'
+					+ '	<input type="type" tag="profitRate" name="merchantInvs[' + index + '].profitRate" class="form-control" value="0.0" check="notEmpty amount" placeholder="请输入一个数字..."/>'
+					+ '	<span class="input-group-addon">%</span>'
+					+ '</div>'			
+					+ '</td>'
+					
+					+ '<td>'
+					+ '	<input type="type" tag="profitPrice" name="merchantInvs[' + index + '].profitPrice" class="form-control" value="0.0" check="notEmpty amount" placeholder="请输入一个金额..."/>'
+					+ '</td>'
+					
 					+ '<td>0</td>'
 					+ '<td>0.0</td>'
 					+ '<td><a href="javascript:removeMerchant(' + merchantId + ');">删除</a></td>'
@@ -218,6 +276,7 @@ function removeGoods(goodsId) {
 		$(this).find("input[tag=id]").attr("name", "goodsInvs[" + i + "].id");
 		$(this).find("input[tag=gid]").attr("name", "goodsInvs[" + i + "].goodsId");
 		$(this).find("input[tag=allocatedAmount]").attr("name", "goodsInvs[" + i + "].allocatedAmount");
+		$(this).find("input[tag=profitPrice]").attr("name", "goodsInvs[" + i + "].profitPrice");
 		++i;
 	});
 }
@@ -230,6 +289,8 @@ function removeMerchant(merchantId) {
 		$(this).find("input[tag=id]").attr("name", "merchantInvs[" + i + "].id");
 		$(this).find("input[tag=mid]").attr("name", "merchantInvs[" + i + "].merchantId");
 		$(this).find("input[tag=allocatedAmount]").attr("name", "merchantInvs[" + i + "].allocatedAmount");
+		$(this).find("input[tag=profitPrice]").attr("name", "merchantInvs[" + i + "].profitPrice");
+		$(this).find("input[tag=profitRate]").attr("name", "merchantInvs[" + i + "].profitRate");
 		++i;
 	});
 }
@@ -363,9 +424,9 @@ function removeMerchant(merchantId) {
 		}
 	});
 })( jQuery );
+
 $(function() {
 	$( "#merchant" ).combobox();
 	$( "#goods" ).combobox();
-	
 });
 </script>

@@ -45,6 +45,12 @@
 			<td>${order.hotelTel }</td>
 		</tr>
 		<tr>
+			<td>订单金额：</td>
+			<td>${order.amount }</td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
 			<td>司机：</td>
 			<td class="form-inline">
 				<input style="width:180px" id="driverName" class="form-control" value="${order.driverName }" placeholder="姓名"/>

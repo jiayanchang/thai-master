@@ -40,6 +40,8 @@
 		<tr>
 			<td>联系邮箱：</td>
 			<td>${order.contractorEmail }</td>
+			<td>订单总金额：</td>
+			<td>${order.profitAmount } 商家：${order.amount }  </td>
 		</tr>
 	</table>
 	

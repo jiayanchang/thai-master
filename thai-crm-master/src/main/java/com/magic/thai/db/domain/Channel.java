@@ -151,9 +151,9 @@ public class Channel {
 		return goodsInvs;
 	}
 
-	public ChannelGoodsInv getGoodsInv(int goodsRootId) {
+	public ChannelGoodsInv getGoodsInv(int goodsId) {
 		for (ChannelGoodsInv channelGoodsInv : getGoodsInvs()) {
-			if (channelGoodsInv.getGoodsId() == goodsRootId) {
+			if (channelGoodsInv.getGoodsId() == goodsId) {
 				return channelGoodsInv;
 			}
 		}

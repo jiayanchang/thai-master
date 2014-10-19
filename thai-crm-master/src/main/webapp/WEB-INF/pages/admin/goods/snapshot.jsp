@@ -39,6 +39,10 @@
 			<td>${goods.goodsCount }</td>
 		</tr>
 		<tr>
+			<td>单价：</td>
+			<td>${goods.basePrice }</td>
+		</tr>
+		<tr>
 			<td>推荐理由：</td>
 			<td>${goods.summary }</td>
 		</tr>
@@ -58,7 +62,7 @@
 		</tr>
 		
 		<tr>
-			<td>价格管理：</td>
+			<td>浮动价格：</td>
 			<td>
 				<table id="price_tbl">
 					<c:forEach var="segment" items="${goods.segments }">

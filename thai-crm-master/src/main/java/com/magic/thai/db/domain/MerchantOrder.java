@@ -59,6 +59,9 @@ public class MerchantOrder {
 	@Column(name = "amount")
 	private double amount;
 
+	@Column(name = "profit_amount")
+	private double profitAmount;
+
 	@Column(name = "traveler_num", nullable = false)
 	private int travelerNum;
 
@@ -404,6 +407,14 @@ public class MerchantOrder {
 
 	public void setDriverMobile(String driverMobile) {
 		this.driverMobile = driverMobile;
+	}
+
+	public double getProfitAmount() {
+		return profitAmount;
+	}
+
+	public void setProfitAmount(double profitAmount) {
+		this.profitAmount = profitAmount;
 	}
 
 	/**

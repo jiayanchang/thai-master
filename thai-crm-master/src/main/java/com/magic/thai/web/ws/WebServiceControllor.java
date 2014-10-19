@@ -26,6 +26,7 @@ import com.magic.thai.db.domain.ChannelOrder;
 import com.magic.thai.db.domain.Goods;
 import com.magic.thai.db.domain.MerchantOrder;
 import com.magic.thai.db.domain.MerchantOrderGoods;
+import com.magic.thai.db.service.ChannelService;
 import com.magic.thai.db.service.InterfaceOrderService;
 import com.magic.thai.exception.ThaiException;
 import com.magic.thai.exception.webservice.FormatException;
@@ -50,6 +51,8 @@ public class WebServiceControllor {
 
 	@Autowired
 	private InterfaceOrderService interfaceOrderService;
+	@Autowired
+	private ChannelService channelService;
 
 	@RequestMapping(value = "/queryGoodses", headers = "Accept=application/xml")
 	public void queryGoodses(@RequestBody String requestBody, HttpServletResponse response, ModelMap model) throws Exception {
@@ -59,6 +62,7 @@ public class WebServiceControllor {
 		try {
 			Asserts.isTrue(StringUtils.isNotBlank(vo.getToken()), new ParameterException("TOKEN不能为空"));
 			List<Goods> goodses = interfaceOrderService.queryGoodses(vo);
+			channelService.refreshSoldGoodsCount(channelService.load(vo.getToken()), goodses.size());
 			GoodsListVo goodsListVo = new GoodsListVo();
 			goodsListVo.setGoodses(goodses);
 			responseResult(response, new WebServiceResult().success(goodsListVo));

@@ -2,11 +2,14 @@ package com.magic.thai.web.ws.vo;
 
 import java.util.Date;
 
+import com.magic.thai.db.domain.ChannelOrderTraveler;
+
 public class BuyGoodsVo {
 
 	private String deptDate;
 	private int qty;// 数量
 	private int goodsId;
+	private int type = ChannelOrderTraveler.Type.ADULT;
 	private double price;
 
 	public Date deptDateObj;
@@ -50,6 +53,18 @@ public class BuyGoodsVo {
 
 	public void setPrice(double price) {
 		this.price = price;
+	}
+
+	public int getType() {
+		return type;
+	}
+
+	public void setType(int type) {
+		this.type = type;
+	}
+
+	public boolean isChild() {
+		return this.type != ChannelOrderTraveler.Type.ADULT;
 	}
 
 }

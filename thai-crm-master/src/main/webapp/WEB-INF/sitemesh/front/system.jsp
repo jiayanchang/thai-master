@@ -4,6 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<%@ include file="../head.jsp"%>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/js/validator.js"></script>  
 </head>
 <body>
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">

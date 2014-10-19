@@ -4,7 +4,9 @@
 
 <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
 <script src="http://cdn.bootcss.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="/crm/js/bootstrap-combobox-ajax.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/bootstrap-combobox-ajax.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/validator.js"></script>  
+
 <style>
   .custom-combobox {
     position: relative;
@@ -35,33 +37,33 @@
 		</colgroup>
 		<tr>
 			<td>联系人：</td>
-			<td><form:input path="orderContactor" class="form-control"/></td>
+			<td><form:input path="orderContactor" class="form-control" check="notEmpty" placeholder="请填写联系人..."/></td>
 			<td>酒店名称：</td>
 			<td>
-				<select class="combobox form-control" id="hotelName" name="hotelName" onBlur="">
+				<select class="combobox form-control" id="hotelName" name="hotelName" check="notEmpty" placeholder="请填写酒店名称...">
 					
 	            </select>
 			</td>
 		</tr>
 		<tr>
 			<td>联系电话：</td>
-			<td><form:input path="orderContactorMobile" class="form-control"/></td>
+			<td><form:input path="orderContactorMobile" class="form-control" check="notEmpty" placeholder="请填写联系电话..."/></td>
 			<td>酒店地址：</td>
-			<td><form:input id="hotelAddress" path="hotelAddress" class="form-control"/></td>
+			<td><form:input id="hotelAddress" path="hotelAddress" class="form-control" check="notEmpty" placeholder="请填写酒店地址..."/></td>
 		</tr>
 		<tr>
 			<td>联系邮箱：</td>
-			<td><form:input path="orderContactorEmail" class="form-control" placeholder="请输入邮箱..."/></td>
+			<td><form:input path="orderContactorEmail" class="form-control" check="notEmpty email" placeholder="请填写联系邮箱..."/></td>
 			<td></td>
 			<td class="form-inline">
-				<input  style="width:150px" id="hotelTel" name="hotelTel" class="form-control" placeholder="酒店电话"/>
-				<input  style="width:150px" name="hotelRoom" class="form-control" placeholder="酒店房间号"/>
+				<input  style="width:150px" id="hotelTel" name="hotelTel" class="form-control" check="notEmpty"  placeholder="请填写酒店电话"/>
+				<input  style="width:150px" name="hotelRoom" class="form-control" check="notEmpty"  placeholder="请填写酒店房间号"/>
 			</td>
 		</tr>
 		<tr>
 			<td>商品：</td>
 			<td>
-				<select name="goodses[0].goodsId" class=" form-control">
+				<select id="goodsId" name="goodses[0].goodsId" class=" form-control" check="notEmpty" placeholder="请选择商品...">
 					<option value="0"></option>
 					<c:forEach var="goods" items="${goodses }">
 						<option value="${goods.id}">${goods.title }</option>
@@ -70,57 +72,29 @@
 			</td>
 			<td>司机：</td>
 			<td class="form-inline">
-				<input style="width:150px" id="driverName" name="driverName" class="form-control" placeholder="姓名"/>
-				<input style="width:150px" id="driverMobile" name="driverMobile" class="form-control" placeholder="电话"/>
+				<input style="width:150px" id="driverName" name="driverName" class="form-control" placeholder="请填写司机姓名..."/>
+				<input style="width:150px" id="driverMobile" name="driverMobile" class="form-control" placeholder="请填写司机电话..."/>
 			</td>
 		</tr>
 		<tr>
 			<td>总价：</td>
-			<td><input name="goodses[0].price" class="form-control"/></td>
+			<td><input name="goodses[0].price" class="form-control" check="amount"  placeholder="请填写一个金额..."/></td>
 			<td></td>
 			<td></td>
 		</tr>
 		<tr>
 			<td>数量：</td>
-			<td><input name="goodses[0].qty" class="form-control"/></td>
+			<td><input name="goodses[0].qty" class="form-control" check="integer"  placeholder="请填写一个整数..."/></td>
 			<td></td>
 			<td></td>
 		</tr>
 		<tr>
 			<td>执行时间：</td>
-			<td><input name="goodses[0].deptDate" tag="date" class="form-control"/></td>
+			<td><input name="goodses[0].deptDate" tag="date" class="form-control"  check="notEmpty date"  placeholder="请选择时间..."/></td>
 			<td></td>
 			<td></td>
 		</tr>
 	</table>
-	
-	<%-- <h4>商品：</h4>
-	<table id="goods_tbl" class="table table-hover">
-		<thead>
-			<tr>
-				<th>商品</th>
-				<th>总价</th>
-				<th>数量</th>
-				<th>执行时间</th>
-				<th></th>
-			</tr>
-		</thead>
-		<tbody>
-		<tr index="0">
-			<td>
-				<select name="goodses[0].goodsId">
-					<option value="0"></option>
-					<c:forEach var="goods" items="${goodses }">
-						<option value="${goods.id}">${goods.title }</option>
-					</c:forEach>
-				</select>
-			</td>
-			<td><input name="goodses[0].price"/></td>
-			<td><input name="goodses[0].qty"/></td>
-			<td><input name="goodses[0].deptDate" tag="date"/></td>
-		</tr>
-		</tbody>
-	</table> --%>
 	
 	<h4>旅客详情：<a href="javascript:addTraveler();" class="btn btn-success">添加</a> </h4>
 	<table id="traveler_table" class="table table-hover">
@@ -147,7 +121,7 @@
 	<%-- <c:if test="${!order.completed }">
 		<input type="button" value="确认订单" onclick="complete();"/>
 	</c:if> --%>
-	<input class="btn btn-primary" type="button" value="保存" onclick="save();"/>
+	<input class="btn btn-primary" type="button" value="保存" onclick="submitForm();"/>
 </form:form>
 <script>
 
@@ -155,7 +129,7 @@
 		var index = $("#traveler_table tbody tr").length;
 		log(index);
 		var html = '<tr tg="tr'+index+'">'
-			+ '<td><input tg=name name="travelers['+index+'].name" class="form-control"/></td>'
+			+ '<td><input tg=name name="travelers['+index+'].name" class="form-control"  check="notEmpty"  placeholder="请填写游客姓名..."/></td>'
 			+ '<td><input tg=nationality name="travelers['+index+'].nationality" class="form-control"/></td>'
 			+ '<td>'
 			+ '	<select tg=gender name="travelers['+index+'].gender"  class="form-control">'
@@ -215,27 +189,16 @@
 		$("form").action = '${pageContext.request.contextPath}/f/order/list';
 		$("form").submit();
 	}
-	
-	function save() {
-		if(!confirm("是否确定？")) return false;
-		$("form").submit();
-		/* jQuery.ajax({
-		    type: 'POST',
-			encoding:"UTF-8",
-		    dataType:"json", 
-		    data : 'id=${order.id}',
-		    contentType: "application/x-www-form-urlencoded;  charset=UTF-8",
-		    url: "${pageContext.request.contextPath}/f/order/confirm.json",
-			success: function(result) {
-				alert(result.data.message);
-				window.location.reload();
-			}
-		}); */
-	}
 
 	var combobox = $('.combobox').combobox();
 	$(function() {
 		$("form [tag=date]").datepicker({dateFormat:'yy/mm/dd'});
 	});
-	
+
+	function submitForm() {
+		if(!confirm("是否确定？")) return false;
+		validate(function(){
+			$("form").submit();
+		});
+	}
 </script>

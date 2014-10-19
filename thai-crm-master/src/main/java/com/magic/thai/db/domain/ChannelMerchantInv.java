@@ -32,6 +32,12 @@ public class ChannelMerchantInv {
 	@Column
 	private double amount;
 
+	@Column(name = "profit_rate")
+	private double profitRate;// 利润比例
+
+	@Column(name = "profit_price")
+	private double profitPrice;// 利润加价
+
 	@Transient
 	private Merchant merchant;
 
@@ -89,6 +95,22 @@ public class ChannelMerchantInv {
 
 	public void setAmount(double amount) {
 		this.amount = amount;
+	}
+
+	public double getProfitRate() {
+		return profitRate;
+	}
+
+	public void setProfitRate(double profitRate) {
+		this.profitRate = profitRate;
+	}
+
+	public double getProfitPrice() {
+		return profitPrice;
+	}
+
+	public void setProfitPrice(double profitPrice) {
+		this.profitPrice = profitPrice;
 	}
 
 	@Override
