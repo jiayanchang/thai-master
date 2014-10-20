@@ -49,9 +49,9 @@ public class Channel {
 	private Date refreshTime;
 
 	@Transient
-	private List<ChannelGoodsInv> goodsInvs;
+	private List<ChannelGoodsInv> goodsInvs = new ArrayList<ChannelGoodsInv>();
 	@Transient
-	private List<ChannelMerchantInv> merchantInvs;
+	private List<ChannelMerchantInv> merchantInvs = new ArrayList<ChannelMerchantInv>();
 
 	/**
 	 * 0为开启，1为关闭，2为删除
@@ -204,9 +204,19 @@ public class Channel {
 
 	@Override
 	public String toString() {
+		String goodsInvsDesc = "";
+		String merchantInvsDesc = "";
+
+		for (ChannelGoodsInv channelGoodsInv : goodsInvs) {
+			goodsInvsDesc += channelGoodsInv + ";";
+		}
+		for (ChannelMerchantInv channelMerchantInv : merchantInvs) {
+			merchantInvsDesc += channelMerchantInv + ";";
+		}
+
 		return "Channel [id=" + id + ", name=" + name + ", token=" + token + ", status=" + status + ", operatorId=" + operatorId
 				+ ", operatorName=" + operatorName + ", orderCount=" + orderCount + ", amount=" + amount + ", goodsCount=" + goodsCount
-				+ ", goodsInvs=" + goodsInvs + ", merchantInvs=" + merchantInvs + "]";
+				+ ", goodsInvs=" + goodsInvsDesc + ", merchantInvs=" + merchantInvsDesc + "]";
 	}
 
 }

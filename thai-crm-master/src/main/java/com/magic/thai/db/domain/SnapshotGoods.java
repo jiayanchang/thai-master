@@ -67,7 +67,7 @@ public class SnapshotGoods {
 	private String hotelName;
 
 	@Column(name = "travel_days")
-	private int travelDays;// 行程天数
+	private double travelDays;// 行程天数
 
 	@Expose
 	@Column(name = "goods_count")
@@ -167,11 +167,11 @@ public class SnapshotGoods {
 		this.hotelId = hotelId;
 	}
 
-	public int getTravelDays() {
+	public double getTravelDays() {
 		return travelDays;
 	}
 
-	public void setTravelDays(int travelDays) {
+	public void setTravelDays(double travelDays) {
 		this.travelDays = travelDays;
 	}
 

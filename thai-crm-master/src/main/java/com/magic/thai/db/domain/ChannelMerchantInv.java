@@ -115,8 +115,9 @@ public class ChannelMerchantInv {
 
 	@Override
 	public String toString() {
-		return "ChannelMerchantInv [id=" + id + ", channelId=" + channelId + ", merchantId=" + merchantId + ", allocatedAmount="
-				+ allocatedAmount + "]";
+		return "ChannelMerchantInv [id=" + id + ", channelId=" + channelId + ", orderCount=" + orderCount + ", merchantId=" + merchantId
+				+ ", allocatedAmount=" + allocatedAmount + ", amount=" + amount + ", profitRate=" + profitRate + ", profitPrice="
+				+ profitPrice + ", merchant=" + merchant + "]";
 	}
 
 }

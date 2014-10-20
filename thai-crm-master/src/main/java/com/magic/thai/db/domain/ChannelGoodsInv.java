@@ -86,7 +86,7 @@ public class ChannelGoodsInv {
 	@Override
 	public String toString() {
 		return "ChannelGoodsInv [id=" + id + ", goodsId=" + goodsId + ", channelId=" + channelId + ", allocatedAmount=" + allocatedAmount
-				+ "]";
+				+ ", goods=" + goods + ", profitPrice=" + profitPrice + "]";
 	}
 
 }

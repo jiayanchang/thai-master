@@ -42,7 +42,7 @@
 				<td><font color="red">*</font>行程天数：</td>
 				<td>
 					<div class="input-group">
-					  <form:input path="travelDays" class="form-control" check="integer" placeholder="请输入一个整数..."/>
+					  <form:input path="travelDays" class="form-control" check="amount" placeholder="请输入一个整数或小数..."/>
 					  <span class="input-group-addon">天</span>
 					</div>
 				</td>

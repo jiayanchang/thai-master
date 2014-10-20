@@ -1,5 +1,5 @@
 function isInteger(val){
-	return isNotEmpty(val) && /\d+/.test(val);
+	return isNotEmpty(val) && /^[0-9]+$/.test(val);
 }
 
 function isDigital(val) {
