@@ -51,15 +51,20 @@
 				<td></td>
 			</tr>
 			<tr>
-				<td><font color="red">*</font>单价：</td>
+				<td><font color="red">*</font>单价(成人)：</td>
 				<td>
 					<div class="input-group">
 					  <form:input path="basePrice" class="form-control" check="integer" placeholder="请输入一个整数..."/>
 					  <span class="input-group-addon">.00</span>
 					</div>
 				</td>
-				<td></td>
-				<td></td>
+				<td><font color="red">*</font>单价(儿童)：</td>
+				<td>
+					<div class="input-group">
+					  <form:input path="basePriceChild" class="form-control" check="integer" placeholder="请输入一个整数..."/>
+					  <span class="input-group-addon">.00</span>
+					</div>
+				</td>
 				<td></td>
 			</tr>
 		</table>
@@ -95,7 +100,7 @@
 				<td></td>
 			</tr>
 			<tr>
-				<td><font color="red">*</font>浮动价格：</td>
+				<td><font color="red">*</font>淡旺季价格：</td>
 				<td>
 					<a class="btn btn-success" href="javascript:addPriceSegment();">添加</a>
 					<table id="price_tbl">

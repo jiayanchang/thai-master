@@ -362,6 +362,7 @@ public class InterfaceOrderServiceImpl extends ServiceHelperImpl<MerchantOrder> 
 		ChannelGoodsInv goodsInv = channel.getGoodsInv(goods.getId());
 		if (goodsInv != null) {
 			goods.setBasePrice(DoubleUtils.add(goods.getBasePrice(), goodsInv.getProfitPrice()));
+			goods.setBasePriceChild(DoubleUtils.add(goods.getBasePriceChild(), goodsInv.getProfitPrice()));
 			for (GoodsPriceSegment goodsPriceSegment : goods.getSegments()) {
 				goodsPriceSegment.setAuditPrice(DoubleUtils.add(goodsPriceSegment.getAuditPrice(), goodsInv.getProfitPrice()));
 				goodsPriceSegment.setChildPrice(DoubleUtils.add(goodsPriceSegment.getChildPrice(), goodsInv.getProfitPrice()));
@@ -370,12 +371,14 @@ public class InterfaceOrderServiceImpl extends ServiceHelperImpl<MerchantOrder> 
 			ChannelMerchantInv merchantInv = channel.getMerchantInv(goods.getMerchantId());
 			if (merchantInv.getProfitPrice() > 0) {
 				goods.setBasePrice(DoubleUtils.add(goods.getBasePrice(), merchantInv.getProfitPrice()));
+				goods.setBasePriceChild(DoubleUtils.add(goods.getBasePriceChild(), merchantInv.getProfitPrice()));
 				for (GoodsPriceSegment goodsPriceSegment : goods.getSegments()) {
 					goodsPriceSegment.setAuditPrice(DoubleUtils.add(goodsPriceSegment.getAuditPrice(), merchantInv.getProfitPrice()));
 					goodsPriceSegment.setChildPrice(DoubleUtils.add(goodsPriceSegment.getChildPrice(), merchantInv.getProfitPrice()));
 				}
 			} else {
 				goods.setBasePrice(DoubleUtils.add(goods.getBasePrice(), goods.getBasePrice() * merchantInv.getProfitRate()));
+				goods.setBasePriceChild(DoubleUtils.add(goods.getBasePriceChild(), goods.getBasePrice() * merchantInv.getProfitRate()));
 				for (GoodsPriceSegment goodsPriceSegment : goods.getSegments()) {
 					goodsPriceSegment.setAuditPrice(DoubleUtils.add(goodsPriceSegment.getAuditPrice(), goodsPriceSegment.getAuditPrice()
 							* merchantInv.getProfitRate()));

@@ -72,6 +72,9 @@ public class Goods {
 	@Column(name = "base_price")
 	private double basePrice;// 底价
 
+	@Column(name = "base_price_child")
+	private double basePriceChild;// 底价
+
 	@Expose
 	@Column(name = "sold_count")
 	private int soldCount;// 已售
@@ -265,6 +268,14 @@ public class Goods {
 		this.basePrice = basePrice;
 	}
 
+	public double getBasePriceChild() {
+		return basePriceChild;
+	}
+
+	public void setBasePriceChild(double basePriceChild) {
+		this.basePriceChild = basePriceChild;
+	}
+
 	@XmlTransient
 	public boolean isAuditing() {
 		return this.status == Status.AUDITING;
@@ -288,7 +299,7 @@ public class Goods {
 	public String toString() {
 		return "Goods [merchantName=" + merchantName + ", title=" + title + ", dept=" + dept + ", arrived=" + arrived + ", status="
 				+ status + ", hotelName=" + hotelName + ", travelDays=" + travelDays + ", goodsCount=" + goodsCount + ", basePrice="
-				+ basePrice + "]";
+				+ basePrice + ",basePriceChild=" + basePriceChild + "]";
 	}
 
 }
