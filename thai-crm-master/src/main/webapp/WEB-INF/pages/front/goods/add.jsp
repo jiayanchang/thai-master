@@ -3,8 +3,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%> 
 <script type="text/javascript" src="${pageContext.request.contextPath}/fckeditor/fckeditor.js"></script>  
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/validator.js"></script>  
-
-	<h1>新建商品</h1>
+	<!-- 新建商品 -->
+	<h1>สินค้าผลิตใหม่</h1>
 	<c:url var="addUrl" value="/f/goods/add"/>
 	<form:form action="${addUrl}" method="POST" commandName="goods"   enctype="multipart/form-data">
 		<form:hidden path="id"/>
@@ -17,31 +17,37 @@
 				<col class="col-xs-3">
 			</colgroup>
 			<tr>
-				<td><font color="red">*</font>商品名称：</td>
+				<!-- 商品名称 -->
+				<td><font color="red">*</font>ชื่อสินค้า：</td>
 				<td colspan="3"><form:input id="title" path="title" class="form-control" check="notEmpty" placeholder="请输入商品名称..."/></td>
 				<td></td>
 			</tr>
 			<tr>
-				<td><font color="red">*</font>英文名称：</td>
+				<!-- 英文名称 -->
+				<td><font color="red">*</font>ชื่อภาษาอังกฤษ：</td>
 				<td colspan="3"><form:input id="titleEn" path="titleEn" class="form-control" check="notEmpty" placeholder="请输入商品英文名称..."/></td>
 				<td></td>
 			</tr>
 			<tr>
-				<td><font color="red">*</font>出发地：</td>
+				<!-- 出发地 -->
+				<td><font color="red">*</font>ต้นทาง：</td>
 				<td><form:input path="dept"  class="form-control" check="notEmpty" placeholder="请输入出发地..."/></td>
-				<td><font color="red">*</font>目的地：</td>
+				<!-- 目的地 -->
+				<td><font color="red">*</font>ปลายทาง：</td>
 				<td><form:input path="arrived"  class="form-control" check="notEmpty"  placeholder="请输入目的地..."/></td>
 				<td></td>
 			</tr>
 			<tr>
-				<td><font color="red">*</font>行程天数：</td>
+				<!-- 行程天数 -->
+				<td><font color="red">*</font>เวลากำหนดการเดินทาง：</td>
 				<td>
 					<div class="input-group">
 					  <form:input path="travelDays" class="form-control" check="amount" placeholder="请输入一个整数或小数..."/>
 					  <span class="input-group-addon">天</span>
 					</div>
 				</td>
-				<td><font color="red">*</font>库存数量：</td>
+				<!--  库存数量 -->
+				<td><font color="red">*</font>จำนวนสต็อก：</td>
 				<td>
 					<div class="input-group">
 						<form:input path="goodsCount"  class="form-control" check="integer" placeholder="请输入一个整数..."/>

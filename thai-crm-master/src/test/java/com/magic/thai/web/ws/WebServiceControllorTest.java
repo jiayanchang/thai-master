@@ -43,7 +43,7 @@ public class WebServiceControllorTest {
 
 	// @Test
 	public void testCreatOrder() throws Exception {
-		// String url = "http://198.74.119.194:8080/crm/ws/createOrder";
+		// String url = "http://182.254.220.15:8000/crm/ws/createOrder";
 		String url = "http://localhost:8080/crm/ws/createOrder";
 
 		CreateOrderVo createOrderVo = new CreateOrderVo();
@@ -67,10 +67,10 @@ public class WebServiceControllorTest {
 
 		for (int i = 0; i < 1; i++) {
 			BuyGoodsVo vo = new BuyGoodsVo();
-			vo.setDeptDate("2014-09-29");
-			vo.setGoodsId(11);
+			vo.setDeptDate("2014-11-29");
+			vo.setGoodsId(5);
 			vo.setQty(1);
-			vo.setPrice(112);
+			vo.setPrice(1);
 			createOrderVo.getGoodses().add(vo);
 		}
 
@@ -83,7 +83,7 @@ public class WebServiceControllorTest {
 	// @Test
 	public void testQueryGoodses() throws Exception {
 		String url = "http://localhost:8080/crm/ws/queryGoodses";
-		// String url = "http://198.74.119.194:8080/crm/ws/queryGoodses";
+		// String url = "http://182.254.220.15:8000/crm/ws/queryGoodses";
 		QueryGoodsesVo vo = new QueryGoodsesVo();
 		vo.setToken(token);
 		String xmlData = marshall(vo);
@@ -94,7 +94,7 @@ public class WebServiceControllorTest {
 	// @Test
 	public void testCheckGoods() throws Exception {
 		// String url = "http://localhost:8080/crm/ws/checkGoods";
-		String url = "http://198.74.119.194:8080/crm/ws/checkGoods";
+		String url = "http://182.254.220.15:8000/crm/ws/checkGoods";
 
 		CheckGoodsVo vo = new CheckGoodsVo();
 		vo.setToken(token);
@@ -110,7 +110,7 @@ public class WebServiceControllorTest {
 		String url = "http://localhost:8080/crm/ws/queryOrder";
 		QueryOrderVo vo = new QueryOrderVo();
 		vo.setToken(token);
-		vo.setOrderNo("C0114092200000009");
+		vo.setOrderNo("C0114102700000003");
 
 		String xmlData = marshall(vo);
 		String html = xmlrequest(url, xmlData);
@@ -119,14 +119,14 @@ public class WebServiceControllorTest {
 
 	// @Test
 	public void testRefund() throws Exception {
-		String url = "http://198.74.119.194:8080/crm/ws/refundOrder";
-		// String url = "http://localhost:8080/crm/ws/refundOrder";
+		// String url = "http://182.254.220.15:8000/crm/ws/refundOrder";
+		String url = "http://localhost:8080/crm/ws/refundOrder";
 		RefundOrderVo vo = new RefundOrderVo();
 		vo.setToken(token);
-		vo.setOrderNo("C0114092400000002");
+		vo.setOrderNo("C0114102700000004");
 		vo.setReason("要死了，去不了了");
 
-		vo.getGoodsVo().add(new RefundGoodsVo(1, RefundGoodsVo.Type.REFUND, 1, null));
+		vo.getGoodsVo().add(new RefundGoodsVo(5, RefundGoodsVo.Type.REFUND, 1, null));
 
 		String xmlData = marshall(vo);
 		String html = xmlrequest(url, xmlData);
