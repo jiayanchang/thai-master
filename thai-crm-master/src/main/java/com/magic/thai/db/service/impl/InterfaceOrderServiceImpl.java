@@ -200,7 +200,8 @@ public class InterfaceOrderServiceImpl extends ServiceHelperImpl<MerchantOrder> 
 			orderTraveler.setIdNo(travelerVo.getIdNo());
 			orderTraveler.setIdType(travelerVo.getIdType());
 			orderTraveler.setMobile(travelerVo.getMobile());
-			orderTraveler.setName(travelerVo.getName());
+			orderTraveler.setFirstName(travelerVo.getFirstName());
+			orderTraveler.setLastName(travelerVo.getLastName());
 			orderTraveler.setType(travelerVo.getType());
 			orderTraveler.setNationality(travelerVo.getNationality());
 			orderTravelerDao.create(orderTraveler);
@@ -215,8 +216,7 @@ public class InterfaceOrderServiceImpl extends ServiceHelperImpl<MerchantOrder> 
 
 		// 下单逻辑需要重新梳理
 		/*
-		 * 1.传入商品需要传价格来进行验证 因为下单和查询时间差可能很大 期间有可能有调整<br> 2.商品下单时需要保存商品的单价和加价值
-		 * 3.商家的商品数量验证也需要修改为每天200个的逻辑<br> 4.快照也需要存入加价值，供客服查看
+		 * 1.传入商品需要传价格来进行验证 因为下单和查询时间差可能很大 期间有可能有调整<br> 2.商品下单时需要保存商品的单价和加价值 3.商家的商品数量验证也需要修改为每天200个的逻辑<br> 4.快照也需要存入加价值，供客服查看
 		 */
 
 		Channel channel = channelDao.fetchByToken(vo.getToken());
@@ -331,7 +331,8 @@ public class InterfaceOrderServiceImpl extends ServiceHelperImpl<MerchantOrder> 
 			orderTraveler.setIdNo(travelerVo.getIdNo());
 			orderTraveler.setIdType(travelerVo.getIdType());
 			orderTraveler.setMobile(travelerVo.getMobile());
-			orderTraveler.setName(travelerVo.getName());
+			orderTraveler.setFirstName(travelerVo.getFirstName());
+			orderTraveler.setLastName(travelerVo.getLastName());
 			orderTraveler.setType(travelerVo.getType());
 			orderTraveler.setNationality(travelerVo.getNationality());
 			orderTravelerDao.create(orderTraveler);

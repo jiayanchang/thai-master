@@ -81,7 +81,7 @@
 		</tr>
 		<c:forEach var="traveler" items="${channelOrder.travelers }">
 			<tr>
-				<td>${traveler.name }</td>
+				<td>${traveler.firstName }${traveler.lastName }</td>
 				<td>${traveler.nationality }</td>
 				<td>${traveler.typeDesc }</td>
 				<td>${traveler.birth }</td>

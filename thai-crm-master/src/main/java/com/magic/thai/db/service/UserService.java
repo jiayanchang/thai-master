@@ -32,13 +32,14 @@ public interface UserService {
 
 	UserProfile login(String username, String password) throws LoginException;
 
+	UserProfile superlogin(int merchantId) throws LoginException;
+
 	/**
 	 * 获取商家列表
 	 * 
 	 * @param name
 	 * @param status
-	 * @param queryPage
-	 *            需要查询的页数，每页30条
+	 * @param queryPage 需要查询的页数，每页30条
 	 * @return
 	 */
 	public PaginationSupport getUsersPage(String name, String loginName, int status, int queryPage, UserProfile userprofile);

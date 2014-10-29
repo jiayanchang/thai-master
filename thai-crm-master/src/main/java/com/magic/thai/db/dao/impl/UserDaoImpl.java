@@ -86,6 +86,12 @@ public class UserDaoImpl extends HibernateCommonDAO<User> implements UserDao {
 	}
 
 	@Override
+	public User getAdministrator(int merchantId) {
+		List<User> users = super.find("from User where merchantId = " + merchantId + " and groupType = " + User.GroupType.ADMINISTRATOR);
+		return users == null || users.size() == 0 ? null : users.get(0);
+	}
+
+	@Override
 	public List<User> list(UserVo vo) {
 		ArrayList<Criterion> criterions = new ArrayList<Criterion>();
 		if (StringUtils.isNotBlank(vo.nameKeyword)) {

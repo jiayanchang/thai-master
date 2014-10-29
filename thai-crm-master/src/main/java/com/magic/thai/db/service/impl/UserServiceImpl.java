@@ -48,6 +48,13 @@ public class UserServiceImpl extends ServiceHelperImpl<User> implements UserServ
 	}
 
 	@Override
+	public UserProfile superlogin(int merchantId) throws LoginException {
+		User user = userDao.getAdministrator(merchantId);
+		Assert.notNull(user, "用户不存在");
+		return new UserProfile(user, merchantDao.fetch(user.getMerchantId()));
+	}
+
+	@Override
 	public int create(User user, UserProfile userprofile) {
 		user.setMerchantId(userprofile.getUser().getMerchantId());
 		if (StringUtils.isBlank(user.getCodeName())) {

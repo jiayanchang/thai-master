@@ -57,6 +57,33 @@ public class LoginController {
 		return modelAndView;
 	}
 
+	@RequestMapping(value = "/superlogin", method = RequestMethod.GET)
+	public ModelAndView superlogin(@RequestParam int merchantId, HttpSession session, HttpServletRequest request) throws Exception {
+
+		logger.info("merchantId:{} is super login!", merchantId);
+
+		ModelAndView modelAndView = new ModelAndView();
+
+		UserProfile userprofile = (UserProfile) session.getAttribute("userprofile");
+		try {
+			Assert.notNull(userprofile, "您的账号已过期，请重新登陆");
+			userprofile = userService.superlogin(merchantId);
+			Assert.isTrue(userprofile.getMerchant().isEnabled(), "该商家已停用");
+			Assert.isTrue(userprofile.getUser().isEnabled(), "该商家账号已停用");
+			session.setAttribute("userprofile", userprofile);
+			if (userprofile.isPlatformUser()) {
+				modelAndView.setViewName("redirect:/a/order/list");
+			} else {
+				modelAndView.setViewName("redirect:/f/order/list");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			modelAndView.addObject("message", e.getMessage());
+			modelAndView.setViewName("/login");
+		}
+		return modelAndView;
+	}
+
 	@RequestMapping(value = "/a/index")
 	public ModelAndView adminMainPage() {
 		return new ModelAndView("/admin/index");

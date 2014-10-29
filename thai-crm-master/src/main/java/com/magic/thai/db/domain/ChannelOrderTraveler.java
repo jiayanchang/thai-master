@@ -25,13 +25,15 @@ public class ChannelOrderTraveler {
 	@JoinColumn(name = "order_id")
 	private ChannelOrder order;
 
-	@Column(name = "name", nullable = false)
-	private String name;
+	@Column(name = "first_name")
+	private String firstName;
+	@Column(name = "last_name")
+	private String lastName;
 
 	@Column(name = "gender")
 	private int gender;
 	@Column(name = "id_type")
-	private int idType;
+	private int idType = IdType.PASSPORT;
 	@Column(name = "id_no")
 	private String idNo;
 	@Column(name = "effective_date")
@@ -116,14 +118,6 @@ public class ChannelOrderTraveler {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
 	public int getGender() {
 		return gender;
 	}
@@ -202,10 +196,31 @@ public class ChannelOrderTraveler {
 		this.nationality = nationality;
 	}
 
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public String getName() {
+		return this.firstName + " " + this.lastName;
+	}
+
 	@Override
 	public String toString() {
-		return "OrderTraveler [id=" + id + ", order=" + order + ", name=" + name + ", gender=" + gender + ", idType=" + idType + ", idNo="
-				+ idNo + ", effectiveDate=" + effectiveDate + ", birth=" + birth + ", mobile=" + mobile + ", type=" + type + "]";
+		return "ChannelOrderTraveler [id=" + id + ", order=" + order + ", firstName=" + firstName + ", lastName=" + lastName + ", gender="
+				+ gender + ", idType=" + idType + ", idNo=" + idNo + ", effectiveDate=" + effectiveDate + ", birth=" + birth
+				+ ", nationality=" + nationality + ", mobile=" + mobile + ", type=" + type + "]";
 	}
 
 }

@@ -162,6 +162,7 @@ public class GoodsServiceImpl extends ServiceHelperImpl<Goods> implements GoodsS
 		goods.setSummary(goodsbean.getSummary());
 		goods.setBasePrice(goodsbean.getBasePrice());
 		goods.setBasePriceChild(goodsbean.getBasePriceChild());
+		goods.setStatus(goodsbean.getStatus());
 
 		goods.getDetails().setTravelPlan(goodsbean.getDetails().getTravelPlan());
 		goods.getDetails().setCostDesc(goodsbean.getDetails().getCostDesc());

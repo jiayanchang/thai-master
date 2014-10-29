@@ -1,8 +1,11 @@
 package com.magic.thai.web.admin;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.magic.thai.db.domain.Goods;
@@ -77,6 +81,80 @@ public class GoodsController {
 		GoodsVo vo = new GoodsVo();
 		vo.status = Goods.Status.AUDITING;
 		return listPost(vo);
+	}
+
+	@RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
+	public ModelAndView edit(@PathVariable int id) {
+		ModelAndView modelAndView = new ModelAndView("/admin/goods/edit");
+		modelAndView.addObject("goods", goodsService.fetch(id));
+		return modelAndView;
+	}
+
+	@RequestMapping(value = "/edit/proccess", method = RequestMethod.POST)
+	public ModelAndView editProccess(@ModelAttribute Goods goods, @RequestParam CommonsMultipartFile picPathFile,
+			@RequestParam CommonsMultipartFile linePicPathAFile, @RequestParam CommonsMultipartFile linePicPathBFile,
+			@RequestParam CommonsMultipartFile linePicPathCFile, @RequestParam CommonsMultipartFile linePicPathDFile, HttpSession session) {
+		ModelAndView modelAndView = new ModelAndView("redirect:/a/goods/list");
+		UserProfile userprofile = (UserProfile) session.getAttribute("userprofile");
+		try {
+			updateFile(goods, picPathFile, linePicPathAFile, linePicPathBFile, linePicPathCFile, linePicPathDFile, session);
+			goods.setStatus(Goods.Status.DEPLOYED);
+			goodsService.update(goods, userprofile);
+			modelAndView.addObject("message", "商品修改成功");
+		} catch (GoodsStatusException e) {
+			e.printStackTrace();
+			modelAndView.setViewName("/admin/goods/edit");
+			modelAndView.addObject("message", e.getMessage());
+		}
+		return modelAndView;
+	}
+
+	private void updateFile(Goods goods, CommonsMultipartFile picPathFile, CommonsMultipartFile linePicPathAFile,
+			CommonsMultipartFile linePicPathBFile, CommonsMultipartFile linePicPathCFile, CommonsMultipartFile linePicPathDFile,
+			HttpSession session) {
+		if (uploadFile(picPathFile, session.getServletContext(), goods, "picPath.jpg")) {
+			goods.getDetails().setPicPath("/resources/goods/" + goods.getId() + "/picPath.jpg");
+		}
+
+		if (uploadFile(linePicPathAFile, session.getServletContext(), goods, "a.jpg")) {
+			goods.getDetails().setLinePicPathA("/resources/goods/" + goods.getId() + "/a.jpg");
+		}
+
+		if (uploadFile(linePicPathBFile, session.getServletContext(), goods, "b.jpg")) {
+			goods.getDetails().setLinePicPathB("/resources/goods/" + goods.getId() + "/b.jpg");
+		}
+
+		if (uploadFile(linePicPathCFile, session.getServletContext(), goods, "c.jpg")) {
+			goods.getDetails().setLinePicPathC("/resources/goods/" + goods.getId() + "/c.jpg");
+		}
+
+		if (uploadFile(linePicPathDFile, session.getServletContext(), goods, "d.jpg")) {
+			goods.getDetails().setLinePicPathD("/resources/goods/" + goods.getId() + "/d.jpg");
+		}
+	}
+
+	private boolean uploadFile(CommonsMultipartFile file, ServletContext context, Goods goods, String filename) {
+		if (file == null) {
+			return false;
+		}
+		String parentPath = context.getRealPath("/") + "/upload/goods/" + goods.getId();
+		File parentDir = new File(parentPath);
+		if (!parentDir.exists()) {
+			parentDir.mkdir();
+		}
+
+		File imageFile = new File(parentPath + "/" + filename);
+		try {
+			if (imageFile.exists()) {
+				imageFile.delete();
+			}
+			file.transferTo(imageFile);
+		} catch (IllegalStateException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return true;
 	}
 
 	@RequestMapping(value = "/audit/{id}", method = RequestMethod.GET)

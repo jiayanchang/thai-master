@@ -7,10 +7,11 @@
 
 <div class="content">
 	<h1>编辑商品</h1>
-	<c:url var="addUrl" value="/f/goods/edit/proccess"/>
+	<c:if test="${not empty message}">
+		<div class="alert alert-danger" role="alert">${message }</div>
+	</c:if>
+	<c:url var="addUrl" value="/a/goods/edit/proccess"/>
 	<form:form action="${addUrl}" method="POST" commandName="goods" enctype="multipart/form-data">
-	
-	<font color="red">${message }</font>
 	
 		<form:hidden path="id"/>
 		<table class="table">

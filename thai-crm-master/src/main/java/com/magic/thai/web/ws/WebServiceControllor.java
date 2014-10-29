@@ -94,7 +94,8 @@ public class WebServiceControllor {
 			for (TravelerVo travelerVo : vo.getTravelers()) {
 				Asserts.isTrue(StringUtils.isNotBlank(travelerVo.getIdNo()), new ParameterException("游客证件号不能为空"));
 				Asserts.notNull(travelerVo.getIdType(), new ParameterException("游客证件类型不能为空"));
-				Asserts.isTrue(StringUtils.isNotBlank(travelerVo.getName()), new ParameterException("游客姓名不能为空"));
+				Asserts.isTrue(StringUtils.isNotBlank(travelerVo.getFirstName()), new ParameterException("游客姓不能为空"));
+				Asserts.isTrue(StringUtils.isNotBlank(travelerVo.getLastName()), new ParameterException("游客名不能为空"));
 				Asserts.isTrue(StringUtils.isNotBlank(travelerVo.getNationality()), new ParameterException("游客国籍不能为空"));
 			}
 			ChannelOrder order = interfaceOrderService.create(vo);

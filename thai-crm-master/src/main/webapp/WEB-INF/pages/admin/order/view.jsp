@@ -68,21 +68,21 @@
 			<th>姓名</th>
 			<th>国籍</th>
 			<th>性别</th>
-			<th>证件类型</th>
+			<!-- <th>证件类型</th>
 			<th>证件号码</th>
 			<th>证件有效期</th>
-			<th>出生日期</th>
+			<th>出生日期</th> -->
 			<th>手机号码</th>
 		</tr>
 		<c:forEach var="traveler" items="${order.travelers }">
 			<tr>
-				<td>${traveler.name }</td>
+				<td>${traveler.firstName }${traveler.lastName }</td>
 				<td>${traveler.nationality }</td>
 				<td>${traveler.genderDesc }</td>
-				<td>${traveler.idTypeDesc }</td>
+				<%-- <td>${traveler.idTypeDesc }</td>
 				<td>${traveler.idNo }</td>
 				<td>${traveler.effectiveDate }</td>
-				<td>${traveler.birth }</td>
+				<td>${traveler.birth }</td> --%>
 				<td>${traveler.mobile }</td>
 			</tr>
 		</c:forEach>

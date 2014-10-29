@@ -5,10 +5,12 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
 <h1>商品列表</h1>
-<p>${message}</p>
 <br/>
 <c:url var="submitUrl" value="/a/goods/list"/>
 <form:form action="${submitUrl}" method="POST" commandName="vo">
+<c:if test="${not empty message}">
+	<div class="alert alert-success" role="alert">${message }</div>
+</c:if>
 <table class="table table-condensed">
 <tr> 
 	<td>商品名称：</td>
@@ -32,6 +34,17 @@
 </tr>
 </table>
 <table class="table table-striped table-hover">
+	<colgroup>
+		<col class="col-xs-1">
+		<col class="col-xs-2">
+		<col class="col-xs-2">
+		<col class="col-xs-1">
+		<col class="col-xs-1">
+		<col class="col-xs-1">
+		<col class="col-xs-1">
+		<col class="col-xs-1">
+		<col class="col-xs-8">
+	</colgroup>
 	<thead>
 	<tr> 
 		<th>ID</th>
@@ -57,12 +70,13 @@
 			<td>${goods.goodsCount}</td>
 			<td>${goods.statusDesc}</td>
 			<td>
-			<c:if test="${goods.auditing }">
-				<a class="btn btn-success" href="${pageContext.request.contextPath}/a/goods/audit/${goods.id} ">审批</a><br/>
-			</c:if>
-			<c:if test="${goods.deployed }">
-				<a id="cancel-btn" class="btn btn-danger" val="${goods.id }" href="javascript:openDialog(${goods.id}); ">下架</a><br/>
-			</c:if>
+				<a class="btn btn-info" href="${pageContext.request.contextPath}/a/goods/edit/${goods.id} ">编辑</a>
+				<c:if test="${goods.auditing }">
+					<a class="btn btn-success" href="${pageContext.request.contextPath}/a/goods/audit/${goods.id} ">审批</a>
+				</c:if>
+				<c:if test="${goods.deployed }">
+					<a id="cancel-btn" class="btn btn-danger" val="${goods.id }" href="javascript:openDialog(${goods.id}); ">下架</a>
+				</c:if>
 			</td>
 		</tr>
 	</c:forEach>

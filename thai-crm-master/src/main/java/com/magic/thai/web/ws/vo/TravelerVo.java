@@ -7,7 +7,8 @@ import com.magic.thai.db.domain.ChannelOrderTraveler;
 @XmlRootElement(name = "traveler")
 public class TravelerVo {
 
-	private String name;
+	private String firstName;
+	private String lastName;
 	private Integer idType = ChannelOrderTraveler.IdType.IDCARD;
 	private Integer gender = ChannelOrderTraveler.Gender.MALE;
 	private String birth;
@@ -17,12 +18,20 @@ public class TravelerVo {
 	private String mobile;
 	private Integer type = ChannelOrderTraveler.Type.ADULT;// 乘客类型 默认成人
 
-	public String getName() {
-		return name;
+	public String getFirstName() {
+		return firstName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 
 	public Integer getIdType() {

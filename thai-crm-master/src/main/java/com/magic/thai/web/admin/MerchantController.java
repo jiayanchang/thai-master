@@ -143,6 +143,7 @@ public class MerchantController {
 
 		ModelAndView modelandView = new ModelAndView("/admin/merchant/list");
 		modelandView.addObject("ps", merchantService.getMerchantsPage(null, -1, 1));
+		modelandView.addObject("userprofile", userprofile);
 		return modelandView;
 	}
 
@@ -156,6 +157,7 @@ public class MerchantController {
 		modelandView.addObject("name", name);
 		modelandView.addObject("page", page);
 		modelandView.addObject("status", status);
+		modelandView.addObject("userprofile", userprofile);
 		return modelandView;
 	}
 

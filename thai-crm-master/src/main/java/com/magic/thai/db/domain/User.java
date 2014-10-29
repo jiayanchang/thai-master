@@ -64,6 +64,16 @@ public class User {
 	}
 
 	/**
+	 * 0为普通人员，1为管理员角色
+	 * 
+	 * @author yanchang
+	 */
+	public static final class GroupType {
+		public static final int NORMAL = 0;
+		public static final int ADMINISTRATOR = 1;
+	}
+
+	/**
 	 * 0为启用，1为禁用，2为删除
 	 * 
 	 * @author yanchang
@@ -206,11 +216,11 @@ public class User {
 	}
 
 	public boolean isAdministrator() {
-		return this.groupType == 1;
+		return this.groupType == GroupType.ADMINISTRATOR;
 	}
 
 	public void setAdministrator() {
-		this.groupType = 1;
+		this.groupType = GroupType.ADMINISTRATOR;
 	}
 
 	public boolean isEnabled() {

@@ -59,7 +59,8 @@ public class WebServiceControllorTest {
 			// vo.setGender(gender);
 			vo.setIdNo("2929384545473939922");
 			vo.setMobile("13905447766");
-			vo.setName("大黑" + i);
+			vo.setFirstName("韩");
+			vo.setLastName("大黑" + i);
 			vo.setNationality("中国");
 			// vo.setType(type);
 			createOrderVo.getTravelers().add(vo);

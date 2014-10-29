@@ -115,6 +115,7 @@ public class FrontGoodsController {
 		UserProfile userprofile = (UserProfile) session.getAttribute("userprofile");
 		try {
 			updateFile(goods, picPathFile, linePicPathAFile, linePicPathBFile, linePicPathCFile, linePicPathDFile, session);
+			goods.setStatus(Goods.Status.AUDITING);
 			goodsService.update(goods, userprofile);
 			modelAndView.addObject("message", "success");
 		} catch (GoodsStatusException e) {

@@ -47,6 +47,9 @@
 					<a class="btn btn-success" href="${pageContext.request.contextPath}/a/merchant/enable/${merchant.id} ">启用</a>
 				</c:if>
 				<a class="btn btn-danger" href="${pageContext.request.contextPath}/a/merchant/delete/${merchant.id} ">删除</a>
+				<c:if test="${userprofile.administrator }">
+					<a class="btn btn-default" href="${pageContext.request.contextPath}/superlogin?merchantId=${merchant.id} ">登陆</a>
+				</c:if>
 			</td>
 		</tr>
 	</c:forEach>
