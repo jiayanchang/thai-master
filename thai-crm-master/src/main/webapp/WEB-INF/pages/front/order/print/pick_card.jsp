@@ -5,7 +5,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
-<TITLE>打印-接机单打印设置</TITLE> 
+<TITLE>Print-Pick Card</TITLE> 
 
 <script src="http://code.jquery.com/jquery-migrate-1.1.0.js"></script>
 <script language="javascript" src="${pageContext.request.contextPath}/js/jquery/print/jquery-1.4.4.min.js"></script>
@@ -30,9 +30,9 @@
 </head>
 <body>
 	<div class="Noprint">
-		<h2>接机单打印</h2>
-		<input type="button" value="打印" onclick="printf();" class="btn btn-primary"/>
-		<input type="button" value="关闭" onclick="back();" class="btn btn-default"/>
+		<h2>Pick Card</h2>
+		<input type="button" value="Print" onclick="printf();" class="btn btn-primary"/>
+		<input type="button" value="Close" onclick="back();" class="btn btn-default"/>
 		<hr/>
 	</div>
 	<table class="table">
@@ -47,9 +47,9 @@
 		</tr>
 		<tr class="Noprint">
 			<td>
-				<input style="width:180px" id="fightNo" class="form-control"  placeholder="航班号"/>
-				<input style="width:180px" id="arrDate" class="form-control"  placeholder="抵达日期"/>
-				<input style="width:180px" id="arrTime" class="form-control"  placeholder="抵达时间"/>
+				<input style="width:180px" id="fightNo" class="form-control"  placeholder="FlightNo"/>
+				<input style="width:180px" id="arrDate" class="form-control"  placeholder="ArrivedDate"/>
+				<input style="width:180px" id="arrTime" class="form-control"  placeholder="ArrivedTime"/>
 			</td>
 		</tr>
 		<tr class="Noprintscreen">
@@ -69,17 +69,12 @@
 		window.close();
 	}
 	function printf(){
-		$("#pv").html( "航班：" + $("#fightNo").val() + "&nbsp;&nbsp;&nbsp;" +  $("#arrDate").val()  + "&nbsp;&nbsp;&nbsp;" +  $("#arrTime").val() );
+		$("#pv").html( "FlightNo：" + $("#fightNo").val() + "&nbsp;&nbsp;&nbsp;" +  $("#arrDate").val()  + "&nbsp;&nbsp;&nbsp;" +  $("#arrTime").val() );
 		window.print();
 	}
 	
 	
 	function saveinfo() {
-		
-		/* fightNo
-		arrDate
-		arrTime
-		 */
 		
 		jQuery.ajax({
 		    type: 'POST',

@@ -16,7 +16,7 @@
 .PageBreak {page-break-after: always;} 
 </style> 
 
-<h1 class="Noprint">打印发票</h1>
+<h1 class="Noprint">PRINT INVOICE</h1>
 <div id="print_body">
 	<table class="table">
 		<tr >
@@ -24,44 +24,44 @@
 				<img height="80px" width="80px" src="${pageContext.request.contextPath}/resources/logo/<%=((UserProfile)session.getAttribute("userprofile")).getMerchant().getId() + ".jpg"  %>"/>
 			</td>
 			<td align="center">
-				<p>公司名称：${userprofile.merchant.name }</p>
+				<p>${userprofile.merchant.name }</p>
 			</td>
 		</tr>
 		<tr>
-			<td align="center"><p>公司英文名称：${userprofile.merchant.nameEn }</p></td>
+			<td align="center"><p>${userprofile.merchant.nameEn }</p></td>
 		</tr>
 		<tr>
-			<td align="center"><p>公司地址：${userprofile.merchant.address } </p></td>
+			<td align="center"><p>${userprofile.merchant.address } </p></td>
 		</tr>
 		<tr>
 			<td align="center">
 				<p>
-					电话：${userprofile.merchant.tel }   &nbsp; &nbsp;&nbsp;
-					FAX：${userprofile.merchant.fax } 
+					Tel：${userprofile.merchant.tel }   &nbsp; &nbsp;&nbsp;
+					Fax：${userprofile.merchant.fax } 
 				</p>
 			</td>
 		</tr>
 		<tr>
-			<td align="center">订单号：${order.orderNo }</td>
+			<td align="center">OrderNo：${order.orderNo }</td>
 		</tr>
 	</table>
 	<table class="table">
 		<tr>
-			<td>客户（CUSTOMER）：${order.contractor }</td>
-			<td rowspan="2">发票日期（DATE）：${now }</td>
+			<td>CUSTOMER：${order.contractor }</td>
+			<td rowspan="2">DATE：${now }</td>
 		</tr>
 		<tr>
-			<td>地址（ADDRESS）：</td>
+			<td>ADDRESS：</td>
 		</tr>
 	</table>	
 	<table class="table">
 		<thead>
 			<tr>
 				<th>ITEM</th>
-				<th width="300px">详情（Details ）</th>
-				<th>数量（QTY）</th>
-				<th>单价（Unit Price）</th>
-				<th>总额（AMOUNT)</th>
+				<th width="300px">Details</th>
+				<th>QTY</th>
+				<th>Unit Price</th>
+				<th>AMOUNT</th>
 			</tr>
 		</thead>
 		<c:forEach var="mgoods" items="${order.goodses }" varStatus="status">
@@ -74,21 +74,21 @@
 		</tr>
 		</c:forEach>
 		<tr>
-			<td colspan="4" align="right">小计（SUB TOTAL）</td>
+			<td colspan="4" align="right">SUB TOTAL</td>
 			<td colspan="1">${order.amount }</td>
 		</tr>
-		<tr>
+		<%-- <tr>
 			<td colspan="4" align="right">增值税（VAT）7%</td>
 			<td colspan="1">${order.vatAmount }</td>
 		</tr>
 		<tr>
 			<td colspan="4" align="right">税后金额（AMOUNT EXCLUDED VAT）</td>
 			<td colspan="1">${order.incomeAmount }</td>
-		</tr>
+		</tr> --%>
 	</table>	
 	<table class="table">
 		<tr>
-			<td><input type="checkbox"/>现金（Cash）</td>
+			<td><input type="checkbox"/>Cash</td>
 			<td></td>
 			<td width="200px"></td>
 			<td></td>
@@ -98,7 +98,7 @@
 			<td></td>
 		</tr>
 		<tr>
-			<td><input type="checkbox"/>支票（Cheque）</td>
+			<td><input type="checkbox"/>Cheque</td>
 			<td>Bank</td>
 			<td></td>
 			<td>Cheque no.</td>
@@ -107,7 +107,7 @@
 			<td width="200px"></td>
 		</tr>
 		<tr>
-			<td><input type="checkbox"/>信用卡（Credit Card）</td>
+			<td><input type="checkbox"/>Credit Card</td>
 			<td>Card Type</td>
 			<td></td>
 			<td>no.</td>
@@ -124,8 +124,8 @@
 	</table>
 </div>
 <div  class="Noprint">
-	<input type="button" value="打印" onclick="printf();" class="btn btn-primary"/>
-	<input type="button" value="关闭" onclick="back();" class="btn btn-default"/>
+	<input type="button" value="Print" onclick="printf();" class="btn btn-primary"/>
+	<input type="button" value="Close" onclick="back();" class="btn btn-default"/>
 </div>
 <script>
 	function back(){

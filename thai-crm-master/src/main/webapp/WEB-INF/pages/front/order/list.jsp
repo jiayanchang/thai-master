@@ -4,7 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 
-<h1>รายชื่อการสั่งซื้อ</h1><!-- 订单列表 -->
+<h1>Order List</h1><!-- 订单列表 -->
 <p>${message}</p>
 <br/>
 <div class="data">
@@ -12,19 +12,19 @@
 <form:form action="${submitUrl}" method="POST" commandName="vo">
 <table class="table">
 <tr> 
-	<td style="width:150px;">หมายเลขการสั่งซื้อ:</td><!-- 订单号 -->
+	<td style="width:150px;">Order No:</td><!-- 订单号 -->
 	<td  style="width:200px;"><form:input path="orderNo" class="form-control"/></td>
 	
-	<td style="width:100px;">เวลาสั่งซื้อ:</td><!-- 下单时间 -->
+	<td style="width:100px;">Order Time:</td><!-- 下单时间 -->
 	<td style="width:100px;"><form:input path="startDate" tag="date" class="form-control"/></td>
 	<td style="width:20px;">-</td>
 	<td style="width:100px;"><form:input path="endDate" tag="date" class="form-control"/></td>
-	<td style="width:80px;">สถานะ</td><!-- 状态 -->
+	<td style="width:80px;">Order Status</td><!-- 状态 -->
 	<td style="width:100px;">
 		<form:select path="status" class="form-control">
-			<form:option value="-1" >全部</form:option>
-			<form:option value="0">待确认</form:option>
-			<form:option value="1">已确认</form:option>
+			<form:option value="-1" >All</form:option>
+			<form:option value="0">Uncompleted</form:option>
+			<form:option value="1">Completed</form:option>
 		</form:select>
 	</td>
 	<td  style="width:120px;"><input type="submit" value="การสอบถาม" class="btn btn-primary" /></td>
@@ -41,13 +41,13 @@
 <table class="table table-striped table-hover table-condensed">
 <thead>
 	<tr> 
-		<th>订单号</th>
-		<th>下单时间</th>
-		<th>联系人</th>
-		<th width="10%">联系电话</th>
-		<th>订单状态</th>
-		<th>处理人</th>
-		<th>操作</th>
+		<th>Order No</th>
+		<th>Order Time</th>
+		<th>Contracts</th>
+		<th width="10%">ContractTel</th>
+		<th>Status</th>
+		<th>Processor</th>
+		<th>Oper</th>
 	</tr>
 </thead>
 <tbody>
@@ -60,18 +60,18 @@
 	<td>${order.statusDesc}</td>
 	<td>${order.lastOperatorName}</td>
 	<td>
-		<a class="btn btn-warning" href="javascript:openDialog(${order.id}, '${order.orderNo}'); ">编辑备注</a>
-		<a class="btn btn-info" href="${pageContext.request.contextPath}/f/order/${order.id} ">详情</a>
+		<a class="btn btn-warning" href="javascript:openDialog(${order.id}, '${order.orderNo}'); ">Edit Note</a>
+		<a class="btn btn-info" href="${pageContext.request.contextPath}/f/order/${order.id} ">Details</a>
 		<c:if test="${order.completed }">
 		<div class="btn-group">
 		  <button class="btn btn-info dropdown-toggle" data-toggle="dropdown" href="#">
-		    	打印
+		    	Print
 		    <span class="caret"></span>
 		  </button>
 		  <ul class="dropdown-menu">
-		  	<li><a href="javascript:transferCardPrint(${order.id});">潜水接送打印</a></li>
-			<li><a href="javascript:pickCardPrint(${order.id});">接机单打印</a></li>
-			<li><a href="javascript:invoicePrint(${order.id});">发票打印</a></li>
+		  	<li><a href="javascript:transferCardPrint(${order.id});">Print Divers Shuttle Card</a></li>
+			<li><a href="javascript:pickCardPrint(${order.id});">Print Pick Card</a></li>
+			<li><a href="javascript:invoicePrint(${order.id});">Print Invoice</a></li>
 		  </ul>
 		</div>
 		</c:if>

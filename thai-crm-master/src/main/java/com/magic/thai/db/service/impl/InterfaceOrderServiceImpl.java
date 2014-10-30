@@ -111,6 +111,8 @@ public class InterfaceOrderServiceImpl extends ServiceHelperImpl<MerchantOrder> 
 			Goods goods = goodsDao.loadById(goodsVo.getGoodsId());
 			Asserts.notNull(goods, new ParameterException("商品ID有误：" + goodsVo.getGoodsId()));
 
+			double totalamount = goodsVo.getPrice() * goodsVo.getQty();
+
 			MerchantOrderGoods merchantOrderGoods = new MerchantOrderGoods();
 			merchantOrderGoods.setAmount(goodsVo.getPrice());
 			merchantOrderGoods.setChannelId(0);
@@ -125,7 +127,7 @@ public class InterfaceOrderServiceImpl extends ServiceHelperImpl<MerchantOrder> 
 			if (merchantOrderMap.containsKey(goods.getMerchantId() + "")) {
 				MerchantOrder merchantOrder = merchantOrderMap.get(goods.getMerchantId() + "");
 				merchantOrder.getGoodses().add(merchantOrderGoods);
-				merchantOrder.setAmount(merchantOrder.getAmount() + goodsVo.getPrice());
+				merchantOrder.setAmount(merchantOrder.getAmount() + totalamount);
 				merchantOrder.setProfitAmount(merchantOrder.getAmount());
 				merchantOrderGoods.setMerchantOrder(merchantOrder);
 			} else {
@@ -151,7 +153,7 @@ public class InterfaceOrderServiceImpl extends ServiceHelperImpl<MerchantOrder> 
 				merchantOrder.setStatus(MerchantOrder.Status.COMPLETED);
 
 				merchantOrderMap.put(goods.getMerchantId() + "", merchantOrder);
-				merchantOrder.setAmount(merchantOrder.getAmount() + goodsVo.getPrice());
+				merchantOrder.setAmount(merchantOrder.getAmount() + totalamount);
 				merchantOrder.setProfitAmount(merchantOrder.getAmount());
 				merchantOrder.setDriverMobile(vo.getDriverMobile());
 				merchantOrder.setDriverName(vo.getDriverName());
@@ -167,7 +169,7 @@ public class InterfaceOrderServiceImpl extends ServiceHelperImpl<MerchantOrder> 
 				goods.setSoldCount(goods.getSoldCount() + vo.getTravelers().size());
 				goodsDao.update(goods);
 			}
-			channelOrder.setAmount(channelOrder.getAmount() + goodsVo.getPrice());
+			channelOrder.setAmount(channelOrder.getAmount() + totalamount);
 		}
 
 		channelOrderDao.create(channelOrder);
@@ -216,7 +218,8 @@ public class InterfaceOrderServiceImpl extends ServiceHelperImpl<MerchantOrder> 
 
 		// 下单逻辑需要重新梳理
 		/*
-		 * 1.传入商品需要传价格来进行验证 因为下单和查询时间差可能很大 期间有可能有调整<br> 2.商品下单时需要保存商品的单价和加价值 3.商家的商品数量验证也需要修改为每天200个的逻辑<br> 4.快照也需要存入加价值，供客服查看
+		 * 1.传入商品需要传价格来进行验证 因为下单和查询时间差可能很大 期间有可能有调整<br> 2.商品下单时需要保存商品的单价和加价值
+		 * 3.商家的商品数量验证也需要修改为每天200个的逻辑<br> 4.快照也需要存入加价值，供客服查看
 		 */
 
 		Channel channel = channelDao.fetchByToken(vo.getToken());
@@ -249,6 +252,9 @@ public class InterfaceOrderServiceImpl extends ServiceHelperImpl<MerchantOrder> 
 			double profitPrice = CreateOrderValidator.validate(channel, goods, goodsVo);
 			double goodsPrice = CreateOrderValidator.getPirce(goods, goodsVo);
 
+			double goodsAmount = DoubleUtils.mul(goodsPrice, (double) goodsVo.getQty());
+			double profitAmount = DoubleUtils.mul(profitPrice, (double) goodsVo.getQty());
+
 			MerchantOrderGoods merchantOrderGoods = new MerchantOrderGoods();
 			merchantOrderGoods.setAmount(profitPrice);
 			merchantOrderGoods.setChannelId(channel.getId());
@@ -262,8 +268,8 @@ public class InterfaceOrderServiceImpl extends ServiceHelperImpl<MerchantOrder> 
 			if (merchantOrderMap.containsKey(goods.getMerchantId() + "")) {
 				MerchantOrder merchantOrder = merchantOrderMap.get(goods.getMerchantId() + "");
 				merchantOrder.getGoodses().add(merchantOrderGoods);
-				merchantOrder.setAmount(merchantOrder.getAmount() + goodsPrice);
-				merchantOrder.setProfitAmount(merchantOrder.getProfitAmount() + profitPrice);
+				merchantOrder.setAmount(merchantOrder.getAmount() + goodsAmount);
+				merchantOrder.setProfitAmount(merchantOrder.getProfitAmount() + profitAmount);
 				merchantOrderGoods.setMerchantOrder(merchantOrder);
 			} else {
 
@@ -287,8 +293,8 @@ public class InterfaceOrderServiceImpl extends ServiceHelperImpl<MerchantOrder> 
 				merchantOrder.setHotelRoomTel(vo.getHotelRoomTel());
 
 				merchantOrderMap.put(goods.getMerchantId() + "", merchantOrder);
-				merchantOrder.setAmount(merchantOrder.getAmount() + goodsPrice);
-				merchantOrder.setProfitAmount(merchantOrder.getProfitAmount() + profitPrice);
+				merchantOrder.setAmount(merchantOrder.getAmount() + goodsAmount);
+				merchantOrder.setProfitAmount(merchantOrder.getProfitAmount() + profitAmount);
 				merchantOrder.getGoodses().add(merchantOrderGoods);
 			}
 
@@ -299,7 +305,7 @@ public class InterfaceOrderServiceImpl extends ServiceHelperImpl<MerchantOrder> 
 				goods.setSoldCount(goods.getSoldCount() + vo.getTravelers().size());
 				goodsDao.update(goods);
 			}
-			channelOrder.setAmount(channelOrder.getAmount() + profitPrice);
+			channelOrder.setAmount(channelOrder.getAmount() + profitAmount);
 		}
 
 		channelOrderDao.create(channelOrder);

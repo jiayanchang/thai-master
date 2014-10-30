@@ -77,7 +77,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td>The total price：</td>
+			<td>Unit Price：</td>
 			<td><input name="goodses[0].price" class="form-control" check="amount"  placeholder="Please input an amount ..."/></td>
 			<td></td>
 			<td></td>
@@ -153,8 +153,8 @@
 			+ '<td><input tg=birth name="travelers['+index+'].birth" style="width:100px;"  tag="date"/></td>' */
 			+ '<td>'
 			+ '	<select tg=type name="travelers['+index+'].type"  class="form-control">'
-			+ '		<option value="1">child</option>'
 			+ '		<option value="0">adult</option>'
+			+ '		<option value="1">child</option>'
 			+ '	</select>'
 			+ '</td>'
 			+ '<td><input tg=mobile name="travelers['+index+'].mobile"  class="form-control"/></td>'
