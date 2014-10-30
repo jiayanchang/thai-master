@@ -117,7 +117,7 @@ public class FrontUserController {
 
 		ModelAndView modelAndView = new ModelAndView("redirect:/f/user/list");
 		userService.delete(id, userprofile);
-		message = "User successfull deleted";
+		message = "Deleted successfully ";
 		return modelAndView;
 	}
 
@@ -127,7 +127,7 @@ public class FrontUserController {
 		ModelAndView modelAndView = new ModelAndView("redirect:/f/user/list");
 		try {
 			userService.enable(id, userprofile);
-			message = "用户启用成功";
+			message = "Enabled successfully";
 		} catch (OrderStatusException e) {
 			e.printStackTrace();
 			message = e.getMessage();
@@ -141,7 +141,7 @@ public class FrontUserController {
 		ModelAndView modelAndView = new ModelAndView("redirect:/f/user/list");
 		try {
 			userService.disable(id, userprofile);
-			message = "用户停用成功";
+			message = "Disabled successfully";
 		} catch (OrderStatusException e) {
 			e.printStackTrace();
 			message = e.getMessage();

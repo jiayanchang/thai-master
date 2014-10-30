@@ -12,6 +12,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlTransient;
 
+import org.apache.commons.lang.StringUtils;
+
 @Entity
 @Table(name = "channel_order_traveler")
 public class ChannelOrderTraveler {
@@ -29,6 +31,8 @@ public class ChannelOrderTraveler {
 	private String firstName;
 	@Column(name = "last_name")
 	private String lastName;
+	@Column(name = "name")
+	private String name;
 
 	@Column(name = "gender")
 	private int gender;
@@ -59,9 +63,9 @@ public class ChannelOrderTraveler {
 
 	public String getTypeDesc() {
 		if (type == Type.ADULT) {
-			return "成人";
+			return "Audit";
 		} else {
-			return "儿童";
+			return "Child";
 		}
 	}
 
@@ -78,11 +82,11 @@ public class ChannelOrderTraveler {
 
 	public String getGenderDesc() {
 		if (gender == Gender.MALE) {
-			return "男";
-		} else if (gender == Gender.MALE) {
-			return "女";
+			return "Male";
+		} else if (gender == Gender.FEMALE) {
+			return "Female";
 		} else {
-			return "未知";
+			return "Unknown";
 		}
 	}
 
@@ -132,6 +136,10 @@ public class ChannelOrderTraveler {
 
 	public void setIdType(int idType) {
 		this.idType = idType;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getIdNo() {
@@ -201,7 +209,8 @@ public class ChannelOrderTraveler {
 	}
 
 	public void setFirstName(String firstName) {
-		this.firstName = firstName;
+		this.firstName = StringUtils.trimToEmpty(firstName);
+		setName(firstName + StringUtils.trimToEmpty(lastName));
 	}
 
 	public String getLastName() {
@@ -209,7 +218,8 @@ public class ChannelOrderTraveler {
 	}
 
 	public void setLastName(String lastName) {
-		this.lastName = lastName;
+		this.lastName = StringUtils.trimToEmpty(lastName);
+		setName(firstName + StringUtils.trimToEmpty(lastName));
 	}
 
 	public String getName() {
@@ -218,9 +228,9 @@ public class ChannelOrderTraveler {
 
 	@Override
 	public String toString() {
-		return "ChannelOrderTraveler [id=" + id + ", order=" + order + ", firstName=" + firstName + ", lastName=" + lastName + ", gender="
-				+ gender + ", idType=" + idType + ", idNo=" + idNo + ", effectiveDate=" + effectiveDate + ", birth=" + birth
-				+ ", nationality=" + nationality + ", mobile=" + mobile + ", type=" + type + "]";
+		return "ChannelOrderTraveler [id=" + id + ", order=" + order + ", firstName=" + firstName + ", lastName=" + lastName + ", name="
+				+ name + ", gender=" + gender + ", idType=" + idType + ", idNo=" + idNo + ", effectiveDate=" + effectiveDate + ", birth="
+				+ birth + ", nationality=" + nationality + ", mobile=" + mobile + ", type=" + type + "]";
 	}
 
 }

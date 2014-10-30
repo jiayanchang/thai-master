@@ -132,11 +132,11 @@ public class MerchantOrder {
 
 	public String getStatusDesc() {
 		if (status == Status.DELETED) {
-			return "已删除";
+			return "Deleted";
 		} else if (status == Status.COMPLETED) {
-			return "已确认";
+			return "Completed";
 		} else {
-			return "待确认";
+			return "Uncompleted";
 		}
 	}
 

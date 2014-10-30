@@ -4,7 +4,7 @@
 
 <body>
 	<div class="content">
-		<h1>新建员工</h1>
+		<h1>New Emploee</h1>
 		<c:url var="addUrl" value="/f/user/add"/>
 		<form:form action="${addUrl}" method="POST" commandName="user" >
 			<form:hidden path="id"/>
@@ -14,37 +14,37 @@
 					<col class="col-xs-7">
 				</colgroup>
 				<tr>
-					<td>员工名称 :</td>
-					<td><form:input path="name"  class="form-control" check="notEmpty" placeholder="请输入员工名称..."/></td>
+					<td>Name :</td>
+					<td><form:input path="name"  class="form-control" check="notEmpty" placeholder="Please enter name..."/></td>
 					<td><form:errors path="name" cssClass="error" /></td>
 				</tr>
 				<tr>
-					<td>英文名 :</td>
-					<td><form:input path="codeName"  class="form-control" check="notEmpty" placeholder="请输入英文名..."/></td>
+					<td>En :</td>
+					<td><form:input path="codeName"  class="form-control" check="notEmpty" placeholder="Please enter english name..."/></td>
 					<td><form:errors path="codeName" cssClass="error" /></td>
 				</tr>
 				<tr>
-					<td>登录名 :</td>
-					<td><form:input id="loginName" path="loginName"  class="form-control" check="notEmpty" placeholder="请输入登录名..."/></td>
+					<td>Login Name :</td>
+					<td><form:input id="loginName" path="loginName"  class="form-control" check="notEmpty" placeholder="Please enter login name..."/></td>
 					<td><form:errors path="loginName" cssClass="error" /></td>
 				</tr>
 				<tr>
-					<td>密码 :</td>
-					<td><form:password id="password" path="password"  class="form-control" check="notEmpty" placeholder="请输入密码..."/></td>
+					<td>Password :</td>
+					<td><form:password id="password" path="password"  class="form-control" check="notEmpty" placeholder="Please enter password..."/></td>
 					<td><form:errors path="password" cssClass="error" /></td>
 				</tr>
 				<tr>
-					<td>密码确认 :</td>
-					<td><input id="passwordconfirm" name="passwordconfirm" type="password" class="form-control" check="notEmpty" placeholder="请输入确认密码..."/></td>
+					<td>Confirm Password :</td>
+					<td><input id="passwordconfirm" name="passwordconfirm" type="password" class="form-control" check="notEmpty" placeholder="Please enter password again..."/></td>
 					<td></td>
 				</tr>
 				<tr>
-					<td>手机:</td>
-					<td><form:input path="mobile"  class="form-control" check="notEmpty" placeholder="请输入手机..."/></td>
+					<td>Mobile:</td>
+					<td><form:input path="mobile"  class="form-control" check="notEmpty" placeholder="Please enter mobile..."/></td>
 					<td><form:errors path="mobile" cssClass="error" /></td>
 				</tr>
 				<tr>
-					<td colspan="3"><input type="button" value="提交" class="btn btn-primary btn-group btn-group-lg"  onclick="submitForm();"/></td>
+					<td colspan="3"><input type="button" value="Submit" class="btn btn-primary btn-group btn-group-lg"  onclick="submitForm();"/></td>
 				</tr>
 			</table>
 		</form:form>
@@ -53,10 +53,10 @@
 	<script>
 		function submitForm() {
 			if($("#password").val() != $("#passwordconfirm").val()) {
-				alert("密码不一致");
+				alert("The entered passwords don't match..");
 				return false;
 			}
-			if(!confirm("是否确定？")) return false;
+			if(!confirm("Are you sure？")) return false;
 			validate(function(){
 				jQuery.ajax({
 				    type: 'POST',

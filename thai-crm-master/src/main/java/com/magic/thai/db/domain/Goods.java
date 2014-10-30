@@ -227,17 +227,17 @@ public class Goods {
 
 	public String getStatusDesc() {
 		if (status == Status.DELETED) {
-			return "已删除";
+			return "Deleted";
 		} else if (status == Status.CANNELED) {
-			return "已下架";
+			return "Out of List";
 		} else if (status == Status.REJECTED) {
-			return "未通过";
+			return "Verify Failure";
 		} else if (status == Status.DEPLOYED) {
-			return "已上架";
+			return "Ready For Sale";
 		} else if (status == Status.AUDITING) {
-			return "待审核";
+			return "Pending Verify";
 		} else {
-			return "新商品";
+			return "New Goods";
 		}
 	}
 

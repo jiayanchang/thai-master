@@ -63,7 +63,7 @@
 				</c:forEach>
 			</select>
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<a class="btn btn-success" href="javascript:addGoods();">添加</a>
+			<a class="btn btn-success" href="javascript:addGoods();">Add</a>
 		</div>
 		<div class="panel-body">
 			<table id="goodsInvsTbl" class="table">
@@ -118,7 +118,7 @@
 			</c:forEach>
 		</select>
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		<a class="btn btn-success" href="javascript:addMerchant();">添加</a>
+		<a class="btn btn-success" href="javascript:addMerchant();">Add</a>
 	</div>
 	<div class="panel-body">
 		<table id="merchantInvsTbl" class="table">
@@ -184,7 +184,7 @@
 <script type="text/javascript">
 
 function submitForm() {
-	if(!confirm("是否确定？")) return false;
+	if(!confirm("Are you sure？")) return false;
 	validate(function(){
 		$("form").submit();
 	});

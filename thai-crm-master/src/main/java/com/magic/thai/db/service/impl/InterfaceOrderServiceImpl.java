@@ -115,6 +115,7 @@ public class InterfaceOrderServiceImpl extends ServiceHelperImpl<MerchantOrder> 
 
 			MerchantOrderGoods merchantOrderGoods = new MerchantOrderGoods();
 			merchantOrderGoods.setAmount(goodsVo.getPrice());
+			merchantOrderGoods.setProfit(0d);
 			merchantOrderGoods.setChannelId(0);
 			merchantOrderGoods.setDeptDate(goodsVo.deptDateObj);
 			merchantOrderGoods.setGoodsId(goods.getId());
@@ -256,7 +257,8 @@ public class InterfaceOrderServiceImpl extends ServiceHelperImpl<MerchantOrder> 
 			double profitAmount = DoubleUtils.mul(profitPrice, (double) goodsVo.getQty());
 
 			MerchantOrderGoods merchantOrderGoods = new MerchantOrderGoods();
-			merchantOrderGoods.setAmount(profitPrice);
+			merchantOrderGoods.setAmount(goodsPrice);
+			merchantOrderGoods.setProfit(profitPrice);
 			merchantOrderGoods.setChannelId(channel.getId());
 			merchantOrderGoods.setDeptDate(goodsVo.deptDateObj);
 			merchantOrderGoods.setGoodsId(goods.getId());

@@ -20,11 +20,11 @@
 			<div id="navbar" class="navbar-collapse collapse">
 				<ul class="nav navbar-nav">
 					<!-- 商品管理 -->
-					<li role="presentation"><a href="${pageContext.request.contextPath}/f/goods/list">การบริหารจัดการสินค้า</a></li>
+					<li role="presentation"><a href="${pageContext.request.contextPath}/f/goods/list">Goods management</a></li>
 					<!-- 订单管理 -->
-					<li role="presentation"><a href="${pageContext.request.contextPath}/f/order/list">การบริหารจัดการสั่งซื้อสินค้า</a></li>
+					<li role="presentation"><a href="${pageContext.request.contextPath}/f/order/list">Order Management</a></li>
 					<!-- 系统管理 -->
-					<li role="presentation"  class="dropdown-toggle"><a style='color:#FFF;' href="#">การบริหารจัดการระบบ</a></li>
+					<li role="presentation"  class="dropdown-toggle"><a style='color:#FFF;' href="#">System Management</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<li role="presentation">
@@ -32,7 +32,7 @@
 					</li>
 					<li role="presentation">
 						<!-- 退出 -->
-						<a href="${pageContext.request.contextPath}/logout">เลื่อนออก</a>
+						<a href="${pageContext.request.contextPath}/logout">Quit</a>
 					</li>
 				</ul>
 			</div>
@@ -43,9 +43,9 @@
 			<div class="col-sm-3 col-md-2 sidebar">
 				<ul class="nav nav-sidebar">
 					<!-- 新建员工 -->
-					<li><a href="${pageContext.request.contextPath}/f/user/add">พนักงานใหม่</a></li>
+					<li><a href="${pageContext.request.contextPath}/f/user/add">New Employee</a></li>
 					<!-- 员工查询 -->
-					<li><a href="${pageContext.request.contextPath}/f/user/list">การหาพนักงาน</a></li>
+					<li><a href="${pageContext.request.contextPath}/f/user/list">Employee List</a></li>
 				</ul>
 			</div>
 			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">

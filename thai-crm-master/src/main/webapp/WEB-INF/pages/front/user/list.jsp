@@ -12,7 +12,7 @@
 </head>
 <body>
 <div class="content">
-<h1>员工列表</h1>
+<h1>Employee List</h1>
 
 <p>${message}</p>
 
@@ -22,19 +22,19 @@
 <form:form action="${submitUrl}" method="POST">
 <table class="table">
 <tr> 
-	<td style="width:60px;">用户</td>
+	<td style="width:60px;">Name</td>
 	<td style="width:160px;"><input name="name" value="${name }" class="form-control"/></td>
-	<td style="width:70px;">登录名</td>
+	<td style="width:70px;">Login Name</td>
 	<td style="width:160px;"><input name="loginName" value="${loginName }" class="form-control"/></td>
-	<td style="width:70px;">状态</td>
+	<td style="width:70px;">Status</td>
 	<td style="width:130px;">
 		<select name="status" class="form-control">
-			<option value="-1" >全部</option>
-			<option value="0">已启用</option>
-			<option value="1">已停用</option>
+			<option value="-1" >All</option>
+			<option value="0">Enabled</option>
+			<option value="1">Disabled</option>
 		</select>
 	</td>
-	<td><input type="submit" value="查询" class="btn btn-primary" /></td>
+	<td><input type="submit" value="Search" class="btn btn-primary" /></td>
 	<td></td>
 </tr>
 </table>
@@ -42,12 +42,12 @@
 <thead>
 <tr> 
 <th>ID</th>
-<th>用户</th>
-<th>编号</th>
-<th>登录名</th>
-<th>手机</th>
-<th>状态</th>
-<th>操作</th>
+<th>Name</th>
+<th>En</th>
+<th>LoginName</th>
+<th>Mobile</th>
+<th>Status</th>
+<th>Oper</th>
 </tr>
 </thead>
 <tbody>
@@ -60,14 +60,14 @@
 	<td>${user.mobile}</td>
 	<td>${user.statusDesc}</td>
 	<td>
-		<a class="btn btn-warning" href="${pageContext.request.contextPath}/f/user/edit/${user.id} ">修改</a>
+		<a class="btn btn-warning" href="${pageContext.request.contextPath}/f/user/edit/${user.id} ">Edit</a>
 		<c:if test="${user.enabled }">
-			<a class="btn btn-info" href="${pageContext.request.contextPath}/f/user/disable/${user.id} ">停用</a>
+			<a class="btn btn-info" href="${pageContext.request.contextPath}/f/user/disable/${user.id} ">Disable</a>
 		</c:if>
 		<c:if test="${user.disabled }">
-			<a class="btn btn-success" href="${pageContext.request.contextPath}/f/user/enable/${user.id} ">启用</a>
+			<a class="btn btn-success" href="${pageContext.request.contextPath}/f/user/enable/${user.id} ">Enable</a>
 		</c:if>
-		<a class="btn btn-danger" href="javascript:del(${user.id }); ">删除</a>
+		<a class="btn btn-danger" href="javascript:del(${user.id }); ">Delete</a>
 	</td>
 </tr>
 </c:forEach>
@@ -76,7 +76,7 @@
 </div>
 <script>
 function del(id){
-	if(confirm("确认删除？")) {
+	if(confirm("Are you sure？")) {
 		window.location = '${pageContext.request.contextPath}/f/user/delete/' + id;
 	}
 }

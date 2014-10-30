@@ -10,11 +10,11 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
 <div class="content">
-	<h1>查看商品</h1>
+	<h1>View Goods</h1>
 	<c:url var="addUrl" value="/f/goods/${goods.id }"/>
 	<form:form action="${addUrl}" method="GET" commandName="goods">
 		<form:hidden path="id"/>
 		<%@ include file="../../goods_table_view.jsp"%>
 	</form:form>
 </div>
-<a class="btn btn-primary btn-lg btn-block" href="javascript:window.close();">关闭</a>
+<a class="btn btn-primary btn-lg btn-block" href="javascript:window.close();">Close</a>

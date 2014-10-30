@@ -147,10 +147,10 @@ public class JsonController {
 			List<User> users = userService.list(new UserVo(new Integer[] { User.Status.DISABLED, User.Status.ENABLED }, userprofile
 					.getMerchant().getId()));
 			if (users.size() > 9) {
-				vo = DataVo.fail("用户数量已经用完");
+				vo = DataVo.fail("Without enough users");
 			}
 		} else {
-			vo = DataVo.fail("当前登录名已存在");
+			vo = DataVo.fail("this loginName already exists");
 		}
 		model.put("data", vo);
 		return model;
@@ -161,7 +161,7 @@ public class JsonController {
 		UserProfile userprofile = (UserProfile) session.getAttribute("userprofile");
 		try {
 			LockManager.lock(orderNo, userprofile, true);
-			model.put("data", DataVo.success("锁单成功").setMessage("锁单成功"));
+			model.put("data", DataVo.success("Locked successfully").setMessage("Locked successfully"));
 		} catch (ThaiException e) {
 			e.printStackTrace();
 			model.put("data", DataVo.fail(null).setMessage(e.getMessage()));
@@ -174,7 +174,7 @@ public class JsonController {
 		UserProfile userprofile = (UserProfile) session.getAttribute("userprofile");
 		try {
 			LockManager.unlock(orderNo);
-			model.put("data", DataVo.success("锁单成功").setMessage("锁单成功"));
+			model.put("data", DataVo.success("Unlocked successfully").setMessage("Unlocked successfully"));
 		} catch (ThaiException e) {
 			e.printStackTrace();
 			model.put("data", DataVo.fail(null).setMessage(e.getMessage()));

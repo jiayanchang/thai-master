@@ -10,7 +10,7 @@
  	<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery/jquery-1.10.2.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery/jquery-ui.min.js"></script>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<title>泰奇幻</title>
+	<title>Magic Thai</title>
 </head>
 <body>
 	<decorator:body/> 

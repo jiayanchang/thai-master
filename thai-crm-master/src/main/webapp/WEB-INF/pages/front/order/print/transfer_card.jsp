@@ -18,7 +18,7 @@
 	.PageBreak {page-break-after: always;} 
 </style> 
 <div class="Noprint">
-<h1>潜水人员接送凭证</h1>
+<h1>>Print Divers Shuttle Card</h1>
 <hr/>
 </div>
 <div id="print_body">
@@ -26,33 +26,33 @@
 	<tr>
 		<td rowspan="4"><img height="80px" width="80px" src="${pageContext.request.contextPath}/resources/logo/<%=((UserProfile)session.getAttribute("userprofile")).getMerchant().getId() + ".jpg"  %>"/></td>
 		<td c>
-			<p>公司名称：${userprofile.merchant.name }</p>
+			<p>${userprofile.merchant.name }</p>
 		</td>
 		<td rowspan="3">Voucher</td>
 		<td></td>
 	</tr>
 	<tr>
-		<td><p>公司地址：${userprofile.merchant.address } </p></td>
+		<td><p>${userprofile.merchant.address } </p></td>
 		<td></td>
 	</tr>
 	<tr>
 		<td>
 			<p>
-				电话：${userprofile.merchant.tel }   &nbsp; &nbsp;&nbsp;
+				TEL：${userprofile.merchant.tel }   &nbsp; &nbsp;&nbsp;
 				FAX：${userprofile.merchant.fax } 
 			</p>
 		</td>
 		<td>${now }</td>
 	</tr>
 	<tr>
-		<td>单号： ${order.orderNo }</td>
+		<td>OrderNo： ${order.orderNo }</td>
 		<td></td>
 		<td></td>
 	</tr>
 	<tr>
-		<td title="教练姓名" rowspan="2" colspan="2">TO：</td>
-		<td>人数(no. of pax)</td>
-		<td>参观时间(tour date)</td>
+		<td title="Coach name" rowspan="2" colspan="2">TO：</td>
+		<td>No. of Pax</td>
+		<td>Tour Date</td>
 	</tr>
 	<tr>
 		<td id="person_count">${fn:length(order.travelers)}</td>
@@ -61,25 +61,25 @@
 </table>
 <table class="table">
 	<tr>
-		<td rowspan="${fn:length(order.travelers) + 3}" width="80" valign="top">预定日期（reservation date）：${order.createdDateDesc }</td>
-		<td colspan="8" align="center">潜水人员（for diving）</td>
+		<td rowspan="${fn:length(order.travelers) + 3}" width="80" valign="top">reservation date：${order.createdDateDesc }</td>
+		<td colspan="8" align="center">for diving</td>
 	</tr>
 	<tr>
 		<td rowspan="2" width="120px">name</td>
-		<td rowspan="2">潜水等级（dive level）</td>	
-		<td rowspan="2">最后潜水时间(last dive)</td>	
-		<td rowspan="2">潜水时长（no.long）</td>
-		<td colspan="4" align="center">设备（equipment）</td>
+		<td rowspan="2">dive level</td>	
+		<td rowspan="2">last dive</td>	
+		<td rowspan="2">no.long</td>
+		<td colspan="4" align="center">equipment</td>
 	</tr>
 	<tr>
-		<td>潜水证（reg）</td>		
-		<td>BCD码</td>		
-		<td>潜水服（wet suit）</td>		
-		<td>脚蹼（fins）</td>
+		<td>reg</td>		
+		<td>BCD</td>		
+		<td>wet suit</td>		
+		<td>fins</td>
 	</tr>
 	<c:forEach var="traveler" items="${order.travelers }" varStatus="status">
 		<tr id="tr_${status.index }">
-			<td>${traveler.name } <label class="Noprint"><a href="javascript:remove(${status.index });">移除</a></label></td>
+			<td>${traveler.name } <label class="Noprint"><a href="javascript:remove(${status.index });">Remove</a></label></td>
 			<td></td>		
 			<td></td>		
 			<td></td>		
@@ -92,16 +92,16 @@
 	</c:forEach>
 	
 	<tr>
-		<td colspan="5">客户名称（customer name）:${order.contractor }</td>		
-		<td colspan="4" rowspan="3" valign="top">指引（Sign）：</td>		
+		<td colspan="5">customer name:${order.contractor }</td>		
+		<td colspan="4" rowspan="3" valign="top">Sign：</td>		
 	</tr>
 	<tr>
-		<td colspan="3">接送地点（pick up）:</td>		
-		<td colspan="2">房间（room）：</td>		
+		<td colspan="3">pick up:</td>		
+		<td colspan="2">room：</td>		
 		<td></td>		
 	</tr>
 	<tr>
-		<td colspan="5">时间（time）:</td>		
+		<td colspan="5">time:</td>		
 	</tr>
 	<tr>
 		<td colspan="8" align="center">non refundable deposit or balance payment upon booking</td>	           
@@ -113,9 +113,9 @@
 </table>
 </div>
 <div class="Noprint">
-	<input type="button" value="打印" onclick="printf();" class="btn btn-primary"/>
-	<input type="button" value="重置" onclick="reset();" class="btn btn-primary"/>
-	<input type="button" value="关闭" onclick="back();" class="btn btn-default"/>
+	<input type="button" value="Print" onclick="printf();" class="btn btn-primary"/>
+	<input type="button" value="Reset" onclick="reset();" class="btn btn-primary"/>
+	<input type="button" value="Close" onclick="back();" class="btn btn-default"/>
 </div>
 <script>
 	function back(){
@@ -143,7 +143,7 @@
 	}
 	
 	function complete() {
-		if(!confirm("是否确定？")) return false;
+		if(!confirm("Are you sure？")) return false;
 		jQuery.ajax({
 		    type: 'POST',
 			encoding:"UTF-8",

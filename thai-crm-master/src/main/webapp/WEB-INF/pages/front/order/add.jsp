@@ -56,8 +56,8 @@
 			<td><form:input path="orderContactorEmail" class="form-control" check="notEmpty email" placeholder="Please input contact email..."/></td>
 			<td></td>
 			<td class="form-inline">
-				<input  style="width:200px" id="hotelTel" name="hotelTel" class="form-control" check="notEmpty"  placeholder="Please input the hotel tel..."/>
-				<input  style="width:260px" name="hotelRoom" class="form-control" check="notEmpty"  placeholder="Please input the hotel room number..."/>
+				<input  style="width:200px" id="hotelTel" name="hotelTel" class="form-control"  placeholder="Please input the hotel tel..."/>
+				<input  style="width:260px" name="hotelRoom" class="form-control"  placeholder="Please input the hotel room number..."/>
 			</td>
 		</tr>
 		<tr>

@@ -118,7 +118,7 @@ public class FrontOrderController {
 			merchantOrder.setDriverMobile(driverMobile);
 			merchantOrder.setDriverName(driverName);
 			orderService.confirm(merchantOrder, userprofile);
-			model.put("data", DataVo.success(null).setMessage("订单确认成功"));
+			model.put("data", DataVo.success(null).setMessage("Confirmed successfully"));
 		} catch (ThaiException e) {
 			e.printStackTrace();
 			model.put("data", DataVo.fail(null).setMessage(e.getMessage()));

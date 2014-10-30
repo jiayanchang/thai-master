@@ -31,7 +31,7 @@ public class UserController {
 	@Autowired
 	UserService userService;
 
-	private String message = "";
+	String message = "";
 
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
@@ -80,21 +80,21 @@ public class UserController {
 	}
 
 	/*
-	 * @ModelAttribute untuk model form dan ("ucd") untuk validator
-	 * BindingResult result
+	 * @ModelAttribute untuk model form dan ("ucd") untuk validator BindingResult result
 	 */
 	@RequestMapping(value = "/edit/proccess", method = RequestMethod.POST)
-	public ModelAndView editUserprosses(@ModelAttribute("user") User userbean, BindingResult result, SessionStatus status,
-			HttpSession session) {
+	public ModelAndView editUserprosses(@ModelAttribute("user") User userbean, @RequestParam String passwordconfirm, BindingResult result,
+			SessionStatus status, HttpSession session) {
 		UserProfile userprofile = (UserProfile) session.getAttribute("userprofile");
 
 		ModelAndView modelAndView = new ModelAndView("redirect:/a/user/list");
 		ModelAndView modelAndViewError = new ModelAndView("/admin/user/edit");
 		System.out.println(userbean.getId() + " id");
-		if (result.hasErrors()) {
+		if (result.hasErrors() || !userbean.getPassword().equalsIgnoreCase(passwordconfirm)) {
 			modelAndViewError.addObject("action", "/user/edit/proccess");
 			modelAndViewError.addObject("url", "/user");
 			modelAndViewError.addObject("user", userbean);
+			message = "The entered passwords don't match..";
 			return modelAndViewError;
 		} else {
 			User user = userService.findUserbyId(userbean.getId());
@@ -104,7 +104,7 @@ public class UserController {
 			user.setMobile(userbean.getMobile());
 			user.setPassword(userbean.getPassword());
 			userService.update(user, userprofile);
-			message = "User successfull updated";
+			message = "Modified successfully";
 			return modelAndView;
 		}
 	}

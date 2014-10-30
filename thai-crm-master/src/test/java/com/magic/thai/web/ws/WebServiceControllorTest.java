@@ -27,6 +27,7 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.junit.Test;
 
 import com.magic.thai.web.ws.vo.BuyGoodsVo;
 import com.magic.thai.web.ws.vo.CheckGoodsVo;
@@ -41,7 +42,7 @@ public class WebServiceControllorTest {
 
 	private static final String token = "61ab279c07a758c9e64f40fec837e4";
 
-	// @Test
+	@Test
 	public void testCreatOrder() throws Exception {
 		// String url = "http://182.254.220.15:8000/crm/ws/createOrder";
 		String url = "http://localhost:8080/crm/ws/createOrder";
@@ -69,9 +70,9 @@ public class WebServiceControllorTest {
 		for (int i = 0; i < 1; i++) {
 			BuyGoodsVo vo = new BuyGoodsVo();
 			vo.setDeptDate("2014-11-29");
-			vo.setGoodsId(5);
-			vo.setQty(1);
-			vo.setPrice(1);
+			vo.setGoodsId(16);
+			vo.setQty(3);
+			vo.setPrice(3015);
 			createOrderVo.getGoodses().add(vo);
 		}
 

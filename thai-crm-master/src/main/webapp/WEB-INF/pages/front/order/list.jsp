@@ -27,7 +27,7 @@
 			<form:option value="1">Completed</form:option>
 		</form:select>
 	</td>
-	<td  style="width:120px;"><input type="submit" value="การสอบถาม" class="btn btn-primary" /></td>
+	<td  style="width:120px;"><input type="submit" value="Submit" class="btn btn-primary" /></td>
 	<td>&nbsp;</td>
 </tr>
 <%-- <tr> 	

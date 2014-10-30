@@ -198,11 +198,11 @@ public class User {
 
 	public String getStatusDesc() {
 		if (status == Status.DELETED) {
-			return "已删除";
+			return "Deleted";
 		} else if (status == Status.DISABLED) {
-			return "已停用";
+			return "Disabled";
 		} else {
-			return "已启用";
+			return "Enabled";
 		}
 	}
 

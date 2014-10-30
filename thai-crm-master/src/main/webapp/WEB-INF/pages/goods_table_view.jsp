@@ -8,40 +8,40 @@
 			<col class="col-xs-3">
 		</colgroup>
 		<tr>
-			<td>商品名称：</td>
+			<td>Goods Name：</td>
 			<td>${goods.title }</td>
-			<td>行程天数：</td>
+			<td>Travel Days：</td>
 			<td>${goods.travelDays }</td>
 		</tr>
 		<tr>
-			<td>英文名称：</td>
+			<td>English Name：</td>
 			<td>${goods.titleEn }</td>
-			<td>库存数量：</td>
-			<td>${goods.goodsCount }/天</td>
+			<td>Stock Qty：</td>
+			<td>${goods.goodsCount }/day</td>
 		</tr>
 		<tr>
-			<td>出发地：</td>
+			<td>Departure：</td>
 			<td>${goods.dept }</td>
-			<td>目的地：</td>
+			<td>Arrived：</td>
 			<td>${goods.arrived }</td>
 		</tr>
 		<tr>
-			<td>单价(成人)：</td>
+			<td>Price(Audit)：</td>
 			<td>${goods.basePrice }</td>
-			<td>单价(儿童)：</td>
+			<td>Price(Child)：</td>
 			<td>${goods.basePriceChild }</td>
 		</tr>
 		<tr>
-			<td>推荐理由：</td>
+			<td>Recommended Reason：</td>
 			<td colspan="3">${goods.summary }</td>
 		</tr>
 		<tr>
-			<td>宣传图片：</td>
+			<td>Promotion Picture：</td>
 			<td colspan="3"><img src="${pageContext.request.contextPath}${goods.details.picPath }"/></td>
 		</tr>
 		
 		<tr>
-			<td>线路图片：</td>
+			<td>Route Pictures：</td>
 			<td colspan="3">
 				<img src="${pageContext.request.contextPath}${goods.details.linePicPathA }"/>
 				<img src="${pageContext.request.contextPath}${goods.details.linePicPathB }"/>
@@ -51,7 +51,7 @@
 		</tr>
 		
 		<tr>
-			<td>淡旺季价格：</td>
+			<td>Floating Price：</td>
 			<td colspan="3">
 				<table id="price_tbl">
 					<c:forEach var="segment" items="${goods.segments }">
@@ -59,30 +59,30 @@
 							<td><fmt:formatDate value="${segment.startDate }" type="date"  pattern="yyyy/MM/dd"/></td>
 							<td> - </td>
 							<td><fmt:formatDate value="${segment.endDate }" type="date"  pattern="yyyy/MM/dd"/></td>
-							<td> &nbsp;&nbsp;&nbsp;价格：</td>
+							<td> &nbsp;&nbsp;&nbsp;Price：</td>
 							<td>${segment.auditPrice }</td>
-							<td>（成人）</td>
+							<td>（Audit）</td>
 							<td>${segment.childPrice }</td>
-							<td>（儿童）</td>
+							<td>（Child）</td>
 						</tr>
 					</c:forEach>
 				</table>
 			</td>
 		</tr>
 		<tr>
-			<td>行程安排：</td>
+			<td>Itinerary：</td>
 			<td colspan="3">${goods.details.travelPlan }</td>
 		</tr>
 		<tr>
-			<td>费用说明：</td>
+			<td>Expense：</td>
 			<td colspan="3">${goods.details.costDesc }</td>
 		</tr>
 		<tr>
-			<td>预定须知：</td>
+			<td>Booking Notes：</td>
 			<td colspan="3">${goods.details.bookNotes }</td>
 		</tr>
 		<tr>
-			<td>备注：</td>
+			<td>Details：</td>
 			<td colspan="3">${goods.details.notes }</td>
 		</tr>
 	</table>

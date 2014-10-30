@@ -4,12 +4,12 @@
 	<tr>
 		<td>
 			<c:if test="${ps.currentPage eq 1 }">
-				首页
-				上一页
+				Home
+				Prev
 			</c:if>
 			<c:if test="${ps.currentPage ne 1 }">
-				<a href="javascript:homePage()">首页</a>
-				<a href="javascript:prevPage(${s })">上一页</a>
+				<a href="javascript:homePage()">Home</a>
+				<a href="javascript:prevPage(${s })">Prev</a>
 			</c:if>
 			<c:forEach var="s"  begin="1" end="${ps.totalPageCount }">
 				<c:if test="${ps.currentPage eq s }">
@@ -21,16 +21,15 @@
 			</c:forEach>
 			<c:choose> 
 			   <c:when test='${ps.totalPageCount eq ps.currentPage}'> 
-			   		下一页
-					末页
+			   		Next
+					Last
 			   </c:when> 
 			   <c:otherwise>
-					<a href="javascript:nextPage()">下一页</a>
-					<a href="javascript:lastPage()">末页</a>
+					<a href="javascript:nextPage()">Next</a>
+					<a href="javascript:lastPage()">Last</a>
 			   </c:otherwise> 
 			</c:choose> 
-			
-			共 ${ps.totalPageCount } 页   ${ps.totalCount } 条记录
+			, ${ps.totalCount } records in ${ps.totalPageCount } page
 		</td>
 	</tr>
 </table>

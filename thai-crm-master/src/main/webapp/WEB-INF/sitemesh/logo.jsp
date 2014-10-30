@@ -27,10 +27,10 @@ function openDialog(id, orderNo) {
 	    autoOpen: false,
 	    height: 300,
 	    width: 350,
-	    title:'原因',
+	    title:'Reason',
 	    modal: true,
 	    buttons: {
-	      "提交": function(){
+	      "Submit": function(){
 	    	  jQuery.ajax({
 	    		    type: 'POST',
 	    			encoding:"UTF-8",
@@ -48,7 +48,7 @@ function openDialog(id, orderNo) {
 	    			}
 	    		});
 	      },
-	      "取消" : function() {
+	      "Cancel" : function() {
 		        jQuery.ajax({
 		    	    type: 'POST',
 		    		encoding:"UTF-8",

@@ -86,12 +86,12 @@
 				<td><form:errors path="summary" cssClass="error" /></td>
 			</tr>
 			<script>
-                var oFCKeditor1 = new FCKeditor( 'summary', 800, 200, 'Default', '${goods.summary}') ;  
+                var oFCKeditor1 = new FCKeditor( 'summary', 800, 200, 'Default') ;  
                 oFCKeditor1.BasePath = "/crm/fckeditor/" ;  
                 oFCKeditor1.ReplaceTextarea() ;  
 			</script>
 			<tr>
-				<td><font color="red">*</font>宣传图片：</td>
+				<td><font color="red">*</font>Promotion Picture：</td>
 				<td>
 					<input type="file" name="picPathFile" />
 					<img alt="" src="${pageContext.request.contextPath}${goods.details.picPath }">
@@ -99,7 +99,7 @@
 			</tr>
 			
 			<tr>
-				<td><font color="red">*</font>线路图片：</td>
+				<td><font color="red">*</font>Route Picture：</td>
 				<td>
 					<input type="file" name="linePicPathAFile" />
 					<img alt="" src="${pageContext.request.contextPath}${goods.details.linePicPathA }">
@@ -115,22 +115,22 @@
 			</tr>
 			
 			<tr>
-				<td><font color="red">*</font>淡旺季价格：</td>
+				<td><font color="red">*</font>Floating Price：</td>
 				<td>
-					<a class="btn btn-success" href="javascript:addPriceSegment();">添加</a>
+					<a class="btn btn-success" href="javascript:addPriceSegment();">Add</a>
 					<table id="price_tbl">
 						<c:forEach var="segment" items="${goods.segments }" varStatus="status">
 						<tr index="${status.index }">
 							<td>
 								<input type="hidden" tag="id" name="segments[${status.index }].id" value="${segment.id }"/>
-								<input name="segments[${status.index }].startDate" tag="date" check="notEmpty date" class="form-control"  value="<fmt:formatDate value="${segment.startDate }" type="date"  pattern="yyyy/MM/dd"/>" placeholder="请选择日期..." />
+								<input name="segments[${status.index }].startDate" tag="date" check="notEmpty date" class="form-control"  value="<fmt:formatDate value="${segment.startDate }" type="date"  pattern="yyyy/MM/dd"/>" placeholder="Please select date..." />
 							</td>
 							<td></td>
-							<td><input name="segments[${status.index }].endDate" tag="date" check="notEmpty date" class="form-control" value="<fmt:formatDate value="${segment.endDate }" type="date"  pattern="yyyy/MM/dd"/>" placeholder="请选择日期..." /></td>
+							<td><input name="segments[${status.index }].endDate" tag="date" check="notEmpty date" class="form-control" value="<fmt:formatDate value="${segment.endDate }" type="date"  pattern="yyyy/MM/dd"/>" placeholder="Please select date..." /></td>
 							<td><font color="red">*</font>价格：</td>
-							<td><input name="segments[${status.index }].auditPrice" class="form-control" value="${segment.auditPrice }" check="amount"  placeholder="请输入金额..."/></td>
+							<td><input name="segments[${status.index }].auditPrice" class="form-control" value="${segment.auditPrice }" check="amount"  placeholder="Please enter the amount..."/></td>
 							<td>（成人）</td>
-							<td><input name="segments[${status.index }].childPrice" class="form-control" value="${segment.childPrice }"  check="amount" placeholder="请输入金额..."/></td>
+							<td><input name="segments[${status.index }].childPrice" class="form-control" value="${segment.childPrice }"  check="amount" placeholder="Please enter the amount..."/></td>
 							<td>（儿童）</td>
 							<td>
 								<a class="btn btn-warning" href="javascript:removePriceSegment( ${status.index });">移除</a>
@@ -193,13 +193,13 @@
 	function addPriceSegment(){
 		var index = $("#price_tbl tr").length;
 		var html = '<tr index="' + index + '">'
-			+'<td><input name="segments[' + index + '].startDate" tag="date" class="form-control" check="notEmpty date" placeholder="请选择日期..."/></td>'
+			+'<td><input name="segments[' + index + '].startDate" tag="date" class="form-control" check="notEmpty date" placeholder="Please select date..."/></td>'
 			+'<td></td>'
-			+'<td><input name="segments[' + index + '].endDate" tag="date" class="form-control" check="notEmpty date" placeholder="请选择日期..."/></td>'
+			+'<td><input name="segments[' + index + '].endDate" tag="date" class="form-control" check="notEmpty date" placeholder="Please select date..."/></td>'
 			+'<td><font color="red">*</font>价格：</td>'
-			+'<td><input name="segments[' + index + '].auditPrice" class="form-control"check="amount"  placeholder="请输入金额..."/></td>'
+			+'<td><input name="segments[' + index + '].auditPrice" class="form-control"check="amount"  placeholder="Please enter the amount..."/></td>'
 			+'<td>（成人）</td>'
-			+'<td><input name="segments[' + index + '].childPrice" class="form-control"check="amount"  placeholder="请输入金额..."/></td>'
+			+'<td><input name="segments[' + index + '].childPrice" class="form-control"check="amount"  placeholder="Please enter the amount..."/></td>'
 			+'<td>（儿童）</td>'
 			+'<td><a class="btn btn-warning" href="javascript:removePriceSegment(' + index + ');">移除</a></td>'
 			+'</tr>';	
@@ -217,7 +217,7 @@
 	$("#price_tbl [tag=date]").datepicker({dateFormat:'yy/mm/dd'});
 	
 	function submitForm() {
-		if(!confirm("是否确定？")) return false;
+		if(!confirm("Are you sure？")) return false;
 		validate(function(){
 			$("form").submit();
 		});

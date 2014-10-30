@@ -86,9 +86,9 @@ body {
 				<!-- <label for="captcha">验证码</label>
 				<br> -->
 				<input style="margin:0 10px 10px 0;float:left;" name="captcha" type="input" style="width:50px;" id="captcha" placeholder="captcha"  class="form-control verify-code-input">
-				<img style="float:left;width:90px;height:40px;" id="image" border="0" onclick="refresh()" src="${pageContext.request.contextPath}/captcha" title="点图刷新"> 
+				<img style="float:left;width:90px;height:40px;" id="image" border="0" onclick="refresh()" src="${pageContext.request.contextPath}/captcha" title="refresh"> 
 			</div>
-			<input type="submit" value="登陆" class="btn btn-info btn-lg btn-block" />
+			<input type="submit" value="Sign in" class="btn btn-info btn-lg btn-block" />
 		</form>
 	</div>
 </body>

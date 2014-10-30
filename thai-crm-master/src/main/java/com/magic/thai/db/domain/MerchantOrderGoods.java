@@ -40,7 +40,10 @@ public class MerchantOrderGoods {
 	private int merchantId;
 
 	@Column(name = "amount")
-	private double amount;
+	private double amount;// 商品单价
+
+	@Column(name = "profit")
+	private double profit;// 单个商品利润总价
 
 	@Column(name = "dept_date")
 	// @DateTimeFormat(pattern = "yyyy/MM/dd")
@@ -141,6 +144,18 @@ public class MerchantOrderGoods {
 
 	public double getTotalAmount() {
 		return DoubleUtils.mul(this.getAmount(), new Double(this.getQuantity()));
+	}
+
+	public double getTotalProfitAmount() {
+		return DoubleUtils.mul(this.getProfit(), new Double(this.getQuantity()));
+	}
+
+	public double getProfit() {
+		return profit;
+	}
+
+	public void setProfit(double profit) {
+		this.profit = profit;
 	}
 
 }

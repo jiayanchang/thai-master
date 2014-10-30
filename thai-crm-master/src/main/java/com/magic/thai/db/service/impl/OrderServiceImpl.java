@@ -73,6 +73,9 @@ public class OrderServiceImpl extends ServiceHelperImpl<MerchantOrder> implement
 	public void confirm(MerchantOrder order, UserProfile userprofile) throws ThaiException {
 		Asserts.isFalse(order.isCompleted(), new OrderStatusException("订单已经完成"));
 		order.setStatus(MerchantOrder.Status.COMPLETED);
+		order.setLastOperatorId(userprofile.getUser().getId());
+		order.setLastOperatorDate(new Date());
+		order.setLastOperatorName(userprofile.getUser().getName());
 		merchantOrderDao.update(order);
 		merchantOrderNotesDao.create(new MerchantOrderNotes(order, userprofile.getUser(), "确认了订单", null));
 		channelOrderService.confirm(order.getChannelOrderId());
