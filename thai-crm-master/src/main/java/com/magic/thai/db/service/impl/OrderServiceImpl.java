@@ -77,7 +77,7 @@ public class OrderServiceImpl extends ServiceHelperImpl<MerchantOrder> implement
 		order.setLastOperatorDate(new Date());
 		order.setLastOperatorName(userprofile.getUser().getName());
 		merchantOrderDao.update(order);
-		merchantOrderNotesDao.create(new MerchantOrderNotes(order, userprofile.getUser(), "确认了订单", null));
+		merchantOrderNotesDao.create(new MerchantOrderNotes(order, userprofile.getUser(), "Confirmed the order", null));
 		channelOrderService.confirm(order.getChannelOrderId());
 		LockManager.unlock(order.getOrderNo());
 	}
