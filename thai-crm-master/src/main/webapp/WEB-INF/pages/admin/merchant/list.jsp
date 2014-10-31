@@ -3,9 +3,11 @@
 <%@ page language="java" pageEncoding="UTF-8"%>  
     
 <h1>商家列表</h1>
-<p>${message}</p>
 <c:url var="submitUrl" value="/a/merchant/list"/>
 <form:form action="${submitUrl}" method="POST">
+<c:if test="${not empty message}">
+	<div class="alert alert-success" role="alert">${message }</div>
+</c:if>
 <table class="table">
 	<tr> 
 		<td>商家</td>

@@ -5,11 +5,12 @@
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 
 <h1>Order List</h1><!-- 订单列表 -->
-<p>${message}</p>
-<br/>
 <div class="data">
 <c:url var="submitUrl" value="/f/order/list"/>
 <form:form action="${submitUrl}" method="POST" commandName="vo">
+<c:if test="${not empty message}">
+	<div class="alert alert-success" role="alert">${message }</div>
+</c:if>
 <table class="table">
 <tr> 
 	<td style="width:150px;">Order No:</td><!-- 订单号 -->

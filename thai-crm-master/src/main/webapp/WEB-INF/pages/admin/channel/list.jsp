@@ -7,6 +7,9 @@
 <br/>
 <c:url var="submitUrl" value="/a/channel/list"/>
 <form:form action="${submitUrl}" method="POST">
+<c:if test="${not empty message}">
+	<div class="alert alert-success" role="alert">${message }</div>
+</c:if>
 <table class="table table-striped table-hover ">
 <thead>
 <tr> 

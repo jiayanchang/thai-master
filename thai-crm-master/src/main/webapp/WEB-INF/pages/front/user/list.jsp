@@ -13,13 +13,13 @@
 <body>
 <div class="content">
 <h1>Employee List</h1>
-
-<p>${message}</p>
-
 <br/>
 <div class="data">
 <c:url var="submitUrl" value="/f/user/list"/>
 <form:form action="${submitUrl}" method="POST">
+<c:if test="${not empty message}">
+	<div class="alert alert-success" role="alert">${message }</div>
+</c:if>
 <table class="table">
 <tr> 
 	<td style="width:60px;">Name</td>

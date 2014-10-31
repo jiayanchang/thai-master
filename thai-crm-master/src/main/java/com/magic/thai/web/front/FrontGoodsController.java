@@ -8,6 +8,7 @@ import java.util.Date;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
@@ -117,7 +118,7 @@ public class FrontGoodsController {
 			updateFile(goods, picPathFile, linePicPathAFile, linePicPathBFile, linePicPathCFile, linePicPathDFile, session);
 			goods.setStatus(Goods.Status.AUDITING);
 			goodsService.update(goods, userprofile);
-			modelAndView.addObject("message", "success");
+			modelAndView.addObject("message", "Modified successfully");
 		} catch (GoodsStatusException e) {
 			e.printStackTrace();
 			modelAndView.setViewName("/front/goods/edit");
@@ -164,7 +165,7 @@ public class FrontGoodsController {
 	}
 
 	private boolean uploadFile(CommonsMultipartFile file, ServletContext context, Goods goods, String filename) {
-		if (file == null) {
+		if (file == null || StringUtils.isBlank(file.getFileItem().getName())) {
 			return false;
 		}
 		String parentPath = context.getRealPath("/") + "/upload/goods/" + goods.getId();

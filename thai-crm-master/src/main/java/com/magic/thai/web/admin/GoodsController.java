@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
@@ -134,7 +135,7 @@ public class GoodsController {
 	}
 
 	private boolean uploadFile(CommonsMultipartFile file, ServletContext context, Goods goods, String filename) {
-		if (file == null) {
+		if (file == null || StringUtils.isBlank(file.getName())) {
 			return false;
 		}
 		String parentPath = context.getRealPath("/") + "/upload/goods/" + goods.getId();

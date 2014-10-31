@@ -6,10 +6,11 @@
 <div class="content">
 <!-- 商品列表 -->
 <h1>Goods List</h1>
-<p >${message}</p>
-<br/>
 <c:url var="submitUrl" value="/f/goods/list"/>
 <form:form action="${submitUrl}" method="POST" commandName="vo">
+<c:if test="${not empty message}">
+	<div class="alert alert-success" role="alert">${message }</div>
+</c:if>
 <table  class="table">
 <tr> 
 	<td>Name:</td><!-- 商品名称 -->

@@ -7,7 +7,9 @@
 <c:url var="submitUrl" value="/a/order/list"/>
 <form:form action="${submitUrl}" method="POST" commandName="vo">
 <h1>订单列表</h1>
-<p>${message}</p>
+<c:if test="${not empty message}">
+	<div class="alert alert-success" role="alert">${message }</div>
+</c:if>
 <br/>
 <table class="table">
 <tr> 
