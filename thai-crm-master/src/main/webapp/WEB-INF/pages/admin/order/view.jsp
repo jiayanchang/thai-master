@@ -9,39 +9,39 @@
 	<table class="table" >
 		<colgroup>
 			<col class="col-xs-1">
-			<col class="col-xs-7">
+			<col class="col-xs-4">
 			<col class="col-xs-1">
-			<col class="col-xs-7">
+			<col class="col-xs-5">
 		</colgroup>
-		<tr width="100px">
+		<tr>
 			<td>订单号：</td>
 			<td>${order.orderNo }</td>
-			<td>酒店信息：</td>
+			<td>酒店名称：</td>
 			<td>${order.hotelName }</td>
 		</tr>
 		<tr>
 			<td>订单状态：</td>
 			<td>${order.statusDesc }</td>
-			<td>酒店信息：</td>
-			<td>${order.hotelName }</td>
+			<td>酒店地址：</td>
+			<td>${order.hotelAddress }</td>
 		</tr>
 		<tr>
 			<td>联系人：</td>
 			<td>${order.contractor }</td>
-			<td>酒店信息：</td>
-			<td>${order.hotelName }</td>
+			<td>房间信息：</td>
+			<td>${order.hotelRoom } -- ${order.hotelRoomTel }</td>
 		</tr>
 		<tr>
 			<td>联系电话：</td>
 			<td>${order.contractorMobile }</td>
-			<td>酒店信息：</td>
-			<td>${order.hotelName }</td>
+			<td>司机信息：</td>
+			<td>${order.driverName } -- ${order.driverMobile }</td>
 		</tr>
 		<tr>
 			<td>联系邮箱：</td>
 			<td>${order.contractorEmail }</td>
-			<td>订单总金额：</td>
-			<td>${order.profitAmount } 商家：${order.amount }  </td>
+			<td>订单金额：</td>
+			<td>平台总额：${order.profitAmount } 商家：${order.amount }  </td>
 		</tr>
 	</table>
 	
@@ -52,12 +52,9 @@
 	<table class="table" >
 		<c:forEach var="mgoods" items="${order.goodses }">
 			<tr>
-				<td>购买商品编号：</td>
-				<td>${mgoods.id }</td>
-				<td>购买商品名称：</td>
-				<td><a href="javascript:window.open('${pageContext.request.contextPath}/a/goods/snapshot/${mgoods.id }')">${mgoods.goodsName }</a></td>
-				<td>购买商品数量：</td>
-				<td>${mgoods.quantity }</td>
+				<td>购买商品编号：${mgoods.id }</td>
+				<td>购买商品名称：<a href="javascript:window.open('${pageContext.request.contextPath}/a/goods/snapshot/${mgoods.id }')">${mgoods.goodsName }</a></td>
+				<td>购买商品数量：${mgoods.quantity }</td>
 			</tr>
 		</c:forEach>
 	</table>
@@ -72,6 +69,7 @@
 			<th>证件号码</th>
 			<th>证件有效期</th>
 			<th>出生日期</th> -->
+			<th>类型</th>
 			<th>手机号码</th>
 		</tr>
 		<c:forEach var="traveler" items="${order.travelers }">
@@ -83,6 +81,7 @@
 				<td>${traveler.idNo }</td>
 				<td>${traveler.effectiveDate }</td>
 				<td>${traveler.birth }</td> --%>
+				<td>${traveler.typeDesc }</td>
 				<td>${traveler.mobile }</td>
 			</tr>
 		</c:forEach>

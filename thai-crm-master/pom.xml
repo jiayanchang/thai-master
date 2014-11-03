@@ -271,6 +271,7 @@
 				<configuration>
 					<!-- In version 2.1-alpha-1, this was incorrectly named warSourceExcludes -->
 					<warSourceExcludes>src/main/resources/**</warSourceExcludes>
+					<packagingExcludes>WEB-INF/classes/application-config.properties</packagingExcludes>
 					<skip>true</skip>
 					<archive>
 						<manifest>

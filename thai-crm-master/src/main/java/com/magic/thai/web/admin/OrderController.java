@@ -3,9 +3,12 @@ package com.magic.thai.web.admin;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -16,12 +19,19 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.magic.thai.db.dao.MerchantOrderNotesDao;
 import com.magic.thai.db.domain.ChannelOrder;
+import com.magic.thai.db.domain.Goods;
 import com.magic.thai.db.domain.MerchantOrder;
 import com.magic.thai.db.service.ChannelOrderService;
 import com.magic.thai.db.service.GoodsService;
+import com.magic.thai.db.service.InterfaceOrderService;
 import com.magic.thai.db.service.MerchantService;
 import com.magic.thai.db.service.OrderService;
+import com.magic.thai.db.vo.GoodsVo;
+import com.magic.thai.db.vo.MerchantVo;
 import com.magic.thai.db.vo.OrderVo;
+import com.magic.thai.exception.ThaiException;
+import com.magic.thai.security.UserProfile;
+import com.magic.thai.web.ws.vo.CreateOrderVo;
 
 @Controller
 @RequestMapping(value = "/a/order")
@@ -37,7 +47,9 @@ public class OrderController {
 	MerchantOrderNotesDao merchantOrderNotesDao;
 	@Autowired
 	ChannelOrderService channelOrderService;
-
+	@Autowired
+	InterfaceOrderService interfaceOrderService;
+	
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -90,6 +102,31 @@ public class OrderController {
 		ModelAndView modelandView = new ModelAndView("/admin/order/channel_order_view");
 		modelandView.addObject("channelOrder", channelOrderService.fetch(id));
 		return modelandView;
+	}
+	
+	@RequestMapping(value = "/add", method = RequestMethod.GET)
+	public String add(ModelMap model, HttpSession session) {
+		UserProfile userprofile = (UserProfile) session.getAttribute("userprofile");
+		model.addAttribute("goodses",
+				goodsService.list(new GoodsVo(new Integer[] { Goods.Status.DEPLOYED }, userprofile.getMerchant().getId())));
+		
+		model.addAttribute("merchants", merchantService.list(new MerchantVo()));
+		model.addAttribute("createOrderVo", new CreateOrderVo());
+		return "/admin/order/add";
+	}
+
+	@RequestMapping(value = "/add/process", method = RequestMethod.POST)
+	public String addprocess(@ModelAttribute CreateOrderVo createOrderVo, ModelMap model, HttpSession session) {
+		UserProfile userprofile = (UserProfile) session.getAttribute("userprofile");
+		try {
+			interfaceOrderService.adminCreateOrder(createOrderVo, userprofile);
+		} catch (ThaiException e) {
+			model.addAttribute("message", e.getMessage());
+			model.addAttribute("merchants", merchantService.list(new MerchantVo()));
+			e.printStackTrace();
+			return "/admin/order/add";
+		}
+		return "redirect:/a/order/list";
 	}
 
 }

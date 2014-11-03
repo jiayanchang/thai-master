@@ -42,11 +42,10 @@
 	<tr> 
 		<th>ID</th>
 		<th width="10%">订单号</th>
-		<th width="10%">所属商家</th>
+		<th width="12%">所属商家</th>
 		<th width="5%">渠道</th>
 		<th width="10%">下单时间</th>
-		<th width="5%">联系人</th>
-		<th width="10%">联系电话</th>
+		<th width="5%">联系人/电话</th>
 		<th>订单状态</th>
 		<th>处理人</th>
 		<th>操作</th>
@@ -60,8 +59,7 @@
 			<td>${order.merchantName}</td>
 			<td>${order.channelName}</td>
 			<td>${order.createdDate}</td>
-			<td>${order.contractor}</td>
-			<td>${order.contractorMobile}</td>
+			<td>${order.contractor}<br>${order.contractorMobile}</td>
 			<td>${order.statusDesc}</td>
 			<td>${order.lastOperatorName}</td>
 			<td>

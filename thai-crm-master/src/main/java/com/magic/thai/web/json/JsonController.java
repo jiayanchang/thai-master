@@ -135,7 +135,18 @@ public class JsonController {
 		// GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 		// return gson.toJson(goods);
 	}
-
+	
+	@RequestMapping(value = "/{merchantId}/goodses", method = RequestMethod.POST)
+	@ResponseBody
+	public ModelMap getmerchantGoodses(@PathVariable int merchantId, ModelMap model) {
+		GoodsVo vo = new GoodsVo();
+		vo.merchantId = merchantId + "";
+		List<Goods> goodses = goodsService.list(vo);
+		Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+		model.put("data", DataVo.success(gson.toJson(goodses)).setMessage("获取成功"));
+		return model;
+	}
+	
 	@RequestMapping("/validateUser")
 	public ModelMap validateUser(@RequestParam String loginName, @RequestParam String userId, ModelMap model, HttpSession session) {
 		User user = userService.findByLoginName(loginName);

@@ -31,7 +31,17 @@ public interface InterfaceOrderService {
 	 * @return
 	 * @throws ThaiException
 	 */
-	public ChannelOrder create(CreateOrderVo vo, UserProfile userprofile) throws ThaiException;
+	public ChannelOrder merchantCreateOrder(CreateOrderVo vo, UserProfile userprofile) throws ThaiException;
+	
+	/**
+	 * crm管理人员下单
+	 * 
+	 * @param vo
+	 * @param userprofile
+	 * @return
+	 * @throws ThaiException
+	 */
+	public ChannelOrder adminCreateOrder(CreateOrderVo vo, UserProfile userprofile) throws ThaiException;
 
 	/**
 	 * 校验库存量

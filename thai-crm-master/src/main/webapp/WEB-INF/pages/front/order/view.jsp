@@ -9,9 +9,9 @@
 	<form:hidden path="id"/>
 	<table class="table">
 		<colgroup>
-			<col class="col-xs-1">
+			<col class="col-xs-2">
 			<col class="col-xs-5">
-			<col class="col-xs-1">
+			<col class="col-xs-2">
 			<col class="col-xs-5">
 		</colgroup>
 		<tr>
@@ -35,14 +35,14 @@
 		<tr>
 			<td>Contract Number：</td>
 			<td>${order.contractorMobile }</td>
-			<td>Hotel Room：</td>
-			<td>${order.hotelRoom }</td>
+			<td>Room Info：</td>
+			<td>${order.hotelRoom } -- ${order.hotelTel }</td>
 		</tr>
 		<tr>
 			<td>Contract Email：</td>
 			<td>${order.contractorEmail }</td>
-			<td>Hotel Tel：</td>
-			<td>${order.hotelTel }</td>
+			<td></td>
+			<td></td>
 		</tr>
 		<tr>
 			<td>Amount：</td>
@@ -63,12 +63,9 @@
 	<table class="table table-bordered table-striped " >
 		<c:forEach var="mgoods" items="${order.goodses }">
 			<tr>
-				<td>Goods No：</td>
-				<td>${mgoods.id }</td>
-				<td>Goods：</td>
-				<td><a href="javascript:window.open('${pageContext.request.contextPath}/f/goods/snapshot/${mgoods.id }')">${mgoods.goodsName }</a></td>
-				<td>Qty：</td>
-				<td>${mgoods.quantity }</td>
+				<td>Goods：<a href="javascript:window.open('${pageContext.request.contextPath}/f/goods/snapshot/${mgoods.id }')">${mgoods.goodsName }</a></td>
+				<td>Goods No：${mgoods.id }</td>
+				<td>Qty：${mgoods.quantity }</td>
 			</tr>
 		</c:forEach>
 	</table>
