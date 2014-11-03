@@ -41,4 +41,8 @@ public class UserProfile {
 		return user.isPlatformUser();
 	}
 
+	public boolean isGuest() {
+		return false;
+	}
+
 }

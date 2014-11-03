@@ -25,6 +25,7 @@
 	    <mapping class="com.magic.thai.db.domain.MerchantOrderLog" />
 	    <mapping class="com.magic.thai.db.domain.MerchantOrderNotes" />
 	    <mapping class="com.magic.thai.db.domain.MerchantOrderGoods" />
+	    <mapping class="com.magic.thai.db.domain.MerchantOrderGoodsPickup" />
 	    <mapping class="com.magic.thai.db.domain.ChannelOrderTraveler" />
     </session-factory>
 </hibernate-configuration>

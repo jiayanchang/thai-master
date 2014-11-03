@@ -13,8 +13,11 @@ import com.magic.thai.db.dao.ChannelOrderTravelerDao;
 import com.magic.thai.db.dao.GoodsDao;
 import com.magic.thai.db.dao.MerchantOrderDao;
 import com.magic.thai.db.dao.MerchantOrderGoodsDao;
+import com.magic.thai.db.dao.MerchantOrderGoodsPickupDao;
 import com.magic.thai.db.dao.MerchantOrderNotesDao;
 import com.magic.thai.db.domain.MerchantOrder;
+import com.magic.thai.db.domain.MerchantOrderGoods;
+import com.magic.thai.db.domain.MerchantOrderGoodsPickup;
 import com.magic.thai.db.domain.MerchantOrderNotes;
 import com.magic.thai.db.domain.User;
 import com.magic.thai.db.service.ChannelOrderService;
@@ -24,9 +27,12 @@ import com.magic.thai.db.service.strategy.LockManager;
 import com.magic.thai.db.vo.OrderVo;
 import com.magic.thai.exception.OrderStatusException;
 import com.magic.thai.exception.ThaiException;
+import com.magic.thai.security.GuestProfile;
 import com.magic.thai.security.UserProfile;
 import com.magic.thai.util.Asserts;
+import com.magic.thai.util.MailUtils;
 import com.magic.thai.util.PaginationSupport;
+import com.magic.thai.util.TempleteUtils;
 
 @Service("orderService")
 @Transactional
@@ -48,6 +54,8 @@ public class OrderServiceImpl extends ServiceHelperImpl<MerchantOrder> implement
 	MerchantOrderGoodsDao merchantOrderGoodsDao;
 	@Autowired
 	ChannelOrderTravelerDao channelOrderTravelerDao;
+	@Autowired
+	MerchantOrderGoodsPickupDao merchantOrderGoodsPickupDao;
 
 	@Override
 	public MerchantOrder load(int id) {
@@ -80,8 +88,14 @@ public class OrderServiceImpl extends ServiceHelperImpl<MerchantOrder> implement
 		merchantOrderNotesDao.create(new MerchantOrderNotes(order, userprofile.getUser(), "Confirmed the order", null));
 		channelOrderService.confirm(order.getChannelOrderId());
 		LockManager.unlock(order.getOrderNo());
-		//mail to custom
-		
+		// mail to custom
+		try {
+			MailUtils.sendEmail(order.getContractorEmail(), "您在" + order.getChannelName() + "购买的旅游产品已经确认",
+					TempleteUtils.genCompleteContent(order, merchantOrderGoodsPickupDao.loadByMogId(order.getGoodses().get(0).getId())),
+					null);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -123,9 +137,47 @@ public class OrderServiceImpl extends ServiceHelperImpl<MerchantOrder> implement
 	}
 
 	@Override
-	public void update(MerchantOrder orderbean, UserProfile userprofile) throws OrderStatusException {
-		// TODO Auto-generated method stub
+	public void update(MerchantOrder order, UserProfile userprofile) throws OrderStatusException {
+		merchantOrderDao.update(order);
+	}
 
+	@Override
+	public MerchantOrder update(MerchantOrder orderbean, MerchantOrderGoodsPickup pickupBean, Date deptDate, GuestProfile guestProfile)
+			throws OrderStatusException {
+
+		MerchantOrder order = fetch(orderbean.getId());
+		order.setHotelAddress(orderbean.getHotelAddress());
+		order.setHotelName(orderbean.getHotelName());
+		order.setHotelRoom(orderbean.getHotelRoom());
+		order.setHotelRoomTel(orderbean.getHotelRoomTel());
+		order.setHotelTel(orderbean.getHotelTel());
+
+		MerchantOrderGoods mog = order.getGoodses().get(0);
+		if (pickupBean != null) {
+			mog.setNeedsPickup(true);
+			MerchantOrderGoodsPickup pickup = merchantOrderGoodsPickupDao.loadByMogId(mog.getId());
+			if (pickup != null) {
+				pickup.setArrivedDate(pickupBean.getArrivedDate());
+				pickup.setArrivedTime(pickupBean.getArrivedTime());
+				pickup.setFlightNo(pickupBean.getFlightNo());
+				merchantOrderGoodsPickupDao.update(pickup);
+			} else {
+				pickup = new MerchantOrderGoodsPickup();
+				pickup.setMerchantOrderGoodsId(mog.getId());
+				pickup.setMerchantOrderId(order.getId());
+				pickup.setArrivedDate(pickupBean.getArrivedDate());
+				pickup.setArrivedTime(pickupBean.getArrivedTime());
+				pickup.setFlightNo(pickupBean.getFlightNo());
+				merchantOrderGoodsPickupDao.create(pickup);
+			}
+		} else {
+			mog.setNeedsPickup(false);
+		}
+		mog.setDeptDate(deptDate);
+		merchantOrderGoodsDao.update(mog);
+		merchantOrderDao.update(order);
+		merchantOrderNotesDao.create(new MerchantOrderNotes(order, guestProfile.getUser(), "顾客更新了订单"));
+		return order;
 	}
 
 	@Override

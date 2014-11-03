@@ -94,6 +94,16 @@
 			<td></td>
 			<td></td>
 		</tr>
+		<tr>
+			<td><input type="checkbox" name="needsPickup" value="true" onclick="changeNeedsPickup();"> Needs pick up</td>
+		</tr>
+		<tr id="pickupInfo" class="form-inline" style="display:none;">
+			<td>
+				<p>Flight No：  <input style="width:100px" name="goodses[0].flightNo" class="form-control"  placeholder="Please enter flight no..."/></p>
+				<p>Arrived Date：<input style="width:100px" name="goodses[0].arrivedDate" class="form-control"  placeholder="Please enter arrived date..."/></p>
+				<p>Arrived Time：<input style="width:100px" name="goodses[0].arrivedTime" class="form-control"  placeholder="Please enter arrived time..."/></p>
+			</td>
+		</tr>
 	</table>
 	
 	<h4>Guest Details：<a href="javascript:addTraveler();" class="btn btn-success">Add</a> </h4>
@@ -203,5 +213,15 @@
 		validate(function(){
 			$("form").submit();
 		});
+	}
+	
+	function changeNeedsPickup(){
+		if($("#needsPickup").attr("checked")) {
+			$("#pickupInfo").show();
+			$("#pickupInfo input").attr("check", "notEmpty");
+		} else {
+			$("#pickupInfo").hide();
+			$("#pickupInfo input").attr("check", "");
+		}
 	}
 </script>

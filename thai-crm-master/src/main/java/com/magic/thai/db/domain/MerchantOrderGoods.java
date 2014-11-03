@@ -52,6 +52,9 @@ public class MerchantOrderGoods {
 	@Column(name = "quantity", nullable = false)
 	private int quantity;
 
+	@Column(name = "needs_pick_up")
+	private Boolean needsPickup;
+
 	@Column(name = "traveler_names")
 	private String travelerNames;
 
@@ -156,6 +159,14 @@ public class MerchantOrderGoods {
 
 	public void setProfit(double profit) {
 		this.profit = profit;
+	}
+
+	public Boolean isNeedsPickup() {
+		return needsPickup;
+	}
+
+	public void setNeedsPickup(Boolean needsPickup) {
+		this.needsPickup = needsPickup;
 	}
 
 }

@@ -33,6 +33,8 @@ import com.magic.thai.exception.webservice.FormatException;
 import com.magic.thai.exception.webservice.NativeException;
 import com.magic.thai.exception.webservice.ParameterException;
 import com.magic.thai.util.Asserts;
+import com.magic.thai.util.MailUtils;
+import com.magic.thai.util.TempleteUtils;
 import com.magic.thai.web.ws.vo.CheckGoodsVo;
 import com.magic.thai.web.ws.vo.CreateOrderVo;
 import com.magic.thai.web.ws.vo.QueryGoodsesVo;
@@ -92,7 +94,7 @@ public class WebServiceControllor {
 			Asserts.isTrue(vo.getGoodses().size() > 0, new ParameterException("商品不能为空"));
 
 			for (TravelerVo travelerVo : vo.getTravelers()) {
-				Asserts.isTrue(StringUtils.isNotBlank(travelerVo.getIdNo()), new ParameterException("游客证件号不能为空"));
+				// Asserts.isTrue(StringUtils.isNotBlank(travelerVo.getIdNo()), new ParameterException("游客证件号不能为空"));
 				Asserts.notNull(travelerVo.getIdType(), new ParameterException("游客证件类型不能为空"));
 				Asserts.isTrue(StringUtils.isNotBlank(travelerVo.getFirstName()), new ParameterException("游客姓不能为空"));
 				Asserts.isTrue(StringUtils.isNotBlank(travelerVo.getLastName()), new ParameterException("游客名不能为空"));
@@ -100,6 +102,10 @@ public class WebServiceControllor {
 			}
 			ChannelOrder order = interfaceOrderService.create(vo);
 			responseResult(response, new WebServiceResult().success(order.getChannelOrderNo()));
+
+			// 发邮件确认信息
+			MailUtils.sendEmail(vo.getOrderContactorEmail(), "您在" + order.getChannelName() + "购买的旅游产品需要完善信息",
+					TempleteUtils.genFirstContent(order), null);
 		} catch (ThaiException e) {
 			responseResult(response, new WebServiceResult().fail(e));
 		} catch (JAXBException e) {

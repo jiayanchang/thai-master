@@ -24,6 +24,10 @@
 			<mvc:mapping path="/f/**"/> <!-- 需要拦截的 -->
 			<bean class="com.magic.thai.security.FrontInterceptor" />
 		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/g/**"/> <!-- 需要拦截的 -->
+			<bean class="com.magic.thai.security.GuestInterceptor" />
+		</mvc:interceptor>
 	</mvc:interceptors>
 
 </beans>

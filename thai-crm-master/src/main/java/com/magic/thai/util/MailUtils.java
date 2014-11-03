@@ -29,29 +29,22 @@ public class MailUtils {
 	/**
 	 * 发mail的一个通用方法
 	 * 
-	 * @param fromEmail
-	 *            mail的发送方地址
-	 * @param fromEmailPWD
-	 *            mail发送方登陆mail的密码
-	 * @param userName
-	 *            mail发送方登陆mail的用户名
-	 * @param reveiveMailAddress
-	 *            接收方的mail地址，如果有多个接收方地址间用“,”分隔
-	 * @param host
-	 *            发送mail的host
-	 * @param mailTitle
-	 *            邮件标题
-	 * @param mailHtmlContent
-	 *            邮件内容，支持html格式
-	 * @param file
-	 *            附件内容
-	 * @throws Exception
-	 *             异常
+	 * @param fromEmail mail的发送方地址
+	 * @param fromEmailPWD mail发送方登陆mail的密码
+	 * @param userName mail发送方登陆mail的用户名
+	 * @param reveiveMailAddress 接收方的mail地址，如果有多个接收方地址间用“,”分隔
+	 * @param mailTitle 邮件标题
+	 * @param mailHtmlContent 邮件内容，支持html格式
+	 * @param file 附件内容
+	 * @throws Exception 异常
 	 */
-	public static void sendEmail(String reveiveMailAddress, String host, String mailTitle, String mailHtmlContent, File file)
-			throws Exception {
+	public static void sendEmail(String reveiveMailAddress, String mailTitle, String mailHtmlContent, File file) throws Exception {
+		if (mailHtmlContent == null) {
+			return;
+		}
 		JavaMailSenderImpl sender = new JavaMailSenderImpl();
-		sender.setHost(host);
+		// host 发送mail的host
+		sender.setHost(properties.get("mail.host").toString());
 		sender.setPassword(properties.get("mail.from.password").toString());
 		sender.setUsername(properties.get("mail.from.username").toString());
 		Properties props = System.getProperties();
@@ -72,12 +65,11 @@ public class MailUtils {
 		helper.setSubject(mailTitle);
 		sender.send(message);
 	}
-	
-	
+
 	public static String genContent() {
-		//您的订单需要完善，order No
+		// 您的订单需要完善，order No
 		String html = "";
-		
+
 		return html;
 	}
 }

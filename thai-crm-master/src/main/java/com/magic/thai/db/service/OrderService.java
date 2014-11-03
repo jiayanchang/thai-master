@@ -1,10 +1,14 @@
 package com.magic.thai.db.service;
 
+import java.util.Date;
+
 import com.magic.thai.db.domain.MerchantOrder;
+import com.magic.thai.db.domain.MerchantOrderGoodsPickup;
 import com.magic.thai.db.domain.User;
 import com.magic.thai.db.vo.OrderVo;
 import com.magic.thai.exception.OrderStatusException;
 import com.magic.thai.exception.ThaiException;
+import com.magic.thai.security.GuestProfile;
 import com.magic.thai.security.UserProfile;
 import com.magic.thai.util.PaginationSupport;
 
@@ -37,6 +41,16 @@ public interface OrderService {
 	 * @param userprofile
 	 */
 	public void change(int orderId, String reason, UserProfile userprofile) throws OrderStatusException;
+
+	/**
+	 * 顾客修改订单
+	 * 
+	 * @param order
+	 * @param guestProfile
+	 * @throws OrderStatusException
+	 */
+	public MerchantOrder update(MerchantOrder orderbean, MerchantOrderGoodsPickup pickupBean, Date deptDate, GuestProfile guestProfile)
+			throws OrderStatusException;
 
 	/**
 	 * 跟进处理

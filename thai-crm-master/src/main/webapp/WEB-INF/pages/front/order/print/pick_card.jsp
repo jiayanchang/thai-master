@@ -47,9 +47,16 @@
 		</tr>
 		<tr class="Noprint">
 			<td>
-				<input style="width:180px" id="fightNo" class="form-control"  placeholder="FlightNo"/>
-				<input style="width:180px" id="arrDate" class="form-control"  placeholder="ArrivedDate"/>
-				<input style="width:180px" id="arrTime" class="form-control"  placeholder="ArrivedTime"/>
+				<c:if test="${isNeedsPickup}">
+					<input style="width:180px" id="flightNo" class="form-control"  placeholder="FlightNo" value="${pickup.flightNo }"/>
+					<input style="width:180px" id="arrDate" class="form-control"  placeholder="ArrivedDate" value="${pickup.arrivedDate }"/>
+					<input style="width:180px" id="arrTime" class="form-control"  placeholder="ArrivedTime" value="${pickup.arrivedTime }"/>
+				</c:if>
+				<c:if test="${not isNeedsPickup}">
+					<input style="width:180px" id="flightNo" class="form-control"  placeholder="FlightNo"/>
+					<input style="width:180px" id="arrDate" class="form-control"  placeholder="ArrivedDate"/>
+					<input style="width:180px" id="arrTime" class="form-control"  placeholder="ArrivedTime"/>
+				</c:if>
 			</td>
 		</tr>
 		<tr class="Noprintscreen">
@@ -69,7 +76,7 @@
 		window.close();
 	}
 	function printf(){
-		$("#pv").html( "FlightNo：" + $("#fightNo").val() + "&nbsp;&nbsp;&nbsp;" +  $("#arrDate").val()  + "&nbsp;&nbsp;&nbsp;" +  $("#arrTime").val() );
+		$("#pv").html( "FlightNo：" + $("#flightNo").val() + "&nbsp;&nbsp;&nbsp;" +  $("#arrDate").val()  + "&nbsp;&nbsp;&nbsp;" +  $("#arrTime").val() );
 		window.print();
 	}
 	

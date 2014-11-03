@@ -12,6 +12,11 @@ public class BuyGoodsVo {
 	private int type = ChannelOrderTraveler.Type.ADULT;
 	private double price;
 
+	private boolean needsPickup;
+	private String flightNo;
+	private String arrivedDate;
+	private String arrivedTime;
+
 	public Date deptDateObj;
 
 	public BuyGoodsVo() {
@@ -65,6 +70,46 @@ public class BuyGoodsVo {
 
 	public boolean isChild() {
 		return this.type != ChannelOrderTraveler.Type.ADULT;
+	}
+
+	public boolean isNeedsPickup() {
+		return needsPickup;
+	}
+
+	public void setNeedsPickup(boolean needsPickup) {
+		this.needsPickup = needsPickup;
+	}
+
+	public String getFlightNo() {
+		return flightNo;
+	}
+
+	public void setFlightNo(String flightNo) {
+		this.flightNo = flightNo;
+	}
+
+	public String getArrivedDate() {
+		return arrivedDate;
+	}
+
+	public void setArrivedDate(String arrivedDate) {
+		this.arrivedDate = arrivedDate;
+	}
+
+	public String getArrivedTime() {
+		return arrivedTime;
+	}
+
+	public void setArrivedTime(String arrivedTime) {
+		this.arrivedTime = arrivedTime;
+	}
+
+	public Date getDeptDateObj() {
+		return deptDateObj;
+	}
+
+	public void setDeptDateObj(Date deptDateObj) {
+		this.deptDateObj = deptDateObj;
 	}
 
 }

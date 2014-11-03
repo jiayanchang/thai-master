@@ -95,6 +95,16 @@
 			<td>Quantity：</td>
 			<td><input name="goodses[0].qty" class="form-control" check="integer"  placeholder="Please input an integer..."/></td>
 		</tr>
+		<tr>
+			<td><input type="checkbox" name="needsPickup" value="true" onclick="changeNeedsPickup();">是否需要接机</td>
+		</tr>
+		<tr id="pickupInfo" class="form-inline" style="display:none;">
+			<td>
+				<p>航班号：  <input style="width:100px" name="goodses[0].flightNo" class="form-control"  placeholder="请填写航班号..."/></p>
+				<p>抵达日期：<input style="width:100px" name="goodses[0].arrivedDate" class="form-control"  placeholder="请填写抵达日期..."/></p>
+				<p>抵达时间：<input style="width:100px" name="goodses[0].arrivedTime" class="form-control"  placeholder="请填写抵达时间..."/></p>
+			</td>
+		</tr>
 	</table>
 	
 	<h4>Guest Details：<a href="javascript:addTraveler();" class="btn btn-success">Add</a> </h4>
@@ -219,6 +229,17 @@
 	$(function() {
 		$("form [tag=date]").datepicker({dateFormat:'yy/mm/dd'});
 	});
+	
+	function changeNeedsPickup(){
+		if($("#needsPickup").attr("checked")) {
+			$("#pickupInfo").show();
+			$("#pickupInfo input").attr("check", "notEmpty");
+		} else {
+			$("#pickupInfo").hide();
+			$("#pickupInfo input").attr("check", "");
+		}
+	}
+	
 
 	function submitForm() {
 		if(!confirm("Are you sure？")) return false;

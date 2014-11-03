@@ -60,6 +60,7 @@ public class User {
 	 */
 	public static final class Type {
 		public static final int NORMAL = 0;
+		public static final int GUEST = 1;
 		public static final int PLATFORM = 2;
 	}
 
@@ -71,6 +72,7 @@ public class User {
 	public static final class GroupType {
 		public static final int NORMAL = 0;
 		public static final int ADMINISTRATOR = 1;
+		public static final int GUEST = 2;
 	}
 
 	/**

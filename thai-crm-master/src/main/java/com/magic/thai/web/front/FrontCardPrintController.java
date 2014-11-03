@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.magic.thai.db.dao.GoodsDao;
+import com.magic.thai.db.dao.MerchantOrderGoodsPickupDao;
 import com.magic.thai.db.dao.MerchantOrderNotesDao;
 import com.magic.thai.db.domain.MerchantOrder;
 import com.magic.thai.db.service.InterfaceOrderService;
@@ -36,6 +37,8 @@ public class FrontCardPrintController {
 
 	@Autowired
 	MerchantOrderNotesDao merchantOrderNotesDao;
+	@Autowired
+	MerchantOrderGoodsPickupDao merchantOrderGoodsPickupDao;
 
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
@@ -61,6 +64,9 @@ public class FrontCardPrintController {
 		ModelAndView modelandView = new ModelAndView("/front/order/print/pick_card");
 		MerchantOrder order = orderService.fetch(id);
 		modelandView.addObject("order", order);
+		modelandView.addObject("isNeedsPickup", order.getGoodses().get(0).isNeedsPickup());
+		modelandView.addObject("pickup", merchantOrderGoodsPickupDao.loadByMogId(order.getGoodses().get(0).getId()));
+
 		modelandView.addObject("userprofile", userprofile);
 		modelandView.addObject("now", DateFormatUtils.format(new Date(), "MM/dd/yyyy"));
 		return modelandView;
