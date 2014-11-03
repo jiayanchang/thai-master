@@ -98,6 +98,16 @@
 			<td></td>
 		</tr>
 		<tr>
+			<td><input type="checkbox"/>Net Paid</td>
+			<td></td>
+			<td width="200px"></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
 			<td><input type="checkbox"/>Cheque</td>
 			<td>Bank</td>
 			<td></td>

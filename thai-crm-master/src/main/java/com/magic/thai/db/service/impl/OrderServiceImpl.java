@@ -80,6 +80,8 @@ public class OrderServiceImpl extends ServiceHelperImpl<MerchantOrder> implement
 		merchantOrderNotesDao.create(new MerchantOrderNotes(order, userprofile.getUser(), "Confirmed the order", null));
 		channelOrderService.confirm(order.getChannelOrderId());
 		LockManager.unlock(order.getOrderNo());
+		//mail to custom
+		
 	}
 
 	@Override

@@ -97,7 +97,7 @@ public class FrontOrderController {
 	public String addprocess(@ModelAttribute CreateOrderVo createOrderVo, ModelMap model, HttpSession session) {
 		UserProfile userprofile = (UserProfile) session.getAttribute("userprofile");
 		try {
-			interfaceOrderService.create(createOrderVo, userprofile);
+			interfaceOrderService.merchantCreateOrder(createOrderVo, userprofile);
 		} catch (ThaiException e) {
 			model.addAttribute("message", e.getMessage());
 			model.addAttribute("goodses",

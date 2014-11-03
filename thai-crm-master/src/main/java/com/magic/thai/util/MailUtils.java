@@ -72,4 +72,12 @@ public class MailUtils {
 		helper.setSubject(mailTitle);
 		sender.send(message);
 	}
+	
+	
+	public static String genContent() {
+		//您的订单需要完善，order No
+		String html = "";
+		
+		return html;
+	}
 }

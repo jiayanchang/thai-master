@@ -3,16 +3,7 @@
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>fuck</title>
-<link rel="stylesheet" type="text/css" href="/js/jquery/jquery-ui.css">
-<script type="text/javascript" src="/js/jquery/jquery-1.10.2.js"></script>
-<script type="text/javascript" src="/js/jquery/jquery-ui.min.js"></script>
-<style>
-	body {
-	font-family: "Trebuchet MS", "Helvetica", "Arial",  "Verdana", "sans-serif";
-	font-size: 62.5%;
-}
-	
+<title></title>
 </style>
 
 </head>

@@ -86,7 +86,7 @@ public class InterfaceOrderServiceImpl extends ServiceHelperImpl<MerchantOrder> 
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public ChannelOrder create(CreateOrderVo vo, UserProfile userprofile) throws ThaiException {
+	public ChannelOrder merchantCreateOrder(CreateOrderVo vo, UserProfile userprofile) throws ThaiException {
 
 		ChannelOrder channelOrder = new ChannelOrder();
 		channelOrder.setChannelId(userprofile.getMerchant().getId());
@@ -115,7 +115,7 @@ public class InterfaceOrderServiceImpl extends ServiceHelperImpl<MerchantOrder> 
 
 			MerchantOrderGoods merchantOrderGoods = new MerchantOrderGoods();
 			merchantOrderGoods.setAmount(goodsVo.getPrice());
-			merchantOrderGoods.setProfit(0d);
+			merchantOrderGoods.setProfit(goodsVo.getPrice());
 			merchantOrderGoods.setChannelId(0);
 			merchantOrderGoods.setDeptDate(goodsVo.deptDateObj);
 			merchantOrderGoods.setGoodsId(goods.getId());
@@ -210,6 +210,139 @@ public class InterfaceOrderServiceImpl extends ServiceHelperImpl<MerchantOrder> 
 			orderTravelerDao.create(orderTraveler);
 		}
 
+		return channelOrder;
+	}
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public ChannelOrder adminCreateOrder(CreateOrderVo vo, UserProfile userprofile) throws ThaiException {
+		
+		ChannelOrder channelOrder = new ChannelOrder();
+		channelOrder.setChannelId(userprofile.getMerchant().getId());
+		channelOrder.setChannelName(userprofile.getMerchant().getName());
+		// channelOrder.setChannelOrderNo(channelOrderNo);
+		channelOrder.setContractor(vo.getOrderContactor());
+		channelOrder.setContractorEmail(vo.getOrderContactorEmail());
+		channelOrder.setContractorMobile(vo.getOrderContactorMobile());
+		channelOrder.setCreatedDate(new Date());
+		channelOrder.setType(ChannelOrder.OrderType.CHANNEL_ORDER);
+		channelOrder.setStatus(ChannelOrder.Status.NEW);
+		
+		int channelOrderId = channelOrderDao.create(channelOrder);
+		
+		Map<String, MerchantOrder> merchantOrderMap = new HashMap<String, MerchantOrder>();
+		for (BuyGoodsVo goodsVo : vo.getGoodses()) {
+			try {
+				goodsVo.deptDateObj = DateUtils.parseDate(goodsVo.getDeptDate(), new String[] { "yyyy-MM-dd", "yyyy/MM/dd" });
+			} catch (Exception e) {
+				throw new ParameterException("出发日期格式异常");
+			}
+			Goods goods = goodsDao.loadById(goodsVo.getGoodsId());
+			Asserts.notNull(goods, new ParameterException("商品ID有误：" + goodsVo.getGoodsId()));
+			
+			
+			// 验证加价价格,在此这个goodsvo。price在页面用于存入利润
+			double goodsPrice = CreateOrderValidator.getPirce(goods, goodsVo);
+			double profitPrice = DoubleUtils.add(goodsVo.getPrice(), goodsPrice);
+
+			double goodsAmount = DoubleUtils.mul(goodsPrice, (double) goodsVo.getQty());
+			double profitAmount = DoubleUtils.mul(profitPrice, (double) goodsVo.getQty());
+			
+			MerchantOrderGoods merchantOrderGoods = new MerchantOrderGoods();
+			merchantOrderGoods.setAmount(goodsPrice);
+			merchantOrderGoods.setProfit(profitPrice);
+			merchantOrderGoods.setChannelId(0);
+			merchantOrderGoods.setDeptDate(goodsVo.deptDateObj);
+			merchantOrderGoods.setGoodsId(goods.getId());
+			merchantOrderGoods.setGoodsName(goods.getTitle());
+			merchantOrderGoods.setMerchantId(goods.getMerchantId());
+			
+			merchantOrderGoods.setQuantity(goodsVo.getQty());
+			// mogoods.setTravelerNames(travelerNames);
+			
+			if (merchantOrderMap.containsKey(goods.getMerchantId() + "")) {
+				MerchantOrder merchantOrder = merchantOrderMap.get(goods.getMerchantId() + "");
+				merchantOrder.getGoodses().add(merchantOrderGoods);
+				merchantOrder.setAmount(merchantOrder.getAmount() + goodsAmount);
+				merchantOrder.setProfitAmount(merchantOrder.getProfitAmount() + profitAmount);
+				merchantOrderGoods.setMerchantOrder(merchantOrder);
+			} else {
+				
+				MerchantOrder merchantOrder = new MerchantOrder();
+				merchantOrder.setChannelId(0);
+				merchantOrder.setChannelName("");
+				merchantOrder.setChannelOrderId(channelOrderId);
+				merchantOrder.setContractor(vo.getOrderContactor());
+				merchantOrder.setContractorEmail(vo.getOrderContactorEmail());
+				merchantOrder.setContractorMobile(vo.getOrderContactorMobile());
+				merchantOrder.setCreatedDate(new Date());
+				merchantOrder.setCreatorName(userprofile.getUser().getName());
+				merchantOrder.setCreatorType(MerchantOrder.UserType.CHANNEL);
+				merchantOrder.setMerchantId(goods.getMerchantId());
+				merchantOrder.setMerchantName(goods.getMerchantName());
+				merchantOrder.setStatus(MerchantOrder.Status.NEW);
+				merchantOrder.setTravelerNum(goodsVo.getQty());
+				merchantOrder.setHotelAddress(vo.getHotelAddress());
+				merchantOrder.setHotelName(vo.getHotelName());
+				merchantOrder.setHotelRoom(vo.getHotelRoom());
+				merchantOrder.setHotelRoomTel(vo.getHotelRoomTel());
+				merchantOrder.setStatus(MerchantOrder.Status.NEW);
+				
+				merchantOrderMap.put(goods.getMerchantId() + "", merchantOrder);
+				merchantOrder.setAmount(merchantOrder.getAmount() + goodsAmount);
+				merchantOrder.setProfitAmount(merchantOrder.getProfitAmount() + profitAmount);
+				merchantOrder.setDriverMobile(vo.getDriverMobile());
+				merchantOrder.setDriverName(vo.getDriverName());
+				merchantOrder.setHotelTel(vo.getHotelTel());
+				
+				merchantOrder.getGoodses().add(merchantOrderGoods);
+			}
+			// Asserts.isTrue(goodsService.checkGoods(channel, goods,
+			// goodsVo.deptDateObj, vo.getTravelers().size()),
+			// new GoodsCheckedException("商品数量不足"));
+			// 没超出20天的商品已售叠加
+			if (!CalendarUtils.large(new Date(), goodsVo.deptDateObj, 20)) {
+				goods.setSoldCount(goods.getSoldCount() + vo.getTravelers().size());
+				goodsDao.update(goods);
+			}
+			channelOrder.setAmount(channelOrder.getAmount() + profitAmount);
+		}
+		
+		channelOrderDao.create(channelOrder);
+		for (Entry<String, MerchantOrder> entry : merchantOrderMap.entrySet()) {
+			MerchantOrder merchantOrder = entry.getValue();
+			merchantOrderDao.create(merchantOrder);
+			for (MerchantOrderGoods merchantOrderGoods : merchantOrder.getGoodses()) {
+				merchantOrderGoods.setMerchantOrder(merchantOrder);
+				merchantOrderGoodsDao.create(merchantOrderGoods);
+				// 生成商品快照
+				snapshotGoodsService.create(merchantOrderGoods);
+			}
+			merchantOrder.setOrderNo(OrderNoGenerator.generateMerchantOrderNo(merchantOrder));
+			merchantOrderDao.update(merchantOrder);
+			
+			channelMerchantInvDao.updateStat(merchantOrder);
+		}
+		// 生成单号
+		channelOrder.setChannelOrderNo(OrderNoGenerator.generateChannelOrderNo(channelOrder));
+		channelOrderDao.update(channelOrder);
+		
+		for (TravelerVo travelerVo : vo.getTravelers()) {
+			ChannelOrderTraveler orderTraveler = new ChannelOrderTraveler();
+			orderTraveler.setOrder(channelOrder);
+			orderTraveler.setBirth(travelerVo.getBirth());
+			orderTraveler.setEffectiveDate(travelerVo.getEffectiveDate());
+			orderTraveler.setGender(travelerVo.getGender());
+			// orderTraveler.setId(travelerVo.get);
+			orderTraveler.setIdNo(travelerVo.getIdNo());
+			orderTraveler.setIdType(travelerVo.getIdType());
+			orderTraveler.setMobile(travelerVo.getMobile());
+			orderTraveler.setFirstName(travelerVo.getFirstName());
+			orderTraveler.setLastName(travelerVo.getLastName());
+			orderTraveler.setType(travelerVo.getType());
+			orderTraveler.setNationality(travelerVo.getNationality());
+			orderTravelerDao.create(orderTraveler);
+		}
+		
 		return channelOrder;
 	}
 
@@ -348,7 +481,7 @@ public class InterfaceOrderServiceImpl extends ServiceHelperImpl<MerchantOrder> 
 
 		// 更新渠道信息
 		channel.setOrderCount(channel.getOrderCount() + 1);
-		channel.setAmount(channel.getAmount());
+		channel.setAmount(DoubleUtils.add(channel.getAmount(), channelOrder.getAmount()));
 		channelDao.update(channel);
 
 		return channelOrder;
