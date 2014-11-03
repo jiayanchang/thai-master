@@ -43,6 +43,14 @@
 			<td>订单金额：</td>
 			<td>平台总额：${order.profitAmount } 商家：${order.amount }  </td>
 		</tr>
+		<c:if test="${isNeedsPickup}">
+			<tr>
+				<td>接机信息：</td>
+				<td colspan="3">
+					航班号 : ${pickup.flightNo } - 抵达日期 : ${pickup.arrivedDate } - 抵达时间 : ${pickup.arrivedTime }
+				</td>
+			</tr>
+		</c:if>
 	</table>
 	
 	

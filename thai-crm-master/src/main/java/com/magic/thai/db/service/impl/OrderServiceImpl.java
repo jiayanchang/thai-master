@@ -173,6 +173,10 @@ public class OrderServiceImpl extends ServiceHelperImpl<MerchantOrder> implement
 		} else {
 			mog.setNeedsPickup(false);
 		}
+		
+		
+		
+		
 		mog.setDeptDate(deptDate);
 		merchantOrderGoodsDao.update(mog);
 		merchantOrderDao.update(order);

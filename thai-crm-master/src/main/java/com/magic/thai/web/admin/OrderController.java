@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.magic.thai.db.dao.MerchantOrderGoodsPickupDao;
 import com.magic.thai.db.dao.MerchantOrderNotesDao;
 import com.magic.thai.db.domain.ChannelOrder;
 import com.magic.thai.db.domain.Goods;
@@ -49,6 +50,8 @@ public class OrderController {
 	ChannelOrderService channelOrderService;
 	@Autowired
 	InterfaceOrderService interfaceOrderService;
+	@Autowired
+	MerchantOrderGoodsPickupDao merchantOrderGoodsPickupDao;
 	
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
@@ -62,6 +65,8 @@ public class OrderController {
 		ModelAndView modelandView = new ModelAndView("/admin/order/view");
 		MerchantOrder order = orderService.fetch(id);
 		modelandView.addObject("order", order);
+		modelandView.addObject("isNeedsPickup", order.getGoodses().get(0).isNeedsPickup());
+		modelandView.addObject("pickup", merchantOrderGoodsPickupDao.loadByMogId(order.getGoodses().get(0).getId()));
 		modelandView.addObject("logs", merchantOrderNotesDao.getLogs(id));
 		return modelandView;
 	}

@@ -26,7 +26,7 @@ public class CreateOrderValidator {
 				price = DoubleUtils.add(price, merchantInv.getProfitPrice());
 				Asserts.isTrue(price == buyGoodsVo.getPrice(), new ParameterException("验证价格不通过"));
 			} else {
-				price = DoubleUtils.add(price, price * merchantInv.getProfitRate());
+				price = DoubleUtils.add(price, price * DoubleUtils.div(merchantInv.getProfitRate(), 100d));
 				Asserts.isTrue(price == buyGoodsVo.getPrice(), new ParameterException("验证价格不通过"));
 			}
 		}

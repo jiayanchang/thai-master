@@ -5,16 +5,32 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Properties;
 
 import org.apache.commons.lang.time.DateFormatUtils;
 
-import com.magic.thai.db.domain.ChannelOrder;
 import com.magic.thai.db.domain.MerchantOrder;
 import com.magic.thai.db.domain.MerchantOrderGoods;
 import com.magic.thai.db.domain.MerchantOrderGoodsPickup;
 
 public class TempleteUtils {
+
+	private static Properties properties;
+
+	static {
+		InputStream inputStream = MailUtils.class.getClassLoader().getResourceAsStream("system.properties");
+		if (inputStream == null) {
+			throw new RuntimeException("can not read  file system.properties");
+		}
+		try {
+			properties = new Properties();
+			properties.load(inputStream);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
 
 	static String FISRT_TEMPLATE = "";
 	static String COMPLETE_TEMPLATE = "";
@@ -48,14 +64,19 @@ public class TempleteUtils {
 		}
 	}
 
-	public static String genFirstContent(ChannelOrder order) {
-		MerchantOrder mo = order.getMerchantOrders().get(0);
+	public static String genFirstContent(MerchantOrder mo) {
+
+		String host = properties.getProperty("first.host");
 		// 您的订单需要完善，order No
-		String html = FISRT_TEMPLATE.replaceAll("{traveler_name}", order.getContractor())
-				.replaceAll("{gotourl}", "http://182.254.220.15:8080/crm/g/order/edit/" + mo.getId())
-				.replaceAll("{order_no}", mo.getOrderNo()).replaceAll("{traveler_tel}", order.getContractorMobile())
-				.replaceAll("{goods_title}", mo.getGoodses().get(0).getGoodsName())
-				.replaceAll("{goods_count}", mo.getGoodses().get(0).getQuantity() + "");
+		String html = FISRT_TEMPLATE
+				.replaceAll("\\{traveler_name\\}", mo.getContractor())
+				.replaceAll(
+						"\\{gotourl\\}",
+						host + "/g/order/edit/" + mo.getId() + "?t="
+								+ Md5CryptoUtils.create(mo.getContractorEmail() + mo.getOrderNo()).substring(0, 8))
+				.replaceAll("\\{order_no\\}", mo.getOrderNo()).replaceAll("\\{traveler_tel\\}", mo.getContractorMobile())
+				.replaceAll("\\{goods_title\\}", mo.getGoodses().get(0).getGoodsName())
+				.replaceAll("\\{goods_count\\}", mo.getGoodses().get(0).getQuantity() + "");
 		return html;
 	}
 
@@ -64,14 +85,19 @@ public class TempleteUtils {
 		MerchantOrderGoods mog = mo.getGoodses().get(0);
 
 		String deptDateStr = DateFormatUtils.format(mog.getDeptDate(), "yyyy-MM-dd");
-
+		String host = properties.getProperty("complete.host");
 		// 您的订单需要完善，order No
-		String html = COMPLETE_TEMPLATE.replaceAll("{traveler_name}", mo.getContractor())
-				.replaceAll("{gotourl}", "http://182.254.220.15:8080/crm/g/order/edit/" + mo.getId())
-				.replaceAll("{order_no}", mo.getOrderNo()).replaceAll("{traveler_tel}", mo.getContractorMobile())
-				.replaceAll("{goods_title}", mog.getGoodsName()).replaceAll("{goods_count}", mog.getQuantity() + "")
-				.replaceAll("{dept_date}", deptDateStr).replaceAll("{pickup.flightNo}", pickup.getFlightNo())
-				.replaceAll("{pickup.arrivedDate}", pickup.getArrivedDate()).replaceAll("{pickup.arrivedTime}", pickup.getArrivedTime());
+		String html = COMPLETE_TEMPLATE
+				.replaceAll("\\{traveler_name\\}", mo.getContractor())
+				.replaceAll(
+						"\\{gotourl\\}",
+						host + "/g/order/" + mo.getId() + "?t="
+								+ Md5CryptoUtils.create(mo.getContractorEmail() + mo.getOrderNo()).substring(0, 8))
+				.replaceAll("\\{order_no\\}", mo.getOrderNo()).replaceAll("\\{traveler_tel\\}", mo.getContractorMobile())
+				.replaceAll("\\{goods_title\\}", mog.getGoodsName()).replaceAll("\\{goods_count\\}", mog.getQuantity() + "")
+				.replaceAll("\\{dept_date\\}", deptDateStr).replaceAll("\\{pickup.flightNo\\}", pickup == null ? "" : pickup.getFlightNo())
+				.replaceAll("\\{pickup.arrivedDate\\}", pickup == null ? "" : pickup.getArrivedDate())
+				.replaceAll("\\{pickup.arrivedTime\\}", pickup == null ? "" : pickup.getArrivedTime());
 		return html;
 	}
 

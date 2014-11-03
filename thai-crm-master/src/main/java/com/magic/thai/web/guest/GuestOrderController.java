@@ -1,11 +1,14 @@
 package com.magic.thai.web.guest;
 
-import java.sql.Date;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.BooleanUtils;
+import org.apache.commons.lang.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
@@ -60,6 +63,22 @@ public class GuestOrderController {
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
 	}
 
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	public String view(@PathVariable int id, @RequestParam("t") String token, ModelMap model, HttpSession session) throws ThaiException {
+		MerchantOrder order = orderService.fetch(id);
+		Asserts.isTrue(Md5CryptoUtils.create(order.getContractorEmail() + order.getOrderNo()).substring(0, 8).equalsIgnoreCase(token),
+				new ParameterException("验证身份异常"));
+		User user = new User();
+		user.setCodeName(order.getContractor());
+		user.setName(order.getContractor());
+		GuestProfile guestProfile = new GuestProfile(user, null);
+		session.setAttribute("userprofile", guestProfile);
+		model.addAttribute("isNeedsPickup", order.getGoodses().get(0).isNeedsPickup());
+		model.addAttribute("pickup", merchantOrderGoodsPickupDao.loadByMogId(order.getGoodses().get(0).getId()));
+		model.addAttribute("order", order);
+		return "/guest/edit_success";
+	}
+	
 	@RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
 	public String edit(@PathVariable int id, @RequestParam("t") String token, ModelMap model, HttpSession session) throws ThaiException {
 		MerchantOrder order = orderService.fetch(id);
@@ -75,17 +94,18 @@ public class GuestOrderController {
 	}
 
 	@RequestMapping(value = "/edit/process", method = RequestMethod.POST)
-	public String editprocess(@ModelAttribute("order") MerchantOrder orderbean, ModelMap model, @RequestParam String needsPickup,
-			@RequestParam String flightNo, @RequestParam String arrivedDate, @RequestParam String arrivedTime, @RequestParam Date deptDate,
-			HttpSession session) throws ThaiException {
+	public String editprocess(@ModelAttribute("order") MerchantOrder orderbean, ModelMap model, HttpServletRequest request, 
+			HttpSession session) throws ThaiException, ParseException {
 		GuestProfile guestProfile = (GuestProfile) session.getAttribute("userprofile");
 		Asserts.isTrue(guestProfile != null, new ThaiException("验证身份异常"));
 		try {
 			MerchantOrderGoodsPickup pickup = new MerchantOrderGoodsPickup();
-			pickup.setArrivedDate(arrivedDate);
-			pickup.setArrivedTime(arrivedTime);
-			pickup.setFlightNo(flightNo);
+			boolean needsPickup = BooleanUtils.toBoolean(request.getParameter("needsPickup"));
+			pickup.setArrivedDate(request.getParameter("arrivedDate"));
+			pickup.setArrivedTime(request.getParameter("arrivedTime"));
+			pickup.setFlightNo(request.getParameter("flightNo"));
 
+			Date deptDate = DateUtils.parseDate(request.getParameter("deptDate"), new String[]{"yyyy/MM/dd"});
 			MerchantOrder order = orderService.update(orderbean, BooleanUtils.toBoolean(needsPickup) ? pickup : null, deptDate,
 					guestProfile);
 

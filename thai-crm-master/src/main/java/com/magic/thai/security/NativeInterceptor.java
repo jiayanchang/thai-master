@@ -16,7 +16,7 @@ public class NativeInterceptor extends HandlerInterceptorAdapter {
 		logger.info("preHandle uri : {}, method : {}", req.getRequestURI(), req.getMethod());
 		UserProfile userprofile = (UserProfile) req.getSession().getAttribute("userprofile");
 		// Assert.notNull(userprofile, "请登陆");
-		if (userprofile == null || !userprofile.isPlatformUser()) {
+		if (userprofile == null || !userprofile.isPlatformUser() || userprofile instanceof GuestProfile) {
 			response.sendRedirect("/" + req.getContextPath());
 			return false;
 		}

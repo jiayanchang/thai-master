@@ -5,6 +5,7 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -80,9 +81,10 @@ public class WebServiceControllor {
 	}
 
 	@RequestMapping(value = "/createOrder", headers = "Accept=application/xml")
-	public void createOrder(@RequestBody String requestBody, HttpServletResponse response, ModelMap model) throws Exception {
+	public void createOrder(@RequestBody String requestBody, HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
 		logger.info("threadId={}, createOrder={}", Thread.currentThread().getId(), requestBody);
 		CreateOrderVo vo = (CreateOrderVo) unmarshall(requestBody, CreateOrderVo.class);
+		ChannelOrder order = null;
 		try {
 			Asserts.isTrue(StringUtils.isNotBlank(vo.getToken()), new ParameterException("TOKEN不能为空"));
 			Asserts.isTrue(StringUtils.isNotBlank(vo.getOrderContactor()), new ParameterException("订单联系人不能为空"));
@@ -100,12 +102,9 @@ public class WebServiceControllor {
 				Asserts.isTrue(StringUtils.isNotBlank(travelerVo.getLastName()), new ParameterException("游客名不能为空"));
 				Asserts.isTrue(StringUtils.isNotBlank(travelerVo.getNationality()), new ParameterException("游客国籍不能为空"));
 			}
-			ChannelOrder order = interfaceOrderService.create(vo);
+			order = interfaceOrderService.create(vo);
 			responseResult(response, new WebServiceResult().success(order.getChannelOrderNo()));
 
-			// 发邮件确认信息
-			MailUtils.sendEmail(vo.getOrderContactorEmail(), "您在" + order.getChannelName() + "购买的旅游产品需要完善信息",
-					TempleteUtils.genFirstContent(order), null);
 		} catch (ThaiException e) {
 			responseResult(response, new WebServiceResult().fail(e));
 		} catch (JAXBException e) {
@@ -113,6 +112,16 @@ public class WebServiceControllor {
 		} catch (Exception e) {
 			e.printStackTrace();
 			responseResult(response, new WebServiceResult().fail(new NativeException("系统内部错误")));
+		}
+		try {
+			if(order != null) {
+				// 发邮件确认信息
+				MailUtils.sendEmail(vo.getOrderContactorEmail(), "您在" + order.getChannelName() + "购买的旅游产品需要完善信息",
+						TempleteUtils.genFirstContent(order.getMerchantOrders().get(0)), null);
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 

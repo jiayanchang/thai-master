@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.magic.thai.db.dao.GoodsDao;
+import com.magic.thai.db.dao.MerchantOrderGoodsPickupDao;
 import com.magic.thai.db.dao.MerchantOrderNotesDao;
 import com.magic.thai.db.domain.Goods;
 import com.magic.thai.db.domain.MerchantOrder;
@@ -46,6 +47,9 @@ public class FrontOrderController {
 	@Autowired
 	MerchantOrderNotesDao merchantOrderNotesDao;
 
+	@Autowired
+	MerchantOrderGoodsPickupDao merchantOrderGoodsPickupDao;
+	
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
 		final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
@@ -59,6 +63,8 @@ public class FrontOrderController {
 		MerchantOrder order = orderService.fetch(id);
 		modelandView.addObject("order", order);
 		modelandView.addObject("logs", merchantOrderNotesDao.getLogs(id));
+		modelandView.addObject("isNeedsPickup", order.getGoodses().get(0).isNeedsPickup());
+		modelandView.addObject("pickup", merchantOrderGoodsPickupDao.loadByMogId(order.getGoodses().get(0).getId()));
 		return modelandView;
 	}
 
@@ -114,7 +120,7 @@ public class FrontOrderController {
 		UserProfile userprofile = (UserProfile) session.getAttribute("userprofile");
 		try {
 
-			MerchantOrder merchantOrder = orderService.load(id);
+			MerchantOrder merchantOrder = orderService.fetch(id);
 			merchantOrder.setDriverMobile(driverMobile);
 			merchantOrder.setDriverName(driverName);
 			orderService.confirm(merchantOrder, userprofile);

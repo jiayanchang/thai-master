@@ -65,11 +65,13 @@ public class MailUtils {
 		helper.setSubject(mailTitle);
 		sender.send(message);
 	}
-
-	public static String genContent() {
-		// 您的订单需要完善，order No
-		String html = "";
-
-		return html;
+	
+	public static void main(String[] args) {
+		try {
+			sendEmail("jiayanchang@yeah.net", "testtitle", "testcontent", null);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

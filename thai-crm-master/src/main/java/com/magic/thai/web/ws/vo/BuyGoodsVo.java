@@ -104,12 +104,4 @@ public class BuyGoodsVo {
 		this.arrivedTime = arrivedTime;
 	}
 
-	public Date getDeptDateObj() {
-		return deptDateObj;
-	}
-
-	public void setDeptDateObj(Date deptDateObj) {
-		this.deptDateObj = deptDateObj;
-	}
-
 }

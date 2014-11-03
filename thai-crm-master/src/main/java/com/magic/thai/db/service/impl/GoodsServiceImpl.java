@@ -68,6 +68,7 @@ public class GoodsServiceImpl extends ServiceHelperImpl<Goods> implements GoodsS
 	@Override
 	public Goods fetch(int id) {
 		Goods goods = goodsDao.loadById(id);
+		if(goods == null) return null;
 		Hibernate.initialize(goods.getSegments());
 		Hibernate.initialize(goods.getDetails());
 		return goods;

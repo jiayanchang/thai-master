@@ -436,10 +436,11 @@ public class InterfaceOrderServiceImpl extends ServiceHelperImpl<MerchantOrder> 
 				merchantOrder.setAmount(merchantOrder.getAmount() + goodsAmount);
 				merchantOrder.setProfitAmount(merchantOrder.getProfitAmount() + profitAmount);
 				merchantOrder.getGoodses().add(merchantOrderGoods);
+				channelOrder.getMerchantOrders().add(merchantOrder);
 			}
 
-			Asserts.isTrue(goodsService.checkGoods(channel, goods, goodsVo.deptDateObj, vo.getTravelers().size()),
-					new GoodsCheckedException("商品数量不足"));
+//			Asserts.isTrue(goodsService.checkGoods(channel, goods, goodsVo.deptDateObj, vo.getTravelers().size()),
+//					new GoodsCheckedException("商品数量不足"));
 			goods.setSoldCount(goods.getSoldCount() + vo.getTravelers().size());
 			goodsDao.update(goods);
 			channelOrder.setAmount(channelOrder.getAmount() + profitAmount);

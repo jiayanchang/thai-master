@@ -4,7 +4,7 @@
 
 <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/bootstrap-combobox-ajax2.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/bootstrap-combobox-ajax.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/validator.js"></script>  
 
 <style>
@@ -24,7 +24,7 @@
     padding: 5px 10px;
   }
   </style>
-<h1>New Order</h1>
+<h1>新建订单</h1>
 <c:url var="addUrl" value="/a/order/add/process"/>
 <form:form action="${addUrl}" method="POST" modelAttribute="createOrderVo">
 	<p class="bg-warning">${message }</p>
@@ -36,32 +36,32 @@
 			<col class="col-xs-6">
 		</colgroup>
 		<tr>
-			<td>Contacts：</td>
-			<td><form:input path="orderContactor" class="form-control" check="notEmpty" placeholder="Please input contacts..."/></td>
-			<td>Hotel Name：</td>
+			<td>联系人：</td>
+			<td><form:input path="orderContactor" class="form-control" check="notEmpty" placeholder="请填写联系人..."/></td>
+			<td>酒店：</td>
 			<td>
-				<select class="combobox form-control" id="hotelName" name="hotelName" placeholder="Please input hotel's name...">
+				<select class="combobox form-control" id="hotelName" name="hotelName" placeholder="请选择酒店...">
 					
 	            </select>
 			</td>
 		</tr>
 		<tr>
-			<td>Contact Number：</td>
-			<td><form:input path="orderContactorMobile" class="form-control" check="notEmpty" placeholder="Please input contact number..."/></td>
-			<td>Hotel Address：</td>
-			<td><form:input id="hotelAddress" path="hotelAddress" class="form-control"  placeholder="Please input hotel's address..."/></td>
+			<td>联系电话：</td>
+			<td><form:input path="orderContactorMobile" class="form-control" check="notEmpty" placeholder="请输入一个号码.."/></td>
+			<td>酒店地址：</td>
+			<td><form:input id="hotelAddress" path="hotelAddress" class="form-control"  placeholder="请输入酒店地址..."/></td>
 		</tr>
 		<tr>
-			<td>Contact Email：</td>
-			<td><form:input path="orderContactorEmail" class="form-control" check="notEmpty email" placeholder="Please input contact email..."/></td>
+			<td>联系邮箱：</td>
+			<td><form:input path="orderContactorEmail" class="form-control" check="notEmpty email" placeholder="请输入联系人邮件..."/></td>
 			<td></td>
 			<td class="form-inline">
-				<input  style="width:200px" id="hotelTel" name="hotelTel" class="form-control"  placeholder="Please input the hotel tel..."/>
-				<input  style="width:260px" name="hotelRoom" class="form-control"  placeholder="Please input the hotel room number..."/>
+				<input  style="width:200px" id="hotelTel" name="hotelTel" class="form-control"  placeholder="请输入酒店电话..."/>
+				<input  style="width:260px" name="hotelRoom" class="form-control"  placeholder="请输入房间号..."/>
 			</td>
 		</tr>
 		<tr>
-			<td>Merchant：</td>
+			<td>商家：</td>
 			<td>
 				<select id="merchantId" class="form-control" check="notEmpty" onchange="reloadGoodses();" placeholder="Please select...">
 					<option value="0"></option>
@@ -70,58 +70,58 @@
 					</c:forEach>
 				</select>
 			</td>
-			<td>Driver：</td>
+			<td>司机：</td>
 			<td class="form-inline">
-				<input style="width:150px" id="driverName" name="driverName" class="form-control" placeholder="Please input driver's name..."/>
-				<input style="width:150px" id="driverMobile" name="driverMobile" class="form-control" placeholder="Please input driver's mobile..."/>
+				<input style="width:200px" id="driverName" name="driverName" class="form-control" placeholder="请输入司机姓名..."/>
+				<input style="width:260px" id="driverMobile" name="driverMobile" class="form-control" placeholder="请输入司机电话..."/>
 			</td>
 		</tr>
 		<tr>
-			<td>Goods：</td>
+			<td>商品：</td>
 			<td>
-				<select id="goodsId" name="goodses[0].goodsId" class=" form-control" check="notEmpty" placeholder="Please select...">
+				<select id="goodsId" name="goodses[0].goodsId" class=" form-control" check="notEmpty" placeholder="请选择一个商品...">
 					<option value="0"></option>
 					<c:forEach var="goods" items="${goodses }">
 						<option value="${goods.id}">${goods.title }</option>
 					</c:forEach>
 				</select>
 			</td>
-			<td>Execution Date：</td>
-			<td><input name="goodses[0].deptDate" tag="date" class="form-control"  check="notEmpty date"  placeholder="Please select date..."/></td>
+			<td>出玩时间：</td>
+			<td><input name="goodses[0].deptDate" tag="date" class="form-control"  check="notEmpty date"  placeholder="请选择一个时间..."/></td>
 		</tr>
 		<tr>
-			<td>Unit Profit：</td>
-			<td><input name="goodses[0].price" class="form-control" check="amount"  placeholder="Please input an amount ..."/></td>
-			<td>Quantity：</td>
-			<td><input name="goodses[0].qty" class="form-control" check="integer"  placeholder="Please input an integer..."/></td>
+			<td>单件利润：</td>
+			<td><input name="goodses[0].price" class="form-control" check="amount"  placeholder="请输入一个金额 ..."/></td>
+			<td>数量：</td>
+			<td><input name="goodses[0].qty" class="form-control" check="integer"  placeholder="请输入一个整数..."/></td>
 		</tr>
 		<tr>
-			<td><input type="checkbox" name="needsPickup" value="true" onclick="changeNeedsPickup();">是否需要接机</td>
+			<td colspan="4"><input type="checkbox" id="needsPickup" name="goodses[0].needsPickup" value="true" onclick="changeNeedsPickup();">是否需要接机</td>
 		</tr>
 		<tr id="pickupInfo" class="form-inline" style="display:none;">
-			<td>
-				<p>航班号：  <input style="width:100px" name="goodses[0].flightNo" class="form-control"  placeholder="请填写航班号..."/></p>
-				<p>抵达日期：<input style="width:100px" name="goodses[0].arrivedDate" class="form-control"  placeholder="请填写抵达日期..."/></p>
-				<p>抵达时间：<input style="width:100px" name="goodses[0].arrivedTime" class="form-control"  placeholder="请填写抵达时间..."/></p>
+			<td colspan="4">
+				航班号：  <input style="width:150px" name="goodses[0].flightNo" class="form-control"  placeholder="请填写航班号..."/>
+				抵达日期：<input style="width:150px" name="goodses[0].arrivedDate" class="form-control"  placeholder="请填写抵达日期..."/>
+				抵达时间：<input style="width:150px" name="goodses[0].arrivedTime" class="form-control"  placeholder="请填写抵达时间..."/>
 			</td>
 		</tr>
 	</table>
 	
-	<h4>Guest Details：<a href="javascript:addTraveler();" class="btn btn-success">Add</a> </h4>
+	<h4>游客信息：<a href="javascript:addTraveler();" class="btn btn-success">添加</a> </h4>
 	<table id="traveler_table" class="table table-hover">
 	
 	<thead>
 		<tr>
-			<th>Name</th>
-			<th>Nationality</th>
-			<th>Sex</th>
+			<th>姓名</th>
+			<th>国籍</th>
+			<th>性别</th>
 			<!-- <th>证件类型</th>
 			<th>证件号码</th>
 			<th>证件有效期</th>
 			<th>出生日期</th> -->
-			<th>Type</th>
-			<th>Mobile</th>
-			<th>Oper</th>
+			<th>类型</th>
+			<th>电话</th>
+			<th>操作</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -132,7 +132,7 @@
 	<%-- <c:if test="${!order.completed }">
 		<input type="button" value="确认订单" onclick="complete();"/>
 	</c:if> --%>
-	<input class="btn btn-primary" type="button" value="Save" onclick="submitForm();"/>
+	<input class="btn btn-primary" type="button" value="提交" onclick="submitForm();"/>
 </form:form>
 <script>
 
@@ -141,15 +141,15 @@
 		log(index);
 		var html = '<tr tg="tr'+index+'">'
 			+ '<td  class="form-inline">'
-			+ '<input style="width:100px" tg=name name="travelers['+index+'].firstName" class="form-control"  check="notEmpty"  placeholder="Please Input First Name..."/>'
-			+ '<input style="width:120px" tg=name name="travelers['+index+'].lastName" class="form-control"  check="notEmpty"  placeholder="Please Input Last Name..."/>'
+			+ '<input style="width:100px" tg=name name="travelers['+index+'].firstName" class="form-control"  check="notEmpty"  placeholder="姓"/>'
+			+ '<input style="width:120px" tg=name name="travelers['+index+'].lastName" class="form-control"  check="notEmpty"  placeholder="名"/>'
 			+ '</td>'
 			+ '<td><input tg=nationality name="travelers['+index+'].nationality" class="form-control"/></td>'
 			+ '<td>'
 			+ '	<select tg=gender name="travelers['+index+'].gender"  class="form-control">'
-			+ '		<option value="0">male</option>'
-			+ '		<option value="1">female</option>'
-			+ '		<option value="2">unknown</option>'
+			+ '		<option value="0">男</option>'
+			+ '		<option value="1">女</option>'
+			+ '		<option value="2">未知</option>'
 			+ '	</select>'
 			+ '</td>'
 			/* + '<td>'
@@ -164,12 +164,12 @@
 			+ '<td><input tg=birth name="travelers['+index+'].birth" style="width:100px;"  tag="date"/></td>' */
 			+ '<td>'
 			+ '	<select tg=type name="travelers['+index+'].type"  class="form-control">'
-			+ '		<option value="0">adult</option>'
-			+ '		<option value="1">child</option>'
+			+ '		<option value="0">成人</option>'
+			+ '		<option value="1">儿童</option>'
 			+ '	</select>'
 			+ '</td>'
 			+ '<td><input tg=mobile name="travelers['+index+'].mobile"  class="form-control"/></td>'
-			+ '<td><a href="javascript:removeTraveler('+index+');" class="btn btn-danger">Delete</a></td>'
+			+ '<td><a href="javascript:removeTraveler('+index+');" class="btn btn-danger">删除</a></td>'
 			+ '</tr>';
 		$("#traveler_table tbody").append($(html));
 		$("#traveler_table [tag=date]").datepicker({dateFormat:'yy/mm/dd'});
@@ -231,7 +231,7 @@
 	});
 	
 	function changeNeedsPickup(){
-		if($("#needsPickup").attr("checked")) {
+		if($("#needsPickup").is(':checked')) {
 			$("#pickupInfo").show();
 			$("#pickupInfo input").attr("check", "notEmpty");
 		} else {
@@ -242,7 +242,7 @@
 	
 
 	function submitForm() {
-		if(!confirm("Are you sure？")) return false;
+		if(!confirm("确定提交？")) return false;
 		validate(function(){
 			$("form").submit();
 		});

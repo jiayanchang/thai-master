@@ -59,6 +59,14 @@
 			<td></td>
 			<td></td>
 		</tr>
+		<c:if test="${isNeedsPickup}">
+			<tr>
+				<td>pick up：</td>
+				<td colspan="3">
+					flight no : ${pickup.flightNo } - arrived date : ${pickup.arrivedDate } - arrived time : ${pickup.arrivedTime }
+				</td>
+			</tr>
+		</c:if>
 	</table>
 	<table class="table table-bordered table-striped " >
 		<c:forEach var="mgoods" items="${order.goodses }">

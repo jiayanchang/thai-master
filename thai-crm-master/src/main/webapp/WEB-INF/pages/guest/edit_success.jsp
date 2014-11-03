@@ -2,46 +2,57 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%> 
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<html>
+<head>
+<title>完善订单</title>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery/jquery-1.10.2.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery/jquery-ui.min.js"></script>
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/js/jquery/jquery-ui.css">
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/base.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/frame.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/bootstrap-combobox.css">
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/validator.js"></script>  
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+</head>
+<body>	
+<div class="container" style="width:800px;border-radius:20px;background-color:#FFF;">
 
 <h1>订单信息修改成功</h1>
 <c:url var="addUrl" value="/g/order/edit/process"/>
 <form:form action="${addUrl}" method="POST" commandName="order">
 	<form:hidden path="id"/>
 	<table class="table" >
-		<colgroup>
-			<col class="col-xs-1">
-			<col class="col-xs-4">
-			<col class="col-xs-1">
-			<col class="col-xs-5">
-		</colgroup>
 		<tr>
-			<td>订单号：</td>
-			<td>${order.orderNo }</td>
-			<td>酒店名称：</td>
-			<td>${order.hotelName }</td>
-		</tr>
-		<tr>
-			<td>酒店地址：</td>
-			<td>${order.hotelAddress }</td>
+			<td style="width:80px;">订单号：</td>
+			<td style="width:200px;">${order.orderNo }</td>
+			<td style="width:80px;">酒店名称：</td>
+			<td style="width:300px;">${order.hotelName }</td>
 		</tr>
 		<tr>
 			<td>联系人：</td>
 			<td>${order.contractor }</td>
-			<td>房间信息：</td>
-			<td>${order.hotelRoom } -- ${order.hotelRoomTel }</td>
+			<td>酒店地址：</td>
+			<td>${order.hotelAddress }</td>
 		</tr>
 		<tr>
 			<td>联系电话：</td>
 			<td>${order.contractorMobile }</td>
+			<td>房间信息：</td>
+			<td>${order.hotelRoom } -- ${order.hotelRoomTel }</td>
 		</tr>
 		<tr>
 			<td>联系邮箱：</td>
 			<td>${order.contractorEmail }</td>
+			<td></td>
+			<td></td>
 		</tr>
-		<c:if test="isNeedsPickup">
+		<c:if test="${isNeedsPickup}">
 			<tr>
 				<td>接机信息：</td>
-				<td>
+				<td colspan="3">
 					<p>航班号-${pickup.flightNo }</p>
 					<p>抵达日期-${pickup.arrivedDate }</p>
 					<p>抵达时间-${pickup.arrivedTime }</p>
@@ -50,8 +61,10 @@
 		</c:if>
 		<c:forEach var="mgoods" items="${order.goodses }">
 			<tr>
-				<td>商品名称：<a href="javascript:window.open('${pageContext.request.contextPath}/a/goods/snapshot/${mgoods.id }')">${mgoods.goodsName }</a></td>
-				<td>商品数量：${mgoods.quantity }</td>
+				<td>商品名称：</td>
+				<td><a href="javascript:window.open('${pageContext.request.contextPath}/a/goods/snapshot/${mgoods.id }')">${mgoods.goodsName }</a></td>
+				<td>商品数量：</td>
+				<td>${mgoods.quantity }</td>
 			</tr>
 		</c:forEach>
 	</table>
@@ -86,8 +99,11 @@
 	
 	<input type="button" value="关闭" onclick="back();" class="btn btn-default"/>
 </form:form>
+</div>
 <script>
 	function back(){
 		window.close();
 	}
 </script>
+</body>
+</html>

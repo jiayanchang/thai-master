@@ -53,7 +53,7 @@ public class MerchantOrderGoods {
 	private int quantity;
 
 	@Column(name = "needs_pick_up")
-	private Boolean needsPickup;
+	private Boolean needsPickup = false;
 
 	@Column(name = "traveler_names")
 	private String travelerNames;
