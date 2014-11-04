@@ -74,7 +74,8 @@ public class TempleteUtils {
 						"\\{gotourl\\}",
 						host + "/g/order/edit/" + mo.getId() + "?t="
 								+ Md5CryptoUtils.create(mo.getContractorEmail() + mo.getOrderNo()).substring(0, 8))
-				.replaceAll("\\{order_no\\}", mo.getOrderNo()).replaceAll("\\{traveler_tel\\}", mo.getContractorMobile())
+				.replace("\\{host\\}", host).replaceAll("\\{order_no\\}", mo.getOrderNo())
+				.replaceAll("\\{traveler_tel\\}", mo.getContractorMobile())
 				.replaceAll("\\{goods_title\\}", mo.getGoodses().get(0).getGoodsName())
 				.replaceAll("\\{goods_count\\}", mo.getGoodses().get(0).getQuantity() + "");
 		return html;
@@ -93,9 +94,10 @@ public class TempleteUtils {
 						"\\{gotourl\\}",
 						host + "/g/order/" + mo.getId() + "?t="
 								+ Md5CryptoUtils.create(mo.getContractorEmail() + mo.getOrderNo()).substring(0, 8))
-				.replaceAll("\\{order_no\\}", mo.getOrderNo()).replaceAll("\\{traveler_tel\\}", mo.getContractorMobile())
-				.replaceAll("\\{goods_title\\}", mog.getGoodsName()).replaceAll("\\{goods_count\\}", mog.getQuantity() + "")
-				.replaceAll("\\{dept_date\\}", deptDateStr).replaceAll("\\{pickup.flightNo\\}", pickup == null ? "" : pickup.getFlightNo())
+				.replace("\\{host\\}", host).replaceAll("\\{order_no\\}", mo.getOrderNo())
+				.replaceAll("\\{traveler_tel\\}", mo.getContractorMobile()).replaceAll("\\{goods_title\\}", mog.getGoodsName())
+				.replaceAll("\\{goods_count\\}", mog.getQuantity() + "").replaceAll("\\{dept_date\\}", deptDateStr)
+				.replaceAll("\\{pickup.flightNo\\}", pickup == null ? "" : pickup.getFlightNo())
 				.replaceAll("\\{pickup.arrivedDate\\}", pickup == null ? "" : pickup.getArrivedDate())
 				.replaceAll("\\{pickup.arrivedTime\\}", pickup == null ? "" : pickup.getArrivedTime());
 		return html;
