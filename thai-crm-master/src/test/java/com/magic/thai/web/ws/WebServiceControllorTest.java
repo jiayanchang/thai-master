@@ -27,7 +27,6 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
-import org.junit.Test;
 
 import com.magic.thai.web.ws.vo.BuyGoodsVo;
 import com.magic.thai.web.ws.vo.CheckGoodsVo;
@@ -36,13 +35,12 @@ import com.magic.thai.web.ws.vo.QueryGoodsesVo;
 import com.magic.thai.web.ws.vo.QueryOrderVo;
 import com.magic.thai.web.ws.vo.RefundGoodsVo;
 import com.magic.thai.web.ws.vo.RefundOrderVo;
-import com.magic.thai.web.ws.vo.TravelerVo;
 
 public class WebServiceControllorTest {
 
 	private static final String token = "61ab279c07a758c9e64f40fec837e4";
 
-	@Test
+	// @Test
 	public void testCreatOrder() throws Exception {
 		// String url = "http://182.254.220.15:8000/crm/ws/createOrder";
 		String url = "http://localhost:8080/crm/ws/createOrder";
@@ -53,19 +51,19 @@ public class WebServiceControllorTest {
 		createOrderVo.setOrderContactor("大黑");
 		createOrderVo.setToken(token);
 
-//		for (int i = 0; i < 1; i++) {
-//			TravelerVo vo = new TravelerVo();
-//			// vo.setBirth(birth);
-//			// vo.setEffectiveDate(effectiveDate);
-//			// vo.setGender(gender);
-//			vo.setIdNo("2929384545473939922");
-//			vo.setMobile("13905447766");
-//			vo.setFirstName("韩");
-//			vo.setLastName("大黑" + i);
-//			vo.setNationality("中国");
-//			// vo.setType(type);
-//			createOrderVo.getTravelers().add(vo);
-//		}
+		// for (int i = 0; i < 1; i++) {
+		// TravelerVo vo = new TravelerVo();
+		// // vo.setBirth(birth);
+		// // vo.setEffectiveDate(effectiveDate);
+		// // vo.setGender(gender);
+		// vo.setIdNo("2929384545473939922");
+		// vo.setMobile("13905447766");
+		// vo.setFirstName("韩");
+		// vo.setLastName("大黑" + i);
+		// vo.setNationality("中国");
+		// // vo.setType(type);
+		// createOrderVo.getTravelers().add(vo);
+		// }
 
 		for (int i = 0; i < 1; i++) {
 			BuyGoodsVo vo = new BuyGoodsVo();

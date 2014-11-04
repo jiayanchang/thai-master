@@ -30,10 +30,10 @@
 	<p class="bg-warning">${message }</p>
 	<table class="table">
 		<colgroup>
-			<col class="col-xs-1">
+			<col class="col-xs-2">
 			<col class="col-xs-3">
-			<col class="col-xs-1">
-			<col class="col-xs-6">
+			<col class="col-xs-2">
+			<col class="col-xs-4">
 		</colgroup>
 		<tr>
 			<td>Contacts：</td>
@@ -95,13 +95,13 @@
 			<td></td>
 		</tr>
 		<tr>
-			<td><input type="checkbox" name="needsPickup" value="true" onclick="changeNeedsPickup();"> Needs pick up</td>
+			<td colspan="4"><input type="checkbox" id="needsPickup" name="goodses[0].needsPickup" value="true" onclick="changeNeedsPickup();"> Needs pick up</td>
 		</tr>
 		<tr id="pickupInfo" class="form-inline" style="display:none;">
-			<td>
-				<p>Flight No：  <input style="width:100px" name="goodses[0].flightNo" class="form-control"  placeholder="Please enter flight no..."/></p>
-				<p>Arrived Date：<input style="width:100px" name="goodses[0].arrivedDate" class="form-control"  placeholder="Please enter arrived date..."/></p>
-				<p>Arrived Time：<input style="width:100px" name="goodses[0].arrivedTime" class="form-control"  placeholder="Please enter arrived time..."/></p>
+			<td colspan="4">
+				Flight No：  <input style="width:150px" name="goodses[0].flightNo" class="form-control"  placeholder="Enter flight no..."/>
+				Arrived Date：<input style="width:150px" name="goodses[0].arrivedDate" class="form-control"  placeholder="Enter arrival date..."/>
+				Arrived Time：<input style="width:150px" name="goodses[0].arrivedTime" class="form-control"  placeholder="Enter arrival time..."/>
 			</td>
 		</tr>
 	</table>
@@ -216,7 +216,7 @@
 	}
 	
 	function changeNeedsPickup(){
-		if($("#needsPickup").attr("checked")) {
+		if($("#needsPickup").is(':checked')) {
 			$("#pickupInfo").show();
 			$("#pickupInfo input").attr("check", "notEmpty");
 		} else {

@@ -11,6 +11,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class CreateOrderVo {
 
 	private String token;
+	private String associateOrderNo;
 	private String orderContactor;
 	private String orderContactorMobile;
 	private String orderContactorEmail;
@@ -137,4 +138,11 @@ public class CreateOrderVo {
 		this.driverMobile = driverMobile;
 	}
 
+	public String getAssociateOrderNo() {
+		return associateOrderNo;
+	}
+
+	public void setAssociateOrderNo(String associateOrderNo) {
+		this.associateOrderNo = associateOrderNo;
+	}
 }

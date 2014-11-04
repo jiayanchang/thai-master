@@ -29,6 +29,9 @@ public class ChannelOrder {
 	@Column(name = "channel_order_no")
 	private String channelOrderNo;
 
+	@Column(name = "associate_order_no")
+	private String associateOrderNo;
+
 	@Column(name = "channel_id", nullable = false)
 	private int channelId;
 
@@ -190,11 +193,20 @@ public class ChannelOrder {
 		return status == Status.COMPELED;
 	}
 
+	public String getAssociateOrderNo() {
+		return associateOrderNo;
+	}
+
+	public void setAssociateOrderNo(String associateOrderNo) {
+		this.associateOrderNo = associateOrderNo;
+	}
+
 	@Override
 	public String toString() {
-		return "ChannelOrder [id=" + id + ", channelOrderNo=" + channelOrderNo + ", channelId=" + channelId + ", channelName="
-				+ channelName + ", contractor=" + contractor + ", contractorMobile=" + contractorMobile + ", contractorEmail="
-				+ contractorEmail + ", amount=" + amount + ", createdDate=" + createdDate + "]";
+		return "ChannelOrder [id=" + id + ", channelOrderNo=" + channelOrderNo + ", associateOrderNo=" + associateOrderNo + ", channelId="
+				+ channelId + ", channelName=" + channelName + ", contractor=" + contractor + ", contractorMobile=" + contractorMobile
+				+ ", contractorEmail=" + contractorEmail + ", amount=" + amount + ", createdDate=" + createdDate + ", status=" + status
+				+ ", type=" + type + ", travelers=" + travelers + ", merchantOrders=" + merchantOrders + "]";
 	}
 
 }

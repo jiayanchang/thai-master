@@ -38,7 +38,6 @@ import com.magic.thai.db.service.InterfaceOrderService;
 import com.magic.thai.db.service.OrderService;
 import com.magic.thai.db.service.SnapshotGoodsService;
 import com.magic.thai.db.service.strategy.GoodsPriceCalculator;
-import com.magic.thai.exception.GoodsCheckedException;
 import com.magic.thai.exception.OrderStatusException;
 import com.magic.thai.exception.ThaiException;
 import com.magic.thai.exception.webservice.ParameterException;
@@ -365,6 +364,7 @@ public class InterfaceOrderServiceImpl extends ServiceHelperImpl<MerchantOrder> 
 		ChannelOrder channelOrder = new ChannelOrder();
 		channelOrder.setChannelId(channel.getId());
 		channelOrder.setChannelName(channel.getName());
+		channelOrder.setAssociateOrderNo(vo.getAssociateOrderNo());
 		// channelOrder.setChannelOrderNo(channelOrderNo);
 		channelOrder.setContractor(vo.getOrderContactor());
 		channelOrder.setContractorEmail(vo.getOrderContactorEmail());
@@ -439,8 +439,8 @@ public class InterfaceOrderServiceImpl extends ServiceHelperImpl<MerchantOrder> 
 				channelOrder.getMerchantOrders().add(merchantOrder);
 			}
 
-//			Asserts.isTrue(goodsService.checkGoods(channel, goods, goodsVo.deptDateObj, vo.getTravelers().size()),
-//					new GoodsCheckedException("商品数量不足"));
+			// Asserts.isTrue(goodsService.checkGoods(channel, goods, goodsVo.deptDateObj, vo.getTravelers().size()),
+			// new GoodsCheckedException("商品数量不足"));
 			goods.setSoldCount(goods.getSoldCount() + vo.getTravelers().size());
 			goodsDao.update(goods);
 			channelOrder.setAmount(channelOrder.getAmount() + profitAmount);
