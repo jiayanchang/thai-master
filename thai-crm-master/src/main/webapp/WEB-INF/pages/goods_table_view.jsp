@@ -43,10 +43,33 @@
 		<tr>
 			<td>Route Pictures：</td>
 			<td colspan="3">
-				<img src="${pageContext.request.contextPath}${goods.details.linePicPathA }"/>
-				<img src="${pageContext.request.contextPath}${goods.details.linePicPathB }"/>
-				<img src="${pageContext.request.contextPath}${goods.details.linePicPathC }"/>
-				<img src="${pageContext.request.contextPath}${goods.details.linePicPathD }"/>
+				<c:if test="${not empty goods.details.linePicPathA}">
+					<img src="${pageContext.request.contextPath}${goods.details.linePicPathA }"/>
+				</c:if>
+				<c:if test="${ empty goods.details.linePicPathA}">
+					<img width="100px" height="80px" src="${pageContext.request.contextPath}/css/none.jpg"/>
+				</c:if>
+				
+				<c:if test="${not empty goods.details.linePicPathB}">
+					<img src="${pageContext.request.contextPath}${goods.details.linePicPathB }"/>
+				</c:if>
+				<c:if test="${ empty goods.details.linePicPathB}">
+					<img width="100px" height="80px" src="${pageContext.request.contextPath}/css/none.jpg"/>
+				</c:if>
+				
+				<c:if test="${not empty goods.details.linePicPathC}">
+					<img src="${pageContext.request.contextPath}${goods.details.linePicPathC }"/>
+				</c:if>
+				<c:if test="${ empty goods.details.linePicPathC}">
+					<img width="100px" height="80px" src="${pageContext.request.contextPath}/css/none.jpg"/>
+				</c:if>
+				
+				<c:if test="${not empty goods.details.linePicPathD}">
+					<img src="${pageContext.request.contextPath}${goods.details.linePicPathD }"/>
+				</c:if>
+				<c:if test="${ empty goods.details.linePicPathD}">
+					<img width="100px" height="80px" src="${pageContext.request.contextPath}/css/none.jpg"/>
+				</c:if>
 			</td>
 		</tr>
 		

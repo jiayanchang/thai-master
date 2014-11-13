@@ -1,4 +1,4 @@
-package com.magic.thai.web.front;
+package com.magic.thai.web.channel;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
@@ -26,8 +26,8 @@ import com.magic.thai.exception.OrderStatusException;
 import com.magic.thai.security.UserProfile;
 
 @Controller
-@RequestMapping(value = { "/f/user" })
-public class FrontUserController {
+@RequestMapping(value = { "/c/user" })
+public class ChannelUserController {
 
 	@Autowired
 	UserService userService;
@@ -43,13 +43,13 @@ public class FrontUserController {
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView tolist() {
-		ModelAndView modelAndView = new ModelAndView("redirect:/f/user/list");
+		ModelAndView modelAndView = new ModelAndView("redirect:/c/user/list");
 		return modelAndView;
 	}
 
 	@RequestMapping(value = "/add", method = RequestMethod.GET)
 	public ModelAndView addUser() {
-		ModelAndView modelAndView = new ModelAndView("/front/user/add");
+		ModelAndView modelAndView = new ModelAndView("/channel/user/add");
 		modelAndView.addObject("user", new User());
 		return modelAndView;
 	}
@@ -57,8 +57,8 @@ public class FrontUserController {
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	public ModelAndView addUserProsses(@ModelAttribute("user") User userbean, BindingResult result, SessionStatus status,
 			HttpSession session) {
-		ModelAndView modelAndViewUser = new ModelAndView("/front/user/add");
-		ModelAndView modelAndView = new ModelAndView("redirect:/f/user/list");
+		ModelAndView modelAndViewUser = new ModelAndView("/channel/user/add");
+		ModelAndView modelAndView = new ModelAndView("redirect:/c/user/list");
 		UserProfile userprofile = (UserProfile) session.getAttribute("userprofile");
 
 		userService.create(userbean, userprofile);
@@ -68,7 +68,7 @@ public class FrontUserController {
 
 	@RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
 	public ModelAndView editUserPage(@PathVariable int id) {
-		ModelAndView modelAndView = new ModelAndView("/front/user/edit");
+		ModelAndView modelAndView = new ModelAndView("/channel/user/edit");
 		modelAndView.addObject("user", userService.findUserbyId(id));
 		return modelAndView;
 	}
@@ -81,7 +81,7 @@ public class FrontUserController {
 			HttpSession session) {
 		UserProfile userprofile = (UserProfile) session.getAttribute("userprofile");
 
-		ModelAndView modelAndView = new ModelAndView("redirect:/f/user/list");
+		ModelAndView modelAndView = new ModelAndView("redirect:/c/user/list");
 		User user = userService.findUserbyId(userbean.getId());
 		user.setCodeName(userbean.getCodeName());
 		user.setName(userbean.getName());
@@ -99,7 +99,7 @@ public class FrontUserController {
 	public ModelAndView deleteUserPage(@PathVariable int id, HttpSession session) {
 		UserProfile userprofile = (UserProfile) session.getAttribute("userprofile");
 
-		ModelAndView modelAndView = new ModelAndView("redirect:/f/user/list");
+		ModelAndView modelAndView = new ModelAndView("redirect:/c/user/list");
 		userService.delete(id, userprofile);
 		message = "Deleted successfully ";
 		return modelAndView;
@@ -108,7 +108,7 @@ public class FrontUserController {
 	@RequestMapping(value = "/enable/{id}")
 	public ModelAndView enable(@PathVariable int id, HttpSession session) {
 		UserProfile userprofile = (UserProfile) session.getAttribute("userprofile");
-		ModelAndView modelAndView = new ModelAndView("redirect:/f/user/list");
+		ModelAndView modelAndView = new ModelAndView("redirect:/c/user/list");
 		try {
 			userService.enable(id, userprofile);
 			message = "Enabled successfully";
@@ -122,7 +122,7 @@ public class FrontUserController {
 	@RequestMapping(value = "/disable/{id}")
 	public ModelAndView disable(@PathVariable int id, HttpSession session) {
 		UserProfile userprofile = (UserProfile) session.getAttribute("userprofile");
-		ModelAndView modelAndView = new ModelAndView("redirect:/f/user/list");
+		ModelAndView modelAndView = new ModelAndView("redirect:/c/user/list");
 		try {
 			userService.disable(id, userprofile);
 			message = "Disabled successfully";
@@ -136,7 +136,7 @@ public class FrontUserController {
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView list(HttpSession session) {
 		UserProfile userprofile = (UserProfile) session.getAttribute("userprofile");
-		ModelAndView modelandView = new ModelAndView("/front/user/list");
+		ModelAndView modelandView = new ModelAndView("/channel/user/list");
 		modelandView.addObject("ps", userService.getUsersPage(null, null, -1, 1, userprofile));
 		message = "";
 		return modelandView;
@@ -147,7 +147,7 @@ public class FrontUserController {
 			@RequestParam("vo.page") int page, HttpSession session) {
 		UserProfile userprofile = (UserProfile) session.getAttribute("userprofile");
 
-		ModelAndView modelandView = new ModelAndView("/front/user/list");
+		ModelAndView modelandView = new ModelAndView("/channel/user/list");
 		modelandView.addObject("ps", userService.getUsersPage(name, loginName, status, page, userprofile));
 		modelandView.addObject("name", name);
 		modelandView.addObject("status", status);

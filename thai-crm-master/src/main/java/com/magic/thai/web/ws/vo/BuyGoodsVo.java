@@ -1,6 +1,9 @@
 package com.magic.thai.web.ws.vo;
 
+import java.text.ParseException;
 import java.util.Date;
+
+import org.apache.commons.lang.time.DateUtils;
 
 import com.magic.thai.db.domain.ChannelOrderTraveler;
 
@@ -104,4 +107,12 @@ public class BuyGoodsVo {
 		this.arrivedTime = arrivedTime;
 	}
 
+	public BuyGoodsVo fmt() {
+		try {
+			this.deptDateObj = DateUtils.parseDate(this.deptDate, new String[]{"yyyy/MM/dd"});
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return this;
+	}
 }

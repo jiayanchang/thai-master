@@ -6,7 +6,7 @@
 <body>
 	<div class="content">
 		<h1>New Emploee</h1>
-		<c:url var="addUrl" value="/f/user/add"/>
+		<c:url var="addUrl" value="/c/user/add"/>
 		<form:form action="${addUrl}" method="POST" commandName="user" >
 			<form:hidden path="id"/>
 			<table class="table" >

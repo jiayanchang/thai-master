@@ -81,7 +81,6 @@ public class MerchantController {
 		merchantService.create(merchant, user, userprofile);
 		uploadLogo(merchant, file, session);
 		return new ModelAndView("redirect:/a/merchant/list");
-
 	}
 
 	private void uploadLogo(Merchant merchant, CommonsMultipartFile file, HttpSession session) {

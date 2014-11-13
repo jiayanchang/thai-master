@@ -48,6 +48,12 @@ public class Channel {
 	@Column(name = "refresh_time")
 	private Date refreshTime;
 
+	@Column(name = "is_opened_merchant")
+	private boolean openedMerchant;
+
+	@Column(name = "merchant_id")
+	private Integer merchantId;
+
 	@Transient
 	private List<ChannelGoodsInv> goodsInvs = new ArrayList<ChannelGoodsInv>();
 	@Transient
@@ -142,6 +148,22 @@ public class Channel {
 
 	public void setRefreshTime(Date refreshTime) {
 		this.refreshTime = refreshTime;
+	}
+
+	public boolean isOpenedMerchant() {
+		return openedMerchant;
+	}
+
+	public void setOpenedMerchant(boolean openedMerchant) {
+		this.openedMerchant = openedMerchant;
+	}
+
+	public Integer getMerchantId() {
+		return merchantId;
+	}
+
+	public void setMerchantId(Integer merchantId) {
+		this.merchantId = merchantId;
 	}
 
 	public List<ChannelGoodsInv> getGoodsInvs() {

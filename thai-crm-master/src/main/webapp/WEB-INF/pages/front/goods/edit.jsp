@@ -99,7 +99,13 @@
 				<td><font color="red">*</font>Promotion Picture：</td>
 				<td>
 					<input type="file" name="picPathFile" />
-					<img alt="" src="${pageContext.request.contextPath}${goods.details.picPath }">
+					
+					<c:if test="${not empty goods.details.picPath}">
+						<img src="${pageContext.request.contextPath}${goods.details.picPath }"/>
+					</c:if>
+					<c:if test="${ empty goods.details.picPath}">
+						<img width="100px" height="80px" src="${pageContext.request.contextPath}/css/none.jpg"/>
+					</c:if>
 				</td>
 			</tr>
 			
@@ -107,13 +113,37 @@
 				<td><font color="red">*</font>Route Picture：</td>
 				<td>
 					<input type="file" name="linePicPathAFile" />
-					<img alt="" src="${pageContext.request.contextPath}${goods.details.linePicPathA }">
+					<c:if test="${not empty goods.details.linePicPathA}">
+						<img src="${pageContext.request.contextPath}${goods.details.linePicPathA }"/>
+					</c:if>
+					<c:if test="${ empty goods.details.linePicPathA}">
+						<img width="100px" height="80px" src="${pageContext.request.contextPath}/css/none.jpg"/>
+					</c:if>
+					
 					<input type="file" name="linePicPathBFile" />
-					<img alt="" src="${pageContext.request.contextPath}${goods.details.linePicPathB }">
+					<c:if test="${not empty goods.details.linePicPathB}">
+						<img src="${pageContext.request.contextPath}${goods.details.linePicPathB }"/>
+					</c:if>
+					<c:if test="${ empty goods.details.linePicPathB}">
+						<img width="100px" height="80px" src="${pageContext.request.contextPath}/css/none.jpg"/>
+					</c:if>
+					
 					<input type="file" name="linePicPathCFile" />
-					<img alt="" src="${pageContext.request.contextPath}${goods.details.linePicPathC }">
+					<c:if test="${not empty goods.details.linePicPathC}">
+						<img src="${pageContext.request.contextPath}${goods.details.linePicPathC }"/>
+					</c:if>
+					<c:if test="${ empty goods.details.linePicPathC}">
+						<img width="100px" height="80px" src="${pageContext.request.contextPath}/css/none.jpg"/>
+					</c:if>
+					
 					<input type="file" name="linePicPathDFile" />
-					<img alt="" src="${pageContext.request.contextPath}${goods.details.linePicPathD }">
+					<c:if test="${not empty goods.details.linePicPathD}">
+						<img src="${pageContext.request.contextPath}${goods.details.linePicPathD }"/>
+					</c:if>
+					<c:if test="${ empty goods.details.linePicPathD}">
+						<img width="100px" height="80px" src="${pageContext.request.contextPath}/css/none.jpg"/>
+					</c:if>
+					
 				</td>
 				<td>
 				</td>

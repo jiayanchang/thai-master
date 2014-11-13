@@ -2,6 +2,7 @@ package com.magic.thai.db.service;
 
 import java.util.List;
 
+import com.magic.thai.db.domain.Channel;
 import com.magic.thai.db.domain.ChannelOrder;
 import com.magic.thai.db.domain.Goods;
 import com.magic.thai.exception.ThaiException;
@@ -17,12 +18,22 @@ public interface InterfaceOrderService {
 	/**
 	 * 接口下单
 	 * 
-	 * @param orderId
+	 * @param vo
 	 * @param userprofile
 	 * @return 返回订单号
 	 */
 	public ChannelOrder create(CreateOrderVo vo) throws ThaiException;
 
+	/**
+	 * 渠道下单
+	 * 
+	 * @param vo
+	 * @param channel
+	 * @param userprofile
+	 * @return 返回订单号
+	 */
+	public ChannelOrder channelCreateOrder(CreateOrderVo vo, Channel channel, UserProfile userprofile) throws ThaiException;
+	
 	/**
 	 * 人工下单
 	 * 

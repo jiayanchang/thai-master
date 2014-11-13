@@ -26,15 +26,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.magic.thai.db.dao.HotelDao;
+import com.magic.thai.db.domain.Channel;
 import com.magic.thai.db.domain.Goods;
 import com.magic.thai.db.domain.Hotel;
 import com.magic.thai.db.domain.Merchant;
 import com.magic.thai.db.domain.MerchantOrder;
 import com.magic.thai.db.domain.User;
+import com.magic.thai.db.service.ChannelService;
 import com.magic.thai.db.service.GoodsService;
 import com.magic.thai.db.service.MerchantService;
 import com.magic.thai.db.service.OrderService;
 import com.magic.thai.db.service.UserService;
+import com.magic.thai.db.service.impl.CreateOrderValidator;
 import com.magic.thai.db.service.strategy.LockManager;
 import com.magic.thai.db.vo.GoodsVo;
 import com.magic.thai.db.vo.HotelVo;
@@ -43,6 +46,7 @@ import com.magic.thai.db.vo.UserVo;
 import com.magic.thai.exception.ThaiException;
 import com.magic.thai.security.UserProfile;
 import com.magic.thai.web.DataVo;
+import com.magic.thai.web.ws.vo.BuyGoodsVo;
 
 @Controller
 @RequestMapping(value = "/json")
@@ -58,6 +62,9 @@ public class JsonController {
 
 	@Autowired
 	GoodsService goodsService;
+
+	@Autowired
+	ChannelService channelService;
 
 	@Autowired
 	OrderService orderService;
@@ -131,11 +138,23 @@ public class JsonController {
 		map.put("soldCount", goods.getSoldCount());
 		model.put("data", DataVo.success(map).setMessage("获取成功"));
 		return model;
-		// Gson gson = new
-		// GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-		// return gson.toJson(goods);
 	}
-	
+
+	@RequestMapping(value = "/goods/{id}/deptdate", method = RequestMethod.GET)
+	@ResponseBody
+	public ModelMap getgoods(@PathVariable int id, @RequestParam String date, ModelMap model, HttpSession session) throws Exception {
+		Goods goods = goodsService.fetch(id);
+		Map<String, Object> map = new HashMap<String, Object>();
+		UserProfile userprofile = (UserProfile) session.getAttribute("userprofile");
+
+		Channel channel = channelService.loadByMerchantId(userprofile.getMerchant().getId());
+		channel = channelService.fetch(channel.getId());
+		BuyGoodsVo buyGoodsVo = new BuyGoodsVo(date, 1, goods.getId());
+		map.put("price", CreateOrderValidator.getProfit(channel, goods, buyGoodsVo.fmt()));
+		model.put("data", DataVo.success(map).setMessage("获取成功"));
+		return model;
+	}
+
 	@RequestMapping(value = "/{merchantId}/goodses", method = RequestMethod.POST)
 	@ResponseBody
 	public ModelMap getmerchantGoodses(@PathVariable int merchantId, ModelMap model) {
@@ -146,7 +165,7 @@ public class JsonController {
 		model.put("data", DataVo.success(gson.toJson(goodses)).setMessage("获取成功"));
 		return model;
 	}
-	
+
 	@RequestMapping("/validateUser")
 	public ModelMap validateUser(@RequestParam String loginName, @RequestParam String userId, ModelMap model, HttpSession session) {
 		User user = userService.findByLoginName(loginName);

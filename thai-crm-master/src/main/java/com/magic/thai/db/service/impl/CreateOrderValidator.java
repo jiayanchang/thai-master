@@ -34,6 +34,23 @@ public class CreateOrderValidator {
 
 	}
 
+	public static double getProfit(Channel channel, Goods goods, BuyGoodsVo buyGoodsVo) {
+		double price = getPirce(goods, buyGoodsVo);
+
+		ChannelGoodsInv goodsInv = channel.getGoodsInv(goods.getId());
+		if (goodsInv != null) {
+			price = DoubleUtils.add(price, goodsInv.getProfitPrice());
+		} else {
+			ChannelMerchantInv merchantInv = channel.getMerchantInv(goods.getMerchantId());
+			if (merchantInv.getProfitPrice() > 0) {
+				price = DoubleUtils.add(price, merchantInv.getProfitPrice());
+			} else {
+				price = DoubleUtils.add(price, price * DoubleUtils.div(merchantInv.getProfitRate(), 100d));
+			}
+		}
+		return price;
+	}
+	
 	public static double getPirce(Goods goods, BuyGoodsVo buyGoodsVo) {
 		GoodsPriceSegment segment = goods.getSegment(buyGoodsVo.deptDateObj);
 		double price = 0d;

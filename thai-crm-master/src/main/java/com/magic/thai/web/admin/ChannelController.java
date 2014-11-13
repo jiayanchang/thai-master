@@ -15,10 +15,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.magic.thai.db.dao.ChannelDao;
+import com.magic.thai.db.dao.MerchantDao;
 import com.magic.thai.db.domain.Channel;
 import com.magic.thai.db.domain.Goods;
+import com.magic.thai.db.domain.Merchant;
+import com.magic.thai.db.domain.User;
 import com.magic.thai.db.service.ChannelService;
 import com.magic.thai.db.service.GoodsService;
 import com.magic.thai.db.service.MerchantService;
@@ -34,10 +40,12 @@ public class ChannelController {
 
 	@Autowired
 	ChannelService channelService;
-
+	@Autowired
+	ChannelDao channelDao;
 	@Autowired
 	MerchantService merchantService;
-
+	@Autowired
+	MerchantDao merchantDao;
 	@Autowired
 	GoodsService goodsService;
 	@Autowired
@@ -131,6 +139,56 @@ public class ChannelController {
 		ModelAndView modelAndView = new ModelAndView("redirect:/a/channel/list");
 		UserProfile userprofile = (UserProfile) session.getAttribute("userprofile");
 		channelService.close(id, userprofile);
+		return modelAndView;
+	}
+
+	@RequestMapping(value = "/open/{id}/merchant", method = RequestMethod.GET)
+	public ModelAndView openMerchant(@PathVariable int id, HttpSession session) {
+		ModelAndView modelAndView = new ModelAndView("/admin/channel/open_merchant");
+		// UserProfile userprofile = (UserProfile) session.getAttribute("userprofile");
+		Channel channel = channelService.fetch(id);
+
+		if (channel.isOpenedMerchant() && channel.getMerchantId() != null) {
+			Merchant merchant = merchantService.load(channel.getMerchantId());
+			if (merchant != null) {
+				if (!merchant.isOpenedChannel()) {
+					merchant.setType(Merchant.Type.CHANNEL);
+					merchant.setOpenedChannel(true);
+					merchantDao.update(merchant);
+				}
+				modelAndView.setViewName("redirect:/a/channel/list");
+				return modelAndView;
+			}
+		}
+
+		modelAndView.addObject("channel", channelService.fetch(id));
+		Merchant merchant = new Merchant();
+		merchant.setName(channel.getName());
+		modelAndView.addObject("merchant", merchant);
+		return modelAndView;
+	}
+
+	@RequestMapping(value = "/open/merchant", method = RequestMethod.POST)
+	public ModelAndView openMerchantPost(@ModelAttribute("merchant") Merchant merchant, @RequestParam String adminLoginName,
+			@RequestParam String adminPassword, @RequestParam int channelId, @RequestParam CommonsMultipartFile file, SessionStatus status,
+			HttpSession session) {
+		ModelAndView modelAndView = new ModelAndView("redirect:/a/channel/list");
+
+		UserProfile userprofile = (UserProfile) session.getAttribute("userprofile");
+
+		User user = new User();
+		user.setLoginName(adminLoginName);
+		user.setPassword(adminPassword);
+		user.setName(merchant.getName());
+		merchant.setOpenedChannel(true);
+		merchant.setType(Merchant.Type.CHANNEL);
+		int merchantId = merchantService.create(merchant, user, userprofile);
+
+		Channel channel = channelService.fetch(channelId);
+		channel.setOpenedMerchant(true);
+		channel.setMerchantId(merchantId);
+		channelDao.update(channel);
+		
 		return modelAndView;
 	}
 }

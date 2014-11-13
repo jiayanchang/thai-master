@@ -21,4 +21,5 @@ public interface ChannelDao {
 
 	public PaginationSupport getChannelesPage(int currPage);
 
+	public Channel loadByMerchantId(int merchantId);
 }

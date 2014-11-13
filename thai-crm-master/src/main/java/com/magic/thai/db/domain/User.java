@@ -26,7 +26,7 @@ public class User {
 
 	@Column(name = "merchant_id")
 	private int merchantId;
-
+	
 	@Column(nullable = false)
 	private String password;
 
@@ -232,4 +232,6 @@ public class User {
 	public boolean isDisabled() {
 		return this.status == User.Status.DISABLED;
 	}
+	
+	
 }

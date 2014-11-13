@@ -1,5 +1,7 @@
 package com.magic.thai.security;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.magic.thai.db.domain.Merchant;
 import com.magic.thai.db.domain.User;
 
@@ -41,8 +43,15 @@ public class UserProfile {
 		return user.isPlatformUser();
 	}
 
+	public boolean isChannel() {
+		return this.merchant.isChannel();
+	}
+	
 	public boolean isGuest() {
 		return false;
 	}
 
+	public boolean isOwnedLogo() {
+		return StringUtils.isNotBlank(merchant.getDetails().getLogoPath());
+	}
 }

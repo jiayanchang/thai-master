@@ -70,4 +70,11 @@ public class ChannelDaoImpl extends HibernateCommonDAO<Channel> implements Chann
 		return channel;
 	}
 
+	@Override
+	public Channel loadByMerchantId(int merchantId) {
+		String hql = "from Channel where merchantId = " + merchantId;
+		List<Channel> channels = super.find(hql);
+		return channels == null || channels.size() == 0 ? null : channels.get(0);
+	}
+
 }

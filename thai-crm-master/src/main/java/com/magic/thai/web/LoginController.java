@@ -46,6 +46,8 @@ public class LoginController {
 			session.setAttribute("userprofile", userprofile);
 			if (userprofile.isPlatformUser()) {
 				modelAndView.setViewName("redirect:/a/order/list");
+			} else if(userprofile.isChannel()) {
+				modelAndView.setViewName("redirect:/c/order/list");
 			} else {
 				modelAndView.setViewName("redirect:/f/order/list");
 			}
@@ -73,6 +75,8 @@ public class LoginController {
 			session.setAttribute("userprofile", userprofile);
 			if (userprofile.isPlatformUser()) {
 				modelAndView.setViewName("redirect:/a/order/list");
+			} else if(userprofile.isChannel()) {
+				modelAndView.setViewName("redirect:/c/order/list");
 			} else {
 				modelAndView.setViewName("redirect:/f/order/list");
 			}

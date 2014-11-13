@@ -182,4 +182,9 @@ public class ChannelServiceImpl extends ServiceHelperImpl<Channel> implements Ch
 		channelDao.update(channel);
 	}
 
+	@Override
+	public Channel loadByMerchantId(int merchantId) {
+		return channelDao.loadByMerchantId(merchantId);
+	}
+
 }

@@ -12,5 +12,6 @@ public class MerchantVo {
 	public String nameKeyword;
 	public int limitF4list = -1;
 	public boolean containsPf4list = false;// 是否包含平台
+	public boolean containsCh4list = false;// 是否包含渠道
 	public Integer[] statuses;
 }

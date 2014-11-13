@@ -1,0 +1,83 @@
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%> 
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/js/lock.js">
+<h1>渠道订单详情</h1>
+<c:url var="addUrl" value="/a/order/${order.id }"/>
+<form:form action="${addUrl}" method="GET" commandName="channelOrder">
+	<form:hidden path="id"/>
+	订单详情:
+	<table class="table">
+		<colgroup>
+			<col class="col-xs-1">
+			<col class="col-xs-7">
+		</colgroup>
+		<tr>
+			<td>订单号：</td>
+			<td>${channelOrder.channelOrderNo }</td>
+		</tr>
+		<tr>
+			<td>订单状态：</td>
+			<td>${channelOrder.statusDesc }</td>
+		</tr>
+		<tr>
+			<td>联系人：</td>
+			<td>${channelOrder.contractor }</td>
+		</tr>
+		<tr>
+			<td>联系电话：</td>
+			<td>${channelOrder.contractorMobile }</td>
+		</tr>
+		<tr>
+			<td>订单总金额：</td>
+			<td>${channelOrder.amount }</td>
+		</tr>
+		<tr>
+			<td>下单时间：</td>
+			<td>${channelOrder.createdDate }</td>
+		</tr>
+	</table>
+	
+	<table class="table table-striped table-hover">
+		<c:forEach var="merchantOrder" items="${channelOrder.merchantOrders }">
+			<c:forEach var="mgoods" items="${merchantOrder.goodses }">
+					<tr>
+						<td>商品名称：</td>
+						<td><a href="javascript:window.open('${pageContext.request.contextPath}/a/goods/snapshot/${mgoods.id }')">${mgoods.goodsName }</a></td>
+						<td>商品数量：</td>
+						<td>${mgoods.quantity }</td>
+						<td>商品单价：</td>
+						<td>${mgoods.profit}</td>
+					</tr>
+			</c:forEach>
+		</c:forEach>
+	</table>
+	
+	
+	<h4><strong>旅客详情</strong></h4>
+	<table class="table table-striped table-hover">
+		<tr>
+			<th>姓名</th>
+			<th>国籍</th>
+			<th>性别</th>
+			<th>类型</th>
+			<th>手机号码</th>
+		</tr>
+		<c:forEach var="traveler" items="${channelOrder.travelers }">
+			<tr>
+				<td>${traveler.firstName }${traveler.lastName }</td>
+				<td>${traveler.nationality }</td>
+				<td>${traveler.typeDesc }</td>
+				<td>${traveler.birth }</td>
+				<td>${traveler.mobile }</td>
+			</tr>
+		</c:forEach>
+	</table>
+	<input type="button" value="返回" onclick="back();" class="btn btn-default"/>
+	<script>
+	function back(){
+		$("form").attr('action', '${pageContext.request.contextPath}/a/order/channelorders');
+		$("form").submit();
+	}
+	</script>
+</form:form>

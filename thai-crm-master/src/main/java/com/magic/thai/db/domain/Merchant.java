@@ -53,7 +53,10 @@ public class Merchant {
 	private Date createdDate;
 	@Column(name = "creator_name")
 	private String creatorName;
-
+	
+	@Column(name = "is_opened_channel")
+	private boolean isOpenedChannel;//目前如果为true那么表示当前商家为渠道，不具有商家的功能
+	
 	@Transient
 	private MerchantDetails details; // 非hibnate关联
 
@@ -65,6 +68,7 @@ public class Merchant {
 	 */
 	public static class Type {
 		public static final int NORMAL = 0;
+		public static final int CHANNEL = 1;
 		public static final int PLATFORM = 2;
 	}
 
@@ -189,6 +193,18 @@ public class Merchant {
 
 	public void setCreatorName(String creatorName) {
 		this.creatorName = creatorName;
+	}
+
+	public boolean isOpenedChannel() {
+		return isOpenedChannel;
+	}
+
+	public boolean isChannel() {
+		return this.type == Merchant.Type.CHANNEL;
+	}
+	
+	public void setOpenedChannel(boolean isOpenedChannel) {
+		this.isOpenedChannel = isOpenedChannel;
 	}
 
 	public MerchantDetails getDetails() {

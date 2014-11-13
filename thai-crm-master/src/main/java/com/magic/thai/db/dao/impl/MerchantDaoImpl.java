@@ -40,6 +40,9 @@ public class MerchantDaoImpl extends HibernateCommonDAO<Merchant> implements Mer
 		if (!vo.containsPf4list) {
 			criterions.add(Restrictions.ne("type", Merchant.Type.PLATFORM));
 		}
+		if (!vo.containsCh4list) {
+			criterions.add(Restrictions.ne("type", Merchant.Type.CHANNEL));
+		}
 		if (vo.statuses != null && vo.statuses.length > 0) {
 			criterions.add(Restrictions.in("status", vo.statuses));
 		}

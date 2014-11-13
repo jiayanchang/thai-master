@@ -13,6 +13,7 @@
 		<mvc:interceptor>
 			<mvc:mapping path="/a/**"/> <!-- 需要拦截的 -->
 			<mvc:mapping path="/f/**"/> <!-- 需要拦截的 -->
+			<mvc:mapping path="/c/**"/> <!-- 需要拦截的 -->
 			<mvc:mapping path="/json/**"/> <!-- 需要拦截的 -->
 			<bean class="com.magic.thai.security.LoginInterceptor" />
 		</mvc:interceptor>

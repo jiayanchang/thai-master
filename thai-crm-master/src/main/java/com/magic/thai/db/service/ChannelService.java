@@ -31,5 +31,12 @@ public interface ChannelService {
 	 * @param count
 	 */
 	public void refreshSoldGoodsCount(Channel channel, int count);
+	
+	/**
+	 * 获取渠道，开通页面的
+	 * @param merchantId
+	 * @return 可能为空
+	 */
+	public Channel loadByMerchantId(int merchantId);
 
 }
